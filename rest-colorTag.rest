@@ -1,0 +1,30 @@
+GET http://localhost:3000/api/colortag
+
+###
+
+GET http://localhost:3000/api/colortag/red
+
+###
+
+POST  http://localhost:3000/api/colortag
+Content-Type: application/json
+
+{
+"color": "Grön",
+"hexcode": "#FF3ffD3D"
+}
+
+###
+
+PUT  http://localhost:3000/api/colortag/red
+Content-Type: application/json
+
+{
+"color": "Röd"
+}
+
+###
+
+DELETE  http://localhost:3000/api/colortag/red
+Content-Type: application/json
+
