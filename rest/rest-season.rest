@@ -1,0 +1,33 @@
+GET http://localhost:3000/api/season
+
+###
+
+GET http://localhost:3000/api/season/vinter
+
+###
+
+POST  http://localhost:3000/api/season
+Content-Type: application/json
+
+{
+"title": "Hittepå", 
+"description": "Beskrivning av säsongen höst"
+}
+
+###
+
+PUT  http://localhost:3000/api/season/vinter
+Content-Type: application/json
+
+{
+"_id": "638b1f851c801728bd3a5faf",
+ "title": "Vinter", 
+ "description": "Beskrivning av säsongen vinter uppdaterad"
+}
+
+###
+
+DELETE  http://localhost:3000/api/season/hittepa
+Content-Type: application/json
+
+

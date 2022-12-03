@@ -30,17 +30,7 @@ export default async function handler(
 
     case "PUT" /* Edit a category by its slug */:
       try {
-        //console.log(req.body);
-        /* const categoryExist = await Category.findOne({
-          title: req.body.title,
-        });
-        if (categoryExist._id != req.body._id) {
-          return res.status(403).send({
-            success: false,
-            data: "Kategorin existerar redan på ett annat id",
-          });
-        }
-        console.log(categoryExist); */
+        // Fix validation for already existing category except the one you update
 
         const updateCategory = new Category();
         updateCategory._id = req.body._id;

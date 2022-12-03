@@ -1,5 +1,5 @@
 import dbConnect from "../../../utils/dbConnect";
-import Category from "../../../models/Category";
+import Season from "../../../models/Season";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -13,7 +13,7 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const categories = await Category.find({});
+        const categories = await Season.find({});
         res.status(200).json({ success: true, data: categories });
       } catch (error) {
         res.status(400).json({ success: false });
@@ -21,23 +21,23 @@ export default async function handler(
       break;
     case "POST":
       try {
-        const categoryExist = await Category.findOne({
+        const seasonExist = await Season.findOne({
           title: req.body.title,
         });
-        //console.log(categoryExist);
-        if (categoryExist) {
+        //console.log(seasonExist);
+        if (seasonExist) {
           return res
             .status(403)
             .send({ success: false, data: "Kategorin existerar redan" });
         }
 
-        const newCategory = new Category();
-        newCategory.title = req.body.title;
-        newCategory.description = req.body.description;
-        newCategory.setSlug(req.body.title);
+        const newSeason = new Season();
+        newSeason.title = req.body.title;
+        newSeason.description = req.body.description;
+        newSeason.setSlug(req.body.title);
 
-        const category = await Category.create(newCategory);
-        res.status(201).json({ success: true, data: category });
+        const season = await Season.create(newSeason);
+        res.status(201).json({ success: true, data: season });
       } catch (error) {
         res.status(400).json({ success: false });
       }
