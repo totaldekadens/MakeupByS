@@ -2,7 +2,7 @@ GET http://localhost:3000/api/colortag
 
 ###
 
-GET http://localhost:3000/api/colortag/red
+GET http://localhost:3000/api/colortag/gray
 
 ###
 
@@ -10,21 +10,23 @@ POST  http://localhost:3000/api/colortag
 Content-Type: application/json
 
 {
-"color": "Grön",
-"hexcode": "#FF3ffD3D"
+"color": "Gray",
+"hexcode": "#D8d8d8"
 }
 
 ###
 
-PUT  http://localhost:3000/api/colortag/red
+PUT  http://localhost:3000/api/colortag/gray
 Content-Type: application/json
 
 {
-"color": "Röd"
+"_id": "638b0fdbab81ffdb7675e4e6",
+"color": "hittepå",
+"hexcode": "#D8d8d8"
 }
 
 ###
 
-DELETE  http://localhost:3000/api/colortag/red
+DELETE  http://localhost:3000/api/colortag/hittepa
 Content-Type: application/json
 
