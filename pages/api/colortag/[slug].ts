@@ -29,6 +29,8 @@ export default async function handler(
 
     case "PUT" /* Edit a colorTag by its slug */:
       try {
+        // Fix validation for already existing category except the one you update
+
         const updateColorTag = new ColorTag();
         updateColorTag._id = req.body._id;
         updateColorTag.color = req.body.color;
