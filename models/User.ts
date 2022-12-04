@@ -34,8 +34,8 @@ export type UserDocument = {
   admin: boolean;
   hash: string;
   salt: string;
-  validPassword: (password: any) => boolean;
-  setPassword: (password: any) => boolean;
+  validPassword: (password: string) => boolean;
+  setPassword: (password: string) => boolean;
   _id: string;
 };
 

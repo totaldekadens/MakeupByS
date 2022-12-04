@@ -1,0 +1,33 @@
+GET http://localhost:3000/api/category
+
+###
+
+GET http://localhost:3000/api/category/ogonskuggor
+
+###
+
+POST  http://localhost:3000/api/category
+Content-Type: application/json
+
+{
+"title": "Läppstift", 
+"description": "Beskrivning av kategorin läpptstift"
+}
+
+###
+
+PUT  http://localhost:3000/api/category/lappar
+Content-Type: application/json
+
+{
+"_id": "638b141aab81ffdb7675e4f4",
+ "title": "Ögonskuggor", 
+ "description": "Beskrivning av kategorin Ögonskuggor"
+}
+
+###
+
+DELETE  http://localhost:3000/api/category/ogonskuggor
+Content-Type: application/json
+
+

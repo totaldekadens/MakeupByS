@@ -1,0 +1,30 @@
+GET http://localhost:3000/api/color
+
+###
+
+GET http://localhost:3000/api/color/637772a0c3a609018ab49e8b
+
+
+### // Funkar ej!
+
+POST  http://localhost:3000/api/color
+Content-Type: application/json
+
+{
+"hexcode": "#A7A045", "colortag": "638b0af67a573f3adf932493", "seasons": ["638b2034901faa0ffc71502c"]
+}
+
+###
+
+PUT  http://localhost:3000/api/color/#FFFFF
+Content-Type: application/json
+
+{
+"hexcode": "#a7a045", "colortag": "63776c45770d0813197325ba", "season": ["63775ce666fff92f5e0ca446"]
+}
+
+###
+
+DELETE  http://localhost:3000/api/color/63776f3c770d0813197325c0
+
+

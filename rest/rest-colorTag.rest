@@ -1,0 +1,32 @@
+GET http://localhost:3000/api/colortag
+
+###
+
+GET http://localhost:3000/api/colortag/gray
+
+###
+
+POST  http://localhost:3000/api/colortag
+Content-Type: application/json
+
+{
+"color": "Gray",
+"hexcode": "#D8d8d8"
+}
+
+###
+
+PUT  http://localhost:3000/api/colortag/gray
+Content-Type: application/json
+
+{
+"_id": "638b0fdbab81ffdb7675e4e6",
+"color": "hittepå",
+"hexcode": "#D8d8d8"
+}
+
+###
+
+DELETE  http://localhost:3000/api/colortag/hittepa
+Content-Type: application/json
+
