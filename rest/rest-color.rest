@@ -5,7 +5,7 @@ GET http://localhost:3000/api/color
 GET http://localhost:3000/api/color/637772a0c3a609018ab49e8b
 
 
-###
+### // Funkar ej!
 
 POST  http://localhost:3000/api/color
 Content-Type: application/json
