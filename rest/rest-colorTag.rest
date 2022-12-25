@@ -10,8 +10,8 @@ POST  http://localhost:3000/api/admin/colortag
 Content-Type: application/json
 
 {
-"color": "Gray",
-"hexcode": "#D8d8d8"
+    "color": "Brun",
+    "hexcolor": "#643F11"
 }
 
 ###

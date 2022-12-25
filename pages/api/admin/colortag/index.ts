@@ -22,7 +22,7 @@ export default async function handler(
             .status(403)
             .send({ success: false, data: "Color tag already exists" });
         }
-        const validateHexcode = useValidateHexcode(req.body.hexcode);
+        const validateHexcode = useValidateHexcode(req.body.hexcolor);
 
         if (!validateHexcode) {
           return res
@@ -32,7 +32,7 @@ export default async function handler(
 
         const newColorTag = new ColorTag();
         newColorTag.color = req.body.color;
-        newColorTag.hexcode = req.body.hexcode;
+        newColorTag.hexcolor = req.body.hexcolor;
         newColorTag.setSlug(req.body.color);
 
         const colorTag = await ColorTag.create(newColorTag);

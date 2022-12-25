@@ -5,13 +5,15 @@ GET http://localhost:3000/api/color
 GET http://localhost:3000/api/color/6395c57998499264aa6727c0
 
 
-### // Funkar ej!
+### 
 
 POST  http://localhost:3000/api/admin/color
 Content-Type: application/json
 
 {
-"hexcolor": "#020000", "colorTag": "638b0af67a573f3adf932493", "seasons": ["638b2034901faa0ffc71502c"]
+    "hexcolor": "#af9f90",
+    "colorTag": "63a86db32622fa2566183512",
+    "seasons": ["63a8715e2622fa256618352d"]
 }
 
 ###

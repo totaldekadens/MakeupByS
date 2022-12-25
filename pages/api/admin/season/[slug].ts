@@ -13,9 +13,8 @@ export default async function handler(
 
   await dbConnect();
 
-  //console.log(req.body);
   switch (method) {
-    case "PUT" /* Edit a season by its slug */:
+    case "PUT":
       try {
         // Fix validation for already existing season except the one you update
 
@@ -40,7 +39,7 @@ export default async function handler(
       }
       break;
 
-    case "DELETE" /* Delete a season by its slug */:
+    case "DELETE":
       try {
         const deletedSeason = await Season.deleteOne({ slug });
         if (!deletedSeason) {

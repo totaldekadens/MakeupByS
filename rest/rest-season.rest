@@ -10,8 +10,8 @@ POST  http://localhost:3000/api/admin/season
 Content-Type: application/json
 
 {
-"title": "Hittepå", 
-"description": "Beskrivning av säsongen höst"
+  "title": "Höst",
+  "description": "Beskrivning av säsongen höst"
 }
 
 ###

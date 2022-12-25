@@ -1,9 +1,6 @@
 import dbConnect from "../../../utils/dbConnect";
 import Color from "../../../models/Color";
 import { NextApiRequest, NextApiResponse } from "next";
-import useValidateHexcode from "../../../utils/useValidateHexcode";
-
-// Funkar ej. Pågående arbete :P
 
 export default async function handler(
   req: NextApiRequest,
@@ -16,8 +13,10 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const colors = await Color.find({});
-
+        const colors = await Color.find({})
+          .populate("colorTag")
+          .populate("seasons");
+        console.log(colors);
         res.status(200).json({ success: true, data: colors });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
