@@ -30,8 +30,6 @@ export type SeasonDocument = {
   title: string;
   description: string;
   slug: string;
-  setSlug: (title: string) => void;
-  _id: string;
 };
 
 export default mongoose.models.Season || mongoose.model("Season", SeasonSchema);
