@@ -41,14 +41,14 @@ export default async function handler(req, res) {
           const user = await User.create(newUser);
           res.status(201).json({ success: true, data: user._id });
         } catch (error) {
-          res.json({ message: "catch error" });
+          res.json({ success: false, data: error });
         }
         break;
       default:
-        res.json({ message: "break error" });
+        res.json({ success: false, data: "break error" });
         break;
     }
   } else {
-    res.json({ success: false, data: "Du har inga rättigheter" });
+    res.json({ success: false, data: "You are not authorized" });
   }
 }

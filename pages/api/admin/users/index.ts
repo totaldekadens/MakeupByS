@@ -1,6 +1,6 @@
-import caseInsensitive from "../../../utils/caseCheck";
-import dbConnect from "../../../utils/dbConnect";
-import User from "../../../models/User";
+import caseInsensitive from "../../../../utils/caseCheck";
+import dbConnect from "../../../../utils/dbConnect";
+import User from "../../../../models/User";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -12,6 +12,14 @@ export default async function handler(
   await dbConnect();
 
   switch (method) {
+    case "GET":
+      try {
+        const users = await User.find({});
+        res.json({ success: true, data: users });
+      } catch (error) {
+        res.json({ success: false, data: "Users not found" });
+      }
+      break;
     case "POST":
       try {
         const emailTaken = await User.findOne({
@@ -20,7 +28,7 @@ export default async function handler(
         if (emailTaken) {
           return res
             .status(403)
-            .send({ success: false, data: "Email address already exist" });
+            .send({ success: false, data: "Email address already exists" });
         }
 
         let newUser = new User();
@@ -34,7 +42,7 @@ export default async function handler(
       }
       break;
     default:
-      res.json({ success: false, data: "break error" });
+      res.json({ success: false, data: "Break error" });
       break;
   }
 }

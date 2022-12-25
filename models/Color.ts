@@ -1,13 +1,12 @@
-import mongoose from "mongoose";
-import { ColorTagDocument } from "./ColorTag";
+import mongoose, { Types } from "mongoose";
 
-const ColorSchema = new mongoose.Schema({
-  hexcode: {
+const ColorSchema = new mongoose.Schema<ColorDocument>({
+  hexcolor: {
     type: String,
     required: true,
     unique: true,
   },
-  colortag: {
+  colorTag: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "ColorTag",
     required: true,
@@ -21,11 +20,10 @@ const ColorSchema = new mongoose.Schema({
   ],
 });
 
-export type SeasonDocument = {
-  hexColor: string;
-  colorTag: ColorTagDocument[];
-  season: SeasonDocument[];
-  _id: string;
+export type ColorDocument = {
+  hexcolor: string;
+  colorTag: Types.ObjectId;
+  seasons: Types.ObjectId[];
 };
 
 export default mongoose.models.Color || mongoose.model("Color", ColorSchema);

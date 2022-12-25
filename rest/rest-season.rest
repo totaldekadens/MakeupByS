@@ -6,7 +6,7 @@ GET http://localhost:3000/api/season/vinter
 
 ###
 
-POST  http://localhost:3000/api/season
+POST  http://localhost:3000/api/admin/season
 Content-Type: application/json
 
 {
@@ -16,7 +16,7 @@ Content-Type: application/json
 
 ###
 
-PUT  http://localhost:3000/api/season/vinter
+PUT  http://localhost:3000/api/admin/season/vinter
 Content-Type: application/json
 
 {
@@ -27,7 +27,7 @@ Content-Type: application/json
 
 ###
 
-DELETE  http://localhost:3000/api/season/hittepa
+DELETE  http://localhost:3000/api/admin/season/hittepa
 Content-Type: application/json
 
 
