@@ -10,8 +10,8 @@ POST  http://localhost:3000/api/admin/category
 Content-Type: application/json
 
 {
-"title": "hejsvej", 
-"description": "Beskrivning av kategorin läpptstift"
+"title": "Läppstift", 
+"description": "Beskrivning av kategorin läppstift"
 }
 
 ###

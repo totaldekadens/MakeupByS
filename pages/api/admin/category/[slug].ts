@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import Category from "../../../../models/Category";
+import Category, { CategoryDocument } from "../../../../models/Category";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -18,7 +18,7 @@ export default async function handler(
       try {
         // Fix validation for already existing category except the one you update
 
-        const updateCategory = new Category();
+        const updateCategory: CategoryDocument = new Category();
         updateCategory._id = req.body._id;
         updateCategory.title = req.body.title;
         updateCategory.description = req.body.description;

@@ -2,7 +2,7 @@ GET http://localhost:3000/api/color
 
 ###
 
-GET http://localhost:3000/api/color/6395c57998499264aa6727c0
+GET http://localhost:3000/api/color/63a871bd2622fa2566183534
 
 
 ### 

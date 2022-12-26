@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import Season from "../../../../models/Season";
+import Season, { SeasonDocument } from "../../../../models/Season";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -18,7 +18,7 @@ export default async function handler(
       try {
         // Fix validation for already existing season except the one you update
 
-        const updateSeason = new Season();
+        const updateSeason: SeasonDocument = new Season();
         updateSeason._id = req.body._id;
         updateSeason.title = req.body.title;
         updateSeason.description = req.body.description;
