@@ -1,0 +1,39 @@
+GET http://localhost:3000/api/open/subproduct
+
+###
+
+GET http://localhost:3000/api/open/subproduct/mykonos
+
+
+### 
+
+POST  http://localhost:3000/api/admin/subproduct
+Content-Type: application/json
+
+{
+    "mainProduct": "63a9adf9d256250113990483",
+    "title": "MYKONOS",
+    "images": ["MYKONOS.webp", "MYKONOS-2.webp"],
+    "colors": ["63a878fb2622fa25661836ed"],
+    "availableQty": 100
+}
+
+###
+
+PUT  http://localhost:3000/api/admin/subproduct/63a9b05fd25625011399048d
+Content-Type: application/json
+
+{
+    "_id": "63a9b05fd25625011399048d",
+    "mainProduct": "63a9adf9d256250113990483",
+    "title": "MYKONOS",
+    "images": ["MYKONOS.webp", "MYKONOS-2.webp"],
+    "colors": ["63a878fb2622fa25661836ed"],
+    "availableQty": 100
+}
+
+###
+
+DELETE  http://localhost:3000/api/admin/subproduct/6395c57998499264aa6727c0
+
+

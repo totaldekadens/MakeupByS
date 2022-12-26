@@ -21,7 +21,8 @@
     "**/*.tsx",
     "pages/api/auth/[...nextauth].ts",
     "pages/api/admin/index.js",
-    "pages/api/color/index.js"
+    "pages/api/open/color/index.js",
+    "pages/api/open/mainproduct/index.js"
   ],
   "exclude": ["node_modules"]
 }

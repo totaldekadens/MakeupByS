@@ -1,9 +1,9 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import useSlugify from "../utils/useSlugify";
 
 // Skall vi ha någon bild eller icon till säsongerna?
 
-const SeasonSchema = new mongoose.Schema({
+const SeasonSchema = new mongoose.Schema<SeasonDocument>({
   title: {
     type: String,
     required: true,
@@ -30,6 +30,8 @@ export type SeasonDocument = {
   title: string;
   description: string;
   slug: string;
+  setSlug: (title: String) => void;
+  _id?: Types.ObjectId;
 };
 
 export default mongoose.models.Season || mongoose.model("Season", SeasonSchema);

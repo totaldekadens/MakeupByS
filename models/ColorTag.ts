@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import useSlugify from "../utils/useSlugify";
 
-const ColorTagSchema = new mongoose.Schema({
+const ColorTagSchema = new mongoose.Schema<ColorTagDocument>({
   color: {
     type: String,
     required: true,
@@ -29,6 +29,8 @@ export type ColorTagDocument = {
   color: string;
   slug: string;
   hexcolor: string;
+  setSlug: (title: String) => void;
+  _id?: Types.ObjectId;
 };
 
 export default mongoose.models.ColorTag ||

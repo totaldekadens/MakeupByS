@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import Color from "../../../../models/Color";
+import Color, { ColorDocument } from "../../../../models/Color";
 import { NextApiRequest, NextApiResponse } from "next";
 import useValidateHexcode from "../../../../utils/useValidateHexcode";
 
@@ -33,12 +33,11 @@ export default async function handler(
             .status(400)
             .send({ success: false, data: "Fel format på hexkod" });
         }
-        const newColor = new Color();
+        const newColor: ColorDocument = new Color();
         newColor.hexcolor = req.body.hexcolor;
         newColor.colorTag = req.body.colorTag;
         newColor.seasons = req.body.seasons;
 
-        console.log(newColor);
         const color = await Color.create(newColor);
         res.status(201).json({ success: true, data: color });
       } catch (error) {

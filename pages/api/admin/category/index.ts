@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import Category from "../../../../models/Category";
+import Category, { CategoryDocument } from "../../../../models/Category";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -23,7 +23,7 @@ export default async function handler(
             .send({ success: false, data: "Category already exists" });
         }
 
-        const newCategory = new Category();
+        const newCategory: CategoryDocument = new Category();
         newCategory.title = req.body.title;
         newCategory.description = req.body.description;
         newCategory.setSlug(req.body.title);

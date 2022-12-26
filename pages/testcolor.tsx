@@ -960,9 +960,10 @@ export default function Colors() {
         <main style={{ marginTop: 60, minHeight: "100vh" }}>
           <h1>Färger</h1>
           <div>
-            {seasons.map((season) => {
+            {seasons.map((season, index) => {
               return (
                 <button
+                  key={index}
                   onClick={() => {
                     handleClick(season.title);
                   }}
@@ -984,16 +985,20 @@ export default function Colors() {
             }}
           >
             <div style={{ display: "flex" }}>
-              {colorTags.map((colorTag) => {
+              {colorTags.map((colorTag, index) => {
                 return (
-                  <div style={{ display: "flex", flexDirection: "column" }}>
+                  <div
+                    key={index}
+                    style={{ display: "flex", flexDirection: "column" }}
+                  >
                     <h3>{colorTag.color}</h3>
                     {filteredListBySeason
                       .filter((color) =>
                         color.colorTag.includes(colorTag.color)
                       )
-                      .map((filteredColor) => (
+                      .map((filteredColor, index) => (
                         <div
+                          key={index}
                           style={{
                             backgroundColor: filteredColor.hexcolor,
                             width: "100px",

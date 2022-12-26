@@ -24,6 +24,7 @@ export type ColorDocument = {
   hexcolor: string;
   colorTag: Types.ObjectId;
   seasons: Types.ObjectId[];
+  _id?: Types.ObjectId;
 };
 
 export default mongoose.models.Color || mongoose.model("Color", ColorSchema);

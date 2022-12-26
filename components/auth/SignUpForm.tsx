@@ -48,7 +48,7 @@ const SignUpForm = () => {
       body: JSON.stringify(body),
     };
 
-    const response = await fetch("/api/users", request);
+    const response = await fetch("/api/open/users", request);
     let result = await response.json();
 
     // Ändra till check av koder instället

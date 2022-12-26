@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import ColorTag from "../../../../models/ColorTag";
+import ColorTag, { ColorTagDocument } from "../../../../models/ColorTag";
 import { NextApiRequest, NextApiResponse } from "next";
 import useValidateHexcode from "../../../../utils/useValidateHexcode";
 
@@ -30,7 +30,7 @@ export default async function handler(
             .send({ success: false, data: "Wrong format on hex color" });
         }
 
-        const newColorTag = new ColorTag();
+        const newColorTag: ColorTagDocument = new ColorTag();
         newColorTag.color = req.body.color;
         newColorTag.hexcolor = req.body.hexcolor;
         newColorTag.setSlug(req.body.color);

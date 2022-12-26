@@ -10,24 +10,24 @@ POST  http://localhost:3000/api/admin/season
 Content-Type: application/json
 
 {
-  "title": "Höst",
+  "title": "tjena",
   "description": "Beskrivning av säsongen höst"
 }
 
 ###
 
-PUT  http://localhost:3000/api/admin/season/vinter
+PUT  http://localhost:3000/api/admin/season/tjena
 Content-Type: application/json
 
 {
-"_id": "638b1f851c801728bd3a5faf",
- "title": "Vinter", 
+"_id": "63a9d0bd3fd8825dab06ad8d",
+ "title": "hejsan", 
  "description": "Beskrivning av säsongen vinter uppdaterad"
 }
 
 ###
 
-DELETE  http://localhost:3000/api/admin/season/hittepa
+DELETE  http://localhost:3000/api/admin/season/63a9d0bd3fd8825dab06ad8d
 Content-Type: application/json
 
 

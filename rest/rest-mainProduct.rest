@@ -1,0 +1,43 @@
+GET http://localhost:3000/api/open/mainproduct
+
+###
+
+GET http://localhost:3000/api/mainproduct/open/63a9adf9d256250113990483
+
+
+### 
+
+POST  http://localhost:3000/api/admin/mainproduct
+Content-Type: application/json
+
+{
+    "description1": "CAIAs läppstift återfuktar och ger dina läppar en härlig lyster. Det är smidigt att applicera och den lätta formulan gör att du enkelt bestämmer hur täckande du vill att det ska vara. Läppstiftet innehåller SPF 15 som skyddar och lipider som mjukar upp och gör dina läppar oemotståndliga.",
+    "brand": "caia",
+    "price": 195,
+    "category": "638b19b51c801728bd3a5f8d",
+    "ingredients": "CETEARYL ETHYLHEXANOATE ISONONYL ISONONANOATE POLYETHYLENE OCTYLDODECANOL KAOLIN SILICA HYDROGENATED STYRENE/METHYL STYRENE/INDENE COPOLYMER SYNTHETIC WAX DICALCIUM PHOSPHATE C30-45 ALKYL DIMETHICONE DIMETHICONE/VINYL DIMETHICONE CROSSPOLYMER CETYL DIMETHICONE DIMETHICONE PENTAERYTHRITYL TETRA-DI-t-BUTYL HYDROXYHYDROCINNAMATE MICA LAURETH-4 MAY CONTAIN/(+/-): TITANIUM DIOXIDE (CI 77891) IRON OXIDES (CI 77491) IRON OXIDES (CI 77492) RED 6 (CI 15850) RED 7 LAKE (CI 15850) RED 28 LAKE (CI 45410) BLUE 1 LAKE (CI 42090) YELLOW 5 LAKE (CI 19140) YELLOW 6 LAKE (CI 15985)",
+    "partNo": "201",
+    "weight": 70
+}
+
+###
+
+PUT  http://localhost:3000/api/admin/mainproduct/63a9b05fd25625011399048d
+Content-Type: application/json
+
+{
+    "_id": "63a9b05fd25625011399048d",
+    "description1": "Pigmenterat läppstift med en matt finish utan att bli torr. Produkten är mjuk och appliceras enkelt på läpparna, samtidigt som den är vattenresistent. Läppstiftet innehåller olja från passionsfrukt som ger näring och vårdar läpparna. Med sin revolutionerande formula lämnar produkten ett supermatt resultat utan att torka ut läpparna. Läppstiftet är veganskt.",
+    "brand": "caia",
+    "price": 195,
+    "category": "638b19b51c801728bd3a5f8d",
+    "ingredients": "CETEARYL ETHYLHEXANOATE ISONONYL ISONONANOATE POLYETHYLENE OCTYLDODECANOL KAOLIN SILICA HYDROGENATED STYRENE/METHYL STYRENE/INDENE COPOLYMER SYNTHETIC WAX DICALCIUM PHOSPHATE C30-45 ALKYL DIMETHICONE DIMETHICONE/VINYL DIMETHICONE CROSSPOLYMER CETYL DIMETHICONE DIMETHICONE PENTAERYTHRITYL TETRA-DI-t-BUTYL HYDROXYHYDROCINNAMATE MICA LAURETH-4 MAY CONTAIN/(+/-): TITANIUM DIOXIDE (CI 77891) IRON OXIDES (CI 77491) IRON OXIDES (CI 77492) RED 6 (CI 15850) RED 7 LAKE (CI 15850) RED 28 LAKE (CI 45410) BLUE 1 LAKE (CI 42090) YELLOW 5 LAKE (CI 19140) YELLOW 6 LAKE (CI 15985)",
+    "partNo": "202",
+    "weight": 70
+}
+
+###
+
+DELETE  http://localhost:3000/api/admin/mainproduct/6395c57998499264aa6727c0
+
+

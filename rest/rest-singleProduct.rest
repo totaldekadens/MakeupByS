@@ -1,0 +1,51 @@
+GET http://localhost:3000/api/open/singleproduct
+
+###
+
+GET http://localhost:3000/api/open/singleproduct/63a871bd2622fa2566183534
+
+
+### 
+
+POST  http://localhost:3000/api/admin/singleproduct
+Content-Type: application/json
+
+{
+    "title": "MYKONOS",
+    "description1": "Ögonskugga med en krämig och pigmenterad formula som är enkel att applicera och blanda ut. Skuggorna kommer i både matt och skimmer, välj din favorit av våra 12 nyanser. Ögonskuggan är vegansk.",
+    "description2": "Denna ögonskugga kommer i en förpackning som är hundraprocentigt återvinningsbar. När den är slut, avlägsna klistermärket från botten. Där finns ett hål, som du med en nål enkelt kan sticka ut metallplattan. När det är gjort kan du återvinna de olika delarna i plast, respektive metall-återvinningen.",
+    "brand": "CAIA",
+    "price": 189,
+     "category": "638b141aab81ffdb7675e4f4",
+    "ingredients": "Talc, Mica, Isostearyl Neopentanoate, CI 77492, Caprylyl Glycol, Phenoxyethanol, Polybutene, CI 77491, Dimethicone, Triethoxycaprylylsilane, Isopropyl Isostearate, Magnesium Myristate, Hexylene Glycol, CI 77499, Tocopheryl Acetate",
+    "partNo": "101-mykonos",
+    "availableQty": 100,
+    "images": ["MYKONOS.webp", "MYKONOS-2.webp"],
+    "colors": ["63a878fb2622fa25661836ed"]
+}
+
+###
+
+PUT  http://localhost:3000/api/admin/singleproduct/#FFFFF
+Content-Type: application/json
+
+{
+    "_id": "63a9800c790cfc03fefc03d0",
+ "title": "MYKONOS",
+    "description1": "Ögonskugga med en krämig och pigmenterad formula som är enkel att applicera och blanda ut. Skuggorna kommer i både matt och skimmer, välj din favorit av våra 12 nyanser. Ögonskuggan är vegansk.",
+    "description2": "Denna ögonskugga kommer i en förpackning som är hundraprocentigt återvinningsbar. När den är slut, avlägsna klistermärket från botten. Där finns ett hål, som du med en nål enkelt kan sticka ut metallplattan. När det är gjort kan du återvinna de olika delarna i plast, respektive metall-återvinningen.",
+    "brand": "CAIA",
+    "price": 189,
+    "partNo": "101-mykonos",
+    
+    "images": ["MYKONOS.webp", "MYKONOS-2.webp"],
+    "colors": ["63a878fb2622fa25661836ed"],
+    "category": "638b141aab81ffdb7675e4f4",
+    "ingredients": "Talc, Mica, Isostearyl Neopentanoate, CI 77492, Caprylyl Glycol, Phenoxyethanol, Polybutene, CI 77491, Dimethicone, Triethoxycaprylylsilane, Isopropyl Isostearate, Magnesium Myristate, Hexylene Glycol, CI 77499, Tocopheryl Acetate"
+}
+
+###
+
+DELETE  http://localhost:3000/api/admin/singleproduct/6395c57998499264aa6727c0
+
+

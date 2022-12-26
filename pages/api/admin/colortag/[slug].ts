@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import ColorTag from "../../../../models/ColorTag";
+import ColorTag, { ColorTagDocument } from "../../../../models/ColorTag";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -18,10 +18,10 @@ export default async function handler(
       try {
         // Fix validation for already existing category except the one you update
 
-        const updateColorTag = new ColorTag();
+        const updateColorTag: ColorTagDocument = new ColorTag();
         updateColorTag._id = req.body._id;
         updateColorTag.color = req.body.color;
-        updateColorTag.hexcode = req.body.hexcode;
+        updateColorTag.hexcolor = req.body.hexcolor;
         updateColorTag.setSlug(req.body.color);
 
         const colorTag = await ColorTag.findOneAndUpdate(

@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 // More on how NextAuth.js middleware works: https://next-auth.js.org/configuration/nextjs#middleware
 
+// Todo: Lägg till ytterligare skydd för apierna.
 export default withAuth(
   function middleware(req) {
     // If you are logged in but not have the role "admin" when you visit an URL including "admin", you will be redirected to /mypage.

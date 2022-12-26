@@ -1,7 +1,7 @@
 import crypto from "crypto";
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema<UserDocument>({
   email: String,
   password: String,
   hash: String,
@@ -31,6 +31,7 @@ export type UserDocument = {
   admin: boolean;
   hash: string;
   salt: string;
+  _id?: Types.ObjectId;
 };
 
 export default module.exports =

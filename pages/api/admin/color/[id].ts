@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import Color from "../../../../models/Color";
+import Color, { ColorDocument } from "../../../../models/Color";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -18,11 +18,11 @@ export default async function handler(
       try {
         // Fix validation for already existing category except the one you update
 
-        const updateColor = new Color();
+        const updateColor: ColorDocument = new Color();
         updateColor._id = req.body._id;
-        updateColor.color = req.body.color;
         updateColor.hexcolor = req.body.hexcolor;
-        updateColor.setSlug(req.body.color);
+        updateColor.colorTag = req.body.colorTag;
+        updateColor.seasons = req.body.seasons;
 
         const color = await Color.findOneAndUpdate({ id }, updateColor, {
           new: true,
