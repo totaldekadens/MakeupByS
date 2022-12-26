@@ -1,8 +1,8 @@
-GET http://localhost:3000/api/mainproduct
+GET http://localhost:3000/api/open/mainproduct
 
 ###
 
-GET http://localhost:3000/api/mainproduct/63a9adf9d256250113990483
+GET http://localhost:3000/api/mainproduct/open/63a9adf9d256250113990483
 
 
 ### 

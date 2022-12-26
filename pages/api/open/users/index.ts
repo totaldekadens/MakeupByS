@@ -1,6 +1,6 @@
-import caseInsensitive from "../../../utils/caseCheck";
-import dbConnect from "../../../utils/dbConnect";
-import User from "../../../models/User";
+import caseInsensitive from "../../../../utils/caseCheck";
+import dbConnect from "../../../../utils/dbConnect";
+import User from "../../../../models/User";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(

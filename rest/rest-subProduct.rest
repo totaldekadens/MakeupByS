@@ -1,8 +1,8 @@
-GET http://localhost:3000/api/subproduct
+GET http://localhost:3000/api/open/subproduct
 
 ###
 
-GET http://localhost:3000/api/subproduct/mykonos
+GET http://localhost:3000/api/open/subproduct/mykonos
 
 
 ### 
@@ -25,13 +25,11 @@ Content-Type: application/json
 
 {
     "_id": "63a9b05fd25625011399048d",
-    "description1": "Pigmenterat läppstift med en matt finish utan att bli torr. Produkten är mjuk och appliceras enkelt på läpparna, samtidigt som den är vattenresistent. Läppstiftet innehåller olja från passionsfrukt som ger näring och vårdar läpparna. Med sin revolutionerande formula lämnar produkten ett supermatt resultat utan att torka ut läpparna. Läppstiftet är veganskt.",
-    "brand": "caia",
-    "price": 195,
-    "category": "638b19b51c801728bd3a5f8d",
-    "ingredients": "CETEARYL ETHYLHEXANOATE ISONONYL ISONONANOATE POLYETHYLENE OCTYLDODECANOL KAOLIN SILICA HYDROGENATED STYRENE/METHYL STYRENE/INDENE COPOLYMER SYNTHETIC WAX DICALCIUM PHOSPHATE C30-45 ALKYL DIMETHICONE DIMETHICONE/VINYL DIMETHICONE CROSSPOLYMER CETYL DIMETHICONE DIMETHICONE PENTAERYTHRITYL TETRA-DI-t-BUTYL HYDROXYHYDROCINNAMATE MICA LAURETH-4 MAY CONTAIN/(+/-): TITANIUM DIOXIDE (CI 77891) IRON OXIDES (CI 77491) IRON OXIDES (CI 77492) RED 6 (CI 15850) RED 7 LAKE (CI 15850) RED 28 LAKE (CI 45410) BLUE 1 LAKE (CI 42090) YELLOW 5 LAKE (CI 19140) YELLOW 6 LAKE (CI 15985)",
-    "partNo": "202",
-    "weight": 70
+    "mainProduct": "63a9adf9d256250113990483",
+    "title": "MYKONOS",
+    "images": ["MYKONOS.webp", "MYKONOS-2.webp"],
+    "colors": ["63a878fb2622fa25661836ed"],
+    "availableQty": 100
 }
 
 ###

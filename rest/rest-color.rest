@@ -1,8 +1,8 @@
-GET http://localhost:3000/api/color
+GET http://localhost:3000/api/open/color
 
 ###
 
-GET http://localhost:3000/api/color/63a871bd2622fa2566183534
+GET http://localhost:3000/api/open/color/63a871bd2622fa2566183534
 
 
 ### 

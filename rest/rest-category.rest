@@ -1,8 +1,8 @@
-GET http://localhost:3000/api/category
+GET http://localhost:3000/api/open/category
 
 ###
 
-GET http://localhost:3000/api/category/ogonskuggor
+GET http://localhost:3000/api/open/category/ogonskuggor
 
 ###
 

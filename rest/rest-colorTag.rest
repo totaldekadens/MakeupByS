@@ -1,8 +1,8 @@
-GET http://localhost:3000/api/colortag
+GET http://localhost:3000/api/open/colortag
 
 ###
 
-GET http://localhost:3000/api/colortag/gray
+GET http://localhost:3000/api/open/colortag/gray
 
 ###
 

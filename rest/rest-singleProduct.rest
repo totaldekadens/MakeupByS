@@ -1,13 +1,13 @@
-GET http://localhost:3000/api/product
+GET http://localhost:3000/api/open/singleproduct
 
 ###
 
-GET http://localhost:3000/api/product/63a871bd2622fa2566183534
+GET http://localhost:3000/api/open/singleproduct/63a871bd2622fa2566183534
 
 
 ### 
 
-POST  http://localhost:3000/api/admin/product
+POST  http://localhost:3000/api/admin/singleproduct
 Content-Type: application/json
 
 {
@@ -26,7 +26,7 @@ Content-Type: application/json
 
 ###
 
-PUT  http://localhost:3000/api/admin/product/#FFFFF
+PUT  http://localhost:3000/api/admin/singleproduct/#FFFFF
 Content-Type: application/json
 
 {
@@ -46,6 +46,6 @@ Content-Type: application/json
 
 ###
 
-DELETE  http://localhost:3000/api/admin/product/6395c57998499264aa6727c0
+DELETE  http://localhost:3000/api/admin/singleproduct/6395c57998499264aa6727c0
 
 
