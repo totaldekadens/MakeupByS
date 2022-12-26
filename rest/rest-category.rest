@@ -6,17 +6,17 @@ GET http://localhost:3000/api/category/ogonskuggor
 
 ###
 
-POST  http://localhost:3000/api/category
+POST  http://localhost:3000/api/admin/category
 Content-Type: application/json
 
 {
-"title": "Läppstift", 
+"title": "hejsvej", 
 "description": "Beskrivning av kategorin läpptstift"
 }
 
 ###
 
-PUT  http://localhost:3000/api/category/lappar
+PUT  http://localhost:3000/api/admin/category/lappar
 Content-Type: application/json
 
 {
@@ -27,7 +27,7 @@ Content-Type: application/json
 
 ###
 
-DELETE  http://localhost:3000/api/category/ogonskuggor
+DELETE  http://localhost:3000/api/admin/category/hejsvej
 Content-Type: application/json
 
 

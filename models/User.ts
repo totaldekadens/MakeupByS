@@ -18,10 +18,7 @@ UserSchema.methods.validPassword = function (password: string) {
 };
 // Method to set salt and hash the password for a user
 UserSchema.methods.setPassword = function (password: string) {
-  // Creating a unique salt for a particular user
   this.salt = crypto.randomBytes(16).toString("hex");
-
-  // Hashing user's salt and password with 1000 iterations,
 
   this.hash = crypto
     .pbkdf2Sync(password, this.salt, 1000, 64, `sha512`)
@@ -34,9 +31,6 @@ export type UserDocument = {
   admin: boolean;
   hash: string;
   salt: string;
-  validPassword: (password: string) => boolean;
-  setPassword: (password: string) => boolean;
-  _id: string;
 };
 
 export default module.exports =

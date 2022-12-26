@@ -12,14 +12,6 @@ export default async function handler(
   await dbConnect();
 
   switch (method) {
-    case "GET":
-      try {
-        const users = await User.find({});
-        res.json({ success: true, data: users });
-      } catch (error) {
-        res.json({ success: false, data: "Hittade ingen användare" });
-      }
-      break;
     case "POST":
       try {
         const emailTaken = await User.findOne({
@@ -28,7 +20,7 @@ export default async function handler(
         if (emailTaken) {
           return res
             .status(403)
-            .send({ success: false, data: "Mailadressen existerar redan" });
+            .send({ success: false, data: "Email address already exist" });
         }
 
         let newUser = new User();
@@ -38,11 +30,11 @@ export default async function handler(
         const user = await User.create(newUser);
         res.status(201).json({ success: true, data: user._id });
       } catch (error) {
-        res.json({ message: "catch error" });
+        res.json({ success: false, data: error });
       }
       break;
     default:
-      res.json({ message: "break error" });
+      res.json({ success: false, data: "break error" });
       break;
   }
 }

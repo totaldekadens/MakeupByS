@@ -6,17 +6,17 @@ GET http://localhost:3000/api/colortag/gray
 
 ###
 
-POST  http://localhost:3000/api/colortag
+POST  http://localhost:3000/api/admin/colortag
 Content-Type: application/json
 
 {
-"color": "Gray",
-"hexcode": "#D8d8d8"
+    "color": "Brun",
+    "hexcolor": "#643F11"
 }
 
 ###
 
-PUT  http://localhost:3000/api/colortag/gray
+PUT  http://localhost:3000/api/admin/colortag/gray
 Content-Type: application/json
 
 {
@@ -27,6 +27,6 @@ Content-Type: application/json
 
 ###
 
-DELETE  http://localhost:3000/api/colortag/hittepa
+DELETE  http://localhost:3000/api/admin/colortag/gray
 Content-Type: application/json
 

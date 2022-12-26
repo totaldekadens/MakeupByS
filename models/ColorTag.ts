@@ -7,7 +7,7 @@ const ColorTagSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  hexcode: {
+  hexcolor: {
     type: String,
     required: true,
     unique: true,
@@ -28,9 +28,7 @@ ColorTagSchema.methods.setSlug = function (color: string) {
 export type ColorTagDocument = {
   color: string;
   slug: string;
-  hexcode: string;
-  setSlug: (title: string) => void;
-  _id: string;
+  hexcolor: string;
 };
 
 export default mongoose.models.ColorTag ||

@@ -20,7 +20,8 @@
     "**/*.ts",
     "**/*.tsx",
     "pages/api/auth/[...nextauth].ts",
-    "pages/api/admin/index.js"
+    "pages/api/admin/index.js",
+    "pages/api/color/index.js"
   ],
   "exclude": ["node_modules"]
 }
