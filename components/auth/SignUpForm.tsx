@@ -15,16 +15,36 @@ interface FormValues {
   email: string;
   password: string;
   confirmPassword: string;
+  name: string;
+  address: string;
+  postalcode: string;
+  city: string;
+  country: string;
+  phone: string;
 }
 
 const schema = Yup.object<ShapeOf<FormValues>>({
   email: Yup.string()
     .required("Vänligen ange mailadress")
     .email("Mailadressen är ogiltig"),
-  password: Yup.string().required("Vänligen ange ett lösenord"),
+  password: Yup.string()
+    .required("Vänligen ange ett lösenord")
+    .min(5, "Lösenordet måste innehålla minst 5 karaktärer"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Lösenorden stämmer inte överrens")
     .required("Vänligen ange lösenordet igen"),
+  name: Yup.string().required("Vänligen fyll i fullständigt namn"),
+  address: Yup.string().required("Vänligen fyll i address"),
+  city: Yup.string().required("Vänligen fyll i stad"),
+  country: Yup.string().required("Vänligen fyll i land"),
+  postalcode: Yup.string()
+    .required()
+    .matches(/^[0-9]+$/, "Postkoden får bara innehålla siffror")
+    .min(5, "Postkoden måste innehålla 5 siffror")
+    .max(5, "Postkoden måste innehålla 5 siffror"),
+  phone: Yup.string()
+    .required("Vänligen fyll i fullständigt nummer med 10 siffror")
+    .matches(/^[0-9]+$/, "Telefonnumret får bara innehålla siffror"),
 });
 
 const SignUpForm = () => {
@@ -36,6 +56,12 @@ const SignUpForm = () => {
       email: "",
       password: "",
       confirmPassword: "",
+      name: "",
+      address: "",
+      postalcode: "",
+      city: "",
+      country: "",
+      phone: "",
     },
     validate: yupResolver(schema),
     validateInputOnChange: true,
@@ -75,7 +101,13 @@ const SignUpForm = () => {
 
   return (
     <form onSubmit={form.onSubmit(handleSubmit)}>
-      <Flex>
+      <Flex
+        sx={(theme) => ({
+          [theme.fn.smallerThan(500)]: {
+            flexDirection: "column",
+          },
+        })}
+      >
         <Box mr={10}>
           <TextInput
             styles={{ label: { color: "white" } }}
@@ -111,6 +143,15 @@ const SignUpForm = () => {
             name="confirmPassword"
             {...form.getInputProps("confirmPassword")}
           />
+          <TextInput
+            styles={{ label: { color: "white" } }}
+            mt="xs"
+            variant="filled"
+            label="Telefon"
+            placeholder="0767123456"
+            name="phone"
+            {...form.getInputProps("phone")}
+          />
         </Box>
         <Box>
           <TextInput
@@ -121,6 +162,15 @@ const SignUpForm = () => {
             placeholder="Vasagatan 3"
             name="address"
             {...form.getInputProps("address")}
+          />
+          <TextInput
+            styles={{ label: { color: "white" } }}
+            mt="xs"
+            variant="filled"
+            label="CO"
+            placeholder="CO"
+            name="co"
+            {...form.getInputProps("co")}
           />
           <TextInput
             styles={{ label: { color: "white" } }}

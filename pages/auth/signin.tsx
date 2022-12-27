@@ -1,12 +1,4 @@
-import {
-  AppShell,
-  Box,
-  Button,
-  Center,
-  Container,
-  Flex,
-  Title,
-} from "@mantine/core";
+import { AppShell, Button, Center, Container, Title } from "@mantine/core";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -15,7 +7,6 @@ import SignInForm from "../../components/auth/SignInForm";
 import SignUpForm from "../../components/auth/SignUpForm";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import LoginButton from "../../components/LoginButton";
 
 const SignIn: NextPage = () => {
   const session = useSession();
@@ -40,89 +31,97 @@ const SignIn: NextPage = () => {
 
   return (
     <>
-      <AppShell fixed={false} header={<Header />} footer={<Footer />}>
-        <main style={{ marginTop: 60, minHeight: "100vh" }}>
-          <Center
-            mt={100}
+      <AppShell
+        padding={0}
+        fixed={false}
+        header={<Header />}
+        footer={<Footer />}
+      >
+        <Center
+          mt={0}
+          sx={(theme) => ({
+            minHeight: "100vh",
+            backgroundColor: theme.white,
+          })}
+        >
+          <Container
+            p={32}
             sx={(theme) => ({
-              backgroundColor: theme.white,
+              backgroundColor: theme.black,
+              borderRadius: "8px",
+              [theme.fn.smallerThan(500)]: {
+                width: "90%",
+              },
               [theme.fn.smallerThan(400)]: {
-                //backgroundColor: theme.colors.gray[7],
+                width: "95%",
               },
             })}
           >
-            <Container
-              p={32}
-              sx={(theme) => ({
-                backgroundColor: theme.black,
-                borderRadius: "8px",
-              })}
-            >
-              {showSignUp ? (
-                <Container
+            {showSignUp ? (
+              <Container
+                sx={(theme) => ({
+                  [theme.fn.smallerThan(500)]: {
+                    width: "100%",
+                  },
+                })}
+              >
+                <Title color="white" order={3} transform="uppercase">
+                  Skapa konto
+                </Title>
+                <SignUpForm />
+                <Button
+                  mt="lg"
+                  fullWidth
+                  onClick={() => {
+                    setShowSignUp(false);
+                    setToggleButtonText("Registrera/Skapa konto");
+                  }}
                   sx={(theme) => ({
-                    //width: "22rem",
-                    [theme.fn.smallerThan(400)]: {
-                      width: 245,
+                    backgroundColor: theme.black,
+                    "&:hover": {
+                      backgroundColor: theme.colors.grape[2],
                     },
                   })}
                 >
-                  <Title color="white" order={3} transform="uppercase">
-                    Skapa konto
-                  </Title>
-                  <SignUpForm />
-                  <Button
-                    mt="lg"
-                    fullWidth
-                    onClick={() => {
-                      setShowSignUp(false);
-                      setToggleButtonText("Registrera/Skapa konto");
-                    }}
-                    sx={(theme) => ({
-                      backgroundColor: theme.colors.blue[4],
-                      "&:hover": {
-                        backgroundColor: theme.colors.grape[2],
-                      },
-                    })}
-                  >
-                    {toggleButtonText}
-                  </Button>
-                </Container>
-              ) : (
-                <Container
+                  {toggleButtonText}
+                </Button>
+              </Container>
+            ) : (
+              <Container
+                sx={(theme) => ({
+                  minWidth: 352,
+                  [theme.fn.smallerThan(500)]: {
+                    minWidth: "90%",
+                  },
+                  [theme.fn.smallerThan(400)]: {
+                    minWidth: "95%",
+                  },
+                })}
+              >
+                <Title color="white" order={3} transform="uppercase">
+                  Logga in
+                </Title>
+                <SignInForm />
+                <Button
+                  mt="lg"
+                  fullWidth
+                  onClick={() => {
+                    setShowSignUp(true);
+                    setToggleButtonText("Gå tillbaka till inloggning");
+                  }}
                   sx={(theme) => ({
-                    minWidth: "22rem",
-                    [theme.fn.smallerThan(400)]: {
-                      minWidth: 245,
+                    backgroundColor: theme.black,
+                    "&:hover": {
+                      backgroundColor: theme.colors.red[4],
                     },
                   })}
                 >
-                  <Title color="white" order={3} transform="uppercase">
-                    Logga in
-                  </Title>
-                  <SignInForm />
-                  <Button
-                    data-cy="toggle-signup"
-                    mt="lg"
-                    fullWidth
-                    onClick={() => {
-                      setShowSignUp(true);
-                      setToggleButtonText("Gå tillbaka till inloggning");
-                    }}
-                    sx={(theme) => ({
-                      backgroundColor: theme.colors.gray[5],
-                      "&:hover": {
-                        backgroundColor: theme.colors.red[4],
-                      },
-                    })}
-                  >
-                    {toggleButtonText}
-                  </Button>
-                </Container>
-              )}
-            </Container>
-          </Center>
-        </main>
+                  {toggleButtonText}
+                </Button>
+              </Container>
+            )}
+          </Container>
+        </Center>
       </AppShell>
     </>
   );
