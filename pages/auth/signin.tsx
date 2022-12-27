@@ -41,28 +41,27 @@ const SignIn: NextPage = () => {
   return (
     <>
       <AppShell fixed={false} header={<Header />} footer={<Footer />}>
-        {/* <Box> */}
         <main style={{ marginTop: 60, minHeight: "100vh" }}>
           <Center
             mt={100}
             sx={(theme) => ({
               backgroundColor: theme.white,
               [theme.fn.smallerThan(400)]: {
-                backgroundColor: theme.colors.gray[7],
+                //backgroundColor: theme.colors.gray[7],
               },
             })}
           >
             <Container
+              p={32}
               sx={(theme) => ({
                 backgroundColor: theme.black,
-                borderRadius: "0.5em",
-                padding: "2em",
+                borderRadius: "8px",
               })}
             >
               {showSignUp ? (
                 <Container
                   sx={(theme) => ({
-                    width: "22rem",
+                    //width: "22rem",
                     [theme.fn.smallerThan(400)]: {
                       width: 245,
                     },
@@ -124,7 +123,6 @@ const SignIn: NextPage = () => {
             </Container>
           </Center>
         </main>
-        {/* </Box> */}
       </AppShell>
     </>
   );
