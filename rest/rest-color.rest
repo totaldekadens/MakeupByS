@@ -11,9 +11,9 @@ POST  http://localhost:3000/api/admin/color
 Content-Type: application/json
 
 {
-    "hexcolor": "#af9f90",
-    "colorTag": "63a86db32622fa2566183512",
-    "seasons": ["63a8715e2622fa256618352d"]
+    "hexcolor": "#FFFFFF",
+    "colorTag": "63a86da62622fa256618350c",
+    "seasons": ["63a8715e2622fa256618352d", "63a871502622fa2566183525", "63a871572622fa256618352a", "63a871642622fa2566183530"]
 }
 
 ###

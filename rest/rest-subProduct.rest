@@ -11,10 +11,10 @@ POST  http://localhost:3000/api/admin/subproduct
 Content-Type: application/json
 
 {
-    "mainProduct": "63a9adf9d256250113990483",
-    "title": "MYKONOS",
-    "images": ["MYKONOS.webp", "MYKONOS-2.webp"],
-    "colors": ["63a878fb2622fa25661836ed"],
+    "mainProduct": "63a9b167acc13b27eb7a973b",
+    "title": "Owe you nothing",
+    "images": ["OWEYOUNOTHING.webp", "OWEYOUNOTHING-2.webp"],
+    "colors": ["63a877702622fa2566183687"],
     "availableQty": 100
 }
 

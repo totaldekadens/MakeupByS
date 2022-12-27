@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import MainProduct, {
   MainProductDocument,
 } from "../../../../models/MainProduct";
+import useSlugify from "../../../../utils/useSlugify";
 
 export default async function handler(
   req: NextApiRequest,
@@ -41,10 +42,12 @@ export default async function handler(
           });
         }
 
+        const formattedTitle = useSlugify(req.body.title);
+
         const newSubProduct: SubProductDocument = new SubProduct();
         newSubProduct._id = req.body._id;
         newSubProduct.mainProduct = req.body.mainProduct;
-        newSubProduct.partNo = mainProduct?.partNo + "-" + req.body.title;
+        newSubProduct.partNo = mainProduct?.partNo + "-" + formattedTitle;
         newSubProduct.title = req.body.title;
         newSubProduct.setSlug(req.body.title);
         newSubProduct.images = req.body.images;
