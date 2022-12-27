@@ -1,9 +1,7 @@
 import caseInsensitive from "../../../../utils/caseCheck";
 import dbConnect from "../../../../utils/dbConnect";
-import User from "../../../../models/User";
+import User, { UserDocument } from "../../../../models/User";
 import { NextApiRequest, NextApiResponse } from "next";
-import { loadStripe } from "@stripe/stripe-js";
-import initStripe from "stripe";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -22,6 +20,9 @@ export default async function handler(
   switch (method) {
     case "POST":
       try {
+        if (!req.body) {
+          return res.status(400).json({ success: false, data: "Bad request" });
+        }
         const emailTaken = await User.findOne({
           email: caseInsensitive(req.body.email),
         });
@@ -31,26 +32,20 @@ export default async function handler(
             .send({ success: false, data: "Email address already exist" });
         }
 
-        let newUser = new User();
+        const customer = await stripe.customers.create(
+          req.body.createCustomerInStripe
+        );
+
+        let newUser: UserDocument = new User();
+        newUser.stripeId = customer.id;
+        newUser.name = req.body.createCustomerInStripe.name;
         newUser.email = req.body.email;
         newUser.setPassword(req.body.password);
-
-        const customer = await stripe.customers.create({
-          email: req.body.email,
-          name: "Angelica Moberg Skoglund",
-          address: {
-            line1: "Öresten Ryd 4",
-            line2: "",
-            postal_code: "51191",
-            city: "Skene",
-            country: "Sverige",
-          },
-          phone: "0767106199",
-        });
-
-        console.log(customer);
+        newUser.address = req.body.createCustomerInStripe.address;
+        newUser.phone = req.body.createCustomerInStripe.phone;
 
         const user = await User.create(newUser);
+
         res.status(201).json({ success: true, data: user._id });
       } catch (error) {
         res.json({ success: false, data: error });

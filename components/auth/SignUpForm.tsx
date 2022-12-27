@@ -5,10 +5,12 @@ import {
   Group,
   PasswordInput,
   TextInput,
+  Text,
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import * as Yup from "yup";
 
 interface FormValues {
@@ -21,6 +23,7 @@ interface FormValues {
   city: string;
   country: string;
   phone: string;
+  co: string;
 }
 
 const schema = Yup.object<ShapeOf<FormValues>>({
@@ -45,11 +48,16 @@ const schema = Yup.object<ShapeOf<FormValues>>({
   phone: Yup.string()
     .required("Vänligen fyll i fullständigt nummer med 10 siffror")
     .matches(/^[0-9]+$/, "Telefonnumret får bara innehålla siffror"),
+  co: Yup.string(),
 });
 
 const SignUpForm = () => {
   const router = useRouter();
   const callbackUrl = router.query.callbackUrl;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -62,13 +70,28 @@ const SignUpForm = () => {
       city: "",
       country: "",
       phone: "",
+      co: "",
     },
     validate: yupResolver(schema),
     validateInputOnChange: true,
   });
 
   const handleSubmit = async (values: FormValues) => {
+    const createCustomerInStripe = {
+      email: values.email,
+      name: values.name,
+      address: {
+        line1: values.address,
+        line2: values.co,
+        postal_code: values.postalcode,
+        city: values.city,
+        country: values.country,
+      },
+      phone: values.phone,
+    };
+
     const body = {
+      createCustomerInStripe,
       email: values.email,
       password: values.password,
     };
@@ -84,7 +107,11 @@ const SignUpForm = () => {
     const response = await fetch("/api/open/users", request);
     let result = await response.json();
 
-    // Ändra till check av koder instället
+    if (response.status == 403) {
+      form.setFieldError("email", "Emailadressen används redan");
+      return;
+    }
+
     if (result.success) {
       return await signIn("credentials", {
         inputValue: values.email,
@@ -92,10 +119,6 @@ const SignUpForm = () => {
         redirect: false,
         callbackUrl: callbackUrl ? String(callbackUrl) : "/",
       });
-    }
-    // Ändra till statuskod istället
-    if (result.success == "Email taken") {
-      form.setFieldError("email", "Emailadressen används redan");
     }
   };
 
@@ -110,44 +133,79 @@ const SignUpForm = () => {
       >
         <Box mr={10}>
           <TextInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
             variant="filled"
-            label="Namn"
+            label="Namn*"
             placeholder="Anna Svensson"
             name="name"
             {...form.getInputProps("name")}
           />
           <TextInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
             variant="filled"
-            label="Email"
+            label="Email*"
             placeholder="email@email.com"
             name="email"
             {...form.getInputProps("email")}
           />
           <PasswordInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
-            label="Lösenord"
+            label="Lösenord*"
             placeholder="********"
             name="password"
             {...form.getInputProps("password")}
           />
           <PasswordInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
             placeholder="********"
-            label="Bekräfta lösenordet"
+            label="Bekräfta lösenordet*"
             name="confirmPassword"
             {...form.getInputProps("confirmPassword")}
           />
           <TextInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
             variant="filled"
-            label="Telefon"
+            label="Telefon*"
             placeholder="0767123456"
             name="phone"
             {...form.getInputProps("phone")}
@@ -155,16 +213,30 @@ const SignUpForm = () => {
         </Box>
         <Box>
           <TextInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
             variant="filled"
-            label="Adress"
+            label="Adress*"
             placeholder="Vasagatan 3"
             name="address"
             {...form.getInputProps("address")}
           />
           <TextInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
             variant="filled"
             label="CO"
@@ -173,34 +245,56 @@ const SignUpForm = () => {
             {...form.getInputProps("co")}
           />
           <TextInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
             variant="filled"
-            label="Postkod"
+            label="Postkod*"
             placeholder="12345"
             name="postalcode"
             {...form.getInputProps("postalcode")}
           />
           <TextInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
             variant="filled"
-            label="Stad"
+            label="Stad*"
             placeholder="Göteborg"
             name="city"
             {...form.getInputProps("city")}
           />
           <TextInput
-            styles={{ label: { color: "white" } }}
+            styles={(theme) => ({
+              label: {
+                color: "white",
+                [theme.fn.smallerThan(500)]: {
+                  color: theme.black,
+                },
+              },
+            })}
             mt="xs"
             variant="filled"
-            label="Land"
+            label="Land*"
             placeholder="Sverige"
             name="country"
             {...form.getInputProps("country")}
           />
         </Box>
       </Flex>
+
       <Button
         mt="lg"
         fullWidth
@@ -214,6 +308,28 @@ const SignUpForm = () => {
       >
         Bli medlem
       </Button>
+      <Flex justify="center" sx={{ width: "100%" }}>
+        <Text
+          w={340}
+          size={9}
+          color="white"
+          sx={(theme) => ({
+            flexWrap: "wrap",
+            textAlign: "center",
+            [theme.fn.smallerThan(500)]: {
+              width: "90%",
+              color: theme.black,
+            },
+            [theme.fn.smallerThan(400)]: {
+              width: "95%",
+            },
+          })}
+        >
+          Genom att registrera ditt konto godkänner du MakeUpByS´s Villkor(länk)
+          för användning och köp. Samt bekräftar att du läst vår
+          Integritetspolicy(Länk).
+        </Text>
+      </Flex>
     </form>
   );
 };

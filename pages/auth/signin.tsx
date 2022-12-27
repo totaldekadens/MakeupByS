@@ -1,4 +1,12 @@
-import { AppShell, Button, Center, Container, Title } from "@mantine/core";
+import {
+  AppShell,
+  Box,
+  Button,
+  Center,
+  Container,
+  Flex,
+  Title,
+} from "@mantine/core";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
@@ -37,20 +45,31 @@ const SignIn: NextPage = () => {
         header={<Header />}
         footer={<Footer />}
       >
-        <Center
-          mt={0}
+        <Flex
+          justify="center"
+          align="center"
           sx={(theme) => ({
             minHeight: "100vh",
             backgroundColor: theme.white,
+            [theme.fn.smallerThan(600)]: {
+              marginTop: 50,
+            },
+            [theme.fn.smallerThan(500)]: {
+              alignItems: "flex-start",
+              marginTop: 100,
+              marginBottom: 100,
+            },
           })}
         >
-          <Container
+          <Box
             p={32}
             sx={(theme) => ({
               backgroundColor: theme.black,
               borderRadius: "8px",
+              width: "430px",
               [theme.fn.smallerThan(500)]: {
                 width: "90%",
+                backgroundColor: theme.white,
               },
               [theme.fn.smallerThan(400)]: {
                 width: "95%",
@@ -65,7 +84,16 @@ const SignIn: NextPage = () => {
                   },
                 })}
               >
-                <Title color="white" order={3} transform="uppercase">
+                <Title
+                  color="white"
+                  order={3}
+                  transform="uppercase"
+                  sx={(theme) => ({
+                    [theme.fn.smallerThan(500)]: {
+                      color: theme.black,
+                    },
+                  })}
+                >
                   Skapa konto
                 </Title>
                 <SignUpForm />
@@ -80,6 +108,10 @@ const SignIn: NextPage = () => {
                     backgroundColor: theme.black,
                     "&:hover": {
                       backgroundColor: theme.colors.grape[2],
+                    },
+                    [theme.fn.smallerThan(500)]: {
+                      color: theme.black,
+                      backgroundColor: theme.white,
                     },
                   })}
                 >
@@ -98,7 +130,16 @@ const SignIn: NextPage = () => {
                   },
                 })}
               >
-                <Title color="white" order={3} transform="uppercase">
+                <Title
+                  color="white"
+                  order={3}
+                  transform="uppercase"
+                  sx={(theme) => ({
+                    [theme.fn.smallerThan(500)]: {
+                      color: theme.black,
+                    },
+                  })}
+                >
                   Logga in
                 </Title>
                 <SignInForm />
@@ -114,14 +155,18 @@ const SignIn: NextPage = () => {
                     "&:hover": {
                       backgroundColor: theme.colors.red[4],
                     },
+                    [theme.fn.smallerThan(500)]: {
+                      color: theme.black,
+                      backgroundColor: theme.white,
+                    },
                   })}
                 >
                   {toggleButtonText}
                 </Button>
               </Container>
             )}
-          </Container>
-        </Center>
+          </Box>
+        </Flex>
       </AppShell>
     </>
   );
