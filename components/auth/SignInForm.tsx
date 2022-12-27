@@ -2,6 +2,7 @@ import { Button, PasswordInput, TextInput } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import * as Yup from "yup";
 
 interface FormValues {
@@ -16,6 +17,10 @@ const schema = Yup.object<ShapeOf<FormValues>>({
 });
 
 const SignInForm = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const router = useRouter();
   const callbackUrl = router.query.callbackUrl;
   const form = useForm<FormValues>({
@@ -34,7 +39,7 @@ const SignInForm = () => {
       redirect: false,
       callbackUrl: callbackUrl ? String(callbackUrl) : "/",
     });
-    console.log(res);
+    //console.log(res);
     if (res?.error) {
       const errorMessage = "Mailadressen eller lösenordet stämmer inte";
       form.setFieldError("email", errorMessage);
@@ -51,13 +56,27 @@ const SignInForm = () => {
           mt="xs"
           variant="filled"
           label="email"
-          styles={{ label: { color: "white" } }}
+          styles={(theme) => ({
+            label: {
+              color: "white",
+              [theme.fn.smallerThan(500)]: {
+                color: theme.black,
+              },
+            },
+          })}
           placeholder="email@email.com"
           name="email"
           {...form.getInputProps("email")}
         />
         <PasswordInput
-          styles={{ label: { color: "white" } }}
+          styles={(theme) => ({
+            label: {
+              color: "white",
+              [theme.fn.smallerThan(500)]: {
+                color: theme.black,
+              },
+            },
+          })}
           mt="xs"
           placeholder="********"
           label="Lösenord"

@@ -2,11 +2,22 @@ import crypto from "crypto";
 import mongoose, { Types } from "mongoose";
 
 const UserSchema = new mongoose.Schema<UserDocument>({
-  email: String,
-  password: String,
+  email: { type: String, required: true },
+  name: { type: String, required: true },
+  stripeId: { type: String, required: true },
+  address: {
+    line1: { type: String, required: true },
+    line2: { type: String },
+    postal_code: { type: String, required: true },
+    city: { type: String, required: true },
+    country: { type: String, required: true },
+  },
+  phone: { type: String },
+  password: { type: String },
   hash: String,
   salt: String,
   admin: { type: Boolean, default: false },
+  terms: { type: Boolean, default: true },
 });
 
 // Method to check the entered password is correct or not
@@ -25,13 +36,28 @@ UserSchema.methods.setPassword = function (password: string) {
     .toString(`hex`);
 };
 
+type Address = {
+  line1: string;
+  line2?: string;
+  postal_code: string;
+  city: string;
+  country: string;
+};
+
 export type UserDocument = {
+  name: string;
   email: string;
+  address: Address;
   password: string;
-  admin: boolean;
-  hash: string;
-  salt: string;
+  phone?: string;
+  hash?: string;
+  salt?: string;
   _id?: Types.ObjectId;
+  stripeId?: string;
+  terms?: boolean;
+  admin?: boolean;
+  setPassword: (password: string) => void;
+  validPassword: (password: string) => boolean;
 };
 
 export default module.exports =

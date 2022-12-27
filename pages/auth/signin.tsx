@@ -15,7 +15,6 @@ import SignInForm from "../../components/auth/SignInForm";
 import SignUpForm from "../../components/auth/SignUpForm";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import LoginButton from "../../components/LoginButton";
 
 const SignIn: NextPage = () => {
   const session = useSession();
@@ -40,91 +39,134 @@ const SignIn: NextPage = () => {
 
   return (
     <>
-      <AppShell fixed={false} header={<Header />} footer={<Footer />}>
-        {/* <Box> */}
-        <main style={{ marginTop: 60, minHeight: "100vh" }}>
-          <Center
-            mt={100}
+      <AppShell
+        padding={0}
+        fixed={false}
+        header={<Header />}
+        footer={<Footer />}
+      >
+        <Flex
+          justify="center"
+          align="center"
+          sx={(theme) => ({
+            minHeight: "100vh",
+            backgroundColor: theme.white,
+            [theme.fn.smallerThan(600)]: {
+              marginTop: 50,
+            },
+            [theme.fn.smallerThan(500)]: {
+              alignItems: "flex-start",
+              marginTop: 100,
+              marginBottom: 100,
+            },
+          })}
+        >
+          <Box
+            p={32}
             sx={(theme) => ({
-              backgroundColor: theme.white,
+              backgroundColor: theme.black,
+              borderRadius: "8px",
+              width: "430px",
+              [theme.fn.smallerThan(500)]: {
+                width: "90%",
+                backgroundColor: theme.white,
+              },
               [theme.fn.smallerThan(400)]: {
-                backgroundColor: theme.colors.gray[7],
+                width: "95%",
               },
             })}
           >
-            <Container
-              sx={(theme) => ({
-                backgroundColor: theme.black,
-                borderRadius: "0.5em",
-                padding: "2em",
-              })}
-            >
-              {showSignUp ? (
-                <Container
+            {showSignUp ? (
+              <Container
+                sx={(theme) => ({
+                  [theme.fn.smallerThan(500)]: {
+                    width: "100%",
+                  },
+                })}
+              >
+                <Title
+                  color="white"
+                  order={3}
+                  transform="uppercase"
                   sx={(theme) => ({
-                    width: "22rem",
-                    [theme.fn.smallerThan(400)]: {
-                      width: 245,
+                    [theme.fn.smallerThan(500)]: {
+                      color: theme.black,
                     },
                   })}
                 >
-                  <Title color="white" order={3} transform="uppercase">
-                    Skapa konto
-                  </Title>
-                  <SignUpForm />
-                  <Button
-                    mt="lg"
-                    fullWidth
-                    onClick={() => {
-                      setShowSignUp(false);
-                      setToggleButtonText("Registrera/Skapa konto");
-                    }}
-                    sx={(theme) => ({
-                      backgroundColor: theme.colors.blue[4],
-                      "&:hover": {
-                        backgroundColor: theme.colors.grape[2],
-                      },
-                    })}
-                  >
-                    {toggleButtonText}
-                  </Button>
-                </Container>
-              ) : (
-                <Container
+                  Skapa konto
+                </Title>
+                <SignUpForm />
+                <Button
+                  mt="lg"
+                  fullWidth
+                  onClick={() => {
+                    setShowSignUp(false);
+                    setToggleButtonText("Registrera/Skapa konto");
+                  }}
                   sx={(theme) => ({
-                    minWidth: "22rem",
-                    [theme.fn.smallerThan(400)]: {
-                      minWidth: 245,
+                    backgroundColor: theme.black,
+                    "&:hover": {
+                      backgroundColor: theme.colors.grape[2],
+                    },
+                    [theme.fn.smallerThan(500)]: {
+                      color: theme.black,
+                      backgroundColor: theme.white,
                     },
                   })}
                 >
-                  <Title color="white" order={3} transform="uppercase">
-                    Logga in
-                  </Title>
-                  <SignInForm />
-                  <Button
-                    data-cy="toggle-signup"
-                    mt="lg"
-                    fullWidth
-                    onClick={() => {
-                      setShowSignUp(true);
-                      setToggleButtonText("Gå tillbaka till inloggning");
-                    }}
-                    sx={(theme) => ({
-                      backgroundColor: theme.colors.gray[5],
-                      "&:hover": {
-                        backgroundColor: theme.colors.red[4],
-                      },
-                    })}
-                  >
-                    {toggleButtonText}
-                  </Button>
-                </Container>
-              )}
-            </Container>
-          </Center>
-        </main>
-        {/* </Box> */}
+                  {toggleButtonText}
+                </Button>
+              </Container>
+            ) : (
+              <Container
+                sx={(theme) => ({
+                  minWidth: 352,
+                  [theme.fn.smallerThan(500)]: {
+                    minWidth: "90%",
+                  },
+                  [theme.fn.smallerThan(400)]: {
+                    minWidth: "95%",
+                  },
+                })}
+              >
+                <Title
+                  color="white"
+                  order={3}
+                  transform="uppercase"
+                  sx={(theme) => ({
+                    [theme.fn.smallerThan(500)]: {
+                      color: theme.black,
+                    },
+                  })}
+                >
+                  Logga in
+                </Title>
+                <SignInForm />
+                <Button
+                  mt="lg"
+                  fullWidth
+                  onClick={() => {
+                    setShowSignUp(true);
+                    setToggleButtonText("Gå tillbaka till inloggning");
+                  }}
+                  sx={(theme) => ({
+                    backgroundColor: theme.black,
+                    "&:hover": {
+                      backgroundColor: theme.colors.red[4],
+                    },
+                    [theme.fn.smallerThan(500)]: {
+                      color: theme.black,
+                      backgroundColor: theme.white,
+                    },
+                  })}
+                >
+                  {toggleButtonText}
+                </Button>
+              </Container>
+            )}
+          </Box>
+        </Flex>
       </AppShell>
     </>
   );
