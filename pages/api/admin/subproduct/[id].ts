@@ -34,6 +34,11 @@ export default async function handler(
           });
         }
 
+        const todayDate = new Date()
+          .toISOString()
+          .slice(0, 16)
+          .replace("T", " ");
+        console.log(req.body);
         const updateSubProduct: SubProductDocument = new SubProduct();
         updateSubProduct._id = req.body._id;
         updateSubProduct.mainProduct = req.body.mainProduct;
@@ -44,9 +49,10 @@ export default async function handler(
         updateSubProduct.colors = req.body.colors;
         updateSubProduct.availableQty = req.body.availableQty;
         updateSubProduct.discount = req.body.discount;
+        updateSubProduct.lastUpdated = todayDate;
 
         const subProduct = await SubProduct.findOneAndUpdate(
-          { id },
+          { _id: id },
           updateSubProduct,
           {
             new: true,
