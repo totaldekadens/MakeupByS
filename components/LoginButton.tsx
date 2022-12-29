@@ -1,5 +1,10 @@
 import { Button, Flex, Text } from "@mantine/core";
 import { useSession, signIn, signOut } from "next-auth/react";
+import {
+    IconUser,
+    IconShoppingBag
+} from "@tabler/icons"
+import Link from "next/link";
 const LoginButton = () => {
   const { data: session } = useSession();
   if (session) {
@@ -16,10 +21,12 @@ const LoginButton = () => {
   }
   return (
     <Flex align="center">
-      <Text color="black">Inte inloggad</Text>
-      <Button mx={10} color="black" onClick={() => signIn()}>
-        Logga in
-      </Button>
+        <Link href='/'>
+      <IconUser size={36} color="white" onClick={() => signIn()} />
+        </Link>
+        <Link href='/'>
+        <IconShoppingBag size={36} color='white'/>
+        </Link>
     </Flex>
   );
 };
