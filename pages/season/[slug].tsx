@@ -4,9 +4,6 @@ import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import Category from "../../models/Category";
-import Color from "../../models/Color";
-import MainProduct from "../../models/MainProduct";
 import SubProduct, { SubProductDocument } from "../../models/SubProduct";
 import dbConnect from "../../utils/dbConnect";
 
@@ -27,7 +24,6 @@ const Season: NextPage<Props> = ({ products }) => {
           <Title order={1}>{slug}</Title>
         </Box>
       </AppShell>
-      <Header />
     </>
   );
 };
