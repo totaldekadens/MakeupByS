@@ -3,8 +3,6 @@ import Color, { ColorDocument } from "../../../../models/Color";
 import { NextApiRequest, NextApiResponse } from "next";
 import useValidateHexcode from "../../../../utils/useValidateHexcode";
 
-// Funkar ej. Pågående arbete :P
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
