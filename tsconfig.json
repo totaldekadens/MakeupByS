@@ -22,7 +22,8 @@
     "pages/api/auth/[...nextauth].ts",
     "pages/api/admin/index.js",
     "pages/api/open/color/index.js",
-    "pages/api/open/mainproduct/index.js"
+    "pages/api/open/mainproduct/index.js",
+    "pages/api/customer/user/[id].js"
   ],
   "exclude": ["node_modules"]
 }

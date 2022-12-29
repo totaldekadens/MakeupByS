@@ -15,6 +15,10 @@ export default async function handler(
 
   await dbConnect();
 
+  if (!req.body) {
+    return res.status(400).json({ success: false, data: "Check body" });
+  }
+
   switch (method) {
     case "PUT":
       try {
@@ -57,17 +61,15 @@ export default async function handler(
     case "DELETE":
       try {
         const deletedSingleProduct = await SingleProduct.deleteOne({ _id: id });
-        if (!deletedSingleProduct) {
+        if (deletedSingleProduct.deletedCount < 1) {
           return res
             .status(400)
             .json({ success: false, data: "SingleProduct not deleted" });
         }
-        res
-          .status(200)
-          .json({
-            success: true,
-            data: "SingleProduct is successfully deleted",
-          });
+        res.status(200).json({
+          success: true,
+          data: "SingleProduct is successfully deleted",
+        });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
       }

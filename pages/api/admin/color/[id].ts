@@ -13,6 +13,10 @@ export default async function handler(
 
   await dbConnect();
 
+  if (!req.body) {
+    return res.status(400).json({ success: false, data: "Check body" });
+  }
+
   switch (method) {
     case "PUT":
       try {
@@ -42,7 +46,7 @@ export default async function handler(
     case "DELETE":
       try {
         const deletedColor = await Color.deleteOne({ _id: id });
-        if (!deletedColor) {
+        if (deletedColor.deletedCount < 1) {
           return res
             .status(400)
             .json({ success: false, data: "Color not deleted" });

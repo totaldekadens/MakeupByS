@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import SubProduct from "../../../../models/SubProduct";
+import SubProduct, { SubProductDocument } from "../../../../models/SubProduct";
 import { NextApiRequest, NextApiResponse } from "next";
 import MainProduct from "../../../../models/MainProduct";
 import Category from "../../../../models/Category";

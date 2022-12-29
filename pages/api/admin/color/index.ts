@@ -3,8 +3,6 @@ import Color, { ColorDocument } from "../../../../models/Color";
 import { NextApiRequest, NextApiResponse } from "next";
 import useValidateHexcode from "../../../../utils/useValidateHexcode";
 
-// Funkar ej. Pågående arbete :P
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -12,6 +10,10 @@ export default async function handler(
   const { method } = req;
 
   await dbConnect();
+
+  if (!req.body) {
+    return res.status(400).json({ success: false, data: "Check body" });
+  }
 
   switch (method) {
     case "POST":

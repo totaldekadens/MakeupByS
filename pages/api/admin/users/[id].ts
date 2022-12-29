@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import User, { UserDocument } from "../../../../models/User";
+import User from "../../../../models/User";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 
@@ -19,16 +19,9 @@ export default async function handler(
 
   await dbConnect();
 
-  if (!req.body) {
-    return res.status(400).json({ success: false, data: "Check body" });
-  }
-
   switch (method) {
     case "GET":
       try {
-        // Inlogged user needs to match the required user
-        //Todo:  Fix middleware that compare user id with the required id. If not match you should be redirected instead. permission denied.
-
         const user = await User.findOne({ _id: id });
         if (!user) {
           return res
@@ -40,44 +33,42 @@ export default async function handler(
         res.status(400).json({ success: false, data: error });
       }
       break;
-
-    case "PUT":
+    case "DELETE":
       try {
-        // Check for a better solution
-        const updateUser: UserDocument = new User();
-        updateUser._id = req.body._id;
-        updateUser.name = req.body.updateCustomerInStripe.name;
-        updateUser.address = req.body.updateCustomerInStripe.address;
-        updateUser.phone = req.body.updateCustomerInStripe.phone;
-        updateUser.password = req.body.password;
-
-        const user = await User.findOneAndUpdate({ id }, updateUser, {
-          new: true,
-          runValidators: true,
-        });
-
+        const user = await User.findOne({ _id: id });
         if (!user) {
           return res
             .status(400)
             .json({ success: false, data: "User not found" });
         }
 
-        const customer = await stripe.customers.update(
-          req.body.stripeId,
-          req.body.updateCustomerInStripe
-        );
+        const deletedUserStripe = await stripe.customers.del(user.stripeId);
 
-        if (!customer) {
+        if (!deletedUserStripe.deleted) {
+          return res
+            .status(400)
+            .json({ success: false, data: "User not deleted" });
+        }
+
+        const deletedUser = await User.deleteOne({ _id: id });
+
+        if (deletedUser.deletedCount < 1) {
           return res.status(400).json({
             success: false,
-            data: "User updated in DB but not found in stripe",
+            data: "User deleted in Stripe but not in DB",
           });
         }
 
-        res.status(200).json({ success: true, data: user });
+        res
+          .status(200)
+          .json({ success: true, data: "User is successfully deleted" });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
       }
+      break;
+
+    default:
+      res.status(400).json({ success: false });
       break;
   }
 }
