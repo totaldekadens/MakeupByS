@@ -48,7 +48,6 @@ export default async function handler(
     case "DELETE":
       try {
         const deletedCategory = await Category.deleteOne({ slug });
-        console.log(deletedCategory);
         if (deletedCategory.deletedCount < 1) {
           return res
             .status(400)
