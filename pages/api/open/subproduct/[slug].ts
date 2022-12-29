@@ -2,6 +2,9 @@ import dbConnect from "../../../../utils/dbConnect";
 import SubProduct from "../../../../models/SubProduct";
 import { NextApiRequest, NextApiResponse } from "next";
 import Category from "../../../../models/Category";
+import MainProduct from "../../../../models/MainProduct";
+import Color from "../../../../models/Color";
+import Season from "../../../../models/Season";
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,9 +23,17 @@ export default async function handler(
         const subProduct = await SubProduct.findOne({ slug })
           .populate({
             path: "mainProduct",
-            populate: { path: "category" },
+            model: MainProduct,
+            populate: {
+              path: "category",
+              model: Category,
+            },
           })
-          .populate({ path: "colors", populate: { path: "seasons" } });
+          .populate({
+            path: "colors",
+            model: Color,
+            populate: { path: "seasons", model: Season },
+          });
 
         if (!subProduct) {
           return res

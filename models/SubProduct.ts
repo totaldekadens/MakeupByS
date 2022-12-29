@@ -1,4 +1,4 @@
-import mongoose, { Decimal128, Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 import useSlugify from "../utils/useSlugify";
 
 const SubProductSchema = new mongoose.Schema<SubProductDocument>({
@@ -30,15 +30,6 @@ const SubProductSchema = new mongoose.Schema<SubProductDocument>({
       required: true,
     },
   ],
-  availableQty: {
-    type: Number,
-  },
-  reservedQty: {
-    type: Number,
-  },
-  discount: {
-    type: Number, // Percent?
-  },
   colors: [
     {
       type: mongoose.Schema.Types.ObjectId,
@@ -46,6 +37,21 @@ const SubProductSchema = new mongoose.Schema<SubProductDocument>({
       required: true,
     },
   ],
+  availableQty: {
+    type: Number,
+  },
+  reservedQty: {
+    type: Number,
+  },
+  discount: {
+    type: Number,
+  },
+  createdDate: {
+    type: String,
+  },
+  lastUpdated: {
+    type: String,
+  },
 });
 
 SubProductSchema.methods.setSlug = function (title: string) {
@@ -62,6 +68,8 @@ export type SubProductDocument = {
   images: string[];
   setSlug: (title: String) => void;
   colors: Types.ObjectId[];
+  createdDate?: string;
+  lastUpdated?: string;
   availableQty?: number;
   reservedQty?: number;
   discount?: number;

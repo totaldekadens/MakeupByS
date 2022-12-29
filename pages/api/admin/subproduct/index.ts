@@ -43,6 +43,10 @@ export default async function handler(
         }
 
         const formattedTitle = useSlugify(req.body.title);
+        const todayDate = new Date()
+          .toISOString()
+          .slice(0, 16)
+          .replace("T", " ");
 
         const newSubProduct: SubProductDocument = new SubProduct();
         newSubProduct._id = req.body._id;
@@ -54,6 +58,8 @@ export default async function handler(
         newSubProduct.colors = req.body.colors;
         newSubProduct.availableQty = req.body.availableQty;
         newSubProduct.discount = req.body.discount;
+        newSubProduct.createdDate = todayDate;
+        newSubProduct.lastUpdated = todayDate;
 
         const subProduct = await SubProduct.create(newSubProduct);
         res.status(201).json({ success: true, data: subProduct });

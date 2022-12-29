@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
     "mainProduct": "63a9b167acc13b27eb7a973b",
-    "title": "Owe you nothing",
+    "title": "testigen2",
     "images": ["OWEYOUNOTHING.webp", "OWEYOUNOTHING-2.webp"],
     "colors": ["63a877702622fa2566183687"],
     "availableQty": 100
@@ -20,20 +20,20 @@ Content-Type: application/json
 
 ###
 
-PUT  http://localhost:3000/api/admin/subproduct/63a9b05fd25625011399048d
+PUT  http://localhost:3000/api/admin/subproduct/63abfe2d6d1641449b9cd0f5
 Content-Type: application/json
 
 {
-    "_id": "63a9b05fd25625011399048d",
-    "mainProduct": "63a9adf9d256250113990483",
-    "title": "MYKONOS",
-    "images": ["MYKONOS.webp", "MYKONOS-2.webp"],
-    "colors": ["63a878fb2622fa25661836ed"],
+    "_id": "63abfe2d6d1641449b9cd0f5",
+   "mainProduct": "63a9b167acc13b27eb7a973b",
+    "title": "testigen2updated",
+    "images": ["OWEYOUNOTHING.webp", "OWEYOUNOTHING-2.webp"],
+    "colors": ["63a877702622fa2566183687"],
     "availableQty": 100
 }
 
 ###
 
-DELETE  http://localhost:3000/api/admin/subproduct/6395c57998499264aa6727c0
+DELETE  http://localhost:3000/api/admin/subproduct/63abfde72012206f0c3ed9e6
 
 
