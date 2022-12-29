@@ -9,10 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@mantine/core": "^5.8.3",
+    "@emotion/react": "^11.10.5",
+    "@emotion/server": "^11.10.0",
+    "@mantine/core": "^5.9.5",
     "@mantine/form": "^5.8.3",
-    "@mantine/next": "^5.8.3",
+    "@mantine/hooks": "^5.9.5",
+    "@mantine/next": "^5.9.5",
     "@stripe/stripe-js": "^1.46.0",
+    "@tabler/icons": "^1.118.0",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
