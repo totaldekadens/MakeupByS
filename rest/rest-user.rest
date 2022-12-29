@@ -10,10 +10,4 @@ GET http://localhost:3000/api/customer/user/63ab2d016ed1683c22c2c149
 
 ###
 
-POST  http://localhost:3000/api/open/users
-Content-Type: application/json
-
-{
-"email": "admin@admin.se", "password": "admin"
-}
-
+DELETE  http://localhost:3000/api/admin/users/63ab2d016ed1683c22c2
