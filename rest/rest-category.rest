@@ -10,24 +10,24 @@ POST  http://localhost:3000/api/admin/category
 Content-Type: application/json
 
 {
-"title": "Läppstift", 
+"title": "test", 
 "description": "Beskrivning av kategorin läppstift"
 }
 
 ###
 
-PUT  http://localhost:3000/api/admin/category/lappar
+PUT  http://localhost:3000/api/admin/category/test
 Content-Type: application/json
 
 {
-"_id": "638b141aab81ffdb7675e4f4",
- "title": "Ögonskuggor", 
+"_id": "63ad57d9057fe5baafc5336e",
+ "title": "tjena", 
  "description": "Beskrivning av kategorin Ögonskuggor"
 }
 
 ###
 
-DELETE  http://localhost:3000/api/admin/category/hejsvej
+DELETE  http://localhost:3000/api/admin/category/test
 Content-Type: application/json
 
 

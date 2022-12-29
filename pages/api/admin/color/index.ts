@@ -13,6 +13,10 @@ export default async function handler(
 
   await dbConnect();
 
+  if (!req.body) {
+    return res.status(400).json({ success: false, data: "Check body" });
+  }
+
   switch (method) {
     case "POST":
       try {

@@ -13,6 +13,10 @@ export default async function handler(
 
   await dbConnect();
 
+  if (!req.body) {
+    return res.status(400).json({ success: false, data: "Check body" });
+  }
+
   switch (method) {
     case "PUT":
       try {
@@ -44,7 +48,8 @@ export default async function handler(
     case "DELETE":
       try {
         const deletedCategory = await Category.deleteOne({ slug });
-        if (!deletedCategory) {
+        console.log(deletedCategory);
+        if (deletedCategory.deletedCount < 1) {
           return res
             .status(400)
             .json({ success: false, data: "Category not deleted" });

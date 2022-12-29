@@ -16,6 +16,10 @@ export default async function handler(
 
   await dbConnect();
 
+  if (!req.body) {
+    return res.status(400).json({ success: false, data: "Check body" });
+  }
+
   switch (method) {
     case "PUT":
       try {
@@ -38,7 +42,7 @@ export default async function handler(
           .toISOString()
           .slice(0, 16)
           .replace("T", " ");
-        console.log(req.body);
+
         const updateSubProduct: SubProductDocument = new SubProduct();
         updateSubProduct._id = req.body._id;
         updateSubProduct.mainProduct = req.body.mainProduct;
@@ -73,7 +77,7 @@ export default async function handler(
     case "DELETE":
       try {
         const deletedSubProduct = await SubProduct.deleteOne({ _id: id });
-        if (!deletedSubProduct) {
+        if (deletedSubProduct.deletedCount < 1) {
           return res
             .status(400)
             .json({ success: false, data: "SubProduct not deleted" });

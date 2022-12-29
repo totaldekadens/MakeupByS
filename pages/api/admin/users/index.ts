@@ -11,6 +11,10 @@ export default async function handler(
 
   await dbConnect();
 
+  if (!req.method) {
+    return res.status(400).json({ success: false, data: "Check method" });
+  }
+
   switch (method) {
     case "GET":
       try {

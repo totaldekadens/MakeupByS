@@ -2,12 +2,11 @@ GET http://localhost:3000/api/admin/users
 
 ###
 
-POST http://localhost:3000/api/open/users/login
-Content-Type: application/json
+GET http://localhost:3000/api/admin/users/63ab2d016ed1683c22c2c149
 
-{
-"email": "admin@admin.se", "password": "admin"
-}
+###
+
+GET http://localhost:3000/api/customer/user/63ab2d016ed1683c22c2c149
 
 ###
 
