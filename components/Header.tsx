@@ -1,12 +1,18 @@
-import {Box, Title, Header as MantineHeader, Flex, Paper, Space, Input} from "@mantine/core";
+import {
+  Box,
+  Title,
+  Header as MantineHeader,
+  Flex,
+  Paper,
+  Space,
+  Input,
+} from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import LoginButton from "./LoginButton";
-import Searchbar from "./Searchbar"
-import ButtonSeason from './ButtonSeason'
-import {
-    IconCheck,
-} from "@tabler/icons"
+import Searchbar from "./Searchbar";
+import ButtonSeason from "./ButtonSeason";
+import { IconCheck } from "@tabler/icons";
 
 const Header = () => {
   const session = useSession();
@@ -21,49 +27,34 @@ const Header = () => {
         alignItems: "center",
       })}
     >
-        <Flex direction={"column"} align={"center"} sx={{width: "100%"}}>
-            <Flex mt={10} justify={"center"} align={"center"} sx={{width: "100%"}}>
-                <Title fw={"400"} mr={30} tt={"uppercase"} c={'white'} fz={"md"}>
-                    <IconCheck size={18}/> fri frakt från sverige
-                </Title>
+      <Flex direction={"column"} align={"center"} sx={{ width: "100%" }}>
+        <Flex
+          mt={10}
+          justify={"center"}
+          align={"center"}
+          sx={{ width: "100%" }}
+        >
+          <Title fw={"400"} mr={30} tt={"uppercase"} c={"white"} fz={"md"}>
+            <IconCheck size={18} /> fri frakt från sverige
+          </Title>
 
-                    <Space w={"lg"}/>
+          <Space w={"lg"} />
 
-                <Title fw={"400"} ml={30} tt={"uppercase"} c={"white"} fz={"md"}>
-                   <IconCheck size={18}/> 100% vegan
-                </Title>
-            </Flex>
-
-            <Flex justify={"space-between"} sx={{width: "100%"}}>
-
-              <Searchbar/>
-
-              <Link href="/">
-                <Title size='xxx-large' mr={230} pt={20} color="white">
-                  MakeUpByS
-                </Title>
-              </Link>
-                
-                <LoginButton />
-
-            </Flex>
-
-            <Flex>
-                <ButtonSeason />
-            </Flex>
+          <Title fw={"400"} ml={30} tt={"uppercase"} c={"white"} fz={"md"}>
+            <IconCheck size={18} /> 100% vegan
+          </Title>
         </Flex>
 
         <Flex justify={"space-between"} sx={{ width: "100%" }}>
-          <Box>Sök...</Box>
+          <Searchbar />
 
           <Link href="/">
-            <Title size="xxx-large" ml={10} order={2} color="white">
+            <Title size="xxx-large" mr={230} pt={20} color="white">
               MakeUpByS
             </Title>
           </Link>
-          <Box>
-            <LoginButton />
-          </Box>
+
+          <LoginButton />
         </Flex>
 
         <Flex>

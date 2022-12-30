@@ -1,10 +1,11 @@
-import { AppShell, Title, Box, Flex, Text, Button } from "@mantine/core";
+import { AppShell, Title, Box, Flex, Text, Button, Grid } from "@mantine/core";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import ProductCard from "../../components/ProductCard";
 import { CategoryDocument } from "../../models/Category";
 import { SeasonDocument } from "../../models/Season";
 import SubProduct, { SubProductDocument } from "../../models/SubProduct";
@@ -59,15 +60,15 @@ const Season: NextPage<Props> = ({ products, season }) => {
             })}
           </Flex>
           <Flex wrap="wrap" justify={"center"}>
-            {products?.data?.map((product: any, index: number) => {
-              return (
-                <Flex m="lg" wrap="wrap">
-                  <Title key={index} order={3}>
-                    {product.title}
-                  </Title>
-                </Flex>
-              );
-            })}
+            <Grid justify={"center"}>
+              {products?.data?.map((product: any, index: number) => {
+                return (
+                  <Grid.Col key={index} span={4}>
+                    <ProductCard product={product} />
+                  </Grid.Col>
+                );
+              })}
+            </Grid>
           </Flex>
         </Box>
       </AppShell>
