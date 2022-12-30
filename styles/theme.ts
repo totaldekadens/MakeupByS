@@ -7,7 +7,6 @@ import {
   MantineThemeOverride,
   Tuple,
 } from "@mantine/core";
-import {toUpperCase} from "uri-js/dist/esnext/util";
 
 export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
   colorScheme,
@@ -54,7 +53,7 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
       ): Record<string, CSSObject> => ({
         root: {
           radius: {md: 100},
-          minWidth: '150px',
+          minWidth: '200px',
           // Här kan vi lägga in styling för Button-komponenten i Mantine
           "&:hover": {
             backgroundColor: 'whitesmoke',
@@ -68,6 +67,13 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
           textTransform: "uppercase",
           // Här kan vi lägga in storlek för texten i Button tex
         },
+      }),
+    },
+    TextInput: {
+      styles: (theme: MantineTheme) => ({
+        root: {
+          backgroundColor: theme.colors.brand[2]
+        }
       }),
     },
     Title: {

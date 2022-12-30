@@ -1,4 +1,4 @@
-import { Button, Flex, Text } from "@mantine/core";
+import { Box, Button, Flex, Text } from "@mantine/core";
 import { useSession, signIn, signOut } from "next-auth/react";
 import {
     IconUser,
@@ -20,13 +20,22 @@ const LoginButton = () => {
     );
   }
   return (
-    <Flex align="center">
+    <Flex gap={"md"} 
+    justify="center"
+    align="flex-end"
+    direction="row"
+    wrap="wrap"
+    mr={40}
+    >
+
         <Link href='/'>
-      <IconUser size={36} color="white" onClick={() => signIn()} />
+            <IconUser size={36} color="white" onClick={() => signIn()} />
+          </Link>
+
+          <Link href='/'>
+            <IconShoppingBag size={36} color='white'/>
         </Link>
-        <Link href='/'>
-        <IconShoppingBag size={36} color='white'/>
-        </Link>
+
     </Flex>
   );
 };
