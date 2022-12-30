@@ -1,24 +1,19 @@
-import {
-  Box,
-  Title,
-  Header as MantineHeader,
-  Flex,
-  Paper,
-  Space,
-} from "@mantine/core";
+import {Box, Title, Header as MantineHeader, Flex, Paper, Space, Input} from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import LoginButton from "./LoginButton";
-import ButtonSeason from "./ButtonSeason";
-import { IconCheck } from "@tabler/icons";
-import { toUpperCase } from "uri-js/dist/esnext/util";
+import Searchbar from "./Searchbar"
+import ButtonSeason from './ButtonSeason'
+import {
+    IconCheck,
+} from "@tabler/icons"
 
 const Header = () => {
   const session = useSession();
   return (
     <MantineHeader
       fixed={false}
-      height={200}
+      height={220}
       sx={(theme) => ({
         backgroundColor: theme.colors.brand[2],
         display: "flex",
@@ -26,15 +21,36 @@ const Header = () => {
         alignItems: "center",
       })}
     >
-      <Flex direction={"column"} align={"center"} sx={{ width: "100%" }}>
-        <Flex justify={"center"} align={"center"} sx={{ width: "100%" }}>
-          <Title tt={"uppercase"} c={"white"} fz={"md"}>
-            <IconCheck /> fri frakt från sverige
-          </Title>
-          <Space w={"md"} />
-          <Title tt={"uppercase"} c={"white"} fz={"md"}>
-            <IconCheck /> 100% vegan
-          </Title>
+        <Flex direction={"column"} align={"center"} sx={{width: "100%"}}>
+            <Flex mt={10} justify={"center"} align={"center"} sx={{width: "100%"}}>
+                <Title fw={"400"} mr={30} tt={"uppercase"} c={'white'} fz={"md"}>
+                    <IconCheck size={18}/> fri frakt från sverige
+                </Title>
+
+                    <Space w={"lg"}/>
+
+                <Title fw={"400"} ml={30} tt={"uppercase"} c={"white"} fz={"md"}>
+                   <IconCheck size={18}/> 100% vegan
+                </Title>
+            </Flex>
+
+            <Flex justify={"space-between"} sx={{width: "100%"}}>
+
+              <Searchbar/>
+
+              <Link href="/">
+                <Title size='xxx-large' mr={230} pt={20} color="white">
+                  MakeUpByS
+                </Title>
+              </Link>
+                
+                <LoginButton />
+
+            </Flex>
+
+            <Flex>
+                <ButtonSeason />
+            </Flex>
         </Flex>
 
         <Flex justify={"space-between"} sx={{ width: "100%" }}>
