@@ -1,17 +1,19 @@
-import { AppShell, Title, Box } from "@mantine/core";
+import { AppShell, Title, Box, Flex, Text } from "@mantine/core";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { SeasonDocument } from "../../models/Season";
 import SubProduct, { SubProductDocument } from "../../models/SubProduct";
 import dbConnect from "../../utils/dbConnect";
 
 type Props = {
   products: any;
+  season: any;
 };
 
-const Season: NextPage<Props> = ({ products }) => {
+const Season: NextPage<Props> = ({ products, season }) => {
   const router = useRouter();
   const { slug } = router.query;
 
@@ -21,7 +23,19 @@ const Season: NextPage<Props> = ({ products }) => {
     <>
       <AppShell fixed={false} header={<Header />} footer={<Footer />}>
         <Box style={{ marginTop: 60, minHeight: "100vh" }}>
-          <Title order={1}>{slug}</Title>
+          <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
+            <Title order={1}>{season?.data?.title}</Title>
+            <Text>{season?.data?.description}</Text>
+          </Flex>
+          <Flex>
+            {products?.data?.map((product: any, index: number) => {
+              return (
+                <Title key={index} order={3}>
+                  {product.title}
+                </Title>
+              );
+            })}
+          </Flex>
         </Box>
       </AppShell>
     </>
@@ -46,17 +60,22 @@ interface IParams extends ParsedUrlQuery {
 export const getStaticProps: GetStaticProps = async (context) => {
   await dbConnect();
 
-  // todo: Fix domain in .env.local
   const { slug } = context.params as IParams;
-  const response = await fetch(
-    `http://localhost:3000/api/open/subproduct/season/${slug}`
+  const getProductsBySeason = await fetch(
+    `${process.env.NEXT_DOMAIN}/api/open/subproduct/season/${slug}`
   );
 
-  const products = await response.json();
+  const getSeason = await fetch(
+    `${process.env.NEXT_DOMAIN}/api/open/season/${slug}`
+  );
+
+  const season = await getSeason.json();
+  const products = await getProductsBySeason.json();
 
   return {
     props: {
       products,
+      season,
     },
   };
 };

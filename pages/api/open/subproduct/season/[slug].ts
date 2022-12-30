@@ -34,10 +34,14 @@ export default async function handler(
           .populate({
             path: "colors",
             model: Color,
-            populate: { path: "seasons", model: Season },
+            populate: {
+              path: "seasons",
+              model: Season,
+              //match: { slug: { $in: slug } },  // Check why this doesnt work!
+            },
           });
 
-        // easier way?
+        // Find a better way. Should be able to filter the query above
         let list: any = [];
         subProducts.forEach((product) => {
           product.colors.forEach((color: ColorDocument) => {
