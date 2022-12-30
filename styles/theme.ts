@@ -33,7 +33,7 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
       "#375F69", // "ljusblå" - theme.colors.brand[6]       *
       "#1D464E", // mellanblå  - theme.colors.brand[7]      *
       "#133136", // mörkblå  - theme.colors.brand[8]
-      "#000000", // Svart  - theme.colors.brand[9]
+      "#CFA6A1", // bakgrund säsongsknappar  - theme.colors.brand[9]
     ],
   },
   // Ex. theme.fontSizes.sm i applikationen. Dessa värden kan vi ändra så att de passar vår applikation bättre sen
