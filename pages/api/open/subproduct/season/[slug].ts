@@ -41,6 +41,19 @@ export default async function handler(
             },
           });
 
+        /* 
+
+arrayOfElements.map((element) => {
+  return {
+    ...element,
+    subElements: element.subElements.filter(
+      (subElement) => subElement.surname === 1
+    ),
+  };
+}); 
+
+*/
+
         // Find a better way. Should be able to filter the query above
         let list: any = [];
         subProducts.forEach((product) => {

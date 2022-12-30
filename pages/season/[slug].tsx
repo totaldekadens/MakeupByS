@@ -1,9 +1,11 @@
-import { AppShell, Title, Box, Flex, Text } from "@mantine/core";
+import { AppShell, Title, Box, Flex, Text, Button } from "@mantine/core";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import { CategoryDocument } from "../../models/Category";
 import { SeasonDocument } from "../../models/Season";
 import SubProduct, { SubProductDocument } from "../../models/SubProduct";
 import dbConnect from "../../utils/dbConnect";
@@ -17,7 +19,25 @@ const Season: NextPage<Props> = ({ products, season }) => {
   const router = useRouter();
   const { slug } = router.query;
 
-  console.log(products);
+  const path = "cate";
+
+  // Gets available categories on the list of products
+  let categories: CategoryDocument[] = [];
+  if (products?.data) {
+    products.data.forEach((product: any) => {
+      if (categories.length < 1) {
+        categories.push(product.mainProduct.category);
+        return;
+      }
+      const findCategory = categories.find(
+        (category) => category.title == product.mainProduct.category.title
+      );
+      if (!findCategory) {
+        categories.push(product.mainProduct.category);
+        return;
+      }
+    });
+  }
 
   return (
     <>
@@ -26,6 +46,17 @@ const Season: NextPage<Props> = ({ products, season }) => {
           <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
             <Title order={1}>{season?.data?.title}</Title>
             <Text>{season?.data?.description}</Text>
+          </Flex>
+          <Flex justify={"center"} mt="sm" mb="xl" gap="lg">
+            {categories.map((category) => {
+              return (
+                <Link href={`/season/${slug}/category/${category.slug}`}>
+                  <Button variant="outline" color="brand.2">
+                    {category.title}
+                  </Button>
+                </Link>
+              );
+            })}
           </Flex>
           <Flex>
             {products?.data?.map((product: any, index: number) => {
