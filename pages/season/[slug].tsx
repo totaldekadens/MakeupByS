@@ -58,12 +58,14 @@ const Season: NextPage<Props> = ({ products, season }) => {
               );
             })}
           </Flex>
-          <Flex>
+          <Flex wrap="wrap" justify={"center"}>
             {products?.data?.map((product: any, index: number) => {
               return (
-                <Title key={index} order={3}>
-                  {product.title}
-                </Title>
+                <Flex m="lg" wrap="wrap">
+                  <Title key={index} order={3}>
+                    {product.title}
+                  </Title>
+                </Flex>
               );
             })}
           </Flex>
