@@ -12,19 +12,33 @@ import ErrorPage from "../../../ErrorPage";
 
 const CategoryPage: NextPage = (props) => {
   const router = useRouter();
-  const { categorySlug, slug } = router.query;
+  const { categorySlug, seasonSlug } = router.query;
   const [products, setProducts] = useState<any>([]);
   const [category, setCategory] = useState<SeasonDocument>();
   const [exist, setExist] = useState(true);
 
+  console.log(router.query);
+  console.log(categorySlug);
+  console.log(seasonSlug);
   //console.log(slug, categorySlug);
   //console.log("KOMMER JAG IN HÄR NU? ");
   // Fetching via useeffect. Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        /* const request = {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(body),
+            };
+
+            const response = await fetch("/api/open/users", request);
+            let result = await response.json(); */
+
         let response = await fetch(
-          `/api/open/subproduct/season/${categorySlug}`
+          `/api/open/subproduct/categorybyseason/${categorySlug}?seasonSlug=${seasonSlug}`
         );
         let result = await response.json();
         if (result.success) {
