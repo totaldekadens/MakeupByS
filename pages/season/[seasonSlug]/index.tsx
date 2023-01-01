@@ -1,4 +1,14 @@
-import { AppShell, Box, Button, Flex, Grid, Title, Text } from "@mantine/core";
+import {
+  AppShell,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Title,
+  Text,
+  Breadcrumbs,
+  Anchor,
+} from "@mantine/core";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -17,7 +27,6 @@ const SeasonPage: NextPage = (props) => {
   const [season, setSeason] = useState<SeasonDocument>();
   const [exist, setExist] = useState(true);
 
-  console.log(seasonSlug);
   // Fetching via useeffect. Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
     const fetchProducts = async () => {
@@ -71,6 +80,20 @@ const SeasonPage: NextPage = (props) => {
   }
   return (
     <AppShell fixed={false} header={<Header />} footer={<Footer />}>
+      <Flex sx={{ width: "100%" }}>
+        <Breadcrumbs>
+          <Link href={"/"}>
+            <Text color="brand.6" size="sm">
+              Hem
+            </Text>
+          </Link>
+          <Link color="brand.6" href={`/season/${season?.slug}`}>
+            <Text color="brand.6" size="sm">
+              {season?.title}
+            </Text>
+          </Link>
+        </Breadcrumbs>
+      </Flex>
       <Box style={{ marginTop: 60, minHeight: "100vh" }}>
         <>
           <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
@@ -78,7 +101,7 @@ const SeasonPage: NextPage = (props) => {
             <Text>{season?.description}</Text>
           </Flex>
           {products[0] ? (
-            <Flex justify={"center"} mt="sm" mb="xl" gap="lg">
+            <Flex justify={"center"} mt="sm" gap="lg">
               {categories.map((category, index) => {
                 return (
                   <Link
@@ -93,7 +116,7 @@ const SeasonPage: NextPage = (props) => {
               })}
             </Flex>
           ) : null}
-          <Flex wrap="wrap" justify={"center"}>
+          <Flex mt="xl" wrap="wrap" justify={"center"}>
             <Grid justify={"center"}>
               {products?.map((product: any, index: number) => {
                 return (

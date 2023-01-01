@@ -1,7 +1,5 @@
 import dbConnect from "../../../../../utils/dbConnect";
-import SubProduct, {
-  SubProductDocument,
-} from "../../../../../models/SubProduct";
+import SubProduct from "../../../../../models/SubProduct";
 import { NextApiRequest, NextApiResponse } from "next";
 import MainProduct from "../../../../../models/MainProduct";
 import Category from "../../../../../models/Category";
@@ -44,14 +42,15 @@ export default async function handler(
         let list: any = [];
         let list2: any = [];
         subProducts.forEach((product) => {
-          product.colors.forEach((color: ColorDocument) => {
-            color.seasons.forEach((season: any) => {
+          product.colors.forEach((color: any) => {
+            color.seasons.forEach((season: SeasonDocument) => {
               if (season.slug == seasonSlug) {
                 list.push(product);
               }
             });
           });
         });
+
         subProducts.forEach((product) => {
           if (product.mainProduct.category.slug == slug) {
             list2.push(product);
