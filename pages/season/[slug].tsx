@@ -8,6 +8,7 @@ import Header from "../../components/Header";
 import ProductCard from "../../components/ProductCard";
 import { CategoryDocument } from "../../models/Category";
 import { SeasonDocument } from "../../models/Season";
+import ErrorPage from "../ErrorPage";
 
 const SeasonPage: NextPage = (props) => {
   const router = useRouter();
@@ -45,7 +46,7 @@ const SeasonPage: NextPage = (props) => {
     fetchProducts();
   }, [slug]);
 
-  // if (!products || !season) return <ErrorPage statusCode={404} />; // Fix error page;
+  if (!products || !season) return <ErrorPage statusCode={404} />; // Fix error page;
 
   let categories: CategoryDocument[] = [];
   if (products) {
