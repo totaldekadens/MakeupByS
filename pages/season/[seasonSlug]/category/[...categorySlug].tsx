@@ -137,14 +137,14 @@ const CategoryPage: NextPage = (props) => {
           <>
             <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
               <Title order={1}>{category?.title}</Title>
-              <Text>{category?.description}</Text>
+              <Text color="dimmed">{category?.description}</Text>
             </Flex>
             {products ? (
               <Flex mt="xl" wrap="wrap" justify={"center"}>
                 <Grid justify={"center"}>
                   {products?.map((product: any, index: number) => {
                     return (
-                      <Grid.Col key={index} span={4}>
+                      <Grid.Col key={index} md={4} sm={5} xs={6}>
                         <ProductCard product={product} />
                       </Grid.Col>
                     );

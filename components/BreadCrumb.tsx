@@ -4,7 +4,7 @@ import { FC } from "react";
 
 type Props = {
   href: string;
-  title: string;
+  title?: string;
 };
 
 const Breadcrumb: FC<Props> = ({ href, title }) => {

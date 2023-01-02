@@ -129,10 +129,10 @@ const SeasonPage: NextPage = (props) => {
           <>
             <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
               <Title order={1}>{season?.title}</Title>
-              <Text>{season?.description}</Text>
+              <Text color="dimmed">{season?.description}</Text>
             </Flex>
             {products[0] ? (
-              <Flex justify={"center"} mt="sm" gap="lg">
+              <Flex justify={"center"} mt="sm" gap="lg" wrap={"wrap"}>
                 {categories.map((category, index) => {
                   return (
                     <Link
@@ -151,7 +151,7 @@ const SeasonPage: NextPage = (props) => {
               <Grid justify={"center"}>
                 {products?.map((product: any, index: number) => {
                   return (
-                    <Grid.Col key={index} span={4}>
+                    <Grid.Col key={index} md={4} sm={5} xs={6}>
                       <ProductCard product={product} />
                     </Grid.Col>
                   );
