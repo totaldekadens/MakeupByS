@@ -1,18 +1,68 @@
 import { Box } from "@mantine/core";
 import { IconShoppingBag, IconPlus } from "@tabler/icons";
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { useHover } from "@mantine/hooks";
+import { useLocalStorage } from "@mantine/hooks";
 
 type Props = {
   color: string;
+  openCart: Dispatch<SetStateAction<boolean>>;
+  product: any;
 };
 
-const AddToCartIcon: FC<Props> = ({ color }) => {
-  const { hovered, ref } = useHover();
+export type LineItem = {
+  quantity: number;
+  price_data: {
+    currency: string;
+    unit_amount: number;
+    product_data: {
+      name: string;
+      description: string;
+      images: string[];
+      metadata: { id: string };
+    };
+  };
+};
 
+const AddToCartIcon: FC<Props> = ({ color, openCart, product }) => {
+  const { hovered, ref } = useHover();
+  const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
+    key: "cart",
+    defaultValue: [],
+  });
+  const price = Number(product.mainProduct.price.$numberDecimal);
   const handleClick = () => {
-    // Här lägger vi till produkten i varukorgen
-    console.log("Lägger till produkten i varukorgen");
+    const lineItem = {
+      quantity: 1,
+      price_data: {
+        currency: "sek",
+        unit_amount: price,
+        product_data: {
+          name: product.title,
+          description: product.description,
+          images: product.images,
+          metadata: { id: product._id },
+        },
+      },
+    };
+
+    let cartCopy = [...cartItems];
+
+    let foundIndex = cartCopy.findIndex(
+      (cartItem) => cartItem.price_data.product_data.metadata.id === product._id
+    );
+
+    if (foundIndex >= 0) {
+      if (cartCopy[foundIndex].quantity >= product.availableQty) {
+        return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
+      }
+      cartCopy[foundIndex].quantity++;
+    } else {
+      cartCopy.push(lineItem);
+    }
+
+    setCartItems(cartCopy);
+    openCart(true);
   };
 
   return (
