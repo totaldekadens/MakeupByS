@@ -1,6 +1,6 @@
 import { Box, Drawer, Flex, Group, Image, Title, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { IconCircleMinus, IconCirclePlus } from "@tabler/icons";
+import { IconCircleMinus, IconCirclePlus, IconTrash } from "@tabler/icons";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import useSlugify from "../utils/useSlugify";
 import { LineItem } from "./AddToCartIcon";
@@ -74,12 +74,29 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
     }
   };
 
-  console.log(product);
+  const handleRemove = async (product: LineItem) => {
+    try {
+      if (product) {
+        let cartCopy = [...cartItems];
+
+        const updateCart = cartCopy.filter(
+          (cartItem) =>
+            cartItem.price_data.product_data.metadata.id !=
+            product.price_data.product_data.metadata.id
+        );
+        setCartItems(updateCart);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Drawer
+      withCloseButton={false}
       opened={opened}
       onClose={() => openCart(false)}
-      //title="Register"
+      title="Varukorg"
       padding="xl"
       size="lg"
       position="right"
@@ -88,6 +105,13 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+        },
+        header: {
+          width: "100%",
+          display: "flex",
+          marginBottom: "40px",
+          fontSize: "24px",
+          justifyContent: "center",
         },
       }}
     >
@@ -110,7 +134,7 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
             />
             <Flex ml={"xs"} direction={"column"} justify="space-between">
               <Title order={6}>{product.price_data.product_data.name}</Title>
-              <Group spacing={5}>
+              <Group w={100} spacing={5}>
                 <IconCircleMinus
                   style={{
                     cursor: product.quantity < 2 ? "unset" : "pointer",
@@ -127,6 +151,21 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
                   onClick={() => handleIncrement(product)}
                 />
               </Group>
+            </Flex>
+            <Flex
+              sx={{ width: "100%" }}
+              direction={"column"}
+              justify="flex-end"
+              align={"flex-end"}
+            >
+              <Title mb={10} order={4}>
+                {product.price_data.unit_amount} KR
+              </Title>
+              <IconTrash
+                style={{ cursor: "pointer" }}
+                strokeWidth={1.25}
+                onClick={() => handleRemove(product)}
+              />
             </Flex>
           </Flex>
         );
