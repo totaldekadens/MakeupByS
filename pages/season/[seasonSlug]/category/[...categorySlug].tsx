@@ -11,6 +11,7 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react";
+import BreadCrumb from "../../../../components/BreadCrumb";
 import Footer from "../../../../components/Footer";
 import Header from "../../../../components/Header";
 import ProductCard from "../../../../components/ProductCard";
@@ -119,24 +120,15 @@ const CategoryPage: NextPage = (props) => {
       {isLoading.season || isLoading.category ? null : (
         <Flex sx={{ width: "100%" }}>
           <Breadcrumbs>
-            <Link href={"/"}>
-              <Text color="brand.6" size="sm">
-                Hem
-              </Text>
-            </Link>
-            <Link color="brand.6" href={`/season/${season?.slug}`}>
-              <Text color="brand.6" size="sm">
-                {season?.title}
-              </Text>
-            </Link>
-            <Link
-              color="brand.6"
+            <BreadCrumb href={"/"} title={"Hem"} />
+            <BreadCrumb
+              href={`/season/${season?.slug}`}
+              title={season?.title}
+            />
+            <BreadCrumb
               href={`/season/${season?.slug}/category/${categorySlug}`}
-            >
-              <Text color="brand.6" size="sm">
-                {category?.title}
-              </Text>
-            </Link>
+              title={category?.title}
+            />
           </Breadcrumbs>
         </Flex>
       )}
