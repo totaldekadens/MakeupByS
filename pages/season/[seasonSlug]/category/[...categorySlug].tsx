@@ -6,12 +6,14 @@ import {
   Title,
   Text,
   Breadcrumbs,
+  Drawer,
 } from "@mantine/core";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, SetStateAction } from "react";
 import BreadCrumb from "../../../../components/BreadCrumb";
+import Cart from "../../../../components/Cart";
 import Footer from "../../../../components/Footer";
 import Header from "../../../../components/Header";
 import ProductCard from "../../../../components/ProductCard";
@@ -25,6 +27,7 @@ const CategoryPage: NextPage = (props) => {
   const [products, setProducts] = useState<any>([]);
   const [category, setCategory] = useState<CategoryDocument>();
   const [season, setSeason] = useState<SeasonDocument>();
+  const [opened, setOpened] = useState(false);
   const [isLoading, setIsLoading] = useState({
     products: true,
     category: true,
@@ -156,7 +159,7 @@ const CategoryPage: NextPage = (props) => {
                   {products?.map((product: any, index: number) => {
                     return (
                       <Grid.Col key={index} md={4} sm={5} xs={6}>
-                        <ProductCard product={product} />
+                        <ProductCard product={product} openCart={setOpened} />
                       </Grid.Col>
                     );
                   })}
@@ -166,6 +169,7 @@ const CategoryPage: NextPage = (props) => {
           </>
         )}
       </Box>
+      <Cart opened={opened} openCart={setOpened} />
     </AppShell>
   );
 };

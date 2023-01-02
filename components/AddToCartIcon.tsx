@@ -1,18 +1,66 @@
 import { Box } from "@mantine/core";
 import { IconShoppingBag, IconPlus } from "@tabler/icons";
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { useHover } from "@mantine/hooks";
+import { useLocalStorage } from "@mantine/hooks";
 
 type Props = {
   color: string;
+  openCart: Dispatch<SetStateAction<boolean>>;
+  product: any;
 };
 
-const AddToCartIcon: FC<Props> = ({ color }) => {
-  const { hovered, ref } = useHover();
+type LineItem = {
+  quantity: number;
+  price_data: {
+    currency: string;
+    unit_amount: number;
+    product_data: {
+      name: string;
+      description: string;
+      images: string[];
+      metadata: { id: string };
+    };
+  };
+};
 
+const AddToCartIcon: FC<Props> = ({ color, openCart, product }) => {
+  const { hovered, ref } = useHover();
+  const [value, setValue] = useLocalStorage<LineItem[]>({
+    key: "cart",
+    defaultValue: [],
+  });
+
+  const price = Number(product.mainProduct.price.$numberDecimal);
   const handleClick = () => {
-    // Här lägger vi till produkten i varukorgen
-    console.log("Lägger till produkten i varukorgen");
+    const lineItem = {
+      quantity: 1,
+      price_data: {
+        currency: "sek",
+        unit_amount: price,
+        product_data: {
+          name: product.title,
+          description: product.description,
+          images: product.images,
+          metadata: { id: product._id },
+        },
+      },
+    };
+
+    let cartCopy = [...value];
+
+    let foundIndex = cartCopy.findIndex(
+      (cartItem) => cartItem.price_data.product_data.metadata.id === product._id
+    );
+
+    if (foundIndex >= 0) {
+      cartCopy[foundIndex].quantity++;
+    } else {
+      cartCopy.push(lineItem);
+    }
+
+    setValue(cartCopy);
+    openCart(true);
   };
 
   return (
