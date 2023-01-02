@@ -7,7 +7,6 @@ import {
   Title,
   Text,
   Breadcrumbs,
-  Anchor,
 } from "@mantine/core";
 import { NextPage } from "next";
 import Link from "next/link";
@@ -25,32 +24,63 @@ const SeasonPage: NextPage = (props) => {
   const { seasonSlug } = router.query;
   const [products, setProducts] = useState<any>([]);
   const [season, setSeason] = useState<SeasonDocument>();
-  const [exist, setExist] = useState(true);
+  const [isLoading, setIsLoading] = useState({
+    products: true,
+    season: true,
+  });
 
-  // Fetching via useeffect. Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
+  // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        let response = await fetch(`/api/open/subproduct/season/${seasonSlug}`);
-        let result = await response.json();
-        if (result.success) {
-          setProducts(result.data);
-          return;
+        setIsLoading((existingValues) => ({
+          ...existingValues,
+          products: true,
+        }));
+        if (seasonSlug) {
+          let response = await fetch(
+            `/api/open/subproduct/season/${seasonSlug}`
+          );
+          let result = await response.json();
+
+          if (result.success) {
+            setProducts(result.data);
+            setIsLoading((existingValues) => ({
+              ...existingValues,
+              products: false,
+            }));
+            return;
+          }
+          setIsLoading((existingValues) => ({
+            ...existingValues,
+            products: false,
+          }));
         }
-        setExist(false);
       } catch (err) {
         console.error(err);
       }
     };
     const fetchSeason = async () => {
       try {
+        setIsLoading((existingValues) => ({
+          ...existingValues,
+          season: true,
+        }));
         let response = await fetch(`/api/open/season/${seasonSlug}`);
         let result = await response.json();
+
         if (result.success) {
           setSeason(result.data);
+          setIsLoading((existingValues) => ({
+            ...existingValues,
+            season: false,
+          }));
           return;
         }
-        setExist(false);
+        setIsLoading((existingValues) => ({
+          ...existingValues,
+          season: false,
+        }));
       } catch (err) {
         console.error(err);
       }
@@ -58,9 +88,6 @@ const SeasonPage: NextPage = (props) => {
     fetchSeason();
     fetchProducts();
   }, [seasonSlug]);
-
-  // Check how to delay error page.
-  //if (!exist) return <ErrorPage statusCode={404} />;
 
   let categories: CategoryDocument[] = [];
   if (products) {
@@ -78,56 +105,65 @@ const SeasonPage: NextPage = (props) => {
       }
     });
   }
+  if (!isLoading.products && !isLoading.season) {
+    if (products.length < 1 || !season) {
+      return <ErrorPage statusCode={404} />;
+    }
+  }
   return (
     <AppShell fixed={false} header={<Header />} footer={<Footer />}>
-      <Flex sx={{ width: "100%" }}>
-        <Breadcrumbs>
-          <Link href={"/"}>
-            <Text color="brand.6" size="sm">
-              Hem
-            </Text>
-          </Link>
-          <Link color="brand.6" href={`/season/${season?.slug}`}>
-            <Text color="brand.6" size="sm">
-              {season?.title}
-            </Text>
-          </Link>
-        </Breadcrumbs>
-      </Flex>
+      {isLoading.season ? null : (
+        <Flex sx={{ width: "100%" }}>
+          <Breadcrumbs>
+            <Link href={"/"}>
+              <Text color="brand.6" size="sm">
+                Hem
+              </Text>
+            </Link>
+            <Link color="brand.6" href={`/season/${season?.slug}`}>
+              <Text color="brand.6" size="sm">
+                {season?.title}
+              </Text>
+            </Link>
+          </Breadcrumbs>
+        </Flex>
+      )}
       <Box style={{ marginTop: 60, minHeight: "100vh" }}>
-        <>
-          <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
-            <Title order={1}>{season?.title}</Title>
-            <Text>{season?.description}</Text>
-          </Flex>
-          {products[0] ? (
-            <Flex justify={"center"} mt="sm" gap="lg">
-              {categories.map((category, index) => {
-                return (
-                  <Link
-                    key={index}
-                    href={`/season/${seasonSlug}/category/${category.slug}`}
-                  >
-                    <Button variant="outline" color="brand.2">
-                      {category.title}
-                    </Button>
-                  </Link>
-                );
-              })}
+        {isLoading.products ? null : (
+          <>
+            <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
+              <Title order={1}>{season?.title}</Title>
+              <Text>{season?.description}</Text>
             </Flex>
-          ) : null}
-          <Flex mt="xl" wrap="wrap" justify={"center"}>
-            <Grid justify={"center"}>
-              {products?.map((product: any, index: number) => {
-                return (
-                  <Grid.Col key={index} span={4}>
-                    <ProductCard product={product} />
-                  </Grid.Col>
-                );
-              })}
-            </Grid>
-          </Flex>
-        </>
+            {products[0] ? (
+              <Flex justify={"center"} mt="sm" gap="lg">
+                {categories.map((category, index) => {
+                  return (
+                    <Link
+                      key={index}
+                      href={`/season/${seasonSlug}/category/${category.slug}`}
+                    >
+                      <Button variant="outline" color="brand.2">
+                        {category.title}
+                      </Button>
+                    </Link>
+                  );
+                })}
+              </Flex>
+            ) : null}
+            <Flex mt="xl" wrap="wrap" justify={"center"}>
+              <Grid justify={"center"}>
+                {products?.map((product: any, index: number) => {
+                  return (
+                    <Grid.Col key={index} span={4}>
+                      <ProductCard product={product} />
+                    </Grid.Col>
+                  );
+                })}
+              </Grid>
+            </Flex>
+          </>
+        )}
       </Box>
     </AppShell>
   );

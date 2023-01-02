@@ -20,6 +20,15 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
+        const getCategorySlug = await Category.findOne({ slug });
+        const getSeasonSlug = await Season.findOne({ slug: seasonSlug });
+        console.log(getCategorySlug);
+        if (!getCategorySlug || !getSeasonSlug) {
+          return res
+            .status(400)
+            .json({ success: false, data: "URL existerar inte" });
+        }
+
         const subProducts = await SubProduct.find({})
           .populate({
             path: "mainProduct",
