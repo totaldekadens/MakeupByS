@@ -116,7 +116,18 @@ const CategoryPage: NextPage = (props) => {
     }
   }
   return (
-    <AppShell fixed={false} header={<Header />} footer={<Footer />}>
+    <AppShell
+      fixed={false}
+      header={<Header />}
+      footer={<Footer />}
+      styles={{
+        main: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        },
+      }}
+    >
       {isLoading.season || isLoading.category ? null : (
         <Flex sx={{ width: "100%" }}>
           <Breadcrumbs>
@@ -132,7 +143,7 @@ const CategoryPage: NextPage = (props) => {
           </Breadcrumbs>
         </Flex>
       )}
-      <Box style={{ marginTop: 60, minHeight: "100vh" }}>
+      <Box style={{ marginTop: 60, minHeight: "100vh", maxWidth: "1320px" }}>
         {isLoading.products ? null : (
           <>
             <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
