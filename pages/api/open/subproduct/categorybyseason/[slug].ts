@@ -22,7 +22,7 @@ export default async function handler(
       try {
         const getCategorySlug = await Category.findOne({ slug });
         const getSeasonSlug = await Season.findOne({ slug: seasonSlug });
-        console.log(getCategorySlug);
+
         if (!getCategorySlug || !getSeasonSlug) {
           return res
             .status(400)
@@ -47,7 +47,7 @@ export default async function handler(
             },
           });
 
-        // Find a better way. Should be able to filter the query above
+        // Todo if time: #67 Find a better way. Should be able to filter the query above. Check aggregation and virtuals with match
         let list: any = [];
         let list2: any = [];
         subProducts.forEach((product) => {
