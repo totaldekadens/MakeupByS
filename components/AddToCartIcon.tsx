@@ -30,7 +30,6 @@ const AddToCartIcon: FC<Props> = ({ color, openCart, product }) => {
     key: "cart",
     defaultValue: [],
   });
-
   const price = Number(product.mainProduct.price.$numberDecimal);
   const handleClick = () => {
     const lineItem = {
@@ -55,7 +54,7 @@ const AddToCartIcon: FC<Props> = ({ color, openCart, product }) => {
 
     if (foundIndex >= 0) {
       if (cartCopy[foundIndex].quantity >= product.availableQty) {
-        return alert("Produkterna är slut!"); // Fixa modal till denna sen
+        return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
       }
       cartCopy[foundIndex].quantity++;
     } else {

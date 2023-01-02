@@ -1,7 +1,8 @@
 import { Box, Drawer, Flex, Group, Image, Title, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { IconCircleMinus, IconCirclePlus } from "@tabler/icons";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import useSlugify from "../utils/useSlugify";
 import { LineItem } from "./AddToCartIcon";
 
 type Props = {
@@ -10,11 +11,70 @@ type Props = {
 };
 
 const Cart: FC<Props> = ({ opened, openCart }) => {
+  const [product, setProduct] = useState<any>();
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
 
+  const handleIncrement = async (product: LineItem) => {
+    try {
+      if (product) {
+        const getSlug = useSlugify(product.price_data.product_data.name);
+
+        let response = await fetch(`/api/open/subproduct/${getSlug}`);
+        let result = await response.json();
+
+        if (result.success) {
+          setProduct(result.data);
+
+          let cartCopy = [...cartItems];
+
+          let foundIndex = cartCopy.findIndex(
+            (cartItem) =>
+              cartItem.price_data.product_data.metadata.id ===
+              product.price_data.product_data.metadata.id
+          );
+
+          if (foundIndex >= 0) {
+            if (cartCopy[foundIndex].quantity >= result.data.availableQty) {
+              return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
+            }
+            cartCopy[foundIndex].quantity++;
+          }
+          setCartItems(cartCopy);
+
+          return;
+        }
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDecrement = async (product: LineItem) => {
+    try {
+      if (product) {
+        let cartCopy = [...cartItems];
+
+        let foundIndex = cartCopy.findIndex(
+          (cartItem) =>
+            cartItem.price_data.product_data.metadata.id ===
+            product.price_data.product_data.metadata.id
+        );
+        console.log(foundIndex);
+        if (foundIndex >= 0) {
+          console.log("kommer in");
+          cartCopy[foundIndex].quantity--;
+        }
+        setCartItems(cartCopy);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  console.log(product);
   return (
     <Drawer
       opened={opened}
@@ -52,11 +112,20 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
               <Title order={6}>{product.price_data.product_data.name}</Title>
               <Group spacing={5}>
                 <IconCircleMinus
+                  style={{
+                    cursor: product.quantity < 2 ? "unset" : "pointer",
+                    pointerEvents: product.quantity < 2 ? "none" : "unset",
+                  }}
                   strokeWidth={1.2}
                   color={product.quantity < 2 ? "gray" : "black"}
+                  onClick={() => handleDecrement(product)}
                 />
                 <Text>{product.quantity}</Text>
-                <IconCirclePlus strokeWidth={1.2} />
+                <IconCirclePlus
+                  style={{ cursor: "pointer" }}
+                  strokeWidth={1.2}
+                  onClick={() => handleIncrement(product)}
+                />
               </Group>
             </Flex>
           </Flex>
