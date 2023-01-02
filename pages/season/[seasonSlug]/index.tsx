@@ -12,6 +12,7 @@ import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react";
+import BreadCrumb from "../../../components/BreadCrumb";
 import Footer from "../../../components/Footer";
 import Header from "../../../components/Header";
 import ProductCard from "../../../components/ProductCard";
@@ -115,16 +116,11 @@ const SeasonPage: NextPage = (props) => {
       {isLoading.season ? null : (
         <Flex sx={{ width: "100%" }}>
           <Breadcrumbs>
-            <Link href={"/"}>
-              <Text color="brand.6" size="sm">
-                Hem
-              </Text>
-            </Link>
-            <Link color="brand.6" href={`/season/${season?.slug}`}>
-              <Text color="brand.6" size="sm">
-                {season?.title}
-              </Text>
-            </Link>
+            <BreadCrumb href={"/"} title={"Hem"} />
+            <BreadCrumb
+              href={`/season/${season?.slug}`}
+              title={season?.title}
+            />
           </Breadcrumbs>
         </Flex>
       )}
@@ -133,10 +129,10 @@ const SeasonPage: NextPage = (props) => {
           <>
             <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
               <Title order={1}>{season?.title}</Title>
-              <Text>{season?.description}</Text>
+              <Text color="dimmed">{season?.description}</Text>
             </Flex>
             {products[0] ? (
-              <Flex justify={"center"} mt="sm" gap="lg">
+              <Flex justify={"center"} mt="sm" gap="lg" wrap={"wrap"}>
                 {categories.map((category, index) => {
                   return (
                     <Link
@@ -155,7 +151,7 @@ const SeasonPage: NextPage = (props) => {
               <Grid justify={"center"}>
                 {products?.map((product: any, index: number) => {
                   return (
-                    <Grid.Col key={index} span={4}>
+                    <Grid.Col key={index} md={4} sm={5} xs={6}>
                       <ProductCard product={product} />
                     </Grid.Col>
                   );

@@ -52,18 +52,18 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
         params: ButtonStylesParams
       ): Record<string, CSSObject> => ({
         root: {
-          radius: {md: 100},
-          minWidth: '200px',
+          borderRadius: "10px",
+          minWidth: "150px",
           // Här kan vi lägga in styling för Button-komponenten i Mantine
           "&:hover": {
-            backgroundColor: 'whitesmoke',
+            backgroundColor: "whitesmoke",
             color: theme.colors.brand[3],
             borderColor: theme.colors.brand[3],
             // Här kan vi lägga in hover för Button-komponenten i Mantine
           },
         },
         label: {
-          fontWeight: 'bold',
+          fontWeight: "bold",
           textTransform: "uppercase",
           // Här kan vi lägga in storlek för texten i Button tex
         },
@@ -72,8 +72,8 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
     TextInput: {
       styles: (theme: MantineTheme) => ({
         root: {
-          backgroundColor: theme.colors.brand[2]
-        }
+          backgroundColor: theme.colors.brand[2],
+        },
       }),
     },
     Title: {
