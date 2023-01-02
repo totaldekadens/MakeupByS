@@ -10,7 +10,7 @@ type Props = {
   product: any;
 };
 
-type LineItem = {
+export type LineItem = {
   quantity: number;
   price_data: {
     currency: string;
@@ -26,7 +26,7 @@ type LineItem = {
 
 const AddToCartIcon: FC<Props> = ({ color, openCart, product }) => {
   const { hovered, ref } = useHover();
-  const [value, setValue] = useLocalStorage<LineItem[]>({
+  const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
@@ -47,19 +47,22 @@ const AddToCartIcon: FC<Props> = ({ color, openCart, product }) => {
       },
     };
 
-    let cartCopy = [...value];
+    let cartCopy = [...cartItems];
 
     let foundIndex = cartCopy.findIndex(
       (cartItem) => cartItem.price_data.product_data.metadata.id === product._id
     );
 
     if (foundIndex >= 0) {
+      if (cartCopy[foundIndex].quantity >= product.availableQty) {
+        return alert("Produkterna är slut!"); // Fixa modal till denna sen
+      }
       cartCopy[foundIndex].quantity++;
     } else {
       cartCopy.push(lineItem);
     }
 
-    setValue(cartCopy);
+    setCartItems(cartCopy);
     openCart(true);
   };
 

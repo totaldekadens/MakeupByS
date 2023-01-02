@@ -24,7 +24,7 @@ const ProductCard: FC<Props> = ({ product, openCart }) => {
       }}
     >
       <Card.Section>
-        <Image src={path} height={300} alt="Norway" fit="contain" />
+        <Image src={path} height={300} alt={product.title} fit="contain" />
         <Box
           w={50}
           h={50}
