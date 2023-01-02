@@ -1,7 +1,5 @@
 import dbConnect from "../../../../../utils/dbConnect";
-import SubProduct, {
-  SubProductDocument,
-} from "../../../../../models/SubProduct";
+import SubProduct from "../../../../../models/SubProduct";
 import { NextApiRequest, NextApiResponse } from "next";
 import MainProduct from "../../../../../models/MainProduct";
 import Category from "../../../../../models/Category";
@@ -13,7 +11,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const {
-    query: { slug },
+    query: { slug, seasonSlug },
     method,
   } = req;
 
@@ -22,9 +20,10 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const getSeasonSlug = await Season.findOne({ slug });
+        const getCategorySlug = await Category.findOne({ slug });
+        const getSeasonSlug = await Season.findOne({ slug: seasonSlug });
 
-        if (!getSeasonSlug) {
+        if (!getCategorySlug || !getSeasonSlug) {
           return res
             .status(400)
             .json({ success: false, data: "URL existerar inte" });
@@ -45,34 +44,31 @@ export default async function handler(
             populate: {
               path: "seasons",
               model: Season,
-              //match: { slug: { $in: slug } },  // Check why this doesnt work!
             },
           });
 
-        /* 
-        arrayOfElements.map((element) => {
-          return {
-            ...element,
-            subElements: element.subElements.filter(
-              (subElement) => subElement.surname === 1
-            ),
-          };
-        }); 
-        */
-
         // Todo if time: #67 Find a better way. Should be able to filter the query above. Check aggregation and virtuals with match
         let list: any = [];
+        let list2: any = [];
         subProducts.forEach((product) => {
-          product.colors.forEach((color: ColorDocument) => {
-            color.seasons.forEach((season: any) => {
-              if (season.slug == slug) {
+          product.colors.forEach((color: any) => {
+            color.seasons.forEach((season: SeasonDocument) => {
+              if (season.slug == seasonSlug) {
                 list.push(product);
               }
             });
           });
         });
 
-        res.status(200).json({ success: true, data: list });
+        subProducts.forEach((product) => {
+          if (product.mainProduct.category.slug == slug) {
+            list2.push(product);
+          }
+        });
+
+        const newList = list.filter((el: any) => list2.includes(el));
+
+        res.status(200).json({ success: true, data: newList });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
       }

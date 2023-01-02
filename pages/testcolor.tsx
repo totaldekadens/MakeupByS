@@ -1,5 +1,4 @@
 import Head from "next/head";
-import { useSession } from "next-auth/react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { AppShell } from "@mantine/core";
