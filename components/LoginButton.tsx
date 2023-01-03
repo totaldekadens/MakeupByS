@@ -1,9 +1,6 @@
-import { Box, Button, Flex, Text } from "@mantine/core";
+import { Button, Flex, Text } from "@mantine/core";
 import { useSession, signIn, signOut } from "next-auth/react";
-import {
-    IconUser,
-    IconShoppingBag
-} from "@tabler/icons"
+import { IconUser, IconShoppingBag } from "@tabler/icons";
 import Link from "next/link";
 const LoginButton = () => {
   const { data: session } = useSession();
@@ -20,19 +17,13 @@ const LoginButton = () => {
     );
   }
   return (
-    <Flex gap={"md"} 
-    justify="center"
-    align="flex-end"
-    direction="row"
-    mr={40}
-    >
-        <Link href='/'>
-            <IconUser size={36} color="white" onClick={() => signIn()} />
-          </Link>
-          <Link href='/'>
-            <IconShoppingBag size={36} color='white'/>
-        </Link>
-
+    <Flex gap={"md"} justify="center" align="flex-end" direction="row" mr={40}>
+      <Link href="/">
+        <IconUser size={36} color="white" onClick={() => signIn()} />
+      </Link>
+      <Link href="/">
+        <IconShoppingBag size={36} color="white" />
+      </Link>
     </Flex>
   );
 };

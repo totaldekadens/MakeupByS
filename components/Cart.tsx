@@ -1,8 +1,6 @@
 import {
   Drawer,
   Flex,
-  Group,
-  Image,
   Title,
   Text,
   Button,
@@ -10,19 +8,12 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import {
-  IconCircleMinus,
-  IconCirclePlus,
-  IconTrash,
-  IconX,
-} from "@tabler/icons";
+import { IconX } from "@tabler/icons";
 import Link from "next/link";
 import { Dispatch, FC, SetStateAction } from "react";
-import useHandleDecrement from "../utils/useHandleDecrement";
-import UseHandleIncrement from "../utils/useHandleIncrement";
-import useHandleRemoveCartItem from "../utils/useHandleRemoveCartItem";
 import useWindowSize from "../utils/useWindowSize";
 import { LineItem } from "./AddToCartIcon";
+import CartItem from "./CartItem";
 
 type Props = {
   opened: boolean;
@@ -87,84 +78,11 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
         <Flex direction={"column"} sx={{ width: "100%", height: setHeight }}>
           {cartItems.map((product, index) => {
             return (
-              <Flex
-                key={index}
-                h={100}
-                pb={15}
-                mb={15}
-                sx={(theme) => ({
-                  width: "95%",
-
-                  borderBottom: "1px solid" + theme.colors.gray[2],
-                })}
-              >
-                <Image
-                  src={`/uploads/${product.price_data.product_data.images[0]}`}
-                  width={55}
-                  alt={product.price_data.product_data.name}
-                  fit="contain"
-                />
-
-                <Flex ml={"xs"} direction={"column"} justify="space-between">
-                  <Title
-                    order={6}
-                    sx={(theme) => ({
-                      [theme.fn.smallerThan("sm")]: {
-                        fontSize: theme.fontSizes.sm,
-                      },
-                    })}
-                  >
-                    {product.price_data.product_data.name}
-                  </Title>
-                  <Group w={100} spacing={5}>
-                    <IconCircleMinus
-                      style={{
-                        cursor: product.quantity < 2 ? "unset" : "pointer",
-                        pointerEvents: product.quantity < 2 ? "none" : "unset",
-                      }}
-                      strokeWidth={1.2}
-                      color={product.quantity < 2 ? "gray" : "black"}
-                      onClick={() =>
-                        useHandleDecrement(product, cartItems, setCartItems)
-                      }
-                    />
-                    <Text>{product.quantity}</Text>
-                    <IconCirclePlus
-                      style={{ cursor: "pointer" }}
-                      strokeWidth={1.2}
-                      onClick={() =>
-                        UseHandleIncrement(product, cartItems, setCartItems)
-                      }
-                    />
-                  </Group>
-                </Flex>
-                <Flex
-                  sx={{ width: "100%" }}
-                  direction={"column"}
-                  justify="flex-end"
-                  align={"flex-end"}
-                >
-                  <Title
-                    mb={10}
-                    order={4}
-                    sx={(theme) => ({
-                      [theme.fn.smallerThan("sm")]: {
-                        fontSize: "16px",
-                      },
-                    })}
-                  >
-                    {product.price_data.unit_amount} KR
-                  </Title>
-                  <IconTrash
-                    size={20}
-                    style={{ cursor: "pointer" }}
-                    strokeWidth={1.25}
-                    onClick={() =>
-                      useHandleRemoveCartItem(product, cartItems, setCartItems)
-                    }
-                  />
-                </Flex>
-              </Flex>
+              <CartItem
+                product={product}
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+              />
             );
           })}
         </Flex>
@@ -191,7 +109,7 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
           <Title order={4}>{totalSum} KR</Title>
         </Flex>
         <Flex>
-          <Link href="#">
+          <Link href="/kassa">
             <Button h={50}>Till kassan</Button>
           </Link>
         </Flex>
