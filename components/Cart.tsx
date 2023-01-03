@@ -1,5 +1,4 @@
 import {
-  Box,
   Drawer,
   Flex,
   Group,
@@ -7,12 +6,22 @@ import {
   Title,
   Text,
   Button,
+  Box,
+  ScrollArea,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { IconCircleMinus, IconCirclePlus, IconTrash } from "@tabler/icons";
+import {
+  IconCircleMinus,
+  IconCirclePlus,
+  IconTrash,
+  IconX,
+} from "@tabler/icons";
 import Link from "next/link";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import useSlugify from "../utils/useSlugify";
+import { Dispatch, FC, SetStateAction } from "react";
+import useHandleDecrement from "../utils/useHandleDecrement";
+import UseHandleIncrement from "../utils/useHandleIncrement";
+import useHandleRemoveCartItem from "../utils/useHandleRemoveCartItem";
+import useWindowSize from "../utils/useWindowSize";
 import { LineItem } from "./AddToCartIcon";
 
 type Props = {
@@ -26,80 +35,18 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
     defaultValue: [],
   });
 
-  const handleIncrement = async (product: LineItem) => {
-    try {
-      if (product) {
-        const getSlug = useSlugify(product.price_data.product_data.name);
+  let totalSum = cartItems.reduce(
+    (sum, item) => sum + item.price_data.unit_amount * item.quantity,
+    0
+  );
 
-        let response = await fetch(`/api/open/subproduct/${getSlug}`);
-        let result = await response.json();
+  let size = useWindowSize();
 
-        if (result.success) {
-          let cartCopy = [...cartItems];
-
-          let foundIndex = cartCopy.findIndex(
-            (cartItem) =>
-              cartItem.price_data.product_data.metadata.id ===
-              product.price_data.product_data.metadata.id
-          );
-
-          if (foundIndex >= 0) {
-            if (cartCopy[foundIndex].quantity >= result.data.availableQty) {
-              return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
-            }
-            cartCopy[foundIndex].quantity++;
-          }
-          setCartItems(cartCopy);
-
-          return;
-        }
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleDecrement = async (product: LineItem) => {
-    try {
-      if (product) {
-        let cartCopy = [...cartItems];
-
-        let foundIndex = cartCopy.findIndex(
-          (cartItem) =>
-            cartItem.price_data.product_data.metadata.id ===
-            product.price_data.product_data.metadata.id
-        );
-        console.log(foundIndex);
-        if (foundIndex >= 0) {
-          console.log("kommer in");
-          cartCopy[foundIndex].quantity--;
-        }
-        setCartItems(cartCopy);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleRemove = async (product: LineItem) => {
-    try {
-      if (product) {
-        let cartCopy = [...cartItems];
-
-        const updateCart = cartCopy.filter(
-          (cartItem) =>
-            cartItem.price_data.product_data.metadata.id !=
-            product.price_data.product_data.metadata.id
-        );
-        setCartItems(updateCart);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const setHeight = size.height - 320;
 
   return (
     <Drawer
+      overlayOpacity={0.3}
       withCloseButton={false}
       opened={opened}
       onClose={() => openCart(false)}
@@ -107,7 +54,7 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
       padding="xl"
       size="lg"
       position="right"
-      styles={{
+      styles={(theme) => ({
         body: {
           display: "flex",
           flexDirection: "column",
@@ -120,66 +67,109 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
           fontSize: "24px",
           justifyContent: "center",
         },
-      }}
+        drawer: {
+          [theme.fn.smallerThan("sm")]: {
+            width: "300px",
+          },
+          [theme.fn.smallerThan("xs")]: {
+            width: "280px",
+          },
+        },
+      })}
     >
-      <Flex direction={"column"} sx={{ width: "100%" }}>
-        {cartItems.map((product) => {
-          return (
-            <Flex
-              h={100}
-              pb={10}
-              mb={10}
-              sx={(theme) => ({
-                width: "95%",
-                borderBottom: "1px solid" + theme.colors.dark[0],
-              })}
-            >
-              <Image
-                src={`/uploads/${product.price_data.product_data.images[0]}`}
-                width={80}
-                alt={product.price_data.product_data.name}
-                fit="contain"
-              />
-              <Flex ml={"xs"} direction={"column"} justify="space-between">
-                <Title order={6}>{product.price_data.product_data.name}</Title>
-                <Group w={100} spacing={5}>
-                  <IconCircleMinus
-                    style={{
-                      cursor: product.quantity < 2 ? "unset" : "pointer",
-                      pointerEvents: product.quantity < 2 ? "none" : "unset",
-                    }}
-                    strokeWidth={1.2}
-                    color={product.quantity < 2 ? "gray" : "black"}
-                    onClick={() => handleDecrement(product)}
-                  />
-                  <Text>{product.quantity}</Text>
-                  <IconCirclePlus
-                    style={{ cursor: "pointer" }}
-                    strokeWidth={1.2}
-                    onClick={() => handleIncrement(product)}
-                  />
-                </Group>
-              </Flex>
+      <Box pos={"absolute"} top={10} right={10}>
+        <IconX style={{ cursor: "pointer" }} onClick={() => openCart(false)} />
+      </Box>
+      <ScrollArea
+        style={{ height: setHeight, width: "100%" }}
+        scrollbarSize={8}
+      >
+        <Flex direction={"column"} sx={{ width: "100%", height: setHeight }}>
+          {cartItems.map((product, index) => {
+            return (
               <Flex
-                sx={{ width: "100%" }}
-                direction={"column"}
-                justify="flex-end"
-                align={"flex-end"}
+                key={index}
+                h={100}
+                pb={15}
+                mb={15}
+                sx={(theme) => ({
+                  width: "95%",
+
+                  borderBottom: "1px solid" + theme.colors.gray[2],
+                })}
               >
-                <Title mb={10} order={4}>
-                  {product.price_data.unit_amount} KR
-                </Title>
-                <IconTrash
-                  size={20}
-                  style={{ cursor: "pointer" }}
-                  strokeWidth={1.25}
-                  onClick={() => handleRemove(product)}
+                <Image
+                  src={`/uploads/${product.price_data.product_data.images[0]}`}
+                  width={55}
+                  alt={product.price_data.product_data.name}
+                  fit="contain"
                 />
+
+                <Flex ml={"xs"} direction={"column"} justify="space-between">
+                  <Title
+                    order={6}
+                    sx={(theme) => ({
+                      [theme.fn.smallerThan("sm")]: {
+                        fontSize: theme.fontSizes.sm,
+                      },
+                    })}
+                  >
+                    {product.price_data.product_data.name}
+                  </Title>
+                  <Group w={100} spacing={5}>
+                    <IconCircleMinus
+                      style={{
+                        cursor: product.quantity < 2 ? "unset" : "pointer",
+                        pointerEvents: product.quantity < 2 ? "none" : "unset",
+                      }}
+                      strokeWidth={1.2}
+                      color={product.quantity < 2 ? "gray" : "black"}
+                      onClick={() =>
+                        useHandleDecrement(product, cartItems, setCartItems)
+                      }
+                    />
+                    <Text>{product.quantity}</Text>
+                    <IconCirclePlus
+                      style={{ cursor: "pointer" }}
+                      strokeWidth={1.2}
+                      onClick={() =>
+                        UseHandleIncrement(product, cartItems, setCartItems)
+                      }
+                    />
+                  </Group>
+                </Flex>
+                <Flex
+                  sx={{ width: "100%" }}
+                  direction={"column"}
+                  justify="flex-end"
+                  align={"flex-end"}
+                >
+                  <Title
+                    mb={10}
+                    order={4}
+                    sx={(theme) => ({
+                      [theme.fn.smallerThan("sm")]: {
+                        fontSize: "16px",
+                      },
+                    })}
+                  >
+                    {product.price_data.unit_amount} KR
+                  </Title>
+                  <IconTrash
+                    size={20}
+                    style={{ cursor: "pointer" }}
+                    strokeWidth={1.25}
+                    onClick={() =>
+                      useHandleRemoveCartItem(product, cartItems, setCartItems)
+                    }
+                  />
+                </Flex>
               </Flex>
-            </Flex>
-          );
-        })}
-      </Flex>
+            );
+          })}
+        </Flex>
+      </ScrollArea>
+
       <Flex
         h={200}
         pos="absolute"
@@ -187,12 +177,18 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
         direction={"column"}
         justify="center"
         align={"center"}
-        sx={{ width: "100%", borderTop: "1px solid lightGray" }}
+        sx={(theme) => ({
+          width: "100%",
+          borderTop: "1px solid" + theme.colors.gray[2],
+          [theme.fn.smallerThan("sm")]: {
+            height: "150px",
+          },
+        })}
         gap="lg"
       >
         <Flex gap={8} align="center">
           <Text>Totalt att betala</Text>
-          <Title order={4}>summa</Title>
+          <Title order={4}>{totalSum} KR</Title>
         </Flex>
         <Flex>
           <Link href="#">
