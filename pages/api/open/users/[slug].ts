@@ -18,7 +18,7 @@ export type RestrictedUser = {
     city: string;
     country: string;
   };
-  phone: string;
+  phone?: string;
 };
 
 export default async function handler(

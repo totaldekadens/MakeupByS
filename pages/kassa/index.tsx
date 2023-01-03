@@ -14,11 +14,24 @@ import { useLocalStorage } from "@mantine/hooks";
 import { LineItem } from "../../components/AddToCartIcon";
 import CartCheckout from "../../components/CartCheckout";
 import DeliveryInformation from "../../components/DeliveryInformation";
+import { useContext, useEffect } from "react";
+import { checkoutContext } from "../../components/context/checkoutProvider";
 const Kassa: NextPage = () => {
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
+
+  const { checkout, setCheckout } = useContext(checkoutContext);
+
+  useEffect(() => {
+    const updateCheckoutInfo = () => {
+      const checkoutCopy = { ...checkout };
+      checkoutCopy.cartItems = cartItems;
+      setCheckout(checkoutCopy);
+    };
+    updateCheckoutInfo();
+  }, [cartItems]);
 
   let totalSum = cartItems.reduce(
     (sum, item) => sum + item.price_data.unit_amount * item.quantity,

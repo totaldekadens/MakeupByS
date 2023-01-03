@@ -1,11 +1,12 @@
 import { Button, Flex, TextInput, Title, Text, Modal } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
-import { FC, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import * as Yup from "yup";
 import { RestrictedUser } from "../pages/api/open/users/[slug]";
 import { Checkbox } from "@mantine/core";
 import DeliveryForm from "./deliveryForm";
 import DisplayAddress from "./DisplayAddress";
+import { checkoutContext } from "./context/checkoutProvider";
 interface FormValues {
   email: string;
 }
@@ -23,9 +24,27 @@ const DeliveryInformation: FC = () => {
   const [newDeliveryInfo, setNewDeliveryInfo] = useState<
     RestrictedUser | undefined
   >();
+  const { checkout, setCheckout } = useContext(checkoutContext);
 
-  console.log(newDeliveryInfo);
-  //console.log(DeliveryInfo);
+  useEffect(() => {
+    const updateCheckoutInfo = () => {
+      if (deliveryInfo) {
+        const checkoutCopy = { ...checkout };
+        checkoutCopy.address.invoice = deliveryInfo.address;
+        checkoutCopy.name = deliveryInfo.name;
+        checkoutCopy.email = deliveryInfo.email;
+        checkoutCopy.phone = deliveryInfo.phone;
+        if (newDeliveryInfo) {
+          checkoutCopy.name = newDeliveryInfo.name;
+          checkoutCopy.email = newDeliveryInfo.email;
+          checkoutCopy.phone = newDeliveryInfo.phone;
+          checkoutCopy.address.delivery = newDeliveryInfo.address;
+        }
+        setCheckout(checkoutCopy);
+      }
+    };
+    updateCheckoutInfo();
+  }, [deliveryInfo, newDeliveryInfo]);
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -52,9 +71,7 @@ const DeliveryInformation: FC = () => {
 
   return (
     <Flex mt={40} direction={"column"} align="center" sx={{ width: "100%" }}>
-      <Title mb={20} order={2}>
-        Dina uppgifter:
-      </Title>
+      <Title order={2}>Dina uppgifter:</Title>
       {!deliveryInfo ? (
         <>
           <Flex gap={20} direction="column" align={"center"}>
@@ -87,14 +104,17 @@ const DeliveryInformation: FC = () => {
           <DisplayAddress
             deliveryInfo={deliveryInfo}
             setDeliveryInfo={setDeliveryInfo}
+            newInfo={false}
           />
           <Title mt={20} order={3}>
-            Leverans
+            Leveransadress
           </Title>
           {newDeliveryInfo ? (
             <DisplayAddress
               deliveryInfo={newDeliveryInfo}
               setDeliveryInfo={setNewDeliveryInfo}
+              newInfo={true}
+              setChecked={setChecked}
             />
           ) : (
             <Flex
@@ -124,12 +144,11 @@ const DeliveryInformation: FC = () => {
       ) : (
         <Flex>Address finns inte</Flex>
       )}
-
       {!checked ? (
         <Modal
           opened={!checked}
           onClose={() => setChecked(true)}
-          title="Ändra dina leveransuppgifter"
+          title="Lägg till leveransadress"
         >
           <DeliveryForm
             deliveryInfo={deliveryInfo}

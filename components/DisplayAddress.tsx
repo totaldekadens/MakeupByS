@@ -1,22 +1,35 @@
 import { Flex, Text } from "@mantine/core";
+import { IconX } from "@tabler/icons";
 import { Dispatch, FC, SetStateAction } from "react";
 import { RestrictedUser } from "../pages/api/open/users/[slug]";
 
 type Props = {
   deliveryInfo: RestrictedUser | undefined;
   setDeliveryInfo: Dispatch<SetStateAction<RestrictedUser | undefined>>;
+  newInfo: boolean;
+  setChecked?: Dispatch<SetStateAction<boolean>>;
 };
 
-const DisplayAddress: FC<Props> = ({ deliveryInfo, setDeliveryInfo }) => {
+const DisplayAddress: FC<Props> = ({
+  deliveryInfo,
+  setDeliveryInfo,
+  newInfo,
+}) => {
   return (
-    <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
+    <Flex mt={20} direction={"column"} align="center" sx={{ width: "100%" }}>
       <Flex
         p={30}
         direction="column"
         sx={(theme) => ({
-          border: "1px solid" + theme.colors.gray[3],
+          border: newInfo
+            ? `4px solid ${theme.colors.gray[3]}`
+            : `1px solid ${theme.colors.gray[3]}`,
           borderRadius: "10px",
-          [theme.fn.smallerThan("sm")]: {},
+          width: "550px",
+          [theme.fn.smallerThan("sm")]: {
+            width: "430px",
+            padding: 20,
+          },
         })}
       >
         <Text
@@ -26,7 +39,7 @@ const DisplayAddress: FC<Props> = ({ deliveryInfo, setDeliveryInfo }) => {
           align="end"
           sx={{ cursor: "pointer" }}
         >
-          Ändra
+          {newInfo ? <IconX /> : "Ändra"}
         </Text>
         <Text weight={"bold"}>{deliveryInfo?.name}</Text>
         <Flex
