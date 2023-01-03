@@ -77,7 +77,7 @@ const CartItem: FC<Props> = ({ product, cartItems, setCartItems }) => {
             },
           })}
         >
-          {product.price_data.unit_amount} KR
+          {product.quantity * product.price_data.unit_amount} KR
         </Title>
         <IconTrash
           size={20}

@@ -1,10 +1,30 @@
-import { AppShell, Box, Flex, Title } from "@mantine/core";
+import {
+  AppShell,
+  Box,
+  Flex,
+  Grid,
+  Title,
+  Text,
+  Group,
+  TextInput,
+} from "@mantine/core";
 import { NextPage } from "next";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
 import HeaderCheckout from "../../components/HeaderCheckout";
-
+import { useLocalStorage } from "@mantine/hooks";
+import { LineItem } from "../../components/AddToCartIcon";
+import CartCheckout from "../../components/CartCheckout";
+import DeliveryInformation from "../../components/DeliveryInformation";
 const Kassa: NextPage = () => {
+  const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
+    key: "cart",
+    defaultValue: [],
+  });
+
+  let totalSum = cartItems.reduce(
+    (sum, item) => sum + item.price_data.unit_amount * item.quantity,
+    0
+  );
+
   return (
     <AppShell
       fixed={false}
@@ -19,6 +39,7 @@ const Kassa: NextPage = () => {
     >
       <Flex
         style={{
+          width: "100%",
           marginTop: 60,
           minHeight: "100vh",
           maxWidth: "1320px",
@@ -26,14 +47,9 @@ const Kassa: NextPage = () => {
           alignItems: "center",
         }}
       >
-        <Title>KASSA</Title>
-        <Flex
-          mt="xl"
-          sx={(theme) => ({
-            border: "1px solid" + theme.colors.gray[3],
-            borderRadius: "10px",
-          })}
-        ></Flex>
+        <Title order={1}>KASSA</Title>
+        <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />
+        <DeliveryInformation />
       </Flex>
     </AppShell>
   );
