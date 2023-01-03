@@ -1,6 +1,6 @@
-import {Box, Title, Header as MantineHeader, Flex, Group, Button, MantineProvider} from "@mantine/core";
-import { useSession } from "next-auth/react";
+import {Flex, Button} from "@mantine/core";
 import Link from "next/link";
+
 
 const ButtonSeason = () => {
     return (
@@ -11,26 +11,26 @@ const ButtonSeason = () => {
             align='center'
             direction={{base: 'column', sm: 'row'}}
         >
-            <Link href={"/"}>
-            <Button sx={(theme) => ({backgroundColor: theme.colors.brand[3],
+            <Link href={`/season/var`}>
+            <Button sx={(theme) => ({backgroundColor: theme.colors.brand[9],
                 borderColor: theme.colors.brand[0],
                 color: theme.colors.brand[0]})}>vår</Button>
             </Link>
 
-            <Link href={"/"}>
-            <Button sx={(theme) => ({backgroundColor: theme.colors.brand[3],
+            <Link href={`/season/sommar`}>
+            <Button sx={(theme) => ({backgroundColor: theme.colors.brand[9],
                 borderColor: theme.colors.brand[0],
                 color: theme.colors.brand[0]})}>sommar</Button>
             </Link>
 
-            <Link href={"/"}>
-            <Button sx={(theme) => ({backgroundColor: theme.colors.brand[3],
+            <Link href={`/season/host`}>
+            <Button sx={(theme) => ({backgroundColor: theme.colors.brand[9],
                 borderColor: theme.colors.brand[0],
                 color: theme.colors.brand[0]})}>höst</Button>
             </Link>
 
-            <Link href={"/"}>
-            <Button sx={(theme) => ({backgroundColor: theme.colors.brand[3],
+            <Link href={`/season/vinter`}>
+            <Button sx={(theme) => ({backgroundColor: theme.colors.brand[9],
                 borderColor: theme.colors.brand[0],
                 color: theme.colors.brand[0]})}>vinter</Button>
             </Link>

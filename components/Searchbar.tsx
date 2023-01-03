@@ -1,6 +1,7 @@
-import {Box, Title, Header as MantineHeader, Flex, Paper, Space, Input, TextInput, } from "@mantine/core";
+import { Flex, Autocomplete } from "@mantine/core";
 import {
     IconSearch,
+    IconX,
 } from "@tabler/icons"
 
 const Searchbar = () => {
@@ -12,15 +13,29 @@ const Searchbar = () => {
         ml={30}
         >
 
-        <TextInput
-        icon={<IconSearch color="grey" size={20}/>}
-        miw={300}
+            <Flex mr={5} align="flex-end">
+                <IconSearch color="white" size={25} stroke={3}/>
+            </Flex>
+
+        <Autocomplete
+        rightSection={<IconX color="white" size={20} stroke={2} />}
+        miw={250}
         id="searchbar"
-        placeholder="Sök.."
-        variant="filled"
-        sx={(theme) => ({backgroundColor: theme.colors.brand[2]})}
+        placeholder="Sök..."
+        variant="unstyled"
+        data={['React', 'Angular']}
+        styles={(theme) => ({
+            input: {
+                borderBottom: "1px solid white",
+                placeholder: "white",
+            },
+            value: {
+                value: "white",
+                color: "white",
+            }
+        })}
         >
-        </TextInput>
+        </Autocomplete>
         </Flex>
     )
 }

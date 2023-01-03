@@ -24,14 +24,11 @@ const LoginButton = () => {
     justify="center"
     align="flex-end"
     direction="row"
-    wrap="wrap"
     mr={40}
     >
-
         <Link href='/'>
             <IconUser size={36} color="white" onClick={() => signIn()} />
           </Link>
-
           <Link href='/'>
             <IconShoppingBag size={36} color='white'/>
         </Link>
