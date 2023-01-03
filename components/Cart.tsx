@@ -17,15 +17,7 @@ import {
   IconX,
 } from "@tabler/icons";
 import Link from "next/link";
-import {
-  Dispatch,
-  FC,
-  SetStateAction,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import useHandleDecrement from "../utils/useHandleDecrement";
 import UseHandleIncrement from "../utils/useHandleIncrement";
 import useHandleRemoveCartItem from "../utils/useHandleRemoveCartItem";
@@ -188,6 +180,9 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
         sx={(theme) => ({
           width: "100%",
           borderTop: "1px solid" + theme.colors.gray[2],
+          [theme.fn.smallerThan("sm")]: {
+            height: "150px",
+          },
         })}
         gap="lg"
       >
