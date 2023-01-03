@@ -74,7 +74,7 @@ const DeliveryInformation: FC = () => {
       <Title order={2}>Dina uppgifter:</Title>
       {!deliveryInfo ? (
         <>
-          <Flex gap={20} direction="column" align={"center"}>
+          <Flex mt={20} gap={20} direction="column" align={"center"}>
             <form
               style={{ display: "flex", gap: 20 }}
               onSubmit={form.onSubmit(handleSubmit)}
