@@ -1,3 +1,4 @@
+
 import {
   Box,
   Title,
@@ -46,20 +47,22 @@ const Header = () => {
         </Flex>
 
         <Flex justify={"space-between"} sx={{ width: "100%" }}>
+
           <Searchbar />
 
-          <Link href="/">
-            <Title size="xxx-large" mr={230} pt={20} color="white">
-              MakeUpByS
-            </Title>
-          </Link>
+              <Link href="/">
+                <Title size='xxx-large' mr={200} pt={20} color="white">
+                  MakeUpByS
+                </Title>
+              </Link>              
+                <LoginButton />
+            </Flex>
 
-          <LoginButton />
-        </Flex>
+            <Flex>
+                <ButtonSeason/>
+            </Flex>
 
-        <Flex>
-          <ButtonSeason />
-        </Flex>
+
       </Flex>
 
       <Flex gap={10}>

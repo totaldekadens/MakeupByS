@@ -59,6 +59,7 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
             backgroundColor: "whitesmoke",
             color: theme.colors.brand[3],
             borderColor: theme.colors.brand[3],
+
             // Här kan vi lägga in hover för Button-komponenten i Mantine
           },
         },
@@ -67,6 +68,15 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
           textTransform: "uppercase",
           // Här kan vi lägga in storlek för texten i Button tex
         },
+      }),
+    },
+    Autocomplete: {
+      styles: (theme: MantineTheme) => ({
+        placeholder: {
+          color: "white",
+          fontSize: "lg",
+          
+        }
       }),
     },
     TextInput: {
