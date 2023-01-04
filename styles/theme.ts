@@ -75,14 +75,13 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
         placeholder: {
           color: "white",
           fontSize: "lg",
-          
-        }
+        },
       }),
     },
     TextInput: {
       styles: (theme: MantineTheme) => ({
         root: {
-          backgroundColor: theme.colors.brand[2],
+          //backgroundColor: theme.colors.brand[2],
         },
       }),
     },
