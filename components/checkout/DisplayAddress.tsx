@@ -29,7 +29,7 @@ const DisplayAddress: FC<Props> = ({
           borderRadius: "10px",
           width: "550px",
           [theme.fn.smallerThan("sm")]: {
-            width: "430px",
+            width: "470px",
             padding: 20,
           },
           [theme.fn.smallerThan("xs")]: {

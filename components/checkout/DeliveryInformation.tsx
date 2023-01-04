@@ -8,6 +8,7 @@ import DeliveryForm from "./DeliveryForm";
 import DisplayAddress from "./DisplayAddress";
 import { getSession, useSession } from "next-auth/react";
 import { checkoutContext } from "../context/CheckoutProvider";
+import DeliveryFormGuest from "./DeliveryFormGuest";
 
 interface FormValues {
   email: string;
@@ -20,6 +21,7 @@ const schema = Yup.object<ShapeOf<FormValues>>({
 
 const DeliveryInformation: FC = () => {
   const [checked, setChecked] = useState(true);
+  const [isGuest, setisGuest] = useState(false);
   const [deliveryInfo, setDeliveryInfo] = useState<
     RestrictedUser | undefined
   >();
@@ -84,6 +86,7 @@ const DeliveryInformation: FC = () => {
         return;
       }
       setDeliveryInfo(undefined);
+      setisGuest(true);
     } catch (err) {
       console.error(err);
     }
@@ -167,9 +170,15 @@ const DeliveryInformation: FC = () => {
             </Flex>
           )}
         </>
-      ) : (
-        <Flex></Flex> // om address inte finns.
-      )}
+      ) : null}
+
+      {isGuest ? (
+        <DeliveryFormGuest
+          setDeliveryInfo={setDeliveryInfo}
+          deliveryInfo={deliveryInfo}
+        />
+      ) : null}
+
       {!checked ? (
         <Modal
           opened={!checked}
