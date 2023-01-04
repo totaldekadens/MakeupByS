@@ -7,6 +7,7 @@ import {
   Space,
   Input,
   Text,
+  MediaQuery,
 } from "@mantine/core";
 import { IconChevronLeft } from "@tabler/icons";
 import { useSession } from "next-auth/react";
@@ -27,6 +28,12 @@ const HeaderCheckout = () => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
+        [theme.fn.smallerThan("sm")]: {
+          height: 70,
+        },
+        [theme.fn.smallerThan("xs")]: {
+          height: 60,
+        },
       })}
     >
       <Flex justify={"space-between"} align="center" sx={{ width: "100%" }}>
@@ -40,9 +47,20 @@ const HeaderCheckout = () => {
           })}
         >
           <IconChevronLeft color="white" />
-          <Text color={"white"} align="center" onClick={() => router.back()}>
-            Tillbaka
-          </Text>
+          <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+            <Text
+              sx={(theme) => ({
+                [theme.fn.smallerThan("xs")]: {
+                  fontSize: 14,
+                },
+              })}
+              color={"white"}
+              align="center"
+              onClick={() => router.back()}
+            >
+              Tillbaka
+            </Text>
+          </MediaQuery>
         </Flex>
         <Link href="/">
           <Title
@@ -51,6 +69,9 @@ const HeaderCheckout = () => {
             sx={(theme) => ({
               [theme.fn.smallerThan("sm")]: {
                 fontSize: theme.fontSizes.xl,
+              },
+              [theme.fn.smallerThan("xs")]: {
+                fontSize: 26,
               },
             })}
           >

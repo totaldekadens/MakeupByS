@@ -49,6 +49,8 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.admin = user.admin;
+        token.address = user.address;
+        token.phone = user.phone;
       }
       return Promise.resolve(token);
     },
@@ -57,6 +59,8 @@ export const authOptions = {
       session.user.admin = token.admin;
       session.user.id = token.id;
       session.id = token.id;
+      session.user.address = token.address;
+      session.user.phone = token.phone;
 
       return session;
     },

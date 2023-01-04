@@ -37,6 +37,9 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
           width: "430px",
           padding: 20,
         },
+        [theme.fn.smallerThan("xs")]: {
+          width: "100%",
+        },
       })}
     >
       <Table>
@@ -44,7 +47,7 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
           <tr>
             <th>Produkt</th>
             <th>Antal</th>
-            <th>Total</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>

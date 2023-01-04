@@ -7,6 +7,7 @@ import { Checkbox } from "@mantine/core";
 import DeliveryForm from "./DeliveryForm";
 import DisplayAddress from "./DisplayAddress";
 import { checkoutContext } from "../context/CheckoutProvider";
+import { useSession } from "next-auth/react";
 
 interface FormValues {
   email: string;
@@ -26,7 +27,8 @@ const DeliveryInformation: FC = () => {
     RestrictedUser | undefined
   >();
   const { checkout, setCheckout } = useContext(checkoutContext);
-
+  const session = useSession();
+  console.log(session);
   useEffect(() => {
     const updateCheckoutInfo = () => {
       if (deliveryInfo) {
@@ -77,7 +79,12 @@ const DeliveryInformation: FC = () => {
         <>
           <Flex mt={20} gap={20} direction="column" align={"center"}>
             <form
-              style={{ display: "flex", gap: 20 }}
+              style={{
+                display: "flex",
+                gap: 20,
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
               onSubmit={form.onSubmit(handleSubmit)}
             >
               <TextInput
