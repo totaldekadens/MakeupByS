@@ -1,5 +1,6 @@
 import { Flex, Text } from "@mantine/core";
 import { IconX } from "@tabler/icons";
+import { useSession } from "next-auth/react";
 import { Dispatch, FC, SetStateAction } from "react";
 import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 
@@ -7,6 +8,7 @@ type Props = {
   deliveryInfo: RestrictedUser | undefined;
   setDeliveryInfo: Dispatch<SetStateAction<RestrictedUser | undefined>>;
   newInfo: boolean;
+  setNewDeliveryInfo?: Dispatch<SetStateAction<RestrictedUser | undefined>>;
   setChecked?: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -14,7 +16,13 @@ const DisplayAddress: FC<Props> = ({
   deliveryInfo,
   setDeliveryInfo,
   newInfo,
+  setNewDeliveryInfo,
 }) => {
+  const session = useSession();
+  const handleChange = () => {
+    setNewDeliveryInfo ? setNewDeliveryInfo(undefined) : null;
+    setDeliveryInfo(undefined);
+  };
   return (
     <Flex mt={20} direction={"column"} align="center" sx={{ width: "100%" }}>
       <Flex
@@ -27,19 +35,26 @@ const DisplayAddress: FC<Props> = ({
           borderRadius: "10px",
           width: "550px",
           [theme.fn.smallerThan("sm")]: {
-            width: "430px",
+            width: "470px",
             padding: 20,
+          },
+          [theme.fn.smallerThan("xs")]: {
+            width: "100%",
           },
         })}
       >
         <Text
-          onClick={() => setDeliveryInfo(undefined)}
+          onClick={() =>
+            newInfo && setNewDeliveryInfo
+              ? setNewDeliveryInfo(undefined)
+              : handleChange()
+          }
           mb={10}
           color={"dimmed"}
           align="end"
           sx={{ cursor: "pointer" }}
         >
-          {newInfo ? <IconX /> : "Ändra"}
+          {newInfo ? <IconX /> : session.data?.user ? "" : "Ändra"}
         </Text>
         <Text weight={"bold"}>{deliveryInfo?.name}</Text>
         <Flex

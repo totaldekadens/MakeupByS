@@ -3,6 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import User from "../../../models/User";
 import dbConnect from "../../../utils/dbConnect";
+import { boolean } from "yup";
 
 export const authOptions = {
   providers: [
@@ -49,6 +50,9 @@ export const authOptions = {
       if (user) {
         token.id = user.id;
         token.admin = user.admin;
+        token.address = user.address;
+        token.phone = user.phone;
+        token.stripeId = user.stripeId;
       }
       return Promise.resolve(token);
     },
@@ -57,6 +61,9 @@ export const authOptions = {
       session.user.admin = token.admin;
       session.user.id = token.id;
       session.id = token.id;
+      session.user.address = token.address;
+      session.user.phone = token.phone;
+      session.user.stripeId = token.stripeId;
 
       return session;
     },

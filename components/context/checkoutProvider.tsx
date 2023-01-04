@@ -10,7 +10,7 @@ interface Checkout {
   email: string;
   phone: string;
   address: {
-    invoice: Address;
+    invoice?: Address;
     delivery?: Address;
   };
   courrier: any; // Fix
@@ -46,8 +46,8 @@ const object = {
   email: "",
   phone: "",
   address: {
-    invoice: { line1: "", line2: "", postal_code: "", city: "", country: "" },
-    delivery: { line1: "", line2: "", postal_code: "", city: "", country: "" },
+    invoice: undefined,
+    delivery: undefined,
   },
   courrier: "", // Fix
 };
@@ -65,7 +65,6 @@ export const checkoutContext = React.createContext<checkoutContextData>({
 const CheckOutProvider: FC<PropsWithChildren<Props>> = (props) => {
   const [checkout, setCheckout] = useState<Checkout | undefined>(object);
 
-  console.log(checkout);
   return (
     <checkoutContext.Provider value={{ checkout, setCheckout }}>
       {props.children}

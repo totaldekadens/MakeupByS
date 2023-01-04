@@ -6,11 +6,24 @@ import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 import { Checkbox } from "@mantine/core";
 import DeliveryForm from "./DeliveryForm";
 import DisplayAddress from "./DisplayAddress";
+import { useSession } from "next-auth/react";
 import { checkoutContext } from "../context/CheckoutProvider";
+import DeliveryFormGuest from "./DeliveryFormGuest";
 
 interface FormValues {
   email: string;
 }
+
+const object = {
+  name: "",
+  email: "",
+  phone: "",
+  address: {
+    invoice: undefined,
+    delivery: undefined,
+  },
+};
+
 const schema = Yup.object<ShapeOf<FormValues>>({
   email: Yup.string()
     .email("Mailadressen har fel format")
@@ -19,6 +32,7 @@ const schema = Yup.object<ShapeOf<FormValues>>({
 
 const DeliveryInformation: FC = () => {
   const [checked, setChecked] = useState(true);
+  const [isGuest, setisGuest] = useState(false);
   const [deliveryInfo, setDeliveryInfo] = useState<
     RestrictedUser | undefined
   >();
@@ -26,12 +40,29 @@ const DeliveryInformation: FC = () => {
     RestrictedUser | undefined
   >();
   const { checkout, setCheckout } = useContext(checkoutContext);
+  const session = useSession();
 
   useEffect(() => {
     const updateCheckoutInfo = () => {
+      if (session.data) {
+        const sessionInfo = {
+          name: session.data.user.name,
+          email: session.data.user.email,
+          address: session.data.user.address,
+          phone: session.data.user.phone,
+        };
+        setDeliveryInfo(sessionInfo);
+      }
+    };
+    updateCheckoutInfo();
+  }, [session]);
+
+  useEffect(() => {
+    const updateCheckoutInfo = () => {
+      const checkoutCopy = { ...checkout };
       if (deliveryInfo) {
-        const checkoutCopy = { ...checkout };
         checkoutCopy.address.invoice = deliveryInfo.address;
+        checkoutCopy.address.delivery = undefined;
         checkoutCopy.name = deliveryInfo.name;
         checkoutCopy.email = deliveryInfo.email;
         checkoutCopy.phone = deliveryInfo.phone;
@@ -42,6 +73,14 @@ const DeliveryInformation: FC = () => {
           checkoutCopy.address.delivery = newDeliveryInfo.address;
         }
         setCheckout(checkoutCopy);
+      } else {
+        checkoutCopy.name = object.name;
+        checkoutCopy.email = object.email;
+        checkoutCopy.phone = object.phone;
+        checkoutCopy.address.invoice = object.address;
+        checkoutCopy.address.delivery = object.address;
+        setCheckout(checkoutCopy);
+        setNewDeliveryInfo(undefined);
       }
     };
     updateCheckoutInfo();
@@ -62,9 +101,11 @@ const DeliveryInformation: FC = () => {
 
       if (result.success) {
         setDeliveryInfo(result.data);
+        setisGuest(false);
         return;
       }
       setDeliveryInfo(undefined);
+      setisGuest(true);
     } catch (err) {
       console.error(err);
     }
@@ -77,7 +118,12 @@ const DeliveryInformation: FC = () => {
         <>
           <Flex mt={20} gap={20} direction="column" align={"center"}>
             <form
-              style={{ display: "flex", gap: 20 }}
+              style={{
+                display: "flex",
+                gap: 20,
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
               onSubmit={form.onSubmit(handleSubmit)}
             >
               <TextInput
@@ -116,6 +162,7 @@ const DeliveryInformation: FC = () => {
               setDeliveryInfo={setNewDeliveryInfo}
               newInfo={true}
               setChecked={setChecked}
+              setNewDeliveryInfo={setNewDeliveryInfo}
             />
           ) : (
             <Flex
@@ -142,9 +189,16 @@ const DeliveryInformation: FC = () => {
             </Flex>
           )}
         </>
-      ) : (
-        <Flex></Flex> // om address inte finns.
-      )}
+      ) : null}
+
+      {isGuest ? (
+        <DeliveryFormGuest
+          setDeliveryInfo={setDeliveryInfo}
+          deliveryInfo={deliveryInfo}
+          setisGuest={setisGuest}
+        />
+      ) : null}
+
       {!checked ? (
         <Modal
           opened={!checked}

@@ -1,4 +1,4 @@
-import { Flex, Group, Image, Title, Text } from "@mantine/core";
+import { Flex, Group, Image, Title, Text, MediaQuery } from "@mantine/core";
 import { IconCircleMinus, IconCirclePlus, IconTrash } from "@tabler/icons";
 import { FC } from "react";
 import useHandleDecrement from "../../utils/useHandleDecrement";
@@ -25,21 +25,30 @@ const CartItemCheckout: FC<Props> = ({ cartItem, cartItems, setCartItems }) => {
             alt={cartItem.price_data.product_data.name}
             fit="contain"
           />
-          <Title
-            order={6}
-            color="dimmed"
-            sx={(theme) => ({
-              [theme.fn.smallerThan("sm")]: {
-                fontSize: theme.fontSizes.sm,
-              },
-            })}
-          >
-            {cartItem.price_data.product_data.name}
-          </Title>
+          <Flex direction={"column"}>
+            <Title
+              order={6}
+              color="dimmed"
+              sx={(theme) => ({
+                [theme.fn.smallerThan("sm")]: {
+                  fontSize: theme.fontSizes.sm,
+                },
+                [theme.fn.smallerThan("xs")]: {
+                  fontSize: 12,
+                },
+              })}
+            >
+              {cartItem.price_data.product_data.name}
+            </Title>
+
+            <Text weight={"bold"}>
+              {cartItem.quantity * cartItem.price_data.unit_amount} KR
+            </Text>
+          </Flex>
         </Flex>
       </td>
       <td>
-        <Group w={100} spacing={5}>
+        <Group w={85} spacing={5}>
           <IconCircleMinus
             style={{
               cursor: cartItem.quantity < 2 ? "unset" : "pointer",
@@ -61,9 +70,7 @@ const CartItemCheckout: FC<Props> = ({ cartItem, cartItems, setCartItems }) => {
           />
         </Group>
       </td>
-      <td>
-        <Text>{cartItem.quantity * cartItem.price_data.unit_amount} KR</Text>
-      </td>
+
       <td>
         <IconTrash
           size={16}

@@ -34,8 +34,11 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
         borderRadius: "10px",
         width: "550px",
         [theme.fn.smallerThan("sm")]: {
-          width: "430px",
+          width: "470px",
           padding: 20,
+        },
+        [theme.fn.smallerThan("xs")]: {
+          width: "100%",
         },
       })}
     >
@@ -44,7 +47,7 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
           <tr>
             <th>Produkt</th>
             <th>Antal</th>
-            <th>Total</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>
@@ -54,13 +57,13 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
         <Flex>
           <Text>Frakt</Text>
         </Flex>
-        <Flex justify={"flex-start"} w={83} ml={47}>
+        <Flex justify={"flex-end"} w={70} ml={47}>
           0 KR
         </Flex>
       </Flex>
       <Flex mt={20} justify={"flex-end"} sx={{ width: "100%" }}>
         <Flex>Totalt inkl. moms</Flex>
-        <Flex justify={"flex-start"} w={83} ml={47}>
+        <Flex justify={"flex-end"} w={70} ml={47}>
           <Text weight={"bold"}>{totalSum} KR</Text>
         </Flex>
       </Flex>
