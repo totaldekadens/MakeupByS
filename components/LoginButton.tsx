@@ -1,17 +1,39 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { Flex, Box, ThemeIcon } from "@mantine/core";
+import { Flex, Box, ThemeIcon, Text } from "@mantine/core";
 import {
   IconUser,
   IconShoppingBag,
   IconHomeCog,
   IconCheck,
 } from "@tabler/icons";
-import { useHover } from "@mantine/hooks";
+import { useHover, useLocalStorage } from "@mantine/hooks";
+import { LineItem } from "./AddToCartIcon";
+import { useEffect, useRef, useState } from "react";
 
 const LoginButton = () => {
   const session = useSession();
   const { hovered, ref } = useHover();
+
+  const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
+    key: "cart",
+    defaultValue: [],
+  });
+  const [quantity, setQuantity] = useState<number>();
+
+  useEffect(() => {
+    const updateQuantity = () => {
+      if (cartItems.length > 0) {
+        const getTotalQuantity = cartItems
+          .map((i) => i.quantity)
+          .reduce((a, b) => a + b);
+
+        setQuantity(getTotalQuantity);
+      }
+    };
+
+    updateQuantity();
+  }, [cartItems]);
   return (
     <>
       <Flex
@@ -52,7 +74,25 @@ const LoginButton = () => {
           </Link>
         ) : null}
 
-        <Box>
+        <Box pos={"relative"}>
+          <Box
+            top={-14}
+            left={-11}
+            pos={"absolute"}
+            w={23}
+            h={23}
+            bg="#E6FCF5"
+            sx={{
+              borderRadius: "50px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text weight={"bold"} color={"brand.3"} size={12}>
+              {quantity}
+            </Text>
+          </Box>
           <Link href="/">
             <IconShoppingBag size={36} color="white" />
           </Link>
