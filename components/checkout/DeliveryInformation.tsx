@@ -6,7 +6,7 @@ import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 import { Checkbox } from "@mantine/core";
 import DeliveryForm from "./DeliveryForm";
 import DisplayAddress from "./DisplayAddress";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { checkoutContext } from "../context/CheckoutProvider";
 import DeliveryFormGuest from "./DeliveryFormGuest";
 
@@ -41,9 +41,6 @@ const DeliveryInformation: FC = () => {
   >();
   const { checkout, setCheckout } = useContext(checkoutContext);
   const session = useSession();
-  console.log(checkout);
-  console.log(newDeliveryInfo);
-  console.log(deliveryInfo);
 
   useEffect(() => {
     const updateCheckoutInfo = () => {
