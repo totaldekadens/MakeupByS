@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { emotionCache } from "../emotionCache";
 import { MantineProvider } from "@mantine/core";
 import { getTheme } from "../styles/theme";
+import CheckOutProvider from "../components/context/CheckoutProvider";
 
 export default function App({
   Component,
@@ -17,7 +18,9 @@ export default function App({
         withNormalizeCSS
         theme={getTheme("light")}
       >
-        <Component {...pageProps} />
+        <CheckOutProvider>
+          <Component {...pageProps} />
+        </CheckOutProvider>
       </MantineProvider>
     </SessionProvider>
   );

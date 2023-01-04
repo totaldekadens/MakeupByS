@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef, SetStateAction } from "react";
 import BreadCrumb from "../../../../components/BreadCrumb";
-import Cart from "../../../../components/Cart";
+import Cart from "../../../../components/cart/Cart";
 import Footer from "../../../../components/Footer";
 import Header from "../../../../components/Header";
 import ProductCard from "../../../../components/ProductCard";
@@ -46,7 +46,6 @@ const CategoryPage: NextPage = (props) => {
           `/api/open/subproduct/categorybyseason/${categorySlug}?seasonSlug=${seasonSlug}`
         );
         let result = await response.json();
-        console.log(result);
         if (result.success) {
           setProducts(result.data);
           setIsLoading((existingValues) => ({
@@ -59,7 +58,6 @@ const CategoryPage: NextPage = (props) => {
           ...existingValues,
           products: false,
         }));
-        console.log("kommer jag hit?");
       } catch (err) {
         console.error(err);
       }
