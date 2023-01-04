@@ -1,6 +1,4 @@
-import { Button, Flex, Text } from "@mantine/core";
 import { useSession, signIn, signOut } from "next-auth/react";
-import { IconUser, IconShoppingBag } from "@tabler/icons";
 import Link from "next/link";
 import { Flex, Box, ThemeIcon } from "@mantine/core";
 import {

@@ -10,7 +10,7 @@ interface Checkout {
   email: string;
   phone: string;
   address: {
-    invoice: Address;
+    invoice?: Address;
     delivery?: Address;
   };
   courrier: any; // Fix
@@ -46,7 +46,7 @@ const object = {
   email: "",
   phone: "",
   address: {
-    invoice: { line1: "", line2: "", postal_code: "", city: "", country: "" },
+    invoice: undefined,
     delivery: undefined,
   },
   courrier: "", // Fix

@@ -1,5 +1,6 @@
 import { Flex, Text } from "@mantine/core";
 import { IconX } from "@tabler/icons";
+import { useSession } from "next-auth/react";
 import { Dispatch, FC, SetStateAction } from "react";
 import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 
@@ -17,6 +18,11 @@ const DisplayAddress: FC<Props> = ({
   newInfo,
   setNewDeliveryInfo,
 }) => {
+  const session = useSession();
+  const handleChange = () => {
+    setNewDeliveryInfo ? setNewDeliveryInfo(undefined) : null;
+    setDeliveryInfo(undefined);
+  };
   return (
     <Flex mt={20} direction={"column"} align="center" sx={{ width: "100%" }}>
       <Flex
@@ -41,14 +47,14 @@ const DisplayAddress: FC<Props> = ({
           onClick={() =>
             newInfo && setNewDeliveryInfo
               ? setNewDeliveryInfo(undefined)
-              : setDeliveryInfo(undefined)
+              : handleChange()
           }
           mb={10}
           color={"dimmed"}
           align="end"
           sx={{ cursor: "pointer" }}
         >
-          {newInfo ? <IconX /> : "Ändra"}
+          {newInfo ? <IconX /> : session.data?.user ? "" : "Ändra"}
         </Text>
         <Text weight={"bold"}>{deliveryInfo?.name}</Text>
         <Flex

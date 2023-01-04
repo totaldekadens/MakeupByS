@@ -40,11 +40,11 @@ const schema = Yup.object<ShapeOf<FormValues>>({
 });
 
 type Props = {
-  setDeliveryInfo: Dispatch<SetStateAction<RestrictedUser | undefined>>;
+  setNewDeliveryInfo: Dispatch<SetStateAction<RestrictedUser | undefined>>;
   deliveryInfo: RestrictedUser | undefined;
 };
 
-const DeliveryFormGuest: FC<Props> = ({ setDeliveryInfo, deliveryInfo }) => {
+const DeliveryFormGuest: FC<Props> = ({ setNewDeliveryInfo, deliveryInfo }) => {
   const form = useForm<FormValues>({
     initialValues: {
       name: "",
@@ -61,6 +61,7 @@ const DeliveryFormGuest: FC<Props> = ({ setDeliveryInfo, deliveryInfo }) => {
   });
 
   const handleSubmit = async (values: FormValues) => {
+    console.log("kommer jag in här?");
     const updatedInfo: RestrictedUser = {
       email: values.email,
       name: values.name,
@@ -73,7 +74,7 @@ const DeliveryFormGuest: FC<Props> = ({ setDeliveryInfo, deliveryInfo }) => {
       },
       phone: values.phone,
     };
-    setDeliveryInfo(updatedInfo);
+    setNewDeliveryInfo(updatedInfo);
   };
 
   return (

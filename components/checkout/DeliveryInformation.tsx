@@ -13,6 +13,17 @@ import DeliveryFormGuest from "./DeliveryFormGuest";
 interface FormValues {
   email: string;
 }
+
+const object = {
+  name: "",
+  email: "",
+  phone: "",
+  address: {
+    invoice: undefined,
+    delivery: undefined,
+  },
+};
+
 const schema = Yup.object<ShapeOf<FormValues>>({
   email: Yup.string()
     .email("Mailadressen har fel format")
@@ -31,6 +42,8 @@ const DeliveryInformation: FC = () => {
   const { checkout, setCheckout } = useContext(checkoutContext);
   const session = useSession();
   console.log(checkout);
+  console.log(newDeliveryInfo);
+  console.log(deliveryInfo);
 
   useEffect(() => {
     const updateCheckoutInfo = () => {
@@ -49,8 +62,8 @@ const DeliveryInformation: FC = () => {
 
   useEffect(() => {
     const updateCheckoutInfo = () => {
+      const checkoutCopy = { ...checkout };
       if (deliveryInfo) {
-        const checkoutCopy = { ...checkout };
         checkoutCopy.address.invoice = deliveryInfo.address;
         checkoutCopy.address.delivery = undefined;
         checkoutCopy.name = deliveryInfo.name;
@@ -63,6 +76,14 @@ const DeliveryInformation: FC = () => {
           checkoutCopy.address.delivery = newDeliveryInfo.address;
         }
         setCheckout(checkoutCopy);
+      } else {
+        checkoutCopy.name = object.name;
+        checkoutCopy.email = object.email;
+        checkoutCopy.phone = object.phone;
+        checkoutCopy.address.invoice = object.address;
+        checkoutCopy.address.delivery = object.address;
+        setCheckout(checkoutCopy);
+        setNewDeliveryInfo(undefined);
       }
     };
     updateCheckoutInfo();
@@ -83,6 +104,7 @@ const DeliveryInformation: FC = () => {
 
       if (result.success) {
         setDeliveryInfo(result.data);
+        setisGuest(false);
         return;
       }
       setDeliveryInfo(undefined);
@@ -174,7 +196,7 @@ const DeliveryInformation: FC = () => {
 
       {isGuest ? (
         <DeliveryFormGuest
-          setDeliveryInfo={setDeliveryInfo}
+          setNewDeliveryInfo={setNewDeliveryInfo}
           deliveryInfo={deliveryInfo}
         />
       ) : null}

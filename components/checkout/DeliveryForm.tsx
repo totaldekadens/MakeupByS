@@ -56,8 +56,6 @@ const DeliveryForm: FC<Props> = ({
   });
 
   const handleSubmit = async (values: FormValues) => {
-    console.log("Kommer jag in hör?");
-
     const updatedInfo: RestrictedUser = {
       email: deliveryInfo!.email,
       name: values.name,
