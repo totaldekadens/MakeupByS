@@ -17,7 +17,7 @@ import MobileLoginButton from "./MobileLoginButtons";
 
 const HeaderCheckout = () => {
   const router = useRouter();
-
+  const session = useSession();
   return (
     <MantineHeader
       fixed={false}
@@ -45,7 +45,7 @@ const HeaderCheckout = () => {
           sx={(theme) => ({
             cursor: "pointer",
             [theme.fn.smallerThan("xs")]: {
-              width: 102,
+              width: session.data?.user.admin ? 102 : 68,
             },
           })}
         >
