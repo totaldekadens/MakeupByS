@@ -26,7 +26,7 @@ const SeasonPage: NextPage = (props) => {
   const { seasonSlug } = router.query;
   const [products, setProducts] = useState<any>([]);
   const [season, setSeason] = useState<SeasonDocument>();
-  const [opened, setOpened] = useState(false);
+  const [openedCart, setOpenedCart] = useState(false);
   const [isLoading, setIsLoading] = useState({
     products: true,
     season: true,
@@ -174,7 +174,7 @@ const SeasonPage: NextPage = (props) => {
                 {products?.map((product: any, index: number) => {
                   return (
                     <Grid.Col key={index} md={4} sm={5} xs={6}>
-                      <ProductCard product={product} openCart={setOpened} />
+                      <ProductCard product={product} openCart={setOpenedCart} />
                     </Grid.Col>
                   );
                 })}
@@ -183,7 +183,7 @@ const SeasonPage: NextPage = (props) => {
           </>
         )}
       </Box>
-      <Cart opened={opened} openCart={setOpened} />
+      <Cart />
     </AppShell>
   );
 };

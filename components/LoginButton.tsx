@@ -9,11 +9,13 @@ import {
 } from "@tabler/icons";
 import { useHover, useLocalStorage } from "@mantine/hooks";
 import { LineItem } from "./AddToCartIcon";
-import { useEffect, useRef, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
+import { openedCartContext } from "./context/OpenCartProvider";
 
-const LoginButton = () => {
+const LoginButton: FC = () => {
   const session = useSession();
   const { hovered, ref } = useHover();
+  const { openedCart, setOpenedCart } = useContext(openedCartContext);
 
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
@@ -93,9 +95,15 @@ const LoginButton = () => {
               {quantity}
             </Text>
           </Box>
-          <Link href="/">
-            <IconShoppingBag size={36} color="white" />
-          </Link>
+
+          <IconShoppingBag
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setOpenedCart(!openedCart);
+            }}
+            size={36}
+            color="white"
+          />
         </Box>
       </Flex>
     </>

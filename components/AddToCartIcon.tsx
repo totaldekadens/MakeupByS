@@ -1,12 +1,12 @@
 import { Box } from "@mantine/core";
 import { IconShoppingBag, IconPlus } from "@tabler/icons";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useContext } from "react";
 import { useHover } from "@mantine/hooks";
 import { useLocalStorage } from "@mantine/hooks";
+import { openedCartContext } from "./context/OpenCartProvider";
 
 type Props = {
   color: string;
-  openCart: Dispatch<SetStateAction<boolean>>;
   product: any;
 };
 
@@ -24,12 +24,13 @@ export type LineItem = {
   };
 };
 
-const AddToCartIcon: FC<Props> = ({ color, openCart, product }) => {
+const AddToCartIcon: FC<Props> = ({ color, product }) => {
   const { hovered, ref } = useHover();
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
+  const { openedCart, setOpenedCart } = useContext(openedCartContext);
   const price = Number(product.mainProduct.price.$numberDecimal);
   const handleClick = () => {
     const lineItem = {
@@ -62,7 +63,7 @@ const AddToCartIcon: FC<Props> = ({ color, openCart, product }) => {
     }
 
     setCartItems(cartCopy);
-    openCart(true);
+    setOpenedCart(true);
   };
 
   return (

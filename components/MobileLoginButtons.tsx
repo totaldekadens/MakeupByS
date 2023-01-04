@@ -9,11 +9,13 @@ import {
 } from "@tabler/icons";
 import { useHover, useLocalStorage } from "@mantine/hooks";
 import { LineItem } from "./AddToCartIcon";
-import { useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
+import { openedCartContext } from "./context/OpenCartProvider";
 
-const MobileLoginButton = () => {
+const MobileLoginButton: FC = () => {
   const session = useSession();
   const { hovered, ref } = useHover();
+  const { openedCart, setOpenedCart } = useContext(openedCartContext);
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
@@ -70,27 +72,30 @@ const MobileLoginButton = () => {
         ) : null}
 
         <Box pos={"relative"}>
-          <Link href="/">
-            <Box
-              top={-11}
-              left={-9}
-              pos={"absolute"}
-              w={16}
-              h={16}
-              bg="#E6FCF5"
-              sx={{
-                borderRadius: "50px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Text weight={"bold"} color={"brand.3"} size={9}>
-                {quantity}
-              </Text>
-            </Box>
-            <IconShoppingBag size={24} color="white" />
-          </Link>
+          <Box
+            top={-11}
+            left={-9}
+            pos={"absolute"}
+            w={16}
+            h={16}
+            bg="#E6FCF5"
+            sx={{
+              borderRadius: "50px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text weight={"bold"} color={"brand.3"} size={9}>
+              {quantity}
+            </Text>
+          </Box>
+          <IconShoppingBag
+            style={{ cursor: "pointer" }}
+            onClick={() => setOpenedCart(true)}
+            size={24}
+            color="white"
+          />
         </Box>
       </Flex>
     </>
