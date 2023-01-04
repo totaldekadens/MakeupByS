@@ -7,7 +7,7 @@ import { Checkbox } from "@mantine/core";
 import DeliveryForm from "./DeliveryForm";
 import DisplayAddress from "./DisplayAddress";
 import { useSession } from "next-auth/react";
-import { checkoutContext } from "../context/CheckoutProvider";
+import { checkoutContext } from "../context/checkoutProvider";
 import DeliveryFormGuest from "./DeliveryFormGuest";
 
 interface FormValues {

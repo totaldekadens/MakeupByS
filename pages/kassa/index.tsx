@@ -6,7 +6,7 @@ import { LineItem } from "../../components/AddToCartIcon";
 import CartCheckout from "../../components/checkout/CartCheckout";
 import DeliveryInformation from "../../components/checkout/DeliveryInformation";
 import { useContext, useEffect } from "react";
-import { checkoutContext } from "../../components/context/CheckoutProvider";
+import { checkoutContext } from "../../components/context/checkoutProvider";
 
 const Kassa: NextPage = () => {
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
