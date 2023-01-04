@@ -30,6 +30,9 @@ const DisplayAddress: FC<Props> = ({
             width: "430px",
             padding: 20,
           },
+          [theme.fn.smallerThan("xs")]: {
+            width: "100%",
+          },
         })}
       >
         <Text
