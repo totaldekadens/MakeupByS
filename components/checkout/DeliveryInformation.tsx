@@ -143,7 +143,7 @@ const DeliveryInformation: FC = () => {
           )}
         </>
       ) : (
-        <Flex>Address finns inte</Flex>
+        <Flex></Flex> // om address inte finns.
       )}
       {!checked ? (
         <Modal
