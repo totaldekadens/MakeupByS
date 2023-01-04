@@ -35,7 +35,7 @@ const Header = () => {
             paddingRight: "30px",
           },
           [theme.fn.smallerThan("xs")]: {
-            height: "150px",
+            height: "120px",
           },
         })}
       >
@@ -151,7 +151,6 @@ const Header = () => {
                     [theme.fn.smallerThan("xs")]: {
                       paddingTop: "5px",
                       fontSize: "x-large",
-                      paddingLeft: "50px",
                     },
                   })}
                 >
