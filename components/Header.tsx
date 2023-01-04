@@ -14,6 +14,7 @@ import ButtonSeason from "./ButtonSeason";
 import { IconCheck } from "@tabler/icons";
 import { useState } from "react";
 import SearchbarMobile from "./SearchbarMobile";
+import MobileLoginButton from "./MobileLoginButtons";
 
 const Header = () => {
   const session = useSession();
@@ -51,7 +52,7 @@ const Header = () => {
                 position: "absolute",
               },
             })}
-          >
+            >
             <Flex
               sx={(theme) => ({
                 [theme.fn.smallerThan("xs")]: {
@@ -108,13 +109,26 @@ const Header = () => {
             sx={(theme) => ({
               width: "100%",
               [theme.fn.smallerThan("xs")]: {
-                justifyContent: "center",
                 position: "absolute",
                 top: "60px",
               },
             })}
           >
             <Searchbar />
+
+            <MediaQuery largerThan="xs" styles={{ display: "none" }}>
+              <Flex sx={{ paddingRight: "20px" }}>
+                <Burger
+                  left={"20px"}
+                  top={"10px"}
+                  pos="absolute"
+                  color="white"
+                  size={"sm"}
+                  opened={opened}
+                  onClick={() => setOpened((o: boolean) => !o)}
+                />
+              </Flex>
+            </MediaQuery>
 
             <Link href="/">
               {session.data?.user ? (
@@ -136,6 +150,8 @@ const Header = () => {
                     },
                     [theme.fn.smallerThan("xs")]: {
                       paddingTop: "5px",
+                      fontSize: "x-large",
+                      paddingLeft: "50px",
                     },
                   })}
                 >
@@ -160,6 +176,8 @@ const Header = () => {
                     },
                     [theme.fn.smallerThan("xs")]: {
                       paddingTop: "5px",
+                      paddingLeft: "5px",
+                      fontSize: "x-large",
                     },
                   })}
                 >
@@ -168,23 +186,12 @@ const Header = () => {
               )}
             </Link>
             <LoginButton />
+            <MobileLoginButton />
           </Flex>
           <Flex>
             <ButtonSeason />
           </Flex>
         </Flex>
-
-        <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-          <Flex sx={{ paddingRight: "20px" }}>
-            <Burger
-              pos="absolute"
-              color="white"
-              size={"sm"}
-              opened={opened}
-              onClick={() => setOpened((o: boolean) => !o)}
-            />
-          </Flex>
-        </MediaQuery>
       </MantineHeader>
 
       <MediaQuery largerThan="xs" styles={{ display: "none" }}>
