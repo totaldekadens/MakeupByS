@@ -47,7 +47,7 @@ const object = {
   phone: "",
   address: {
     invoice: { line1: "", line2: "", postal_code: "", city: "", country: "" },
-    delivery: { line1: "", line2: "", postal_code: "", city: "", country: "" },
+    delivery: undefined,
   },
   courrier: "", // Fix
 };

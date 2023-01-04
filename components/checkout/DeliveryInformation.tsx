@@ -6,8 +6,8 @@ import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 import { Checkbox } from "@mantine/core";
 import DeliveryForm from "./DeliveryForm";
 import DisplayAddress from "./DisplayAddress";
+import { getSession, useSession } from "next-auth/react";
 import { checkoutContext } from "../context/CheckoutProvider";
-import { useSession } from "next-auth/react";
 
 interface FormValues {
   email: string;
@@ -28,12 +28,29 @@ const DeliveryInformation: FC = () => {
   >();
   const { checkout, setCheckout } = useContext(checkoutContext);
   const session = useSession();
-  console.log(session);
+  console.log(checkout);
+
+  useEffect(() => {
+    const updateCheckoutInfo = () => {
+      if (session.data) {
+        const sessionInfo = {
+          name: session.data.user.name,
+          email: session.data.user.email,
+          address: session.data.user.address,
+          phone: session.data.user.phone,
+        };
+        setDeliveryInfo(sessionInfo);
+      }
+    };
+    updateCheckoutInfo();
+  }, [session]);
+
   useEffect(() => {
     const updateCheckoutInfo = () => {
       if (deliveryInfo) {
         const checkoutCopy = { ...checkout };
         checkoutCopy.address.invoice = deliveryInfo.address;
+        checkoutCopy.address.delivery = undefined;
         checkoutCopy.name = deliveryInfo.name;
         checkoutCopy.email = deliveryInfo.email;
         checkoutCopy.phone = deliveryInfo.phone;
@@ -123,6 +140,7 @@ const DeliveryInformation: FC = () => {
               setDeliveryInfo={setNewDeliveryInfo}
               newInfo={true}
               setChecked={setChecked}
+              setNewDeliveryInfo={setNewDeliveryInfo}
             />
           ) : (
             <Flex

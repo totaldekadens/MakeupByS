@@ -7,6 +7,7 @@ type Props = {
   deliveryInfo: RestrictedUser | undefined;
   setDeliveryInfo: Dispatch<SetStateAction<RestrictedUser | undefined>>;
   newInfo: boolean;
+  setNewDeliveryInfo?: Dispatch<SetStateAction<RestrictedUser | undefined>>;
   setChecked?: Dispatch<SetStateAction<boolean>>;
 };
 
@@ -14,6 +15,7 @@ const DisplayAddress: FC<Props> = ({
   deliveryInfo,
   setDeliveryInfo,
   newInfo,
+  setNewDeliveryInfo,
 }) => {
   return (
     <Flex mt={20} direction={"column"} align="center" sx={{ width: "100%" }}>
@@ -36,7 +38,11 @@ const DisplayAddress: FC<Props> = ({
         })}
       >
         <Text
-          onClick={() => setDeliveryInfo(undefined)}
+          onClick={() =>
+            newInfo && setNewDeliveryInfo
+              ? setNewDeliveryInfo(undefined)
+              : setDeliveryInfo(undefined)
+          }
           mb={10}
           color={"dimmed"}
           align="end"
