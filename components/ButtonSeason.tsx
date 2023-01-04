@@ -9,35 +9,49 @@ const ButtonSeason = () => {
             gap='md'
             justify='center'
             align='center'
-            direction={{base: 'column', sm: 'row'}}
+            direction={{base: 'row', sm: 'row'}}
+            sx={(theme) => ({
+                [theme.fn.smallerThan("xs")]: {
+                    display: "none",
+                }
+            })}
         >
             <Link href={`/season/var`}>
             <Button sx={(theme) => ({backgroundColor: theme.colors.brand[9],
                 borderColor: theme.colors.brand[0],
-                color: theme.colors.brand[0]})}>vår</Button>
+                color: theme.colors.brand[0],
+                [theme.fn.smallerThan("sm")]: {
+                    minWidth: "100px",
+                }
+                })}>vår</Button>
             </Link>
 
             <Link href={`/season/sommar`}>
             <Button sx={(theme) => ({backgroundColor: theme.colors.brand[9],
                 borderColor: theme.colors.brand[0],
-                color: theme.colors.brand[0]})}>sommar</Button>
+                color: theme.colors.brand[0],
+                [theme.fn.smallerThan("sm")]: {
+                    minWidth: "100px",
+                }})}>sommar</Button>
             </Link>
 
             <Link href={`/season/host`}>
             <Button sx={(theme) => ({backgroundColor: theme.colors.brand[9],
                 borderColor: theme.colors.brand[0],
-                color: theme.colors.brand[0]})}>höst</Button>
+                color: theme.colors.brand[0],
+                [theme.fn.smallerThan("sm")]: {
+                    minWidth: "100px",
+                }})}>höst</Button>
             </Link>
 
             <Link href={`/season/vinter`}>
             <Button sx={(theme) => ({backgroundColor: theme.colors.brand[9],
                 borderColor: theme.colors.brand[0],
-                color: theme.colors.brand[0]})}>vinter</Button>
+                color: theme.colors.brand[0],
+                [theme.fn.smallerThan("sm")]: {
+                    minWidth: "100px",
+                }})}>vinter</Button>
             </Link>
-
-
-
-
         </Flex>
     )
 }
