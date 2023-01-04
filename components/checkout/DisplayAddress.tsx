@@ -1,7 +1,7 @@
 import { Flex, Text } from "@mantine/core";
 import { IconX } from "@tabler/icons";
 import { Dispatch, FC, SetStateAction } from "react";
-import { RestrictedUser } from "../pages/api/open/users/[slug]";
+import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 
 type Props = {
   deliveryInfo: RestrictedUser | undefined;

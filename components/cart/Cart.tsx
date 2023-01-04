@@ -11,8 +11,8 @@ import { useLocalStorage } from "@mantine/hooks";
 import { IconX } from "@tabler/icons";
 import Link from "next/link";
 import { Dispatch, FC, SetStateAction } from "react";
-import useWindowSize from "../utils/useWindowSize";
-import { LineItem } from "./AddToCartIcon";
+import useWindowSize from "../../utils/useWindowSize";
+import { LineItem } from "../AddToCartIcon";
 import CartItem from "./CartItem";
 
 type Props = {

@@ -2,11 +2,12 @@ import { Button, Flex, TextInput, Title, Text, Modal } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import { FC, useContext, useEffect, useState } from "react";
 import * as Yup from "yup";
-import { RestrictedUser } from "../pages/api/open/users/[slug]";
+import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 import { Checkbox } from "@mantine/core";
-import DeliveryForm from "./deliveryForm";
+import DeliveryForm from "./DeliveryForm";
 import DisplayAddress from "./DisplayAddress";
-import { checkoutContext } from "./context/checkoutProvider";
+import { checkoutContext } from "../context/CheckoutProvider";
+
 interface FormValues {
   email: string;
 }

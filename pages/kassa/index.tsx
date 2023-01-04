@@ -1,21 +1,13 @@
-import {
-  AppShell,
-  Box,
-  Flex,
-  Grid,
-  Title,
-  Text,
-  Group,
-  TextInput,
-} from "@mantine/core";
+import { AppShell, Flex, Title } from "@mantine/core";
 import { NextPage } from "next";
 import HeaderCheckout from "../../components/HeaderCheckout";
 import { useLocalStorage } from "@mantine/hooks";
 import { LineItem } from "../../components/AddToCartIcon";
-import CartCheckout from "../../components/CartCheckout";
-import DeliveryInformation from "../../components/DeliveryInformation";
+import CartCheckout from "../../components/checkout/CartCheckout";
+import DeliveryInformation from "../../components/checkout/DeliveryInformation";
 import { useContext, useEffect } from "react";
-import { checkoutContext } from "../../components/context/checkoutProvider";
+import { checkoutContext } from "../../components/context/CheckoutProvider";
+
 const Kassa: NextPage = () => {
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",

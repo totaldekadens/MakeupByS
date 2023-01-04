@@ -13,7 +13,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef, SetStateAction } from "react";
 import BreadCrumb from "../../../../components/BreadCrumb";
-import Cart from "../../../../components/Cart";
+import Cart from "../../../../components/cart/Cart";
 import Footer from "../../../../components/Footer";
 import Header from "../../../../components/Header";
 import ProductCard from "../../../../components/ProductCard";

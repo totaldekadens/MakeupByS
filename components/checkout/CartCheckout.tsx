@@ -1,6 +1,6 @@
 import { Flex, Table, Text } from "@mantine/core";
 import { FC } from "react";
-import { LineItem } from "./AddToCartIcon";
+import { LineItem } from "../AddToCartIcon";
 import CartItemCheckout from "./CartItemCheckout";
 
 type Props = {
