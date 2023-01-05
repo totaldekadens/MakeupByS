@@ -3,6 +3,7 @@ import { IconX } from "@tabler/icons";
 import { useSession } from "next-auth/react";
 import { Dispatch, FC, SetStateAction } from "react";
 import { RestrictedUser } from "../../pages/api/open/users/[slug]";
+import ContainerWithBorder from "../layout/ContainerWithBorder";
 
 type Props = {
   deliveryInfo: RestrictedUser | undefined;
@@ -25,24 +26,7 @@ const DisplayAddress: FC<Props> = ({
   };
   return (
     <Flex mt={20} direction={"column"} align="center" sx={{ width: "100%" }}>
-      <Flex
-        p={30}
-        direction="column"
-        sx={(theme) => ({
-          border: newInfo
-            ? `4px solid ${theme.colors.gray[3]}`
-            : `1px solid ${theme.colors.gray[3]}`,
-          borderRadius: "10px",
-          width: "550px",
-          [theme.fn.smallerThan("sm")]: {
-            width: "470px",
-            padding: 20,
-          },
-          [theme.fn.smallerThan("xs")]: {
-            width: "100%",
-          },
-        })}
-      >
+      <ContainerWithBorder bold={newInfo ? true : false}>
         <Text
           onClick={() =>
             newInfo && setNewDeliveryInfo
@@ -67,7 +51,7 @@ const DisplayAddress: FC<Props> = ({
         >
           <Text>{deliveryInfo?.address.line1},</Text>
           <Text>
-            {deliveryInfo!.address!.line2.length > 0
+            {deliveryInfo && deliveryInfo.address.line2.length > 0
               ? `${deliveryInfo?.address.line2}, `
               : null}
           </Text>
@@ -85,7 +69,7 @@ const DisplayAddress: FC<Props> = ({
           <Text>{deliveryInfo?.email},</Text>
           <Text>{deliveryInfo?.phone}</Text>
         </Flex>
-      </Flex>
+      </ContainerWithBorder>
     </Flex>
   );
 };
