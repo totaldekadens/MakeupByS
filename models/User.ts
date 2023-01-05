@@ -36,7 +36,7 @@ UserSchema.methods.setPassword = function (password: string) {
     .toString(`hex`);
 };
 
-type Address = {
+export type Address = {
   line1: string;
   line2?: string;
   postal_code: string;

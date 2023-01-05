@@ -59,7 +59,7 @@ const Cart: FC = () => {
             width: "300px",
           },
           [theme.fn.smallerThan("xs")]: {
-            width: "280px",
+            width: "290px",
           },
         },
       })}

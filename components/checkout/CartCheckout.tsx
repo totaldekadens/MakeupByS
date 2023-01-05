@@ -1,6 +1,7 @@
 import { Flex, Table, Text } from "@mantine/core";
 import { FC } from "react";
 import { LineItem } from "../AddToCartIcon";
+import ContainerWithBorder from "../layout/ContainerWithBorder";
 import CartItemCheckout from "./CartItemCheckout";
 
 type Props = {
@@ -25,23 +26,7 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
     0
   );
   return (
-    <Flex
-      direction={"column"}
-      p={30}
-      mt="xl"
-      sx={(theme) => ({
-        border: "1px solid" + theme.colors.gray[3],
-        borderRadius: "10px",
-        width: "550px",
-        [theme.fn.smallerThan("sm")]: {
-          width: "470px",
-          padding: 20,
-        },
-        [theme.fn.smallerThan("xs")]: {
-          width: "100%",
-        },
-      })}
-    >
+    <ContainerWithBorder>
       <Table>
         <thead>
           <tr>
@@ -67,7 +52,7 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
           <Text weight={"bold"}>{totalSum} KR</Text>
         </Flex>
       </Flex>
-    </Flex>
+    </ContainerWithBorder>
   );
 };
 
