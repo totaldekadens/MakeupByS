@@ -18,13 +18,25 @@ const Kassa: NextPage = () => {
     key: "cart",
     defaultValue: [],
   });
-
+  const checkoutRef = useRef<any | null>();
   const { checkout, setCheckout } = useContext(checkoutContext);
+  checkoutRef.current = checkout;
+
+  useEffect(() => {
+    let checkoutCopy = checkoutRef.current;
+    const updateCheckoutInfo = () => {
+      checkoutCopy.cartItems = cartItems;
+      setCheckout(checkoutCopy);
+    };
+    updateCheckoutInfo();
+  }, [cartItems]);
 
   let totalSum = cartItems.reduce(
     (sum, item) => sum + item.price_data.unit_amount * item.quantity,
     0
   );
+
+  checkout;
 
   return (
     <AppShell
