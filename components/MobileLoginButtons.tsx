@@ -30,7 +30,9 @@ const MobileLoginButton: FC = () => {
           .reduce((a, b) => a + b);
 
         setQuantity(getTotalQuantity);
+        return;
       }
+      setQuantity(0);
     };
 
     updateQuantity();
@@ -72,24 +74,26 @@ const MobileLoginButton: FC = () => {
         ) : null}
 
         <Box pos={"relative"}>
-          <Box
-            top={-11}
-            left={-9}
-            pos={"absolute"}
-            w={16}
-            h={16}
-            bg="#E6FCF5"
-            sx={{
-              borderRadius: "50px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text weight={"bold"} color={"brand.3"} size={9}>
-              {quantity}
-            </Text>
-          </Box>
+          {quantity && quantity > 0 ? (
+            <Box
+              top={-11}
+              left={-9}
+              pos={"absolute"}
+              w={16}
+              h={16}
+              bg="#E6FCF5"
+              sx={{
+                borderRadius: "50px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text weight={"bold"} color={"brand.3"} size={9}>
+                {quantity}
+              </Text>
+            </Box>
+          ) : null}
           <IconShoppingBag
             style={{ cursor: "pointer" }}
             onClick={() => setOpenedCart(true)}

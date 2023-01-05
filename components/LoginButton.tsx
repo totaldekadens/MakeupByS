@@ -25,13 +25,15 @@ const LoginButton: FC = () => {
 
   useEffect(() => {
     const updateQuantity = () => {
-      if (cartItems.length > 0) {
+      if (cartItems && cartItems.length > 0) {
         const getTotalQuantity = cartItems
           .map((i) => i.quantity)
           .reduce((a, b) => a + b);
 
         setQuantity(getTotalQuantity);
+        return;
       }
+      setQuantity(0);
     };
 
     updateQuantity();
@@ -77,24 +79,26 @@ const LoginButton: FC = () => {
         ) : null}
 
         <Box pos={"relative"}>
-          <Box
-            top={-14}
-            left={-11}
-            pos={"absolute"}
-            w={23}
-            h={23}
-            bg="#E6FCF5"
-            sx={{
-              borderRadius: "50px",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text weight={"bold"} color={"brand.3"} size={12}>
-              {quantity}
-            </Text>
-          </Box>
+          {quantity && quantity > 0 ? (
+            <Box
+              top={-14}
+              left={-11}
+              pos={"absolute"}
+              w={23}
+              h={23}
+              bg="#E6FCF5"
+              sx={{
+                borderRadius: "50px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text weight={"bold"} color={"brand.3"} size={12}>
+                {quantity}
+              </Text>
+            </Box>
+          ) : null}
 
           <IconShoppingBag
             style={{ cursor: "pointer" }}
