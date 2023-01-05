@@ -13,11 +13,14 @@ import { FC, useContext, useEffect, useState } from "react";
 import { CourrierDocument } from "../../models/Courrier";
 import { checkoutContext } from "../context/checkoutProvider";
 import ContainerWithBorder from "../layout/ContainerWithBorder";
+import useWindowSize from "../../utils/useWindowSize";
 
 const Courrier: FC = () => {
   const { checkout, setCheckout } = useContext(checkoutContext);
   const [courriers, setCourriers] = useState<CourrierDocument[] | []>([]);
   const [value, setValue] = useState("");
+
+  let size = useWindowSize();
 
   // Hämta alla fraktsätt och sätt i ett state.
   useEffect(() => {
@@ -91,16 +94,24 @@ const Courrier: FC = () => {
                           },
                         }}
                         value={option._id}
-                        mr={10}
                         label={
                           <Flex
                             justify={"space-between"}
                             sx={{ width: "100%" }}
                           >
                             <Flex>
-                              <Flex direction={"column"}>
+                              <Flex direction={"column"} w={175}>
                                 <Flex gap={10}>
-                                  <Title order={5}>{option.title}</Title>
+                                  <Title
+                                    order={5}
+                                    sx={(theme) => ({
+                                      [theme.fn.smallerThan("xs")]: {
+                                        fontSize: "14px",
+                                      },
+                                    })}
+                                  >
+                                    {option.title}
+                                  </Title>
                                   <HoverCard width={280} shadow="md">
                                     <HoverCard.Target>
                                       <Box>
@@ -114,16 +125,31 @@ const Courrier: FC = () => {
                                     </HoverCard.Dropdown>
                                   </HoverCard>
                                 </Flex>
-
                                 <Text>{option.description}</Text>
                                 <Text>{option.cost[0].cost} KR</Text>
                               </Flex>
                             </Flex>
                             <Flex>
+                              <Text>
+                                {option.deliveryTime.from} -{" "}
+                                {option.deliveryTime.to} dagar
+                              </Text>
+                            </Flex>
+                            <Flex
+                              sx={(theme) => ({
+                                width: 60,
+                                [theme.fn.smallerThan("xs")]: {
+                                  width: 20,
+                                },
+                              })}
+                            >
                               <Image
-                                width={60}
                                 alt={courriers[0].name}
-                                src={`/uploads/${courriers[0].image}`}
+                                src={
+                                  size.width > 550
+                                    ? `/uploads/${courriers[0].image}`
+                                    : `/uploads/postnord2.png` // Lägg till denna i schemat, temporärt!
+                                }
                               />
                             </Flex>
                           </Flex>

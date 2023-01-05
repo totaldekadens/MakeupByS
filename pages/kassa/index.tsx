@@ -11,6 +11,7 @@ import {
   checkoutContext,
 } from "../../components/context/checkoutProvider";
 import Courrier from "../../components/checkout/Courrier";
+import TotalSum from "../../components/checkout/TotalSum";
 
 const Kassa: NextPage = () => {
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
@@ -56,7 +57,10 @@ const Kassa: NextPage = () => {
               checkout.address.invoice || checkout.address.delivery ? (
                 checkout.address.invoice.city ||
                 checkout.address.delivery.city ? (
-                  <Courrier />
+                  <>
+                    <Courrier />
+                    <TotalSum />
+                  </>
                 ) : null
               ) : null
             ) : null}

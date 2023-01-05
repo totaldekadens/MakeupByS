@@ -3,7 +3,7 @@ import { FC, PropsWithChildren, useState } from "react";
 import { LineItem } from "../AddToCartIcon";
 
 interface Props {}
-
+// Fix interface
 export interface Checkout {
   cartItems: LineItem[] | undefined;
   name: string;
@@ -13,7 +13,7 @@ export interface Checkout {
     invoice?: any;
     delivery?: any;
   };
-  courrier: any; // Fix
+  courrier: any;
 }
 
 interface Address {

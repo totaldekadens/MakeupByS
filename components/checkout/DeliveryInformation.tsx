@@ -71,7 +71,6 @@ const DeliveryInformation: FC = () => {
       }
 
       if (newDeliveryInfo) {
-        console.log("HÄR");
         checkoutCopy.name = newDeliveryInfo.name;
         checkoutCopy.email = newDeliveryInfo.email;
         checkoutCopy.phone = newDeliveryInfo.phone;
