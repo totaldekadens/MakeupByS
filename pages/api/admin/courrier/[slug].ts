@@ -24,9 +24,7 @@ export default async function handler(
       try {
         // Fix validation for already existing category except the one you update
 
-        const updateCourrier: CourrierDocument = new Courrier();
-        updateCourrier._id = req.body._id;
-        // Uppdatera
+        const updateCourrier: CourrierDocument = req.body;
 
         const courrier = await Courrier.findOneAndUpdate(
           { slug },

@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import ColorTag from "../../../../models/ColorTag";
+import Courrier from "../../../../models/Courrier";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -13,8 +13,8 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const colorTags = await ColorTag.find({});
-        res.status(200).json({ success: true, data: colorTags });
+        const courriers = await Courrier.find({});
+        res.status(200).json({ success: true, data: courriers });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
       }

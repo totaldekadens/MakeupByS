@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import ColorTag from "../../../../models/ColorTag";
+import Courrier from "../../../../models/Courrier";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -16,14 +16,14 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const colorTag = await ColorTag.findOne({ slug });
+        const courrier = await Courrier.findOne({ slug });
 
-        if (!colorTag) {
+        if (!courrier) {
           return res
             .status(400)
             .json({ success: false, data: "Color tag not found" });
         }
-        res.status(200).json({ success: true, data: colorTag });
+        res.status(200).json({ success: true, data: courrier });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
       }

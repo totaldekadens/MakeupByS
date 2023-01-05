@@ -1,4 +1,5 @@
-import mongoose, { TrigonometryExpressionOperator, Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
+import { number } from "yup";
 import { Address } from "./User";
 
 const CourrierSchema = new mongoose.Schema<CourrierDocument>({
@@ -24,17 +25,37 @@ const CourrierSchema = new mongoose.Schema<CourrierDocument>({
   options: [
     {
       title: { type: String, required: true },
-      deliveryTime: { type: String, required: true },
-      cost: { type: Number, required: true },
+      description: { type: String, required: true },
+      description2: { type: String, required: true },
+      deliveryTime: {
+        from: { type: Number, required: true },
+        to: { type: Number, required: true },
+      },
+      cost: [
+        {
+          maxWeight: { type: Number, required: true },
+          cost: { type: Number, required: true },
+        },
+      ],
     },
   ],
   image: { type: String, required: true },
 });
 
+type Cost = {
+  maxWeight: number;
+  cost: number;
+};
+
 type Option = {
   title: string;
-  deliveryTime: string;
-  cost: number;
+  description: string;
+  description2: string;
+  deliveryTime: {
+    from: number;
+    to: number;
+  };
+  cost: Cost[];
 };
 
 export type CourrierDocument = {
