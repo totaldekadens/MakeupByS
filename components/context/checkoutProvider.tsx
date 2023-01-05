@@ -4,7 +4,7 @@ import { LineItem } from "../AddToCartIcon";
 
 interface Props {}
 
-interface Checkout {
+export interface Checkout {
   cartItems: LineItem[] | undefined;
   name: string;
   email: string;

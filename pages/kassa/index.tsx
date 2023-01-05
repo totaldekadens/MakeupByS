@@ -6,7 +6,11 @@ import { LineItem } from "../../components/AddToCartIcon";
 import CartCheckout from "../../components/checkout/CartCheckout";
 import DeliveryInformation from "../../components/checkout/DeliveryInformation";
 import { useContext, useEffect } from "react";
-import { checkoutContext } from "../../components/context/checkoutProvider";
+import {
+  Checkout,
+  checkoutContext,
+} from "../../components/context/checkoutProvider";
+import Courrier from "../../components/checkout/Courrier";
 
 const Kassa: NextPage = () => {
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
@@ -29,7 +33,7 @@ const Kassa: NextPage = () => {
     (sum, item) => sum + item.price_data.unit_amount * item.quantity,
     0
   );
-
+  console.log(checkout);
   return (
     <AppShell
       fixed={false}
@@ -57,6 +61,9 @@ const Kassa: NextPage = () => {
           <>
             <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />
             <DeliveryInformation />
+            {checkout.address.invoice.city || checkout.address.delivery.city ? (
+              <Courrier />
+            ) : null}
           </>
         ) : (
           <>

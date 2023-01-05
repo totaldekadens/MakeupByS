@@ -78,6 +78,7 @@ const Cart: FC = () => {
           {cartItems.map((product, index) => {
             return (
               <CartItem
+                key={index}
                 product={product}
                 cartItems={cartItems}
                 setCartItems={setCartItems}
