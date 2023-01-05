@@ -54,12 +54,14 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
         root: {
           borderRadius: "10px",
           minWidth: "150px",
+          [theme.fn.smallerThan("xs")]: {
+            minWidth: "130px",
+        },
           // Här kan vi lägga in styling för Button-komponenten i Mantine
           "&:hover": {
             backgroundColor: "whitesmoke",
             color: theme.colors.brand[3],
             borderColor: theme.colors.brand[3],
-
             // Här kan vi lägga in hover för Button-komponenten i Mantine
           },
         },
