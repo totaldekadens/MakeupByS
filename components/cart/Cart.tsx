@@ -108,8 +108,10 @@ const Cart: FC = () => {
           <Title order={4}>{totalSum} KR</Title>
         </Flex>
         <Flex>
-          <Link href="/kassa">
-            <Button h={50}>Till kassan</Button>
+          <Link href={totalSum == 0 ? "#" : "/kassa"}>
+            <Button onClick={() => setOpenedCart(false)} h={50}>
+              Till kassan
+            </Button>
           </Link>
         </Flex>
       </Flex>
