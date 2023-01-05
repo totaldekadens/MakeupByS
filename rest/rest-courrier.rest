@@ -26,6 +26,7 @@ Content-Type: application/json
   },
   "options": [
     {
+      "id": "1",
       "title": "Varubrev 1:a-klass",
       "description": "Levereras till brevlåda/dörr",
       "description2": "Om paketet inte får plats i postlådan levereras det vid din dörr eller i en påse utanpå din postlåda. Du aviseras när leverans vid dörr eller i påse på lådan är utförd.",
@@ -39,6 +40,7 @@ Content-Type: application/json
       ]
     },
     {
+      "id": "2",
       "title": "Varubrev Ekonomi",
       "description": "Levereras till brevlåda/dörr - Klimatkompenserat",
       "description2": "Om paketet inte får plats i postlådan levereras det vid din dörr eller i en påse utanpå din postlåda. Du aviseras när leverans vid dörr eller i påse på lådan är utförd. Leveransen är klimatkompenserad.",
@@ -52,6 +54,7 @@ Content-Type: application/json
       ]
     },
     {
+      "id": "3",
       "title": "MyPack Home",
       "description": "Hemleverans",
       "description2": "Du aviseras i PostNord App och via sms/email med ett förslag på leveransdatum och tid. Det finns alltid möjlighet att anpassa din leverans. Du kan tex välja annat datum/tid, personlig leverans vid dörren eller att hämta ditt paket på ett av PostNords serviceställen. Vid hemleverans kan du följa ditt paket i realtid med hjälp av karta, ETA och antal stopp före dig.",

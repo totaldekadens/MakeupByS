@@ -24,6 +24,7 @@ const CourrierSchema = new mongoose.Schema<CourrierDocument>({
   },
   options: [
     {
+      id: { type: String, required: true },
       title: { type: String, required: true },
       description: { type: String, required: true },
       description2: { type: String, required: true },
@@ -48,6 +49,7 @@ type Cost = {
 };
 
 type Option = {
+  id: string;
   title: string;
   description: string;
   description2: string;

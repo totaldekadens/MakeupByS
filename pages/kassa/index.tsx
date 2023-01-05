@@ -61,8 +61,11 @@ const Kassa: NextPage = () => {
           <>
             <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />
             <DeliveryInformation />
-            {checkout.address.invoice.city || checkout.address.delivery.city ? (
-              <Courrier />
+            {checkout.address.invoice || checkout.address.delivery ? (
+              checkout.address.invoice.city ||
+              checkout.address.delivery.city ? (
+                <Courrier />
+              ) : null
             ) : null}
           </>
         ) : (
