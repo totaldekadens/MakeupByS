@@ -21,7 +21,7 @@ export default async function handler(
         if (!courrier) {
           return res
             .status(400)
-            .json({ success: false, data: "Color tag not found" });
+            .json({ success: false, data: "Courrier tag not found" });
         }
         res.status(200).json({ success: true, data: courrier });
       } catch (error) {

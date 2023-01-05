@@ -22,7 +22,7 @@ export default async function handler(
   switch (method) {
     case "PUT":
       try {
-        // Fix validation for already existing category except the one you update
+        // Fix validation for already existing courrier except the one you update
 
         const updateCourrier: CourrierDocument = req.body;
 
@@ -37,7 +37,7 @@ export default async function handler(
         if (!courrier) {
           return res
             .status(400)
-            .json({ success: false, data: "Color tag not updated" });
+            .json({ success: false, data: "Courrier not updated" });
         }
         res.status(200).json({ success: true, data: courrier });
       } catch (error) {
@@ -51,11 +51,11 @@ export default async function handler(
         if (deletedCourrier.deletedCount < 1) {
           return res
             .status(400)
-            .json({ success: false, data: "Color tag not deleted" });
+            .json({ success: false, data: "Courrier not deleted" });
         }
         res
           .status(200)
-          .json({ success: true, data: "Color tag successfully deleted" });
+          .json({ success: true, data: "Courrier successfully deleted" });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
       }
