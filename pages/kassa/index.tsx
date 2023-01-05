@@ -1,4 +1,4 @@
-import { AppShell, Flex, Title } from "@mantine/core";
+import { AppShell, Flex, Title, Text } from "@mantine/core";
 import { NextPage } from "next";
 import HeaderCheckout from "../../components/HeaderCheckout";
 import { useLocalStorage } from "@mantine/hooks";
@@ -53,8 +53,22 @@ const Kassa: NextPage = () => {
         }}
       >
         <Title order={1}>KASSA</Title>
-        <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />
-        <DeliveryInformation />
+        {totalSum && totalSum > 0 ? (
+          <>
+            <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />
+            <DeliveryInformation />
+          </>
+        ) : (
+          <>
+            <Title mt={20} order={3}>
+              Din varukorg är tom.
+            </Title>
+            <Text mt={10} align="center" color={"dimmed"}>
+              Gå tillbaka och lägg produkter i varukorgen för att slutföra ditt
+              köp
+            </Text>
+          </>
+        )}
       </Flex>
     </AppShell>
   );

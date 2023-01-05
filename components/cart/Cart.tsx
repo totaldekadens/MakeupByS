@@ -10,22 +10,18 @@ import {
 import { useLocalStorage } from "@mantine/hooks";
 import { IconX } from "@tabler/icons";
 import Link from "next/link";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useContext } from "react";
 import useWindowSize from "../../utils/useWindowSize";
 import { LineItem } from "../AddToCartIcon";
+import { openedCartContext } from "../context/OpenCartProvider";
 import CartItem from "./CartItem";
 
-type Props = {
-  opened: boolean;
-  openCart: Dispatch<SetStateAction<boolean>>;
-};
-
-const Cart: FC<Props> = ({ opened, openCart }) => {
+const Cart: FC = () => {
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
-
+  const { openedCart, setOpenedCart } = useContext(openedCartContext);
   let totalSum = cartItems.reduce(
     (sum, item) => sum + item.price_data.unit_amount * item.quantity,
     0
@@ -39,8 +35,8 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
     <Drawer
       overlayOpacity={0.3}
       withCloseButton={false}
-      opened={opened}
-      onClose={() => openCart(false)}
+      opened={openedCart}
+      onClose={() => setOpenedCart(false)}
       title="Varukorg"
       padding="xl"
       size="lg"
@@ -69,7 +65,10 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
       })}
     >
       <Box pos={"absolute"} top={10} right={10}>
-        <IconX style={{ cursor: "pointer" }} onClick={() => openCart(false)} />
+        <IconX
+          style={{ cursor: "pointer" }}
+          onClick={() => setOpenedCart(false)}
+        />
       </Box>
       <ScrollArea
         style={{ height: setHeight, width: "100%" }}
@@ -109,8 +108,10 @@ const Cart: FC<Props> = ({ opened, openCart }) => {
           <Title order={4}>{totalSum} KR</Title>
         </Flex>
         <Flex>
-          <Link href="/kassa">
-            <Button h={50}>Till kassan</Button>
+          <Link href={totalSum == 0 ? "#" : "/kassa"}>
+            <Button onClick={() => setOpenedCart(false)} h={50}>
+              Till kassan
+            </Button>
           </Link>
         </Flex>
       </Flex>

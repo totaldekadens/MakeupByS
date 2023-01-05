@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { useSession, signIn, signOut } from "next-auth/react";
+import Cart from "../components/cart/Cart";
 
 const MyPage: NextPage = () => {
   const { data: session } = useSession();
@@ -15,6 +16,7 @@ const MyPage: NextPage = () => {
             Logga ut
           </Button>
         </Box>
+        <Cart />
       </AppShell>
     </>
   );

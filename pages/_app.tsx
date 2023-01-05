@@ -5,6 +5,7 @@ import { emotionCache } from "../emotionCache";
 import { MantineProvider } from "@mantine/core";
 import { getTheme } from "../styles/theme";
 import CheckOutProvider from "../components/context/checkoutProvider";
+import OpenedCartProvider from "../components/context/OpenCartProvider";
 
 export default function App({
   Component,
@@ -19,7 +20,9 @@ export default function App({
         theme={getTheme("light")}
       >
         <CheckOutProvider>
-          <Component {...pageProps} />
+          <OpenedCartProvider>
+            <Component {...pageProps} />
+          </OpenedCartProvider>
         </CheckOutProvider>
       </MantineProvider>
     </SessionProvider>

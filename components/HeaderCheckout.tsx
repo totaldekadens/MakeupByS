@@ -9,7 +9,8 @@ import { IconChevronLeft } from "@tabler/icons";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import IconsHeader from "./IconsHeader";
+import IconsCheckout from "./IconsCheckout";
+import IconsHeader from "./IconsCheckout";
 import LoginButton from "./LoginButton";
 import MobileLoginButton from "./MobileLoginButtons";
 
@@ -17,7 +18,7 @@ import MobileLoginButton from "./MobileLoginButtons";
 
 const HeaderCheckout = () => {
   const router = useRouter();
-
+  const session = useSession();
   return (
     <MantineHeader
       fixed={false}
@@ -34,18 +35,18 @@ const HeaderCheckout = () => {
         },
         [theme.fn.smallerThan("xs")]: {
           height: 60,
-          padding: "0px 0px 0px 10px",
+          padding: "0px 10px 0px 10px",
         },
       })}
     >
       <Flex justify={"space-between"} align="center" sx={{ width: "100%" }}>
         <Flex
-          w={180}
+          w={100}
           onClick={() => router.back()}
           sx={(theme) => ({
             cursor: "pointer",
             [theme.fn.smallerThan("xs")]: {
-              width: 102,
+              width: 70,
             },
           })}
         >
@@ -80,8 +81,7 @@ const HeaderCheckout = () => {
             MakeUpByS
           </Title>
         </Link>
-        <LoginButton />
-        <MobileLoginButton />
+        <IconsCheckout />
       </Flex>
     </MantineHeader>
   );

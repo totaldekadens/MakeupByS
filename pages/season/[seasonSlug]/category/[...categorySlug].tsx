@@ -167,7 +167,7 @@ const CategoryPage: NextPage = (props) => {
           </>
         )}
       </Box>
-      <Cart opened={opened} openCart={setOpened} />
+      <Cart />
     </AppShell>
   );
 };

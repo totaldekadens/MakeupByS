@@ -38,7 +38,6 @@ const ProductCard: FC<Props> = ({ product, openCart }) => {
         >
           <AddToCartIcon
             color={hovered ? "white" : "black"}
-            openCart={openCart}
             product={product}
           />
         </Box>

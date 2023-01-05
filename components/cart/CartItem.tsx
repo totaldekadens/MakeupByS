@@ -75,6 +75,9 @@ const CartItem: FC<Props> = ({ product, cartItems, setCartItems }) => {
             [theme.fn.smallerThan("sm")]: {
               fontSize: "16px",
             },
+            [theme.fn.smallerThan("xs")]: {
+              fontSize: "14px",
+            },
           })}
         >
           {product.quantity * product.price_data.unit_amount} KR

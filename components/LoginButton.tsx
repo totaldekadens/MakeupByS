@@ -1,17 +1,43 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 import Link from "next/link";
-import { Flex, Box, ThemeIcon } from "@mantine/core";
+import { Flex, Box, ThemeIcon, Text } from "@mantine/core";
 import {
   IconUser,
   IconShoppingBag,
   IconHomeCog,
   IconCheck,
 } from "@tabler/icons";
-import { useHover } from "@mantine/hooks";
+import { useHover, useLocalStorage } from "@mantine/hooks";
+import { LineItem } from "./AddToCartIcon";
+import { FC, useContext, useEffect, useState } from "react";
+import { openedCartContext } from "./context/OpenCartProvider";
 
-const LoginButton = () => {
+const LoginButton: FC = () => {
   const session = useSession();
   const { hovered, ref } = useHover();
+  const { openedCart, setOpenedCart } = useContext(openedCartContext);
+
+  const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
+    key: "cart",
+    defaultValue: [],
+  });
+  const [quantity, setQuantity] = useState<number>();
+
+  useEffect(() => {
+    const updateQuantity = () => {
+      if (cartItems && cartItems.length > 0) {
+        const getTotalQuantity = cartItems
+          .map((i) => i.quantity)
+          .reduce((a, b) => a + b);
+
+        setQuantity(getTotalQuantity);
+        return;
+      }
+      setQuantity(0);
+    };
+
+    updateQuantity();
+  }, [cartItems]);
   return (
     <>
       <Flex
@@ -52,10 +78,36 @@ const LoginButton = () => {
           </Link>
         ) : null}
 
-        <Box>
-          <Link href="/">
-            <IconShoppingBag size={36} color="white" />
-          </Link>
+        <Box pos={"relative"}>
+          {quantity && quantity > 0 ? (
+            <Box
+              top={-14}
+              left={-11}
+              pos={"absolute"}
+              w={23}
+              h={23}
+              bg="#E6FCF5"
+              sx={{
+                borderRadius: "50px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text weight={"bold"} color={"brand.3"} size={12}>
+                {quantity}
+              </Text>
+            </Box>
+          ) : null}
+
+          <IconShoppingBag
+            style={{ cursor: "pointer" }}
+            onClick={() => {
+              setOpenedCart(!openedCart);
+            }}
+            size={36}
+            color="white"
+          />
         </Box>
       </Flex>
     </>
