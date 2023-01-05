@@ -15,10 +15,11 @@ import { IconCheck } from "@tabler/icons";
 import { useState } from "react";
 import SearchbarMobile from "./SearchbarMobile";
 import MobileLoginButton from "./MobileLoginButtons";
+import MobileBurgerMenu from "./MobileBurgerMenu";
 
 const Header = () => {
   const session = useSession();
-  const [opened, setOpened] = useState(false);
+
   return (
     <>
       <MantineHeader
@@ -116,19 +117,9 @@ const Header = () => {
           >
             <Searchbar />
 
-            <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-              <Flex sx={{ paddingRight: "20px" }}>
-                <Burger
-                  left={"20px"}
-                  top={"10px"}
-                  pos="absolute"
-                  color="white"
-                  size={"sm"}
-                  opened={opened}
-                  onClick={() => setOpened((o: boolean) => !o)}
-                />
-              </Flex>
-            </MediaQuery>
+
+            {/* burger componenet här */}
+            <MobileBurgerMenu />
 
             <Link href="/">
               {session.data?.user ? (
