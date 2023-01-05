@@ -2,8 +2,7 @@ GET http://localhost:3000/api/open/courrier
 
 ###
 
-GET http://localhost:3000/api/open/courrier/63a871bd2622fa2566183534
-
+GET http://localhost:3000/api/open/courrier/63b6aba7b93eff1cba77732c
 
 ### 
 
@@ -73,16 +72,71 @@ Content-Type: application/json
 
 ###
 
-PUT  http://localhost:3000/api/admin/courrier/#FFFFF
+PUT  http://localhost:3000/api/admin/courrier/63b6aba7b93eff1cba77732c
 Content-Type: application/json
 
 {
-
+  "_id": "63b6aba7b93eff1cba77732c",
+  "name": "Postnord",
+  "address": {
+    "line1": "Klevagårdsgatan 1",
+    "postal_code": "51162",
+    "city": "Skene",
+    "country": "Sverige"
+  },
+  "email": "suppport@postnord.se",
+  "image": "postnord.png",
+  "contact": {
+    "name": "Anette Andersson",
+    "email": "anette.andersson@postnord.se",
+    "phone": "0771333310"
+  },
+  "options": [
+    {
+      "title": "Varubrev 1:a-klass",
+      "description": "Levereras till brevlåda/dörr",
+      "description2": "Om paketet inte får plats i postlådan levereras det vid din dörr eller i en påse utanpå din postlåda. Du aviseras när leverans vid dörr eller i påse på lådan är utförd.",
+      "deliveryTime": { "from": 1, "to": 2 },
+      "cost": [
+        { "maxWeight": 500, "cost": 29 },
+        { "maxWeight": 1000, "cost": 49 },
+        { "maxWeight": 2000, "cost": 69 },
+        { "maxWeight": 5000, "cost": 99 },
+        { "maxWeight": 10000, "cost": 139 }
+      ]
+    },
+    {
+      "title": "Varubrev Ekonomi",
+      "description": "Levereras till brevlåda/dörr - Klimatkompenserat",
+      "description2": "Om paketet inte får plats i postlådan levereras det vid din dörr eller i en påse utanpå din postlåda. Du aviseras när leverans vid dörr eller i påse på lådan är utförd. Leveransen är klimatkompenserad.",
+      "deliveryTime": { "from": 3, "to": 4 },
+      "cost": [
+        { "maxWeight": 500, "cost": 19 },
+        { "maxWeight": 1000, "cost": 39 },
+        { "maxWeight": 2000, "cost": 59 },
+        { "maxWeight": 5000, "cost": 89 },
+        { "maxWeight": 1000, "cost": 129 }
+      ]
+    },
+    {
+      "title": "MyPack Home",
+      "description": "Hemleverans",
+      "description2": "Du aviseras i PostNord App och via sms/email med ett förslag på leveransdatum och tid. Det finns alltid möjlighet att anpassa din leverans. Du kan tex välja annat datum/tid, personlig leverans vid dörren eller att hämta ditt paket på ett av PostNords serviceställen. Vid hemleverans kan du följa ditt paket i realtid med hjälp av karta, ETA och antal stopp före dig.",
+      "deliveryTime": { "from": 1, "to": 2 },
+      "cost": [
+        { "maxWeight": 500, "cost": 79 },
+        { "maxWeight": 1000, "cost": 89 },
+        { "maxWeight": 2000, "cost": 99 },
+        { "maxWeight": 5000, "cost": 119 },
+        { "maxWeight": 10000, "cost": 229 }
+      ]
+    }
+  ],
   "phone": "0771333315"
-};
+}
 
 ###
 
-DELETE  http://localhost:3000/api/admin/courrier/6395c57998499264aa6727c0
+DELETE  http://localhost:3000/api/admin/courrier/63b6aba7b93eff1cba77732c
 
 
