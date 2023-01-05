@@ -5,7 +5,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { LineItem } from "../../components/AddToCartIcon";
 import CartCheckout from "../../components/checkout/CartCheckout";
 import DeliveryInformation from "../../components/checkout/DeliveryInformation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import {
   Checkout,
   checkoutContext,
@@ -20,20 +20,11 @@ const Kassa: NextPage = () => {
 
   const { checkout, setCheckout } = useContext(checkoutContext);
 
-  useEffect(() => {
-    const updateCheckoutInfo = () => {
-      const checkoutCopy = { ...checkout };
-      checkoutCopy.cartItems = cartItems;
-      setCheckout(checkoutCopy);
-    };
-    updateCheckoutInfo();
-  }, [cartItems]);
-
   let totalSum = cartItems.reduce(
     (sum, item) => sum + item.price_data.unit_amount * item.quantity,
     0
   );
-  console.log(checkout);
+
   return (
     <AppShell
       fixed={false}
@@ -62,9 +53,11 @@ const Kassa: NextPage = () => {
             <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />
             <DeliveryInformation />
             {checkout.address.invoice || checkout.address.delivery ? (
-              checkout.address.invoice.city ||
-              checkout.address.delivery.city ? (
-                <Courrier />
+              checkout.address.invoice || checkout.address.delivery ? (
+                checkout.address.invoice.city ||
+                checkout.address.delivery.city ? (
+                  <Courrier />
+                ) : null
               ) : null
             ) : null}
           </>

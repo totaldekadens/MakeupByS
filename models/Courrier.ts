@@ -56,8 +56,10 @@ type Option = {
   deliveryTime: {
     from: number;
     to: number;
+    _id?: string;
   };
   cost: Cost[];
+  _id?: string;
 };
 
 export type CourrierDocument = {

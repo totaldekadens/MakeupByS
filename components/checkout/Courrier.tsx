@@ -1,4 +1,14 @@
-import { Radio, Title } from "@mantine/core";
+import {
+  Flex,
+  Radio,
+  Title,
+  Text,
+  Image,
+  HoverCard,
+  Button,
+  Box,
+} from "@mantine/core";
+import { IconInfoCircle } from "@tabler/icons";
 import { FC, useContext, useEffect, useState } from "react";
 import { CourrierDocument } from "../../models/Courrier";
 import { checkoutContext } from "../context/checkoutProvider";
@@ -6,21 +16,48 @@ import ContainerWithBorder from "../layout/ContainerWithBorder";
 
 const Courrier: FC = () => {
   const { checkout, setCheckout } = useContext(checkoutContext);
-  const [courriers, setCourriers] = useState<CourrierDocument | []>([]);
+  const [courriers, setCourriers] = useState<CourrierDocument[] | []>([]);
   const [value, setValue] = useState("");
-  const checkoutCopy = { ...checkout };
 
   // Hämta alla fraktsätt och sätt i ett state.
   useEffect(() => {
-    const updateCheckoutInfo = async () => {
+    const updateCourrierInfo = async () => {
       let response = await fetch(`/api/open/courrier`);
       let result = await response.json();
       if (result.success) {
         setCourriers(result.data);
       }
     };
-    updateCheckoutInfo();
+    updateCourrierInfo();
   }, [checkout]);
+
+  useEffect(() => {
+    const updateCheckoutInfo = async () => {
+      const getCourrier = courriers.find((courrier) =>
+        courrier.options.some((option) => option._id == value)
+      );
+      if (getCourrier) {
+        var result = getCourrier.options.filter((obj) => {
+          return obj._id == value;
+        });
+        if (result) {
+          const costOption = result[0];
+
+          const courrierInfo = {
+            name: getCourrier.name,
+            cost: costOption,
+          };
+
+          const checkoutCopy = { ...checkout };
+
+          checkoutCopy.courrier = courrierInfo;
+          // Kolla om du kan räkna ut den rätt kostnad också beroende på vikt.
+          setCheckout(checkoutCopy);
+        }
+      }
+    };
+    updateCheckoutInfo();
+  }, [value]);
 
   return (
     <>
@@ -31,15 +68,72 @@ const Courrier: FC = () => {
         <Radio.Group
           value={value}
           onChange={setValue}
+          orientation="vertical"
           name="favoriteFramework"
-          label="Select your favorite framework/library"
-          description="This is anonymous"
-          withAsterisk
         >
-          <Radio value="react" label="React" />
-          <Radio value="svelte" label="Svelte" />
-          <Radio value="ng" label="Angular" />
-          <Radio value="vue" label="Vue" />
+          {courriers
+            ? courriers[0]
+              ? courriers.map((courrier) => {
+                  return courrier.options.map((option, index) => {
+                    return (
+                      <Radio
+                        key={index}
+                        styles={{
+                          root: {
+                            width: "100%",
+                          },
+                          body: {
+                            width: "100%",
+                          },
+                          labelWrapper: {
+                            width: "100%",
+                            display: "flex",
+                          },
+                        }}
+                        value={option._id}
+                        mr={10}
+                        label={
+                          <Flex
+                            justify={"space-between"}
+                            sx={{ width: "100%" }}
+                          >
+                            <Flex>
+                              <Flex direction={"column"}>
+                                <Flex gap={10}>
+                                  <Title order={5}>{option.title}</Title>
+                                  <HoverCard width={280} shadow="md">
+                                    <HoverCard.Target>
+                                      <Box>
+                                        <IconInfoCircle size={20} />
+                                      </Box>
+                                    </HoverCard.Target>
+                                    <HoverCard.Dropdown>
+                                      <Text size="sm">
+                                        {option.description2}
+                                      </Text>
+                                    </HoverCard.Dropdown>
+                                  </HoverCard>
+                                </Flex>
+
+                                <Text>{option.description}</Text>
+                                <Text>{option.cost[0].cost} KR</Text>
+                              </Flex>
+                            </Flex>
+                            <Flex>
+                              <Image
+                                width={60}
+                                alt={courriers[0].name}
+                                src={`/uploads/${courriers[0].image}`}
+                              />
+                            </Flex>
+                          </Flex>
+                        }
+                      />
+                    );
+                  });
+                })
+              : null
+            : null}
         </Radio.Group>
       </ContainerWithBorder>
     </>

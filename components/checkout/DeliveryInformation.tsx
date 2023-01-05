@@ -19,8 +19,11 @@ const object = {
   email: "",
   phone: "",
   address: {
-    invoice: undefined,
-    delivery: undefined,
+    line1: "",
+    line2: "",
+    postal_code: "",
+    city: "",
+    country: "",
   },
 };
 
@@ -62,27 +65,38 @@ const DeliveryInformation: FC = () => {
       const checkoutCopy = { ...checkout };
       if (deliveryInfo) {
         checkoutCopy.address.invoice = deliveryInfo.address;
-        checkoutCopy.address.delivery = undefined;
         checkoutCopy.name = deliveryInfo.name;
         checkoutCopy.email = deliveryInfo.email;
         checkoutCopy.phone = deliveryInfo.phone;
-        if (newDeliveryInfo) {
-          checkoutCopy.name = newDeliveryInfo.name;
-          checkoutCopy.email = newDeliveryInfo.email;
-          checkoutCopy.phone = newDeliveryInfo.phone;
-          checkoutCopy.address.delivery = newDeliveryInfo.address;
-        }
-        setCheckout(checkoutCopy);
+      }
+
+      if (newDeliveryInfo) {
+        console.log("HÄR");
+        checkoutCopy.name = newDeliveryInfo.name;
+        checkoutCopy.email = newDeliveryInfo.email;
+        checkoutCopy.phone = newDeliveryInfo.phone;
+        checkoutCopy.address.delivery = newDeliveryInfo.address;
       } else {
+        checkoutCopy.address.delivery = "";
+      }
+
+      setCheckout(checkoutCopy);
+
+      if (!newDeliveryInfo && !deliveryInfo) {
         checkoutCopy.name = object.name;
         checkoutCopy.email = object.email;
         checkoutCopy.phone = object.phone;
-        checkoutCopy.address.invoice = object.address;
-        checkoutCopy.address.delivery = object.address;
+        if (checkoutCopy.address.invoice) {
+          checkoutCopy.address.invoice = object.address;
+        }
+        if (checkoutCopy.address.delivery) {
+          checkoutCopy.address.delivery = object.address;
+        }
         setCheckout(checkoutCopy);
         setNewDeliveryInfo(undefined);
       }
     };
+
     updateCheckoutInfo();
   }, [deliveryInfo, newDeliveryInfo]);
 
