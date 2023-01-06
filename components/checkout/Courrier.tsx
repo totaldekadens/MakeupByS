@@ -1,5 +1,14 @@
-import { Flex, Radio, Title, Text, Image, HoverCard, Box } from "@mantine/core";
-import { IconInfoCircle } from "@tabler/icons";
+import {
+  Flex,
+  Radio,
+  Title,
+  Text,
+  Image,
+  HoverCard,
+  Box,
+  MediaQuery,
+} from "@mantine/core";
+import { IconInfoCircle, IconPoint } from "@tabler/icons";
 import { FC, useContext, useEffect, useRef, useState } from "react";
 import { CourrierDocument } from "../../models/Courrier";
 import { checkoutContext } from "../context/checkoutProvider";
@@ -147,8 +156,11 @@ const Courrier: FC = () => {
                         value={option._id}
                         label={
                           <Flex
+                            pb={15}
                             justify={"space-between"}
-                            sx={{ width: "100%" }}
+                            sx={{
+                              width: "100%",
+                            }}
                           >
                             <Flex>
                               <Flex direction={"column"} w={175}>
@@ -157,7 +169,7 @@ const Courrier: FC = () => {
                                     order={5}
                                     sx={(theme) => ({
                                       [theme.fn.smallerThan("xs")]: {
-                                        fontSize: "14px",
+                                        fontSize: "16px",
                                       },
                                     })}
                                   >
@@ -176,43 +188,64 @@ const Courrier: FC = () => {
                                     </HoverCard.Dropdown>
                                   </HoverCard>
                                 </Flex>
-                                <Text>{option.description}</Text>
-                                {option.cost.map((freightCost, index) => {
-                                  if (
-                                    weight &&
-                                    weight < freightCost.maxWeight &&
-                                    weight > freightCost.minWeight
-                                  ) {
-                                    return (
-                                      <Text key={index}>
-                                        {freightCost.cost} KR
+                                <Text color={"dimmed"} size={16}>
+                                  {option.description}
+                                </Text>
+                                <Flex align={"center"}>
+                                  {option.cost.map((freightCost, index) => {
+                                    if (
+                                      weight &&
+                                      weight < freightCost.maxWeight &&
+                                      weight > freightCost.minWeight
+                                    ) {
+                                      return (
+                                        <Text
+                                          color={"dimmed"}
+                                          size={16}
+                                          key={index}
+                                        >
+                                          {freightCost.cost} KR
+                                        </Text>
+                                      );
+                                    }
+                                  })}
+                                  <MediaQuery
+                                    largerThan={"xs"}
+                                    styles={{ display: "none" }}
+                                  >
+                                    <Flex align={"center"} ml={12}>
+                                      <IconPoint size={15} fill="black" />
+                                      <Text color={"dimmed"} size={16} ml={12}>
+                                        {option.deliveryTime.from} -{" "}
+                                        {option.deliveryTime.to} dagar
                                       </Text>
-                                    );
-                                  }
-                                })}
+                                    </Flex>
+                                  </MediaQuery>
+                                </Flex>
                               </Flex>
                             </Flex>
-                            <Flex>
-                              <Text>
-                                {option.deliveryTime.from} -{" "}
-                                {option.deliveryTime.to} dagar
-                              </Text>
-                            </Flex>
+                            <MediaQuery
+                              smallerThan={"xs"}
+                              styles={{ display: "none" }}
+                            >
+                              <Flex>
+                                <Text color={"dimmed"}>
+                                  {option.deliveryTime.from} -{" "}
+                                  {option.deliveryTime.to} dagar
+                                </Text>
+                              </Flex>
+                            </MediaQuery>
                             <Flex
                               sx={(theme) => ({
                                 width: 60,
                                 [theme.fn.smallerThan("xs")]: {
-                                  width: 20,
+                                  width: 50,
                                 },
                               })}
                             >
                               <Image
                                 alt={courriers[0].name}
-                                src={
-                                  size.width > 550
-                                    ? `/uploads/${courriers[0].image}`
-                                    : `/uploads/postnord2.png` // Lägg till denna i schemat, temporärt!
-                                }
+                                src={`/uploads/${courriers[0].image}`}
                               />
                             </Flex>
                           </Flex>

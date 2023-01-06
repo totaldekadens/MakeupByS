@@ -129,13 +129,24 @@ const DeliveryInformation: FC = () => {
       <Title order={2}>Dina uppgifter:</Title>
       {!deliveryInfo ? (
         <>
-          <Flex mt={20} gap={20} direction="column" align={"center"}>
+          <Flex
+            mt={20}
+            gap={20}
+            direction="column"
+            align={"center"}
+            sx={(theme) => ({
+              [theme.fn.smallerThan("xs")]: {
+                width: "100%",
+              },
+            })}
+          >
             <form
               style={{
                 display: "flex",
                 gap: 20,
                 flexWrap: "wrap",
                 justifyContent: "center",
+                width: "100%",
               }}
               onSubmit={form.onSubmit(handleSubmit)}
             >
@@ -145,6 +156,14 @@ const DeliveryInformation: FC = () => {
                     backgroundColor: "white",
                     border: "1px solid " + theme.colors.gray[3],
                     width: 250,
+                    [theme.fn.smallerThan("xs")]: {
+                      width: "100%",
+                    },
+                  },
+                  root: {
+                    [theme.fn.smallerThan("xs")]: {
+                      width: "90%",
+                    },
                   },
                 })}
                 bg={"white"}

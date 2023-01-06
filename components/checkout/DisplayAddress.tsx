@@ -1,8 +1,9 @@
 import { Flex, Text } from "@mantine/core";
 import { IconX } from "@tabler/icons";
 import { useSession } from "next-auth/react";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useContext } from "react";
 import { RestrictedUser } from "../../pages/api/open/users/[slug]";
+import { checkoutContext } from "../context/checkoutProvider";
 import ContainerWithBorder from "../layout/ContainerWithBorder";
 
 type Props = {
@@ -20,7 +21,11 @@ const DisplayAddress: FC<Props> = ({
   setNewDeliveryInfo,
 }) => {
   const session = useSession();
+  const { checkout, setCheckout } = useContext(checkoutContext);
   const handleChange = () => {
+    const checkoutCopy = { ...checkout };
+    checkoutCopy.courrier = "";
+    setCheckout(checkoutCopy);
     setNewDeliveryInfo ? setNewDeliveryInfo(undefined) : null;
     setDeliveryInfo(undefined);
   };
@@ -50,13 +55,14 @@ const DisplayAddress: FC<Props> = ({
           })}
         >
           <Text>{deliveryInfo?.address.line1},</Text>
-          <Text>
-            {deliveryInfo && deliveryInfo.address.line2.length > 0
-              ? `${deliveryInfo?.address.line2}, `
-              : null}
-          </Text>
-          <Text>{deliveryInfo?.address.postal_code},</Text>
-          <Text>{deliveryInfo?.address.city},</Text>
+          {deliveryInfo && deliveryInfo.address.line2.length > 0 ? (
+            <Text>`${deliveryInfo?.address.line2}, `</Text>
+          ) : null}
+
+          <Flex gap={7}>
+            <Text>{deliveryInfo?.address.postal_code}</Text>
+            <Text>{deliveryInfo?.address.city},</Text>
+          </Flex>
         </Flex>
         <Flex
           gap={3}

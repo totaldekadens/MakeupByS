@@ -66,7 +66,6 @@ const DeliveryFormGuest: FC<Props> = ({
   });
 
   const handleSubmit = async (values: FormValues) => {
-    console.log("kommer jag in här?");
     const updatedInfo: RestrictedUser = {
       email: values.email,
       name: values.name,
@@ -94,7 +93,7 @@ const DeliveryFormGuest: FC<Props> = ({
       }}
     >
       <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
-        <Flex justify={"center"} direction="column" sx={{ width: "100%" }}>
+        <Flex justify={"center"} direction="column" sx={{ width: "90%" }}>
           <TextInput
             mt="xs"
             label="Namn*"
