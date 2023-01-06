@@ -1,27 +1,55 @@
-import { useState } from "react";
-import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 import {
   Box,
   Burger,
   Button,
   Drawer,
   Flex,
-  Grid,
   MediaQuery,
   Space,
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import { IconUser, IconCheck, IconHomeCog, IconSquareRoundedArrowRight } from "@tabler/icons";
-import { useHover } from "@mantine/hooks";
+import {
+  IconUser,
+  IconCheck,
+  IconHomeCog,
+  IconSquareRoundedArrowRight,
+  IconBrandAppleArcade,
+  IconShoppingBag,
+} from "@tabler/icons";
+import { useHover, useLocalStorage } from "@mantine/hooks";
+import { LineItem } from "./AddToCartIcon";
+import { FC, useContext, useEffect, useState } from "react";
+import { openedCartContext } from "./context/OpenCartProvider";
 
-const MobileBurgerMenu = () => {
-    
-    const [opened, setOpened] = useState(false);
-    const session = useSession();
-    const { hovered, ref } = useHover();
+const MobileBurgerMenu: FC = () => {
+  const [opened, setOpened] = useState(false);
+  const session = useSession();
+  const { hovered, ref } = useHover();
+  const { openedCart, setOpenedCart } = useContext(openedCartContext);
+  const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
+    key: "cart",
+    defaultValue: [],
+  });
+  const [quantity, setQuantity] = useState<number>();
 
+  useEffect(() => {
+    const updateQuantity = () => {
+      if (cartItems.length > 0) {
+        const getTotalQuantity = cartItems
+          .map((i) => i.quantity)
+          .reduce((a, b) => a + b);
+
+        setQuantity(getTotalQuantity);
+        return;
+      }
+      setQuantity(0);
+    };
+
+    updateQuantity();
+  }, [cartItems]);
 
   return (
     <>
@@ -57,12 +85,12 @@ const MobileBurgerMenu = () => {
       >
         <Flex
           sx={(theme) => ({
-            height: "140px",
+            height: "120px",
             backgroundColor: theme.colors.brand[1],
             width: "100%",
-            justifyContent: "space-between",
+            justifyContent: "space-evenly",
+            gap: "20px",
             marginBottom: "20px",
-            padding: "20px",
           })}
         >
           <Flex styles={{ height: "70px" }}>
@@ -73,47 +101,152 @@ const MobileBurgerMenu = () => {
                     <IconCheck size={8} />
                   </ThemeIcon>
                   <Box ref={ref}>
-                    <IconUser color={hovered ? "#CC9887" : "white"} size={36}/>
-                    <Title sx={{
+                    <IconUser color={hovered ? "#CC9887" : "white"} size={36} />
+                    <Title
+                      sx={{
                         color: "white",
-                        fontSize: "12px"
-                    }}>{session.data?.user.name.replace(/ .*/,'')}</Title>
+                        fontSize: "12px",
+                      }}
+                    >
+                      {session.data?.user.name.replace(/ .*/, "")}
+                    </Title>
                   </Box>
                 </Box>
               </Link>
             ) : (
-                <Flex>
+              <Flex>
+                <Box sx={{ paddingTop: 25 }}>
+                  <Box sx={{ alignContent: "center" }}>
                     <Link href="/">
-                        <IconUser size={36} color="white" onClick={() => signIn()} />
+                      <IconUser
+                        size={36}
+                        color="white"
+                        onClick={() => signIn()}
+                      />
+                      <Title
+                        sx={{
+                          display: "flex",
+                          justifyContent: "center",
+                          color: "white",
+                          fontSize: "12px",
+                        }}
+                      >
+                        Log In
+                      </Title>
                     </Link>
-                </Flex>
+                  </Box>
+                </Box>
+              </Flex>
             )}
           </Flex>
-          <Flex>
             {session.data?.user.admin ? (
               <Link href="/admin">
-                <IconHomeCog size={36} color="white" />
+                <Box sx={{ height: 70 }}>
+                  <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
+                    <IconCheck size={8} />
+                  </ThemeIcon>
+                  <Box ref={ref}>
+                    <IconHomeCog
+                      color={hovered ? "#CC9887" : "white"}
+                      size={36}
+                    />
+                    <Title
+                      sx={{
+                        color: "white",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {session.data?.user.name.replace(/ .*/, "")}
+                    </Title>
+                  </Box>
+                </Box>
               </Link>
             ) : null}
-          </Flex>
+          {/* quiz */}
           <Flex>
-            {session.data?.user.admin ? (
-              <Link href="/admin">
-                <IconHomeCog size={36} color="white" />
-              </Link>
-            ) : null}
+            <Box sx={{ paddingTop: 25 }}>
+              <Box sx={{ alignContent: "center" }}>
+                <Link href="/Quiz">
+                  <IconBrandAppleArcade size={36} color="white" />
+                  <Title
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      color: "white",
+                      fontSize: "12px",
+                    }}
+                  >
+                    Quiz
+                  </Title>
+                </Link>
+              </Box>
+            </Box>
           </Flex>
+          {/* quiz */}
+
+          {/* cart */}
+          <Flex sx={[{ paddingTop: 27, justifyContent: "flex-end" }]}>
+            <Box sx={{ position: "relative" }}>
+              {quantity && quantity > 0 ? (
+                <Box
+                  top={-11}
+                  left={-9}
+                  pos={"absolute"}
+                  w={16}
+                  h={16}
+                  bg="#E6FCF5"
+                  sx={{
+                    borderRadius: "50px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Title weight={"bold"} color={"brand.3"} size={9}>
+                    {quantity}
+                  </Title>
+                </Box>
+              ) : null}
+              <IconShoppingBag
+                style={{ cursor: "pointer" }}
+                onClick={() => setOpenedCart(true)}
+                size={36}
+                color="white"
+              />
+              <Title
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  color: "white",
+                  fontSize: "12px",
+                }}
+              >
+                Cart
+              </Title>
+            </Box>
+          </Flex>
+          {/* cart */}
         </Flex>
-        <Box onClick={() => setOpened(false)} sx={{ paddingLeft: "26px", marginBottom: "20px" }}>
-            <Link href={"/mypage"}>
-                <Title h={"30px"} color={"white"} size={"lg"}>Mina sidor</Title>         
-                <Box>
-                    <IconSquareRoundedArrowRight color="white" />
-                </Box>       
-            </Link>
-        </Box>
+        <Link href={"/mypage"}>
+          <Box>
         <Flex
-          className="aa"
+          onClick={() => setOpened(false)}
+          sx={{paddingLeft: "26px", marginBottom: "20px", alignItems: "center", width: "295px",}}
+        >
+            <Box sx={{width: "100%"}}>
+            <Title h={"30px"} color={"white"} size={"lg"}
+            >
+              Mina sidor
+            </Title>
+            </Box>
+                <Box>
+                  <IconSquareRoundedArrowRight color="white"/>
+                </Box>
+        </Flex>
+        </Box>
+          </Link>
+        {/* knappar season */}
+        <Flex
           sx={(theme) => ({
             width: "100%",
             height: "100px",
@@ -205,17 +338,45 @@ const MobileBurgerMenu = () => {
           </Link>
         </Flex>
         <Box sx={{ paddingLeft: "26px" }}>
-          <Title size={"lg"}>Kategorier</Title>
+        <Flex sx={{width: "270px", alignItems: "center", cursor: "pointer"}}>
+            <Box sx={{width: "100%"}}>
+            <Title color={"white"} size={"lg"}>Kategorier</Title>
+            </Box>
+            <Box>
+              <IconSquareRoundedArrowRight color="white" />
+            </Box>
+          </Flex>
 
           <Space h="lg"></Space>
-          <Title size={"lg"}>Kategorier</Title>
+          <Flex sx={{width: "270px", alignItems: "center", cursor: "pointer"}}>
+            <Box sx={{width: "100%"}}>
+            <Title color={"white"} size={"lg"}>Kategorier</Title>
+            </Box>
+            <Box>
+              <IconSquareRoundedArrowRight color="white" />
+            </Box>
+          </Flex>
 
           <Space h="lg"></Space>
-          <Title size={"lg"}>Kategorier</Title>
+          <Flex sx={{width: "270px", alignItems: "center", cursor: "pointer"}}>
+            <Box sx={{width: "100%"}}>
+            <Title color={"white"} size={"lg"}>Kategorier</Title>
+            </Box>
+            <Box>
+              <IconSquareRoundedArrowRight color="white" />
+            </Box>
+          </Flex>
 
           <Space h="lg"></Space>
-              
-          <Title size={"lg"}>Kategorier</Title>
+
+          <Flex sx={{width: "270px", alignItems: "center", cursor: "pointer"}}>
+            <Box sx={{width: "100%"}}>
+            <Title color={"white"} size={"lg"}>Kategorier</Title>
+            </Box>
+            <Box>
+              <IconSquareRoundedArrowRight color="white" />
+            </Box>
+          </Flex>
         </Box>
       </Drawer>
     </>
@@ -223,5 +384,3 @@ const MobileBurgerMenu = () => {
 };
 
 export default MobileBurgerMenu;
-
-
