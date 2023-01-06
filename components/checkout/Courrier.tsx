@@ -88,6 +88,7 @@ const Courrier: FC = () => {
     const updateCheckoutInfo = async () => {
       //console.log("kommer jag in här?");
       // Gets chosen courrier e.g Postnord
+
       const getCourrier = courriers.find((courrier) =>
         courrier.options.some((option) => option._id == value)
       );
@@ -106,13 +107,21 @@ const Courrier: FC = () => {
               }
             }
           });
+          console.log(getFreightCost);
+
+          const hej = {
+            cost: 0,
+            maxWeight: 0,
+            minWeight: 0,
+          };
 
           const freightOption = getFreightCost[0];
+          console.log("freightoption" + freightOption);
 
           const courrierInfo = {
             name: getCourrier.name,
             info: costOption,
-            chosenFreightOption: freightOption,
+            chosenFreightOption: freightOption ? freightOption : hej,
           };
 
           const checkoutCopy = { ...checkout };
@@ -204,18 +213,21 @@ const Courrier: FC = () => {
                                 </Text>
                                 <Flex align={"center"}>
                                   {option.cost.map((freightCost, index) => {
+                                    console.log(weight);
                                     if (
                                       weight &&
                                       weight < freightCost.maxWeight &&
                                       weight > freightCost.minWeight
                                     ) {
+                                      console.log("kommer in i returnen");
                                       return (
                                         <Text
                                           color={"dimmed"}
                                           size={16}
                                           key={index}
                                         >
-                                          {freightCost.cost} KR
+                                          {freightCost ? freightCost.cost : 0}{" "}
+                                          KR
                                         </Text>
                                       );
                                     }
