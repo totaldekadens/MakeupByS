@@ -83,8 +83,10 @@ const Courrier: FC = () => {
   }, [checkout.cartItems]);
 
   // Sets checkout state with the current courrier info
+  //console.log(value);
   useEffect(() => {
     const updateCheckoutInfo = async () => {
+      //console.log("kommer jag in här?");
       // Gets chosen courrier e.g Postnord
       const getCourrier = courriers.find((courrier) =>
         courrier.options.some((option) => option._id == value)
@@ -115,6 +117,7 @@ const Courrier: FC = () => {
 
           const checkoutCopy = { ...checkout };
           checkoutCopy.courrier = courrierInfo;
+          console.log(checkoutCopy);
           setCheckout(checkoutCopy);
         }
       }
