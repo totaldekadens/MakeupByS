@@ -3,17 +3,17 @@ import { FC, PropsWithChildren, useState } from "react";
 import { LineItem } from "../AddToCartIcon";
 
 interface Props {}
-
-interface Checkout {
+// Fix interface
+export interface Checkout {
   cartItems: LineItem[] | undefined;
   name: string;
   email: string;
   phone: string;
   address: {
-    invoice?: Address;
-    delivery?: Address;
+    invoice?: any;
+    delivery?: any;
   };
-  courrier: any; // Fix
+  courrier: any;
 }
 
 interface Address {
@@ -25,31 +25,15 @@ interface Address {
 }
 
 const object = {
-  cartItems: [
-    {
-      quantity: 0,
-      price_data: {
-        currency: "sek",
-        unit_amount: 0,
-        product_data: {
-          name: "",
-          description: "",
-          images: [""],
-          metadata: {
-            id: "",
-          },
-        },
-      },
-    },
-  ],
+  cartItems: [],
   name: "",
   email: "",
   phone: "",
   address: {
-    invoice: undefined,
-    delivery: undefined,
+    invoice: "",
+    delivery: "",
   },
-  courrier: "", // Fix
+  courrier: "",
 };
 
 interface checkoutContextData {
@@ -64,7 +48,7 @@ export const checkoutContext = React.createContext<checkoutContextData>({
 
 const CheckOutProvider: FC<PropsWithChildren<Props>> = (props) => {
   const [checkout, setCheckout] = useState<Checkout | undefined>(object);
-
+  console.log(checkout);
   return (
     <checkoutContext.Provider value={{ checkout, setCheckout }}>
       {props.children}

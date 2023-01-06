@@ -78,6 +78,7 @@ const Cart: FC = () => {
           {cartItems.map((product, index) => {
             return (
               <CartItem
+                key={index}
                 product={product}
                 cartItems={cartItems}
                 setCartItems={setCartItems}
@@ -108,8 +109,17 @@ const Cart: FC = () => {
           <Title order={4}>{totalSum} KR</Title>
         </Flex>
         <Flex>
-          <Link href={totalSum == 0 ? "#" : "/kassa"}>
-            <Button onClick={() => setOpenedCart(false)} h={50}>
+          <Link
+            style={{
+              pointerEvents: totalSum == 0 ? "none" : "unset",
+            }}
+            href="/kassa"
+          >
+            <Button
+              disabled={totalSum == 0 ? true : false}
+              onClick={() => setOpenedCart(false)}
+              h={50}
+            >
               Till kassan
             </Button>
           </Link>

@@ -5,20 +5,26 @@ import { useLocalStorage } from "@mantine/hooks";
 import { LineItem } from "../../components/AddToCartIcon";
 import CartCheckout from "../../components/checkout/CartCheckout";
 import DeliveryInformation from "../../components/checkout/DeliveryInformation";
-import { useContext, useEffect } from "react";
-import { checkoutContext } from "../../components/context/checkoutProvider";
+import { useContext, useEffect, useRef } from "react";
+import {
+  Checkout,
+  checkoutContext,
+} from "../../components/context/checkoutProvider";
+import Courrier from "../../components/checkout/Courrier";
+import TotalSum from "../../components/checkout/TotalSum";
 
 const Kassa: NextPage = () => {
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
-
+  const checkoutRef = useRef<any | null>();
   const { checkout, setCheckout } = useContext(checkoutContext);
+  checkoutRef.current = checkout;
 
   useEffect(() => {
+    let checkoutCopy = checkoutRef.current;
     const updateCheckoutInfo = () => {
-      const checkoutCopy = { ...checkout };
       checkoutCopy.cartItems = cartItems;
       setCheckout(checkoutCopy);
     };
@@ -29,6 +35,8 @@ const Kassa: NextPage = () => {
     (sum, item) => sum + item.price_data.unit_amount * item.quantity,
     0
   );
+
+  checkout;
 
   return (
     <AppShell
@@ -57,6 +65,17 @@ const Kassa: NextPage = () => {
           <>
             <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />
             <DeliveryInformation />
+            {checkout.address.invoice || checkout.address.delivery ? (
+              checkout.address.invoice || checkout.address.delivery ? (
+                checkout.address.invoice.city ||
+                checkout.address.delivery.city ? (
+                  <>
+                    <Courrier />
+                    <TotalSum />
+                  </>
+                ) : null
+              ) : null
+            ) : null}
           </>
         ) : (
           <>

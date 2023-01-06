@@ -1,5 +1,5 @@
 import mongoose, { Types } from "mongoose";
-import { number } from "yup";
+import { boolean, number } from "yup";
 import { Address } from "./User";
 
 const CourrierSchema = new mongoose.Schema<CourrierDocument>({
@@ -24,9 +24,15 @@ const CourrierSchema = new mongoose.Schema<CourrierDocument>({
   },
   options: [
     {
+      id: { type: String, required: true },
       title: { type: String, required: true },
       description: { type: String, required: true },
       description2: { type: String, required: true },
+      free: { type: Boolean, default: false },
+      freeFrom: {
+        enabled: { type: Boolean, default: false },
+        amount: { type: Number },
+      },
       deliveryTime: {
         from: { type: Number, required: true },
         to: { type: Number, required: true },
@@ -34,6 +40,7 @@ const CourrierSchema = new mongoose.Schema<CourrierDocument>({
       cost: [
         {
           maxWeight: { type: Number, required: true },
+          minWeight: { type: Number, required: true },
           cost: { type: Number, required: true },
         },
       ],
@@ -43,19 +50,25 @@ const CourrierSchema = new mongoose.Schema<CourrierDocument>({
 });
 
 type Cost = {
+  minWeight: number;
   maxWeight: number;
   cost: number;
 };
 
 type Option = {
+  id: string;
   title: string;
   description: string;
   description2: string;
   deliveryTime: {
     from: number;
     to: number;
+    _id?: string;
   };
   cost: Cost[];
+  free: boolean;
+  freeFrom: { enabled: boolean; amount: number };
+  _id?: string;
 };
 
 export type CourrierDocument = {

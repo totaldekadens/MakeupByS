@@ -19,7 +19,7 @@ export type LineItem = {
       name: string;
       description: string;
       images: string[];
-      metadata: { id: string };
+      metadata: { id: string; weight: number };
     };
   };
 };
@@ -42,7 +42,7 @@ const AddToCartIcon: FC<Props> = ({ color, product }) => {
           name: product.title,
           description: product.description,
           images: product.images,
-          metadata: { id: product._id },
+          metadata: { id: product._id, weight: product.mainProduct.weight },
         },
       },
     };
