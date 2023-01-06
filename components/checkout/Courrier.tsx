@@ -77,6 +77,14 @@ const Courrier: FC = () => {
           sum + item.price_data.product_data.metadata.weight * item.quantity,
         0
       );
+
+      console.log("totalWeight before: " + totalWeight);
+
+      if (isNaN(totalWeight)) {
+        totalWeight = 0;
+      }
+      console.log("totalWeight after check of NaN: " + totalWeight);
+
       setWeight(totalWeight);
     };
     updateWeight();
