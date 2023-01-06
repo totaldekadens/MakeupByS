@@ -30,7 +30,7 @@ const DisplayAddress: FC<Props> = ({
     setDeliveryInfo(undefined);
   };
   return (
-    <Flex mt={20} direction={"column"} align="center" sx={{ width: "100%" }}>
+    <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
       <ContainerWithBorder bold={newInfo ? true : false}>
         <Text
           onClick={() =>
