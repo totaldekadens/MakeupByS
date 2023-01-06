@@ -38,14 +38,7 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
         <tbody>{rows}</tbody>
       </Table>
 
-      <Flex mt={10} justify={"flex-end"} sx={{ width: "100%" }}>
-        <Flex>
-          <Text>Frakt</Text>
-        </Flex>
-        <Flex justify={"flex-end"} w={70} ml={47}>
-          0 KR
-        </Flex>
-      </Flex>
+      <Flex mt={10} justify={"flex-end"} sx={{ width: "100%" }}></Flex>
       <Flex mt={20} justify={"flex-end"} sx={{ width: "100%" }}>
         <Flex>Totalt inkl. moms</Flex>
         <Flex justify={"flex-end"} w={70} ml={47}>

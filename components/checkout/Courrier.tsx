@@ -106,7 +106,6 @@ const Courrier: FC = () => {
 
           const checkoutCopy = { ...checkout };
           checkoutCopy.courrier = courrierInfo;
-
           setCheckout(checkoutCopy);
         }
       }
