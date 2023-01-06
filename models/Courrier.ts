@@ -53,6 +53,7 @@ type Cost = {
   minWeight: number;
   maxWeight: number;
   cost: number;
+  _id?: string;
 };
 
 type Option = {
