@@ -933,7 +933,6 @@ export default function Colors() {
   const sortedList: Color[] = [...list].sort((a, b) =>
     a.hexcolor > b.hexcolor ? 1 : -1
   );
-  //console.log(sortedList);
 
   const [activeSeason, setActiveSeason] = useState("");
   const [filteredListBySeason, setfilteredListBySeason] =
@@ -945,7 +944,6 @@ export default function Colors() {
       color.seasons.includes(season)
     );
     setfilteredListBySeason(filteredListBySeason);
-    console.log(filteredListBySeason);
   };
 
   return (

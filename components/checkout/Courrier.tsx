@@ -217,13 +217,11 @@ const Courrier: FC = () => {
                                 </Text>
                                 <Flex align={"center"}>
                                   {option.cost.map((freightCost, index) => {
-                                    console.log(weight);
                                     if (
                                       weight &&
                                       weight < freightCost.maxWeight &&
                                       weight > freightCost.minWeight
                                     ) {
-                                      console.log("kommer in i returnen");
                                       return (
                                         <Text
                                           color={"dimmed"}

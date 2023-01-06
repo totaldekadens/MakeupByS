@@ -39,13 +39,10 @@ const SignInForm = () => {
       redirect: false,
       callbackUrl: callbackUrl ? String(callbackUrl) : "/",
     });
-    //console.log(res);
     if (res?.error) {
       const errorMessage = "Mailadressen eller lösenordet stämmer inte";
       form.setFieldError("email", errorMessage);
       form.setFieldError("password", errorMessage);
-      console.log(form.errors);
-      console.log(res.error);
     }
   };
 
