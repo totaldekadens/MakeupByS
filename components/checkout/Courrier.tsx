@@ -72,8 +72,8 @@ const Courrier: FC = () => {
   useEffect(() => {
     let checkoutCopy = valueRef.current;
     const updateWeight = async () => {
-      let totalWeight = checkoutCopy.cartItems.reduce(
-        (sum: any, item: LineItem) =>
+      let totalWeight: number = checkoutCopy.cartItems.reduce(
+        (sum: number, item: LineItem) =>
           sum + item.price_data.product_data.metadata.weight * item.quantity,
         0
       );
