@@ -71,13 +71,22 @@ const Courrier: FC = () => {
   // Sets total weight of cartItems
   useEffect(() => {
     let checkoutCopy = valueRef.current;
+
     const updateWeight = async () => {
       let totalWeight: number = checkoutCopy.cartItems.reduce(
         (sum: number, item: LineItem) =>
-          sum + item.price_data.product_data.metadata.weight * item.quantity,
+          sum +
+          Number(item.price_data.product_data.metadata.weight) *
+            Number(item.quantity),
         0
       );
 
+      /* checkoutCopy.cartItems.forEach((item: LineItem) =>
+        console.log(item.quantity)
+      );
+      checkoutCopy.cartItems.forEach((item: LineItem) =>
+        console.log(item.price_data.product_data.metadata.weight)
+      ); */
       console.log("totalWeight before: " + totalWeight);
 
       if (isNaN(totalWeight)) {
