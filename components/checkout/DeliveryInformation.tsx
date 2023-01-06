@@ -9,11 +9,13 @@ import DisplayAddress from "./DisplayAddress";
 import { useSession } from "next-auth/react";
 import { checkoutContext } from "../context/checkoutProvider";
 import DeliveryFormGuest from "./DeliveryFormGuest";
+import { useScrollIntoView, useWindowScroll } from "@mantine/hooks";
 
 interface FormValues {
   email: string;
 }
 
+// Reset values
 const object = {
   name: "",
   email: "",
@@ -27,6 +29,7 @@ const object = {
   },
 };
 
+// Validation  of form
 const schema = Yup.object<ShapeOf<FormValues>>({
   email: Yup.string()
     .email("Mailadressen har fel format")
@@ -34,6 +37,10 @@ const schema = Yup.object<ShapeOf<FormValues>>({
 });
 
 const DeliveryInformation: FC = () => {
+  // Context
+  const { checkout, setCheckout } = useContext(checkoutContext);
+
+  // States
   const [checked, setChecked] = useState(true);
   const [isGuest, setisGuest] = useState(false);
   const [deliveryInfo, setDeliveryInfo] = useState<
@@ -42,9 +49,16 @@ const DeliveryInformation: FC = () => {
   const [newDeliveryInfo, setNewDeliveryInfo] = useState<
     RestrictedUser | undefined
   >();
-  const { checkout, setCheckout } = useContext(checkoutContext);
+
+  // Session
   const session = useSession();
 
+  // ScrollTo function
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 10,
+  });
+
+  // If session exists set sessions address to state
   useEffect(() => {
     const updateCheckoutInfo = () => {
       if (session.data) {
@@ -60,6 +74,7 @@ const DeliveryInformation: FC = () => {
     updateCheckoutInfo();
   }, [session]);
 
+  // If deliverInfo or newDeliveryInfo is updated checkout context gets updated as well
   useEffect(() => {
     const updateCheckoutInfo = () => {
       const checkoutCopy = { ...checkout };
@@ -95,7 +110,6 @@ const DeliveryInformation: FC = () => {
         setNewDeliveryInfo(undefined);
       }
     };
-
     updateCheckoutInfo();
   }, [deliveryInfo, newDeliveryInfo]);
 
@@ -115,10 +129,12 @@ const DeliveryInformation: FC = () => {
       if (result.success) {
         setDeliveryInfo(result.data);
         setisGuest(false);
+        scrollIntoView({ alignment: "start" });
         return;
       }
       setDeliveryInfo(undefined);
       setisGuest(true);
+      scrollIntoView({ alignment: "start" });
     } catch (err) {
       console.error(err);
     }
@@ -129,13 +145,25 @@ const DeliveryInformation: FC = () => {
       <Title order={2}>Dina uppgifter:</Title>
       {!deliveryInfo ? (
         <>
-          <Flex mt={20} gap={20} direction="column" align={"center"}>
+          <Flex
+            ref={targetRef}
+            mt={20}
+            gap={20}
+            direction="column"
+            align={"center"}
+            sx={(theme) => ({
+              [theme.fn.smallerThan("xs")]: {
+                width: "100%",
+              },
+            })}
+          >
             <form
               style={{
                 display: "flex",
                 gap: 20,
                 flexWrap: "wrap",
                 justifyContent: "center",
+                width: "100%",
               }}
               onSubmit={form.onSubmit(handleSubmit)}
             >
@@ -145,6 +173,14 @@ const DeliveryInformation: FC = () => {
                     backgroundColor: "white",
                     border: "1px solid " + theme.colors.gray[3],
                     width: 250,
+                    [theme.fn.smallerThan("xs")]: {
+                      width: "100%",
+                    },
+                  },
+                  root: {
+                    [theme.fn.smallerThan("xs")]: {
+                      width: "90%",
+                    },
                   },
                 })}
                 bg={"white"}

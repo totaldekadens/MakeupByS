@@ -40,7 +40,7 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
 
       <Flex mt={10} justify={"flex-end"} sx={{ width: "100%" }}></Flex>
       <Flex mt={20} justify={"flex-end"} sx={{ width: "100%" }}>
-        <Flex>Totalt inkl. moms</Flex>
+        <Text color="dimmed">Totalt inkl. moms</Text>
         <Flex justify={"flex-end"} w={70} ml={47}>
           <Text weight={"bold"}>{totalSum} KR</Text>
         </Flex>
