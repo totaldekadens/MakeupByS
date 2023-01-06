@@ -16,7 +16,12 @@ const TotalSum: FC = () => {
   return (
     <Flex mt={20} direction={"column"} align="center">
       <Text weight={"bold"}>Att betala inkl. moms och frakt:</Text>
-      <Title>{totalSum + checkout.courrier.chosenFreightOption.cost} KR</Title>
+      <Title>
+        {checkout.courrier
+          ? totalSum + checkout.courrier.chosenFreightOption.cost
+          : totalSum}{" "}
+        KR
+      </Title>
       <Button
         disabled={checkout.courrier ? false : true}
         sx={{ width: "100%" }}
