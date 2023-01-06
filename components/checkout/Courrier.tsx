@@ -1,13 +1,4 @@
-import {
-  Flex,
-  Radio,
-  Title,
-  Text,
-  Image,
-  HoverCard,
-  Button,
-  Box,
-} from "@mantine/core";
+import { Flex, Radio, Title, Text, Image, HoverCard, Box } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons";
 import { FC, useContext, useEffect, useRef, useState } from "react";
 import { CourrierDocument } from "../../models/Courrier";
@@ -15,36 +6,60 @@ import { checkoutContext } from "../context/checkoutProvider";
 import ContainerWithBorder from "../layout/ContainerWithBorder";
 import useWindowSize from "../../utils/useWindowSize";
 import { LineItem } from "../AddToCartIcon";
-import TotalSum from "./TotalSum";
 
 const Courrier: FC = () => {
+  // Context
   const { checkout, setCheckout } = useContext(checkoutContext);
+
+  // States
   const [courriers, setCourriers] = useState<CourrierDocument[] | []>([]);
   const [value, setValue] = useState("");
   const [freight, setFreight] = useState();
   const [weight, setWeight] = useState<number>();
+
+  // Refs
   const valueRef = useRef<any | null>();
   valueRef.current = checkout;
+
+  // Gets current window height and window width
   let size = useWindowSize();
+
+  // Gets totalsum of cart items
   let totalSum = checkout.cartItems.reduce(
     (sum: any, item: LineItem) =>
       sum + item.price_data.unit_amount * item.quantity,
     0
   );
-  // Hämta alla fraktsätt och sätt i ett state.
+
+  // Gets all courriers and sets to a state
   useEffect(() => {
     const updateCourrierInfo = async () => {
       let response = await fetch(`/api/open/courrier`);
       let result = await response.json();
       if (result.success) {
-        // Fixa fraksätten i lista redan här om det är free eller freefrom. Sp kommer det ut rätt. ////////////////////////////// BÖRJA HÄR
-
+        // Sets freight cost to 0 if free or freeFrom is enabled
+        result.data.map((courrier: CourrierDocument) => {
+          return courrier.options.map((option) => {
+            return option.cost.map((freightCost) => {
+              if (option.free) {
+                freightCost.cost = 0;
+              }
+              if (
+                option.freeFrom.enabled &&
+                totalSum > option.freeFrom.amount
+              ) {
+                freightCost.cost = 0;
+              }
+            });
+          });
+        });
         setCourriers(result.data);
       }
     };
     updateCourrierInfo();
-  }, [checkout]);
+  }, [checkout, totalSum]);
 
+  // Sets total weight of cartItems
   useEffect(() => {
     let checkoutCopy = valueRef.current;
     const updateWeight = async () => {
@@ -58,19 +73,21 @@ const Courrier: FC = () => {
     updateWeight();
   }, [checkout.cartItems]);
 
+  // Sets checkout state with the current courrier info
   useEffect(() => {
     const updateCheckoutInfo = async () => {
+      // Gets chosen courrier e.g Postnord
       const getCourrier = courriers.find((courrier) =>
         courrier.options.some((option) => option._id == value)
       );
+      // Gets chosen freight option
       if (getCourrier) {
         var result = getCourrier.options.filter((obj) => {
           return obj._id == value;
         });
         if (result) {
           const costOption = result[0];
-          //console.log(costOption);
-
+          // Gets chosen freight cost in option
           const getFreightCost = costOption.cost.filter((freight) => {
             if (weight) {
               if (weight < freight.maxWeight && weight > freight.minWeight) {
@@ -80,24 +97,11 @@ const Courrier: FC = () => {
           });
 
           const freightOption = getFreightCost[0];
-          console.log(costOption);
-          console.log(freightOption);
-          if (costOption.free) {
-            freightOption.cost = 0;
-            freightOption.maxWeight = 0;
-            freightOption.minWeight = 0;
-          }
-          if (costOption.freeFrom) {
-            if (totalSum > costOption.freeFrom.amount) {
-              freightOption.cost = 0;
-              freightOption.maxWeight = 0;
-              freightOption.minWeight = 0;
-            }
-          }
+
           const courrierInfo = {
             name: getCourrier.name,
             info: costOption,
-            chosenCost: freightOption,
+            chosenFreightOption: freightOption,
           };
 
           const checkoutCopy = { ...checkout };
@@ -174,17 +178,17 @@ const Courrier: FC = () => {
                                   </HoverCard>
                                 </Flex>
                                 <Text>{option.description}</Text>
-                                {option.cost.map((freightCost) => {
-                                  if (weight) {
-                                    if (freightCost.maxWeight == 0) {
-                                      return <Text>0 KR</Text>;
-                                    }
-                                    if (
-                                      weight < freightCost.maxWeight &&
-                                      weight > freightCost.minWeight
-                                    ) {
-                                      return <Text>{freightCost.cost} KR</Text>;
-                                    }
+                                {option.cost.map((freightCost, index) => {
+                                  if (
+                                    weight &&
+                                    weight < freightCost.maxWeight &&
+                                    weight > freightCost.minWeight
+                                  ) {
+                                    return (
+                                      <Text key={index}>
+                                        {freightCost.cost} KR
+                                      </Text>
+                                    );
                                   }
                                 })}
                               </Flex>
