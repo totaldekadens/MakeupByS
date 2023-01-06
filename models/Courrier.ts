@@ -1,5 +1,4 @@
 import mongoose, { Types } from "mongoose";
-import { boolean, number } from "yup";
 import { Address } from "./User";
 
 const CourrierSchema = new mongoose.Schema<CourrierDocument>({

@@ -68,7 +68,7 @@ const Courrier: FC = () => {
     updateCourrierInfo();
   }, [checkout, totalSum]);
 
-  // Sets total weight of cartItems
+  // Sets total weight of cartItems. If break, set to 0
   useEffect(() => {
     let checkoutCopy = valueRef.current;
 
@@ -81,31 +81,20 @@ const Courrier: FC = () => {
         0
       );
 
-      /* checkoutCopy.cartItems.forEach((item: LineItem) =>
-        console.log(item.quantity)
-      );
-      checkoutCopy.cartItems.forEach((item: LineItem) =>
-        console.log(item.price_data.product_data.metadata.weight)
-      ); */
-      console.log("totalWeight before: " + totalWeight);
-
       if (isNaN(totalWeight)) {
         totalWeight = 0;
       }
-      console.log("totalWeight after check of NaN: " + totalWeight);
 
       setWeight(totalWeight);
     };
+
     updateWeight();
   }, [checkout.cartItems]);
 
   // Sets checkout state with the current courrier info
-  //console.log(value);
   useEffect(() => {
     const updateCheckoutInfo = async () => {
-      //console.log("kommer jag in här?");
       // Gets chosen courrier e.g Postnord
-
       const getCourrier = courriers.find((courrier) =>
         courrier.options.some((option) => option._id == value)
       );
@@ -124,26 +113,24 @@ const Courrier: FC = () => {
               }
             }
           });
-          console.log(getFreightCost);
 
-          const hej = {
+          const reset = {
             cost: 0,
             maxWeight: 0,
             minWeight: 0,
           };
 
           const freightOption = getFreightCost[0];
-          console.log("freightoption" + freightOption);
 
           const courrierInfo = {
             name: getCourrier.name,
             info: costOption,
-            chosenFreightOption: freightOption ? freightOption : hej,
+            chosenFreightOption: freightOption ? freightOption : reset,
           };
 
           const checkoutCopy = { ...checkout };
           checkoutCopy.courrier = courrierInfo;
-          console.log(checkoutCopy);
+
           setCheckout(checkoutCopy);
         }
       }
