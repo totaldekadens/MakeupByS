@@ -79,7 +79,6 @@ const DeliveryInformation: FC = () => {
     const updateCheckoutInfo = () => {
       const checkoutCopy = { ...checkout };
       if (deliveryInfo) {
-        console.log("Kommer in i deliveryInfo");
         checkoutCopy.address.invoice = deliveryInfo.address;
         checkoutCopy.name = deliveryInfo.name;
         checkoutCopy.email = deliveryInfo.email;
@@ -87,29 +86,24 @@ const DeliveryInformation: FC = () => {
       }
 
       if (newDeliveryInfo) {
-        console.log("Kommer in i newDeliveryInfo");
         checkoutCopy.name = newDeliveryInfo.name;
         checkoutCopy.email = newDeliveryInfo.email;
         checkoutCopy.phone = newDeliveryInfo.phone;
         checkoutCopy.address.delivery = newDeliveryInfo.address;
       } else {
-        console.log("Kommer in i else");
         checkoutCopy.address.delivery = "";
       }
 
       setCheckout(checkoutCopy);
 
       if (!newDeliveryInfo && !deliveryInfo) {
-        console.log("ingen deliveryInfo  existerar alls");
         checkoutCopy.name = object.name;
         checkoutCopy.email = object.email;
         checkoutCopy.phone = object.phone;
         if (checkoutCopy.address.invoice) {
-          console.log("if 1");
           checkoutCopy.address.invoice = object.address;
         }
         if (checkoutCopy.address.delivery) {
-          console.log("if 1");
           checkoutCopy.address.delivery = object.address;
         }
         setCheckout(checkoutCopy);
