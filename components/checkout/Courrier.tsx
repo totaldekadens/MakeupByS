@@ -163,7 +163,15 @@ const Courrier: FC = () => {
                             }}
                           >
                             <Flex>
-                              <Flex direction={"column"} w={175}>
+                              <Flex
+                                direction={"column"}
+                                w={200}
+                                sx={(theme) => ({
+                                  [theme.fn.smallerThan("xs")]: {
+                                    width: 180,
+                                  },
+                                })}
+                              >
                                 <Flex gap={10}>
                                   <Title
                                     order={5}
@@ -229,7 +237,7 @@ const Courrier: FC = () => {
                               styles={{ display: "none" }}
                             >
                               <Flex>
-                                <Text color={"dimmed"}>
+                                <Text size={16} color={"dimmed"}>
                                   {option.deliveryTime.from} -{" "}
                                   {option.deliveryTime.to} dagar
                                 </Text>
