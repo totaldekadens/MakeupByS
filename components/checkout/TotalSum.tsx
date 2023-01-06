@@ -19,10 +19,11 @@ const TotalSum: FC = () => {
         Att betala inkl. moms och frakt:
       </Text>
       <Title>
-        {checkout.courrier
+        {totalSum} KR exkl. moms test
+        {/* {checkout.courrier
           ? totalSum + checkout.courrier.chosenFreightOption.cost
           : totalSum}{" "}
-        KR
+        KR */}
       </Title>
       <Button
         disabled={checkout.courrier ? false : true}
