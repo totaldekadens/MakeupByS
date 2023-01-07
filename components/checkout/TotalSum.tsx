@@ -6,6 +6,7 @@ import { checkoutContext } from "../context/checkoutProvider";
 const TotalSum: FC = () => {
   // Context
   const { checkout, setCheckout } = useContext(checkoutContext);
+
   // Gets totalsum of cart items
   let totalSum = checkout.cartItems.reduce(
     (sum: any, item: LineItem) =>
