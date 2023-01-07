@@ -48,14 +48,14 @@ const CourrierSchema = new mongoose.Schema<CourrierDocument>({
   image: { type: String, required: true },
 });
 
-type Cost = {
+export type Cost = {
   minWeight: number;
   maxWeight: number;
   cost: number;
   _id?: string;
 };
 
-type Option = {
+export type Option = {
   id: string;
   title: string;
   description: string;

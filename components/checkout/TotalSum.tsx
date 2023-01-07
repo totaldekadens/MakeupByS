@@ -1,4 +1,5 @@
 import { Flex, Title, Text, Button } from "@mantine/core";
+import { useLocalStorage } from "@mantine/hooks";
 import { FC, useContext } from "react";
 import getStripe from "../../utils/get-stripejs";
 import { LineItem } from "../AddToCartIcon";
@@ -8,6 +9,12 @@ const TotalSum: FC = () => {
   // Context
   const { checkout, setCheckout } = useContext(checkoutContext);
 
+  // Local storage
+  const [checkoutLocal, setCheckoutLocal] = useLocalStorage({
+    key: "checkoutLocal",
+    defaultValue: checkout,
+  });
+
   // Gets totalsum of cart items
   let totalSum = checkout.cartItems.reduce(
     (sum: any, item: LineItem) =>
@@ -15,24 +22,23 @@ const TotalSum: FC = () => {
     0
   );
 
+  // Sending information to create an order
   const handleClick = async () => {
     const stripe = await getStripe();
 
-    const body = {
-      checkout,
-    };
+    setCheckoutLocal(checkout);
 
     const request = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(body),
+      body: JSON.stringify(checkout),
     };
 
     const response = await fetch("/api/open/checkout_sessions", request);
     let result = await response.json();
-    console.log(result);
+
     if (result.success && stripe) {
       const { error } = await stripe.redirectToCheckout({
         sessionId: result.data,
