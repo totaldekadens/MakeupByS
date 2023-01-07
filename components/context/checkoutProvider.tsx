@@ -16,14 +16,6 @@ export interface Checkout {
   courrier: any;
 }
 
-interface Address {
-  line1: string;
-  line2: string;
-  postal_code: string;
-  city: string;
-  country: string;
-}
-
 const object = {
   cartItems: [],
   name: "",

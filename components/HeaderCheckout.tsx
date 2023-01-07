@@ -6,19 +6,26 @@ import {
   MediaQuery,
 } from "@mantine/core";
 import { IconChevronLeft } from "@tabler/icons";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { checkoutContext } from "./context/checkoutProvider";
 import IconsCheckout from "./IconsCheckout";
-import IconsHeader from "./IconsCheckout";
-import LoginButton from "./LoginButton";
-import MobileLoginButton from "./MobileLoginButtons";
-
-// Temporary header.
 
 const HeaderCheckout = () => {
+  // Context
+  const { checkout, setCheckout } = useContext(checkoutContext);
+
+  // Router
   const router = useRouter();
-  const session = useSession();
+
+  // Resets courrier when leaving page
+  const handleClick = () => {
+    const checkoutCopy = { ...checkout };
+    checkoutCopy.courrier = "";
+    setCheckout(checkoutCopy);
+    router.back();
+  };
   return (
     <MantineHeader
       fixed={false}
@@ -41,7 +48,7 @@ const HeaderCheckout = () => {
       <Flex justify={"space-between"} align="center" sx={{ width: "100%" }}>
         <Flex
           w={100}
-          onClick={() => router.back()}
+          onClick={() => handleClick()}
           sx={(theme) => ({
             cursor: "pointer",
             [theme.fn.smallerThan("xs")]: {
