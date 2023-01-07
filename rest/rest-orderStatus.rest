@@ -10,8 +10,9 @@ POST  http://localhost:3000/api/admin/orderstatus
 Content-Type: application/json
 
 {
-"status": "REL", 
-"description": "Released"
+"status": "Avbruten", 
+"description": "Ordern är avbruten",
+"color": "#ffc09f"
 }
 
 ###
