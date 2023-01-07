@@ -33,9 +33,9 @@ const TotalSum: FC = () => {
     const response = await fetch("/api/open/checkout_sessions", request);
     let result = await response.json();
     console.log(result);
-    if (result && stripe) {
+    if (result.success && stripe) {
       const { error } = await stripe.redirectToCheckout({
-        sessionId: result,
+        sessionId: result.data,
       });
       console.warn(error.message);
     }

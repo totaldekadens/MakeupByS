@@ -1,6 +1,4 @@
-import { LineItem } from "@stripe/stripe-js";
 import { NextApiRequest, NextApiResponse } from "next";
-import { IMAGES_MANIFEST } from "next/dist/shared/lib/constants";
 
 import Stripe from "stripe";
 import User from "../../../../models/User";
@@ -16,11 +14,17 @@ export default async function handler(
 ) {
   if (req.method === "POST") {
     try {
+      if (!req.body) {
+        return res.status(400).json({ success: false, data: "Check body" });
+      }
+
+      // Needed to do the amount times 100 to be correct with the amount in stripe
       req.body.checkout.cartItems.forEach((item: any) => {
         item.price_data.unit_amount = item.price_data.unit_amount * 100;
       });
 
       // #100  Byt ut domän sedan.
+      // Added liveURL to images so they can be displayed in stripe
       req.body.checkout.cartItems.forEach((item: any) => {
         let newImageUrl: string[] = [];
         item.price_data.product_data.images.forEach(
@@ -33,20 +37,35 @@ export default async function handler(
         );
       });
 
-      // Verkar funka om den blir undefined?
+      // Check if user exists
       const user = await User.findOne({ email: req.body.checkout.email });
 
       // Create Checkout Session
-      const session = await stripe.checkout.sessions.create({
-        mode: "payment",
-        payment_method_types: ["card"],
-        customer: user.stripeId,
-        line_items: req.body.checkout.cartItems,
-        success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
-        cancel_url: `${req.headers.origin}/kassa`,
-      });
-      console.log(session);
-      res.status(200).json(session.id);
+      if (user) {
+        const session = await stripe.checkout.sessions.create({
+          mode: "payment",
+          currency: "sek",
+          payment_method_types: ["card"],
+          customer: user ? user.stripeId : null,
+          line_items: req.body.checkout.cartItems,
+          success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${req.headers.origin}/kassa`,
+        });
+
+        res.status(200).json({ success: true, data: session.id });
+      } else {
+        const session = await stripe.checkout.sessions.create({
+          mode: "payment",
+          currency: "sek",
+          payment_method_types: ["card"],
+          line_items: req.body.checkout.cartItems,
+          customer_email: req.body.checkout.email,
+          success_url: `${req.headers.origin}/success?session_id={CHECKOUT_SESSION_ID}`,
+          cancel_url: `${req.headers.origin}/kassa`,
+        });
+
+        res.status(200).json({ success: true, data: session.id });
+      }
     } catch (err) {
       res.status(500).json({ success: false, data: err });
     }
