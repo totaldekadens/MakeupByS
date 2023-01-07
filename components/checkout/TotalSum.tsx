@@ -1,5 +1,6 @@
 import { Flex, Title, Text, Button } from "@mantine/core";
 import { FC, useContext } from "react";
+import getStripe from "../../utils/get-stripejs";
 import { LineItem } from "../AddToCartIcon";
 import { checkoutContext } from "../context/checkoutProvider";
 
@@ -14,6 +15,32 @@ const TotalSum: FC = () => {
     0
   );
 
+  const handleClick = async () => {
+    const stripe = await getStripe();
+
+    const body = {
+      checkout,
+    };
+
+    const request = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    };
+
+    const response = await fetch("/api/open/checkout_sessions", request);
+    let result = await response.json();
+    console.log(result);
+    if (result && stripe) {
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: result,
+      });
+      console.warn(error.message);
+    }
+  };
+
   return (
     <Flex mt={50} mb={50} direction={"column"} align="center">
       <Text color={"dimmed"} weight={"bold"}>
@@ -26,6 +53,7 @@ const TotalSum: FC = () => {
         KR
       </Title>
       <Button
+        onClick={() => handleClick()}
         disabled={checkout.courrier ? false : true}
         sx={{ width: "100%" }}
         mt={10}
