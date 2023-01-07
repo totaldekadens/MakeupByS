@@ -35,7 +35,6 @@ const HeaderCheckout = () => {
         },
         [theme.fn.smallerThan("xs")]: {
           height: 60,
-          padding: "0px 10px 0px 10px",
         },
       })}
     >

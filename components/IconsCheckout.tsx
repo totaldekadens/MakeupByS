@@ -50,6 +50,7 @@ const IconsCheckout: FC = () => {
         sx={(theme) => ({
           [theme.fn.smallerThan("xs")]: {
             width: 70,
+            gap: 10,
           },
         })}
       >
@@ -89,13 +90,11 @@ const IconsCheckout: FC = () => {
             </Box>
           </Link>
         ) : (
-          <Link href="/">
-            <IconUser
-              size={36}
-              color="white"
-              onClick={() => signIn()}
-              className={classes.icons}
-            />
+          <Link
+            href="/mypage"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <IconUser size={36} color="white" className={classes.icons} />
           </Link>
         )}
 
@@ -112,8 +111,8 @@ const IconsCheckout: FC = () => {
 const useStyles = createStyles((theme, _params, getRef) => ({
   icons: {
     [theme.fn.smallerThan("xs")]: {
-      width: "24px",
-      height: "24px",
+      width: "26px",
+      height: "26px",
     },
   },
   iconCheck: {
