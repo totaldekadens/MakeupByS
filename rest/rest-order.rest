@@ -1,0 +1,34 @@
+GET http://localhost:3000/api/admin/order
+
+###
+
+GET http://localhost:3000/api/open/admin/ogonskuggor
+
+###
+
+POST  http://localhost:3000/api/admin/order
+Content-Type: application/json
+
+{
+"status": "Avbruten", 
+"description": "Ordern är avbruten",
+"color": "#ffc09f"
+}
+
+###
+
+PUT  http://localhost:3000/api/admin/order/63b83ac7def7b79a1801d8c3
+Content-Type: application/json
+
+{
+"_id": "63b83ac7def7b79a1801d8c3",
+ "title": "tjena", 
+ "description": "Beskrivning av kategorin Ögonskuggor"
+}
+
+###
+
+DELETE  http://localhost:3000/api/admin/order/63b83a46def7b79a1801d8b8
+Content-Type: application/json
+
+

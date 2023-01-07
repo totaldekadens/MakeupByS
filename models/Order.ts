@@ -58,5 +58,4 @@ export type OrderDocument = {
   _id?: Types.ObjectId;
 };
 
-export default mongoose.models.OrderStatus ||
-  mongoose.model("OrderStatus", OrderSchema);
+export default mongoose.models.Order || mongoose.model("Order", OrderSchema);
