@@ -28,7 +28,7 @@ export default async function handler(
             .status(403)
             .send({ success: false, data: "OrderStatus already exists" });
         }
-
+        // Todo: Add hexcolor check and check if it already exists
         const newOrderStatus: OrderStatusDocument = req.body;
 
         const orderStatus = await OrderStatus.create(newOrderStatus);

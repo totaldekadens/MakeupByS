@@ -24,6 +24,7 @@ export default async function handler(
       try {
         // Fix validation for already existing orderStatus except the one you update
 
+        // Todo: Add hexcolor check and check if it already exists
         const updateOrderStatus: OrderStatusDocument = req.body;
 
         const orderStatus = await OrderStatus.findOneAndUpdate(
