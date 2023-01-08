@@ -121,33 +121,30 @@ const Courrier: FC = () => {
         });
         if (result) {
           const costOption = result[0];
+
           // Gets chosen freight cost in option
           const getFreightCost = costOption.cost.filter((freight) => {
             if (weight) {
-              if (weight < freight.maxWeight && weight > freight.minWeight) {
+              if (weight <= freight.maxWeight && weight >= freight.minWeight) {
+                console.log("hittas!");
                 return freight;
               }
             }
           });
 
-          console.log(costOption);
-          const reset = {
-            cost: 0,
-            maxWeight: 0,
-            minWeight: 0,
-          };
-
           const freightOption = getFreightCost[0];
 
           let copyOption: ChosenOption | any = { ...costOption };
 
-          copyOption.cost = freightOption.cost;
+          if (Number.isInteger(freightOption.cost)) {
+            copyOption.cost = freightOption.cost;
+          } else {
+            copyOption.cost = 0;
+          }
 
-          console.log();
           const courrierInfo = {
             name: getCourrier.name,
             info: copyOption,
-            //chosenFreightOption: freightOption ? freightOption : reset,
           };
 
           const checkoutCopy = { ...checkout };

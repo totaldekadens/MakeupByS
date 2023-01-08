@@ -3,6 +3,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
+import { LineItem } from "../components/AddToCartIcon";
 import { checkoutContext } from "../components/context/checkoutProvider";
 import Header from "../components/Header";
 import getStripe from "../utils/get-stripejs";
@@ -12,8 +13,16 @@ const SuccessPage: NextPage = (props) => {
   //const { checkout, setCheckout } = useContext(checkoutContext);
 
   // Local storage
-  const [checkoutLocal, setCheckoutLocal] = useLocalStorage({
-    key: "checkoutLocal",
+  const [checkoutLocal, setCheckoutLocal, removeCheckoutLocal] =
+    useLocalStorage({
+      key: "checkoutLocal",
+    });
+
+  const [cartItems, setCartItems, removeCartItems] = useLocalStorage<
+    LineItem[]
+  >({
+    key: "cart",
+    defaultValue: [],
   });
 
   useEffect(() => {
@@ -33,10 +42,17 @@ const SuccessPage: NextPage = (props) => {
       let result = await response.json();
       console.log(result);
       // Om success.
+
+      if (result.success) {
+        removeCheckoutLocal();
+        removeCartItems();
+      }
       /*
        * Ta bort checkoutLocalstorage
        * TA bort cartItemLocalstorage
        * Fixa en orderbekräftelse med nödvändig info på sidan.
+       * quantity minus på available quatnity
+       * quantity plus på reserved quantity
        */
 
       //const message = document.getElementById("message");
