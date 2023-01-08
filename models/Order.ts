@@ -1,5 +1,6 @@
 import mongoose, { Types } from "mongoose";
 import { LineItem } from "../components/AddToCartIcon";
+import { ChosenOption } from "../components/checkout/Courrier";
 import { Cost, Option } from "./Courrier";
 import { Address } from "./User";
 
@@ -41,20 +42,7 @@ const OrderSchema = new mongoose.Schema<OrderDocument>({
         from: { type: Number, required: true },
         to: { type: Number, required: true },
       },
-      cost: [
-        {
-          maxWeight: { type: Number, required: true },
-          minWeight: { type: Number, required: true },
-          cost: { type: Number, required: true },
-          _id: { type: Types.ObjectId },
-        },
-      ],
-    },
-    chosenFreightOption: {
-      maxWeight: { type: Number, required: true },
-      minWeight: { type: Number, required: true },
       cost: { type: Number, required: true },
-      _id: { type: Types.ObjectId },
     },
   },
   lineItems: [
@@ -107,8 +95,7 @@ export type OrderDocument = {
   lineItems: LineItem[];
   courrier: {
     name: string;
-    info: Option;
-    chosenFreightOption: Cost;
+    info: ChosenOption;
   };
   name: string;
   email: string;

@@ -10,11 +10,27 @@ import {
 } from "@mantine/core";
 import { IconInfoCircle, IconPoint } from "@tabler/icons";
 import { FC, useContext, useEffect, useRef, useState } from "react";
-import { CourrierDocument } from "../../models/Courrier";
+import { CourrierDocument, Option } from "../../models/Courrier";
 import { checkoutContext } from "../context/checkoutProvider";
 import ContainerWithBorder from "../layout/ContainerWithBorder";
 import useWindowSize from "../../utils/useWindowSize";
 import { LineItem } from "../AddToCartIcon";
+
+export type ChosenOption = {
+  id: string;
+  title: string;
+  description: string;
+  description2: string;
+  deliveryTime: {
+    from: number;
+    to: number;
+    _id?: string;
+  };
+  cost: number;
+  free: boolean;
+  freeFrom: { enabled: boolean; amount: number };
+  _id?: string;
+};
 
 const Courrier: FC = () => {
   // Context
@@ -114,6 +130,7 @@ const Courrier: FC = () => {
             }
           });
 
+          console.log(costOption);
           const reset = {
             cost: 0,
             maxWeight: 0,
@@ -122,10 +139,15 @@ const Courrier: FC = () => {
 
           const freightOption = getFreightCost[0];
 
+          let copyOption: ChosenOption | any = { ...costOption };
+
+          copyOption.cost = freightOption.cost;
+
+          console.log();
           const courrierInfo = {
             name: getCourrier.name,
-            info: costOption,
-            chosenFreightOption: freightOption ? freightOption : reset,
+            info: copyOption,
+            //chosenFreightOption: freightOption ? freightOption : reset,
           };
 
           const checkoutCopy = { ...checkout };

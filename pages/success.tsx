@@ -36,6 +36,7 @@ const SuccessPage: NextPage = (props) => {
       /*
        * Ta bort checkoutLocalstorage
        * TA bort cartItemLocalstorage
+       * Fixa en orderbekräftelse med nödvändig info på sidan.
        */
 
       //const message = document.getElementById("message");
