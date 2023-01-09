@@ -126,7 +126,6 @@ const Courrier: FC = () => {
           const getFreightCost = costOption.cost.filter((freight) => {
             if (weight) {
               if (weight <= freight.maxWeight && weight >= freight.minWeight) {
-                console.log("hittas!");
                 return freight;
               }
             }

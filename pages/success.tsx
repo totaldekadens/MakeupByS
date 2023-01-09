@@ -1,7 +1,7 @@
 import { AppShell, Flex, Title, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { LineItem } from "../components/AddToCartIcon";
 import {
@@ -9,12 +9,10 @@ import {
   checkoutContext,
 } from "../components/context/checkoutProvider";
 import Header from "../components/Header";
+import HeaderCheckout from "../components/HeaderCheckout";
 import getStripe from "../utils/get-stripejs";
 
 const SuccessPage: NextPage = (props) => {
-  // Context
-  //const { checkout, setCheckout } = useContext(checkoutContext);
-
   // Local storage
   const [checkoutLocal, setCheckoutLocal, removeCheckoutLocal] =
     useLocalStorage<Checkout>({
@@ -28,13 +26,18 @@ const SuccessPage: NextPage = (props) => {
     defaultValue: [],
   });
 
+  // Router
+  const router = useRouter();
+
+  // Adjusts quantity on products in DB
   const adjustQuantity = async (sessionId: string) => {
     if (checkoutLocal) {
+      let results: any = [];
       for (let i = 0; i < checkoutLocal.cartItems!.length; i++) {
         if (checkoutLocal.cartItems) {
           let cartItem = checkoutLocal.cartItems[i];
 
-          const body = JSON.stringify({ cartItem });
+          const body = JSON.stringify({ cartItem, sessionId });
 
           let response = await fetch("/api/open/order", {
             method: "PUT",
@@ -42,15 +45,20 @@ const SuccessPage: NextPage = (props) => {
             body,
           });
           let result = await response.json();
-          return result;
+          results.push(result);
         }
       }
+      return results;
     }
   };
 
+  // Creates order in DB
   const createOrder = async (sessionId: string) => {
     if (checkoutLocal) {
-      const body = JSON.stringify({ cartItems: checkoutLocal, sessionId });
+      const body = JSON.stringify({
+        checkout: checkoutLocal,
+        sessionId,
+      });
 
       let response = await fetch("/api/open/order", {
         method: "POST",
@@ -58,7 +66,6 @@ const SuccessPage: NextPage = (props) => {
         body,
       });
       let result = await response.json();
-      console.log(result);
       return result;
     }
   };
@@ -81,27 +88,23 @@ const SuccessPage: NextPage = (props) => {
       console.log(result);
 
       if (result.success) {
-        const resultQty = await adjustQuantity(result.data.session_id);
-        const resultOrder = await createOrder(result.data.session_id);
+        const resultQty = await adjustQuantity(result.data.id);
+        const resultOrder = await createOrder(result.data.id);
         console.log(resultQty);
         console.log(resultOrder);
+        removeCheckoutLocal();
+        removeCartItems();
+      } else if (response.status == 400) {
+        router.push("/");
+      } else {
+        router.push(`/kassa?message=${result.data}`);
       }
-
-      // Om success.
-
-      /*  if (result.success) {
-       
-         * Ta bort checkoutLocalstorage
-         * TA bort cartItemLocalstorage
-         * Fixa en orderbekräftelse med nödvändig info på sidan.
-
-         */
     }
     verifyPayment();
   }, [checkoutLocal]);
 
   return (
-    <AppShell fixed={false} header={<Header />}>
+    <AppShell fixed={false} header={<HeaderCheckout />}>
       <Flex
         align="center"
         direction="column"

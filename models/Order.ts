@@ -13,10 +13,12 @@ const OrderSchema = new mongoose.Schema<OrderDocument>({
   orderNo: {
     type: String,
     required: true,
+    unique: true,
   },
   orderNoStripe: {
     type: String,
     required: true,
+    unique: true,
   },
   existingCustomer: {
     type: mongoose.Schema.Types.ObjectId,
@@ -59,7 +61,6 @@ const OrderSchema = new mongoose.Schema<OrderDocument>({
         },
         product_data: {
           name: { type: String, required: true },
-          description: { type: String, required: true },
           images: [{ type: String, required: true }],
           metadata: {
             id: { type: String, required: true },

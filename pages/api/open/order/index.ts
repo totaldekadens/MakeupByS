@@ -1,12 +1,10 @@
-import { Types } from "mongoose";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
-import { LineItem } from "../../../../components/AddToCartIcon";
-import ProductCard from "../../../../components/ProductCard";
-import Order from "../../../../models/Order";
+import Order, { OrderDocument } from "../../../../models/Order";
+import OrderStatus from "../../../../models/OrderStatus";
 import SubProduct, { SubProductDocument } from "../../../../models/SubProduct";
+import User from "../../../../models/User";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  // https://github.com/stripe/stripe-node#configuration
   apiVersion: "2022-11-15",
 });
 
@@ -15,17 +13,15 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const {
-    query: { slug },
-    method,
-  } = req;
+  const { method } = req;
 
-  if (req.method === "POST") {
+  if (!req.body) {
+    return res.status(400).json({ success: false, data: "Check body" });
+  }
+
+  if (method === "POST") {
     try {
-      if (!req.body) {
-        return res.status(400).json({ success: false, data: "Check body" });
-      }
-
+      // If order no already exist don't continue
       const findOrder = await Order.findOne({
         orderNoStripe: req.body.sessionId,
       });
@@ -39,18 +35,50 @@ export default async function handler(
       // Gets data in right format
       const todayDate = new Date().toISOString().slice(0, 16).replace("T", " ");
 
-      res
-        .status(200)
-        .json({ success: false, data: "Du har kommit till skapa order" });
+      // Gets existing user
+      const user = await User.findOne({
+        email: req.body.checkout.email,
+      });
+
+      // Gets status. Could be better. Had problem vid Id
+      const orderStatus = await OrderStatus.findOne({
+        status: "Behandlas",
+      });
+
+      // Creates order no in an ascending order
+      let createOrderNumber;
+      const findOrders = await Order.find({});
+      if (findOrders.length == 0) {
+        createOrderNumber = 1;
+      } else {
+        findOrders.sort((a, b) => (a.orderNo < b.orderNo ? 1 : -1));
+        createOrderNumber = Number(findOrders[0].orderNo) + 1;
+      }
+
+      // Creates order
+      const newOrder: OrderDocument = new Order();
+      newOrder.orderNo = createOrderNumber.toString();
+      newOrder.orderNoStripe = req.body.sessionId;
+      newOrder.status = orderStatus._id;
+      newOrder.name = req.body.checkout.name;
+      newOrder.email = req.body.checkout.email;
+      newOrder.phone = user ? user.phone : req.body.checkout.phone;
+      newOrder.invoiceAddress = req.body.checkout.address.invoice;
+      newOrder.deliveryAddress = req.body.checkout.address.delivery;
+      newOrder.courrier = req.body.checkout.courrier;
+      newOrder.existingCustomer = user ? user._id : null;
+      newOrder.lineItems = req.body.checkout.cartItems;
+      newOrder.registerDate = todayDate;
+
+      const order = await Order.create(newOrder);
+
+      res.status(200).json({ success: true, data: order });
     } catch (err) {
       res.status(500).json({ success: false, data: err });
     }
-  } else if (req.method === "PUT") {
+  } else if (method === "PUT") {
     try {
-      if (!req.body) {
-        return res.status(400).json({ success: false, data: "Check body" });
-      }
-
+      // If orderno already exist don't continue
       const findOrder = await Order.findOne({
         orderNoStripe: req.body.sessionId,
       });
@@ -64,17 +92,14 @@ export default async function handler(
       // Gets data in right format
       const todayDate = new Date().toISOString().slice(0, 16).replace("T", " ");
 
-      // return res.status(200).json({ success: true, data: req.body.cartItem });
-
-      // Adjust quantity on each product
-
+      //Gets product we want to change quantity on
       const subProduct = await SubProduct.findOne({
         _id: req.body.cartItem.price_data.product_data.metadata.id,
       });
       ////////////
       // Gör en check på antalet så att det inte kan bli minus.!!!!!!!
       ////////////
-      console.log("subProduct" + subProduct);
+
       if (subProduct) {
         const newAvailableQuantity =
           subProduct.availableQty - req.body.cartItem.quantity;
