@@ -1,12 +1,18 @@
-import { Title, Header as MantineHeader, Flex } from "@mantine/core";
+import {
+  Title,
+  Header as MantineHeader,
+  Flex,
+  Text,
+  MediaQuery,
+} from "@mantine/core";
 import { IconChevronLeft } from "@tabler/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { checkoutContext } from "./context/checkoutProvider";
-import IconsCheckout from "./IconsCheckout";
+import { checkoutContext } from "../context/checkoutProvider";
+import IconsCheckout from "../IconsCheckout";
 
-const HeaderSuccess = () => {
+const HeaderCheckout = () => {
   // Context
   const { checkout, setCheckout } = useContext(checkoutContext);
 
@@ -49,7 +55,22 @@ const HeaderSuccess = () => {
               width: 70,
             },
           })}
-        ></Flex>
+        >
+          <IconChevronLeft color="white" />
+          <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+            <Text
+              sx={(theme) => ({
+                [theme.fn.smallerThan("xs")]: {
+                  fontSize: 14,
+                },
+              })}
+              color={"white"}
+              align="center"
+            >
+              Tillbaka
+            </Text>
+          </MediaQuery>
+        </Flex>
         <Link href="/">
           <Title
             size="xxx-large"
@@ -72,4 +93,4 @@ const HeaderSuccess = () => {
   );
 };
 
-export default HeaderSuccess;
+export default HeaderCheckout;

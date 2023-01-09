@@ -16,8 +16,8 @@ import { useEffect, useState } from "react";
 import { LineItem } from "../components/AddToCartIcon";
 import CartItemConfirmation from "../components/checkout/CartItemConfirmation";
 import { Checkout } from "../components/context/checkoutProvider";
-import HeaderCheckout from "../components/HeaderCheckout";
-import HeaderSuccess from "../components/HeaderSuccess";
+import HeaderCheckout from "../components/layout/HeaderCheckout";
+import HeaderSuccess from "../components/layout/HeaderSuccess";
 import ContainerWithBorder from "../components/layout/ContainerWithBorder";
 import { OrderDocument } from "../models/Order";
 
