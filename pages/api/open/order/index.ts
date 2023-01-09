@@ -55,8 +55,7 @@ export default async function handler(
         findOrders.sort((a, b) => (a.orderNo < b.orderNo ? 1 : -1));
         createOrderNumber = Number(findOrders[0].orderNo) + 1;
       }
-      console.log(findOrders);
-      console.log(createOrderNumber);
+
       // Creates order
       const newOrder: OrderDocument = new Order();
       newOrder.orderNo = createOrderNumber;

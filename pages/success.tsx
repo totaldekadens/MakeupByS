@@ -16,7 +16,8 @@ import { useEffect, useState } from "react";
 import { LineItem } from "../components/AddToCartIcon";
 import CartItemConfirmation from "../components/checkout/CartItemConfirmation";
 import { Checkout } from "../components/context/checkoutProvider";
-import HeaderCheckout from "../components/HeaderCheckout";
+import HeaderCheckout from "../components/layout/HeaderCheckout";
+import HeaderSuccess from "../components/layout/HeaderSuccess";
 import ContainerWithBorder from "../components/layout/ContainerWithBorder";
 import { OrderDocument } from "../models/Order";
 
@@ -117,7 +118,7 @@ const SuccessPage: NextPage = (props) => {
         removeCheckoutLocal();
         removeCartItems();
       } else if (response.status == 400) {
-        //router.push("/");    // Borttagen bara sålänge jag håller på med ordebekräftelsen.
+        router.push("/");
       } else {
         router.push(`/kassa?message=${result.data}`);
       }
@@ -126,7 +127,7 @@ const SuccessPage: NextPage = (props) => {
   }, [checkoutLocal]);
 
   return (
-    <AppShell fixed={false} header={<HeaderCheckout />}>
+    <AppShell fixed={false} header={<HeaderSuccess />}>
       <Flex
         align="center"
         direction="column"
@@ -281,24 +282,9 @@ const SuccessPage: NextPage = (props) => {
                   }}
                 >
                   <Flex>
-                    <Flex
-                      direction={"column"}
-                      w={200}
-                      sx={(theme) => ({
-                        [theme.fn.smallerThan("xs")]: {
-                          width: 180,
-                        },
-                      })}
-                    >
+                    <Flex direction={"column"} w={230}>
                       <Flex gap={10}>
-                        <Text
-                          size={"sm"}
-                          sx={(theme) => ({
-                            [theme.fn.smallerThan("xs")]: {
-                              fontSize: "16px",
-                            },
-                          })}
-                        >
+                        <Text size={"sm"}>
                           {orderConfirmation.courrier.info.description}
                         </Text>
                         <HoverCard width={280} shadow="md">

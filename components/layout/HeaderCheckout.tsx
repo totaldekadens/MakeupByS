@@ -9,8 +9,8 @@ import { IconChevronLeft } from "@tabler/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext } from "react";
-import { checkoutContext } from "./context/checkoutProvider";
-import IconsCheckout from "./IconsCheckout";
+import { checkoutContext } from "../context/checkoutProvider";
+import IconsCheckout from "../IconsCheckout";
 
 const HeaderCheckout = () => {
   // Context

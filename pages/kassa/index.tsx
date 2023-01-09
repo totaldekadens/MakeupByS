@@ -1,6 +1,6 @@
 import { AppShell, Flex, Title, Text } from "@mantine/core";
 import { NextPage } from "next";
-import HeaderCheckout from "../../components/HeaderCheckout";
+import HeaderCheckout from "../../components/layout/HeaderCheckout";
 import { useLocalStorage } from "@mantine/hooks";
 import { LineItem } from "../../components/AddToCartIcon";
 import CartCheckout from "../../components/checkout/CartCheckout";
