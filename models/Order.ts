@@ -11,7 +11,7 @@ const OrderSchema = new mongoose.Schema<OrderDocument>({
     required: true,
   },
   orderNo: {
-    type: String,
+    type: Number,
     required: true,
     unique: true,
   },
@@ -90,7 +90,7 @@ const OrderSchema = new mongoose.Schema<OrderDocument>({
 
 export type OrderDocument = {
   status: Types.ObjectId;
-  orderNo: string;
+  orderNo: Number;
   orderNoStripe: string;
   existingCustomer: Types.ObjectId;
   lineItems: LineItem[];
