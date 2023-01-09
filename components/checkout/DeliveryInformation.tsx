@@ -243,7 +243,6 @@ const DeliveryInformation: FC = () => {
       {isGuest ? (
         <DeliveryFormGuest
           setDeliveryInfo={setDeliveryInfo}
-          deliveryInfo={deliveryInfo}
           setisGuest={setisGuest}
         />
       ) : null}

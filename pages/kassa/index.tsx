@@ -6,22 +6,31 @@ import { LineItem } from "../../components/AddToCartIcon";
 import CartCheckout from "../../components/checkout/CartCheckout";
 import DeliveryInformation from "../../components/checkout/DeliveryInformation";
 import { useContext, useEffect, useRef } from "react";
-import {
-  Checkout,
-  checkoutContext,
-} from "../../components/context/checkoutProvider";
+import { checkoutContext } from "../../components/context/checkoutProvider";
 import Courrier from "../../components/checkout/Courrier";
 import TotalSum from "../../components/checkout/TotalSum";
 
 const Kassa: NextPage = () => {
+  // Context
+  const { checkout, setCheckout } = useContext(checkoutContext);
+
+  // Local storage
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
+
+  // Ref
   const checkoutRef = useRef<any | null>();
-  const { checkout, setCheckout } = useContext(checkoutContext);
   checkoutRef.current = checkout;
 
+  // Gets total sum of cart items in cart
+  let totalSum = cartItems.reduce(
+    (sum, item) => sum + item.price_data.unit_amount * item.quantity,
+    0
+  );
+
+  // Updates checkout with current cartitems from local storage
   useEffect(() => {
     let checkoutCopy = checkoutRef.current;
     const updateCheckoutInfo = () => {
@@ -30,13 +39,6 @@ const Kassa: NextPage = () => {
     };
     updateCheckoutInfo();
   }, [cartItems]);
-
-  let totalSum = cartItems.reduce(
-    (sum, item) => sum + item.price_data.unit_amount * item.quantity,
-    0
-  );
-
-  checkout;
 
   return (
     <AppShell

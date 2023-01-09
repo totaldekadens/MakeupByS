@@ -6,6 +6,10 @@ const OrderStatusSchema = new mongoose.Schema<OrderStatusDocument>({
     required: true,
     unique: true,
   },
+  color: {
+    type: String,
+    required: true,
+  },
   description: {
     type: String,
     required: true,
@@ -15,6 +19,7 @@ const OrderStatusSchema = new mongoose.Schema<OrderStatusDocument>({
 export type OrderStatusDocument = {
   status: string;
   description: string;
+  color: string;
   _id?: Types.ObjectId;
 };
 

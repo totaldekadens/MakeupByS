@@ -1,29 +1,32 @@
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Flex, Box, ThemeIcon, Text } from "@mantine/core";
-import {
-  IconUser,
-  IconShoppingBag,
-  IconHomeCog,
-  IconCheck,
-} from "@tabler/icons";
+import { IconUser, IconHomeCog, IconCheck } from "@tabler/icons";
 import { useHover, useLocalStorage } from "@mantine/hooks";
 import { LineItem } from "./AddToCartIcon";
-import { FC, useContext, useEffect, useState } from "react";
-import { openedCartContext } from "./context/OpenCartProvider";
+import { FC, useEffect, useState } from "react";
 import { createStyles } from "@mantine/core";
 
 const IconsCheckout: FC = () => {
-  const session = useSession();
-  const { hovered, ref } = useHover();
-  const { openedCart, setOpenedCart } = useContext(openedCartContext);
-  const { classes } = useStyles();
+  // States
+  const [quantity, setQuantity] = useState<number>();
+
+  // Local storage
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
-  const [quantity, setQuantity] = useState<number>();
 
+  // Session
+  const session = useSession();
+
+  // Styles to non mantine component
+  const { classes } = useStyles();
+
+  // Hover function from mantine
+  const { hovered, ref } = useHover();
+
+  // Sets total quantity of cart items in cart
   useEffect(() => {
     const updateQuantity = () => {
       if (cartItems && cartItems.length > 0) {
@@ -50,6 +53,7 @@ const IconsCheckout: FC = () => {
         sx={(theme) => ({
           [theme.fn.smallerThan("xs")]: {
             width: 70,
+            gap: 10,
           },
         })}
       >
@@ -89,13 +93,11 @@ const IconsCheckout: FC = () => {
             </Box>
           </Link>
         ) : (
-          <Link href="/">
-            <IconUser
-              size={36}
-              color="white"
-              onClick={() => signIn()}
-              className={classes.icons}
-            />
+          <Link
+            href="/mypage"
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <IconUser size={36} color="white" className={classes.icons} />
           </Link>
         )}
 
@@ -112,8 +114,8 @@ const IconsCheckout: FC = () => {
 const useStyles = createStyles((theme, _params, getRef) => ({
   icons: {
     [theme.fn.smallerThan("xs")]: {
-      width: "24px",
-      height: "24px",
+      width: "26px",
+      height: "26px",
     },
   },
   iconCheck: {

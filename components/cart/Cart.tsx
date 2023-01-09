@@ -10,25 +10,32 @@ import {
 import { useLocalStorage } from "@mantine/hooks";
 import { IconX } from "@tabler/icons";
 import Link from "next/link";
-import { Dispatch, FC, SetStateAction, useContext } from "react";
+import { FC, useContext } from "react";
 import useWindowSize from "../../utils/useWindowSize";
 import { LineItem } from "../AddToCartIcon";
 import { openedCartContext } from "../context/OpenCartProvider";
 import CartItem from "./CartItem";
 
 const Cart: FC = () => {
+  // Context
+  const { openedCart, setOpenedCart } = useContext(openedCartContext);
+
+  // Local storage
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
-  const { openedCart, setOpenedCart } = useContext(openedCartContext);
+
+  // Gets total sum of cartItems in cart
   let totalSum = cartItems.reduce(
     (sum, item) => sum + item.price_data.unit_amount * item.quantity,
     0
   );
 
+  // Gets current window height and window width
   let size = useWindowSize();
 
+  // Sets height, minus known pixels in relation the container needs to be adjusted to
   const setHeight = size.height - 320;
 
   return (

@@ -1,13 +1,6 @@
-import {
-  Box,
-  Button,
-  Flex,
-  MediaQuery,
-  Select,
-  TextInput,
-} from "@mantine/core";
+import { Button, Flex, MediaQuery, Select, TextInput } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
-import { Dispatch, FC, SetStateAction, useEffect } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import * as Yup from "yup";
 import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 
@@ -41,15 +34,10 @@ const schema = Yup.object<ShapeOf<FormValues>>({
 
 type Props = {
   setDeliveryInfo: Dispatch<SetStateAction<RestrictedUser | undefined>>;
-  deliveryInfo: RestrictedUser | undefined;
   setisGuest: Dispatch<SetStateAction<boolean>>;
 };
 
-const DeliveryFormGuest: FC<Props> = ({
-  setDeliveryInfo,
-  deliveryInfo,
-  setisGuest,
-}) => {
+const DeliveryFormGuest: FC<Props> = ({ setDeliveryInfo, setisGuest }) => {
   const form = useForm<FormValues>({
     initialValues: {
       name: "",

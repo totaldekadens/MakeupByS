@@ -10,11 +10,27 @@ import {
 } from "@mantine/core";
 import { IconInfoCircle, IconPoint } from "@tabler/icons";
 import { FC, useContext, useEffect, useRef, useState } from "react";
-import { CourrierDocument } from "../../models/Courrier";
+import { CourrierDocument, Option } from "../../models/Courrier";
 import { checkoutContext } from "../context/checkoutProvider";
 import ContainerWithBorder from "../layout/ContainerWithBorder";
 import useWindowSize from "../../utils/useWindowSize";
 import { LineItem } from "../AddToCartIcon";
+
+export type ChosenOption = {
+  id: string;
+  title: string;
+  description: string;
+  description2: string;
+  deliveryTime: {
+    from: number;
+    to: number;
+    _id?: string;
+  };
+  cost: number;
+  free: boolean;
+  freeFrom: { enabled: boolean; amount: number };
+  _id?: string;
+};
 
 const Courrier: FC = () => {
   // Context
@@ -105,27 +121,29 @@ const Courrier: FC = () => {
         });
         if (result) {
           const costOption = result[0];
+
           // Gets chosen freight cost in option
           const getFreightCost = costOption.cost.filter((freight) => {
             if (weight) {
-              if (weight < freight.maxWeight && weight > freight.minWeight) {
+              if (weight <= freight.maxWeight && weight >= freight.minWeight) {
                 return freight;
               }
             }
           });
 
-          const reset = {
-            cost: 0,
-            maxWeight: 0,
-            minWeight: 0,
-          };
-
           const freightOption = getFreightCost[0];
+
+          let copyOption: ChosenOption | any = { ...costOption };
+
+          if (Number.isInteger(freightOption.cost)) {
+            copyOption.cost = freightOption.cost;
+          } else {
+            copyOption.cost = 0;
+          }
 
           const courrierInfo = {
             name: getCourrier.name,
-            info: costOption,
-            chosenFreightOption: freightOption ? freightOption : reset,
+            info: copyOption,
           };
 
           const checkoutCopy = { ...checkout };

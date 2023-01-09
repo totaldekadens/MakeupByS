@@ -12,6 +12,7 @@ type Props = {
 };
 
 const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
+  // Gets list of finished displayed cartItems in cart
   const rows = cartItems.map((cartItem, index) => (
     <CartItemCheckout
       key={index}
@@ -21,10 +22,12 @@ const CartCheckout: FC<Props> = ({ cartItems, setCartItems }) => {
     />
   ));
 
+  // Gets total sum of cart items in cart
   let totalSum = cartItems.reduce(
     (sum, item) => sum + item.price_data.unit_amount * item.quantity,
     0
   );
+
   return (
     <ContainerWithBorder>
       <Table>

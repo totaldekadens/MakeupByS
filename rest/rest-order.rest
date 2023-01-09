@@ -1,12 +1,12 @@
-GET http://localhost:3000/api/open/orderstatus
+GET http://localhost:3000/api/admin/order
 
 ###
 
-GET http://localhost:3000/api/open/orderstatus/ogonskuggor
+GET http://localhost:3000/api/open/admin/ogonskuggor
 
 ###
 
-POST  http://localhost:3000/api/admin/orderstatus
+POST  http://localhost:3000/api/admin/order
 Content-Type: application/json
 
 {
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ###
 
-PUT  http://localhost:3000/api/admin/orderstatus/63b83ac7def7b79a1801d8c3
+PUT  http://localhost:3000/api/admin/order/63b83ac7def7b79a1801d8c3
 Content-Type: application/json
 
 {
@@ -28,7 +28,7 @@ Content-Type: application/json
 
 ###
 
-DELETE  http://localhost:3000/api/admin/orderstatus/63b83a46def7b79a1801d8b8
+DELETE  http://localhost:3000/api/admin/order/63b83a46def7b79a1801d8b8
 Content-Type: application/json
 
 

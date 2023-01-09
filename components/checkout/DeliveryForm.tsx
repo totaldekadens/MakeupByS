@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Select, TextInput } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
-import { Dispatch, FC, SetStateAction, useEffect } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import * as Yup from "yup";
 import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 

@@ -6,6 +6,7 @@ import { RestrictedUser } from "../../pages/api/open/users/[slug]";
 import { checkoutContext } from "../context/checkoutProvider";
 import ContainerWithBorder from "../layout/ContainerWithBorder";
 
+// Too many props. Check if we can do a better solution
 type Props = {
   deliveryInfo: RestrictedUser | undefined;
   setDeliveryInfo: Dispatch<SetStateAction<RestrictedUser | undefined>>;
@@ -20,8 +21,13 @@ const DisplayAddress: FC<Props> = ({
   newInfo,
   setNewDeliveryInfo,
 }) => {
-  const session = useSession();
+  // Context
   const { checkout, setCheckout } = useContext(checkoutContext);
+
+  // Session
+  const session = useSession();
+
+  // Resets checkout when starting over
   const handleChange = () => {
     const checkoutCopy = { ...checkout };
     checkoutCopy.courrier = "";

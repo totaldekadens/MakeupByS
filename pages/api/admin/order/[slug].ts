@@ -1,7 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import OrderStatus, {
-  OrderStatusDocument,
-} from "../../../../models/OrderStatus";
+import Order, { OrderDocument } from "../../../../models/Order";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -22,23 +20,17 @@ export default async function handler(
   switch (method) {
     case "PUT":
       try {
-        // Fix validation for already existing orderStatus except the one you update
+        // Shall be able to update status. And depending on status different updates need to be made.
+        const updateOrder: OrderDocument = req.body;
 
-        // Todo: Add hexcolor check and check if it already exists
-        const updateOrderStatus: OrderStatusDocument = req.body;
-
-        const orderStatus = await OrderStatus.findOneAndUpdate(
-          { _id: slug },
-          updateOrderStatus,
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-        if (!orderStatus) {
+        const order = await Order.findOneAndUpdate({ _id: slug }, updateOrder, {
+          new: true,
+          runValidators: true,
+        });
+        if (!order) {
           return res.status(400).json({ success: false });
         }
-        res.status(200).json({ success: true, data: orderStatus });
+        res.status(200).json({ success: true, data: order });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
       }
@@ -46,15 +38,16 @@ export default async function handler(
 
     case "DELETE":
       try {
-        const deletedOrderStatus = await OrderStatus.deleteOne({ _id: slug });
-        if (deletedOrderStatus.deletedCount < 1) {
+        // Shall we be able to delete or shall the order just be "Avbruten ? "
+        const deletedOrder = await Order.deleteOne({ _id: slug });
+        if (deletedOrder.deletedCount < 1) {
           return res
             .status(400)
-            .json({ success: false, data: "OrderStatus not deleted" });
+            .json({ success: false, data: "Order not deleted" });
         }
         res
           .status(200)
-          .json({ success: true, data: "OrderStatus is successfully deleted" });
+          .json({ success: true, data: "Order is successfully deleted" });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
       }
