@@ -1,16 +1,11 @@
 import { AppShell, Flex, Title, Text } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { NextPage } from "next";
-import { Router, useRouter } from "next/router";
-import { useContext, useEffect } from "react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { LineItem } from "../components/AddToCartIcon";
-import {
-  Checkout,
-  checkoutContext,
-} from "../components/context/checkoutProvider";
-import Header from "../components/Header";
+import { Checkout } from "../components/context/checkoutProvider";
 import HeaderCheckout from "../components/HeaderCheckout";
-import getStripe from "../utils/get-stripejs";
 
 const SuccessPage: NextPage = (props) => {
   // Local storage
@@ -85,13 +80,10 @@ const SuccessPage: NextPage = (props) => {
         body,
       });
       let result = await response.json();
-      console.log(result);
 
       if (result.success) {
-        const resultQty = await adjustQuantity(result.data.id);
-        const resultOrder = await createOrder(result.data.id);
-        console.log(resultQty);
-        console.log(resultOrder);
+        await adjustQuantity(result.data.id);
+        await createOrder(result.data.id);
         removeCheckoutLocal();
         removeCartItems();
       } else if (response.status == 400) {

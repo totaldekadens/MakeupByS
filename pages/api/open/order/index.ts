@@ -92,13 +92,10 @@ export default async function handler(
       // Gets data in right format
       const todayDate = new Date().toISOString().slice(0, 16).replace("T", " ");
 
-      //Gets product we want to change quantity on
+      // Gets product we want to change quantity on
       const subProduct = await SubProduct.findOne({
         _id: req.body.cartItem.price_data.product_data.metadata.id,
       });
-      ////////////
-      // Gör en check på antalet så att det inte kan bli minus.!!!!!!!
-      ////////////
 
       if (subProduct) {
         const newAvailableQuantity =
@@ -123,7 +120,7 @@ export default async function handler(
             multi: true,
           }
         );
-        console.log(product);
+
         if (!product) {
           return res
             .status(400)
