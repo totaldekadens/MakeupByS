@@ -57,8 +57,6 @@ const MobileBurgerMenu: FC = () => {
         <Flex>
           <Burger
             left={"20px"}
-            top={"10px"}
-            pos="absolute"
             color="white"
             size={"sm"}
             opened={opened}
