@@ -3,7 +3,11 @@ import { IconSearch, IconX } from "@tabler/icons";
 
 const Searchbar = () => {
   return (
-    <Flex align="flex-end" direction="row">
+    <Flex align="flex-end" direction="row" sx={(theme) => ({
+      [theme.fn.smallerThan("xs")]: {
+        display: "none",
+      },
+    })}>
       <Flex
         mr={5}
         align="flex-end"
