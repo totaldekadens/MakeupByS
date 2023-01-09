@@ -107,7 +107,7 @@ const ProductPage: NextPage = (props) => {
 
       <Box
         style={{
-          marginTop: 60,
+          marginTop: 30,
           minHeight: "100vh",
           width: "100%",
           maxWidth: "1320px",
@@ -116,21 +116,13 @@ const ProductPage: NextPage = (props) => {
         {product ? (
           <Flex direction={"column"} sx={{ width: "100%" }}>
             <Flex sx={{ width: "100%" }}>
-              <Flex sx={{ width: "50%" }} align="center">
+              <Flex sx={{ width: "50%", height: "60vh" }} align="center">
                 <Carousel
                   classNames={classes}
                   mx="auto"
                   align="center"
                   height={"50vh"}
                   loop
-                  /*  styles={{
-                    control: {
-                      "&[data-inactive]": {
-                        opacity: 0,
-                        cursor: "default",
-                      },
-                    },
-                  }} */
                 >
                   {product.images ? (
                     product.images.map((image: string, index: number) => {
@@ -186,13 +178,12 @@ const ProductPage: NextPage = (props) => {
                                   align="center"
                                   sx={(theme) => ({
                                     borderRadius: "10px",
-                                    backgroundColor: theme.fn.rgba(
-                                      theme.colors.brand[1],
-                                      0.5
-                                    ),
+                                    backgroundColor: theme.colors.brand[2],
                                   })}
                                 >
-                                  <Text size={"sm"}>{season.title}</Text>
+                                  <Text color={"white"} size={"sm"}>
+                                    {season.title}
+                                  </Text>
                                 </Flex>
                               );
                             }
