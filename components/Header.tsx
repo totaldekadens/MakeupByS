@@ -53,7 +53,7 @@ const Header = () => {
                 position: "absolute",
               },
             })}
-            >
+          >
             <Flex
               sx={(theme) => ({
                 [theme.fn.smallerThan("xs")]: {
@@ -116,7 +116,6 @@ const Header = () => {
             })}
           >
             <Searchbar />
-
 
             {/* burger componenet här */}
             <MobileBurgerMenu />
