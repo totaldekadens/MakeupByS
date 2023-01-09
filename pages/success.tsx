@@ -17,6 +17,7 @@ import { LineItem } from "../components/AddToCartIcon";
 import CartItemConfirmation from "../components/checkout/CartItemConfirmation";
 import { Checkout } from "../components/context/checkoutProvider";
 import HeaderCheckout from "../components/HeaderCheckout";
+import HeaderSuccess from "../components/HeaderSuccess";
 import ContainerWithBorder from "../components/layout/ContainerWithBorder";
 import { OrderDocument } from "../models/Order";
 
@@ -117,7 +118,7 @@ const SuccessPage: NextPage = (props) => {
         removeCheckoutLocal();
         removeCartItems();
       } else if (response.status == 400) {
-        //router.push("/");    // Borttagen bara sålänge jag håller på med ordebekräftelsen.
+        router.push("/");
       } else {
         router.push(`/kassa?message=${result.data}`);
       }
@@ -126,7 +127,7 @@ const SuccessPage: NextPage = (props) => {
   }, [checkoutLocal]);
 
   return (
-    <AppShell fixed={false} header={<HeaderCheckout />}>
+    <AppShell fixed={false} header={<HeaderSuccess />}>
       <Flex
         align="center"
         direction="column"
