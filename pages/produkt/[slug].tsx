@@ -10,6 +10,7 @@ import {
   Drawer,
   Image,
   createStyles,
+  Button,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { NextPage } from "next";
@@ -35,6 +36,7 @@ const ProductPage: NextPage = (props) => {
   const [product, setProduct] = useState<any>([]);
   const [opened, setOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+
   // Router
   const router = useRouter();
   const { slug } = router.query;
@@ -51,6 +53,7 @@ const ProductPage: NextPage = (props) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
+        console.log("kör useeffect");
         setIsLoading(true);
         let response = await fetch(`/api/open/subproduct/${slug}`);
         let result = await response.json();
@@ -113,41 +116,123 @@ const ProductPage: NextPage = (props) => {
         {product ? (
           <Flex direction={"column"} sx={{ width: "100%" }}>
             <Flex sx={{ width: "100%" }}>
-              <Flex sx={{ width: "50%" }}>
+              <Flex sx={{ width: "50%" }} align="center">
                 <Carousel
                   classNames={classes}
                   mx="auto"
                   align="center"
-                  height={"100%"}
-                  styles={{
+                  height={"50vh"}
+                  loop
+                  /*  styles={{
                     control: {
                       "&[data-inactive]": {
                         opacity: 0,
                         cursor: "default",
                       },
                     },
-                  }}
+                  }} */
                 >
                   {product.images ? (
-                    product.images.map((image: string) => {
+                    product.images.map((image: string, index: number) => {
                       return (
-                        <Carousel.Slide>
-                          <Image src={`/uploads/${image}`} />
+                        <Carousel.Slide key={index}>
+                          <Image
+                            fit="contain"
+                            styles={{
+                              root: { display: "flex", align: "center" },
+                              imageWrapper: {
+                                display: "flex",
+                                align: "center",
+                              },
+                              figure: { display: "flex", align: "center" },
+                            }}
+                            src={`/uploads/${image}`}
+                          />
                         </Carousel.Slide>
                       );
                     })
                   ) : (
-                    <Carousel.Slide>
-                      <Image src={`/uploads/AMORE.webp`} />
-                    </Carousel.Slide>
+                    <Carousel.Slide></Carousel.Slide>
                   )}
                 </Carousel>
               </Flex>
               <Flex sx={{ width: "50%" }} direction={"column"}>
-                <Flex>Title</Flex>
+                <Flex direction={"column"}>
+                  <Title color="dimmed" order={5}>
+                    {product.mainProduct ? product.mainProduct.brand : null}
+                  </Title>
+                  <Title order={1}>{product.title}</Title>
+                </Flex>
+                <Flex justify={"space-between"}>
+                  <Flex>
+                    <Text>
+                      {product.mainProduct
+                        ? product.mainProduct.price.$numberDecimal
+                        : null}{" "}
+                      KR{" "}
+                    </Text>
+                  </Flex>
+                  <Flex>
+                    {product.colors
+                      ? product.colors.map((color: any) => {
+                          return color.seasons.map(
+                            (season: SeasonDocument, index: number) => {
+                              return (
+                                <Flex
+                                  key={index}
+                                  py={5}
+                                  px={10}
+                                  mr={20}
+                                  align="center"
+                                  sx={(theme) => ({
+                                    borderRadius: "10px",
+                                    backgroundColor: theme.fn.rgba(
+                                      theme.colors.brand[1],
+                                      0.5
+                                    ),
+                                  })}
+                                >
+                                  <Text size={"sm"}>{season.title}</Text>
+                                </Flex>
+                              );
+                            }
+                          );
+                        })
+                      : null}
+                  </Flex>
+                </Flex>
+
+                <Flex mt={20} gap={10} direction={"column"}>
+                  {product.mainProduct ? (
+                    <>
+                      <Text size={14}>{product.mainProduct.description1}</Text>
+                      <Text size={14}>
+                        {product.mainProduct.description2
+                          ? product.mainProduct.description2
+                          : null}
+                      </Text>
+                    </>
+                  ) : null}
+                </Flex>
+                <Button mt={20}>KÖP NU</Button>
+                {product.mainProduct ? (
+                  <Flex
+                    mt={40}
+                    p={20}
+                    bg="gray.0"
+                    direction="column"
+                    sx={{ borderRadius: "10px" }}
+                  >
+                    <Title order={4}>Ingredienser</Title>
+                    <Text size={"sm"}>{product.mainProduct.ingredients}</Text>
+                    <Text mt={20} size={"sm"}>
+                      Artikelnummer: {product.partNo}
+                    </Text>
+                  </Flex>
+                ) : null}
               </Flex>
             </Flex>
-            <Flex sx={{ width: "100%" }}>
+            <Flex mt={20} sx={{ width: "100%" }}>
               <Title order={3}>Andra har också köpt</Title>
             </Flex>
           </Flex>
@@ -171,6 +256,10 @@ const useStyles = createStyles((_theme, _params, getRef) => ({
         opacity: 1,
       },
     },
+  },
+  slide: {
+    display: "flex",
+    align: "center",
   },
 }));
 
