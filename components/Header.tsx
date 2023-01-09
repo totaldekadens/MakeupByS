@@ -5,6 +5,7 @@ import {
   Space,
   MediaQuery,
   Burger,
+  Box,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -30,6 +31,7 @@ const Header = () => {
           backgroundColor: theme.colors.brand[2],
           display: "flex",
           justifyContent: "space-between",
+          borderBottom: "none",
           alignItems: "center",
           [theme.fn.smallerThan("lg")]: {
             paddingLeft: "30px",
@@ -106,7 +108,7 @@ const Header = () => {
           </Flex>
 
           <Flex
-            justify={"space-between"}
+            justify={"space-evenly"}
             sx={(theme) => ({
               width: "100%",
               [theme.fn.smallerThan("xs")]: {
@@ -124,6 +126,7 @@ const Header = () => {
             <Link href="/">
               {session.data?.user ? (
                 <Title
+                  fw={500}
                   size="xxx-large"
                   pt={25}
                   color="white"
@@ -149,6 +152,7 @@ const Header = () => {
                 </Title>
               ) : (
                 <Title
+                  fw={500}
                   size="xxx-large"
                   pt={20}
                   color="white"
