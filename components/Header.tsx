@@ -108,7 +108,8 @@ const Header = () => {
           </Flex>
 
           <Flex
-            justify={"space-evenly"}
+            justify={"space-between"}
+            px={15}
             sx={(theme) => ({
               width: "100%",
               [theme.fn.smallerThan("xs")]: {

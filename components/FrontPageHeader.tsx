@@ -53,14 +53,15 @@ const FrontPageHeader = () => {
             })}
           >
             <Flex
-              mt={40}
+              mt={25}
               justify={"center"}
               align={"center"}
               sx={(theme) => ({
                 width: "100%",
                 [theme.fn.smallerThan("xs")]: {
                   alignContent: "flex-start",
-                  top: "0px",
+                  marginTop: "10px",
+                  marginBottom: "10px",
                 },
               })}
             >
@@ -129,11 +130,12 @@ const FrontPageHeader = () => {
             </Flex>
 
             <Flex
-              justify={"space-evenly"}
+              justify={"space-between"}
+              px={15}
               sx={(theme) => ({
                 width: "100%",
                 [theme.fn.smallerThan("xs")]: {
-                  paddingTop: "30px",
+                  alignItems: "flex-end"
                 },
               })}
             >
