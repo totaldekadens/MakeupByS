@@ -48,16 +48,18 @@ export default async function handler(
       // Creates order no in an ascending order
       let createOrderNumber;
       const findOrders = await Order.find({});
+
       if (findOrders.length == 0) {
         createOrderNumber = 1;
       } else {
         findOrders.sort((a, b) => (a.orderNo < b.orderNo ? 1 : -1));
         createOrderNumber = Number(findOrders[0].orderNo) + 1;
       }
-
+      console.log(findOrders);
+      console.log(createOrderNumber);
       // Creates order
       const newOrder: OrderDocument = new Order();
-      newOrder.orderNo = createOrderNumber.toString();
+      newOrder.orderNo = createOrderNumber;
       newOrder.orderNoStripe = req.body.sessionId;
       newOrder.status = orderStatus._id;
       newOrder.name = req.body.checkout.name;
