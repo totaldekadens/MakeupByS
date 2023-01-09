@@ -281,24 +281,9 @@ const SuccessPage: NextPage = (props) => {
                   }}
                 >
                   <Flex>
-                    <Flex
-                      direction={"column"}
-                      w={200}
-                      sx={(theme) => ({
-                        [theme.fn.smallerThan("xs")]: {
-                          width: 180,
-                        },
-                      })}
-                    >
+                    <Flex direction={"column"} w={230}>
                       <Flex gap={10}>
-                        <Text
-                          size={"sm"}
-                          sx={(theme) => ({
-                            [theme.fn.smallerThan("xs")]: {
-                              fontSize: "16px",
-                            },
-                          })}
-                        >
+                        <Text size={"sm"}>
                           {orderConfirmation.courrier.info.description}
                         </Text>
                         <HoverCard width={280} shadow="md">
