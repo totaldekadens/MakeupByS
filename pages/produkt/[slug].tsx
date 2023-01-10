@@ -181,8 +181,21 @@ const ProductPage: NextPage = (props) => {
                   classNames={classes}
                   mx="auto"
                   align="center"
-                  height={"40vh"}
+                  height={"55vh"}
+                  styles={(theme) => ({
+                    viewport: {
+                      [theme.fn.smallerThan("xs")]: {
+                        height: "40vh",
+                      },
+                    },
+                    container: {
+                      [theme.fn.smallerThan("xs")]: {
+                        height: "40vh",
+                      },
+                    },
+                  })}
                   loop
+                  slideSize={"101%"}
                 >
                   {product.images ? (
                     product.images.map((image: string, index: number) => {
@@ -200,7 +213,10 @@ const ProductPage: NextPage = (props) => {
                                 display: "flex",
                                 align: "center",
                               },
-                              figure: { display: "flex", align: "center" },
+                              figure: {
+                                display: "flex",
+                                align: "center",
+                              },
                             }}
                             src={`/uploads/${image}`}
                           />
@@ -247,6 +263,7 @@ const ProductPage: NextPage = (props) => {
                                   withArrow
                                 >
                                   <Flex
+                                    mt={10}
                                     key={index}
                                     mr={20}
                                     w={30}
@@ -260,9 +277,6 @@ const ProductPage: NextPage = (props) => {
                                         marginRight: 10,
                                         width: 25,
                                         height: 25,
-                                      },
-                                      [theme.fn.smallerThan("xs")]: {
-                                        marginTop: 10,
                                       },
                                     })}
                                   >
