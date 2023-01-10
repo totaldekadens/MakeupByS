@@ -4,8 +4,6 @@ import {
   Flex,
   Space,
   MediaQuery,
-  Burger,
-  Box,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -13,7 +11,6 @@ import LoginButton from "./LoginButton";
 import Searchbar from "./Searchbar";
 import ButtonSeason from "./ButtonSeason";
 import { IconCheck } from "@tabler/icons";
-import { useState } from "react";
 import SearchbarMobile from "./SearchbarMobile";
 import MobileLoginButton from "./MobileLoginButtons";
 import MobileBurgerMenu from "./MobileBurgerMenu";

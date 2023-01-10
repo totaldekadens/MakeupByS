@@ -5,10 +5,10 @@ import {
   Space,
   MediaQuery,
   BackgroundImage,
-  Box,
   Button,
   Text,
-  Center,
+  Box,
+  Image,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -19,10 +19,10 @@ import SearchbarMobile from "./SearchbarMobile";
 import MobileLoginButton from "./MobileLoginButtons";
 import MobileBurgerMenu from "./MobileBurgerMenu";
 import ButtonSeasonFrontPage from "./ButtonSeasonFrontPage";
-import { object } from "yup";
 
 const FrontPageHeader = () => {
   const session = useSession();
+  
 
   return (
     <>
@@ -39,34 +39,40 @@ const FrontPageHeader = () => {
           },
         })}
       >
-        <BackgroundImage src="https://i.ibb.co/wd8Zk9f/hero.jpg">
+        <Image src="/uploads/fadeblacksvg.svg" pos={"absolute"} top={0} />
+        <BackgroundImage src="/uploads/hero.jpg">
           <Flex
-            className="aaaaa"
             direction={"column"}
             align={"center"}
             sx={(theme) => ({
               width: "100%",
               height: "650px",
+              [theme.fn.smallerThan("sm")]: {
+                height: "580px",
+              },
               [theme.fn.smallerThan("xs")]: {
-                height: "300px",
+                height: "500px",
               },
             })}
           >
             <Flex
-              mt={25}
+              mt={28}
               justify={"center"}
               align={"center"}
               sx={(theme) => ({
+                zIndex: 2,
                 width: "100%",
-                [theme.fn.smallerThan("xs")]: {
-                  alignContent: "flex-start",
-                  marginTop: "10px",
-                  marginBottom: "10px",
+                [theme.fn.smallerThan("sm")]: {
+                  marginTop: "0px",
                 },
-              })}
-            >
+                [theme.fn.smallerThan("xs")]: {
+                  marginTop: "5px",
+                  paddingBottom: "9px",
+                },
+                })}>
               <Flex
                 sx={(theme) => ({
+                  zIndex: 2,
                   [theme.fn.smallerThan("xs")]: {
                     display: "none",
                   },
@@ -111,6 +117,11 @@ const FrontPageHeader = () => {
                   tt={"uppercase"}
                   c={"white"}
                   fz={"12px"}
+                  sx={(theme) => ({
+                    [theme.fn.smallerThan("xs")]: {
+                      marginRight: "0px",
+                    },
+                  })}
                 >
                   <IconCheck size={12} /> fri frakt från sverige
                 </Title>
@@ -133,6 +144,7 @@ const FrontPageHeader = () => {
               justify={"space-between"}
               px={15}
               sx={(theme) => ({
+                zIndex: 2,
                 width: "100%",
                 [theme.fn.smallerThan("xs")]: {
                   alignItems: "flex-end"
@@ -145,7 +157,7 @@ const FrontPageHeader = () => {
               <MobileBurgerMenu />
 
               <Link href="/">
-                {session.data?.user ? (
+                {session.data?.user.admin ? (
                   <Title
                     fw={500}
                     size="xxx-large"
@@ -166,6 +178,7 @@ const FrontPageHeader = () => {
                       [theme.fn.smallerThan("xs")]: {
                         paddingTop: "5px",
                         fontSize: "x-large",
+                        paddingLeft: "70px",
                       },
                     })}
                   >
@@ -191,7 +204,7 @@ const FrontPageHeader = () => {
                       },
                       [theme.fn.smallerThan("xs")]: {
                         paddingTop: "5px",
-                        paddingLeft: "5px",
+                        paddingLeft: "40px",
                         fontSize: "x-large",
                       },
                     })}
@@ -209,13 +222,23 @@ const FrontPageHeader = () => {
             {/*  */}
             <Flex
               sx={(theme) => ({
-                width: "90%",
+                width: "80%",
                 height: "300px",
+                marginRight: 100,
                 gap: 100,
                 justifyContent: "center",
-                alignItems: "flex-end",
+                alignItems: "center",
+                [theme.fn.smallerThan("sm")]: {
+                  marginRight: 50,
+                },
                 [theme.fn.smallerThan("xs")]: {
-                  height: "150px",
+                  marginTop: "40px",
+                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  flexDirection: "column",
+                  gap: 50,
+                  marginRight: 0,                
+                  width: 350,
                 },
               })}
             >
@@ -224,13 +247,18 @@ const FrontPageHeader = () => {
                     width: "60%",
                   }, })}>
 
-                <Text lineClamp={3} color={"white"} fz={"50px"} fw={"bold"}sx={(theme)=> ({
-                   [theme.fn.smallerThan("xs")]: {
+                <Text lineClamp={5} color={"white"} fz={"40px"} fw={"bold"}sx={(theme)=> ({
+                   [theme.fn.smallerThan("lg")]: {
                     fontSize: "30px",
                   },
+                   [theme.fn.smallerThan("sm")]: {
+                    fontSize: "25px",
+                  },
+                   [theme.fn.smallerThan("xs")]: {
+                    fontSize: "20px",
+                  },
                 })}>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Nostrum dicta dolorem aut voluptate.
+                  Ta reda på vilken säsong du tillhör och få skräddarsydda produkter som passar just dig
                 </Text>
               </Flex>
 
@@ -254,6 +282,7 @@ const FrontPageHeader = () => {
             {/*  */}
           </Flex>
         </BackgroundImage>
+
       </MantineHeader>
 
       <MediaQuery largerThan="xs" styles={{ display: "none" }}>
