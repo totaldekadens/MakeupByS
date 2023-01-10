@@ -3,30 +3,28 @@ import {
   AppShell,
   Box,
   Flex,
-  Grid,
   Title,
   Text,
   Breadcrumbs,
-  Drawer,
   Image,
   createStyles,
   Button,
+  MediaQuery,
+  Tooltip,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef, SetStateAction, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { LineItem } from "../../components/AddToCartIcon";
 import BreadCrumb from "../../components/BreadCrumb";
 import Cart from "../../components/cart/Cart";
 import { openedCartContext } from "../../components/context/OpenCartProvider";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
-import ProductCard from "../../components/ProductCard";
-import { CategoryDocument } from "../../models/Category";
+import CarouselProduct from "../../components/product/CarouselProduct";
+import Details from "../../components/product/Details";
 import { SeasonDocument } from "../../models/Season";
-import ErrorPage from "../ErrorPage";
 
 const ProductPage: NextPage = (props) => {
   // Context
@@ -34,44 +32,135 @@ const ProductPage: NextPage = (props) => {
 
   // States
   const [product, setProduct] = useState<any>([]);
+  const [products, setProducts] = useState<any>([]);
   const [opened, setOpened] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState({
+    products: true,
+    product: true,
+  });
 
   // Router
   const router = useRouter();
   const { slug } = router.query;
-
   // Local storage
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
     defaultValue: [],
   });
 
+  // Use mantines useStyle
   const { classes } = useStyles();
+
+  const setLoadingSingle = (bool: boolean) => {
+    setIsLoading((existingValues) => ({
+      ...existingValues,
+      product: bool,
+    }));
+  };
+
+  const setLoadingList = (bool: boolean) => {
+    setIsLoading((existingValues) => ({
+      ...existingValues,
+      products: bool,
+    }));
+  };
+  if (product && product.mainProduct) {
+    const price = Number(product.mainProduct.price.$numberDecimal);
+  }
+  const handleClick = () => {
+    if (product && product.mainProduct) {
+      const price = Number(product.mainProduct.price.$numberDecimal);
+
+      const lineItem = {
+        quantity: 1,
+        price_data: {
+          currency: "sek",
+          unit_amount: price,
+          product_data: {
+            name: product.title,
+            description: product.description,
+            images: product.images,
+            metadata: {
+              id: product._id,
+              weight: product.mainProduct.weight
+                ? product.mainProduct.weight
+                : 0,
+            },
+          },
+        },
+      };
+
+      let cartCopy = [...cartItems];
+
+      let foundIndex = cartCopy.findIndex(
+        (cartItem) =>
+          cartItem.price_data.product_data.metadata.id === product._id
+      );
+
+      if (foundIndex >= 0) {
+        if (cartCopy[foundIndex].quantity >= product.availableQty) {
+          return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
+        }
+        cartCopy[foundIndex].quantity++;
+      } else {
+        cartCopy.push(lineItem);
+      }
+
+      setCartItems(cartCopy);
+      setOpenedCart(true);
+    }
+  };
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        console.log("kör useeffect");
-        setIsLoading(true);
+        setLoadingSingle(true);
         let response = await fetch(`/api/open/subproduct/${slug}`);
         let result = await response.json();
         if (result.success) {
           setProduct(result.data);
-          setIsLoading(false);
+          setLoadingSingle(false);
           return;
         }
-        setIsLoading(false);
+        setLoadingSingle(false);
       } catch (err) {
         console.error(err);
       }
     };
 
     fetchProduct();
-  }, []);
+  }, [slug]);
 
-  console.log(product);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoadingList(true);
+        if (product && product.colors) {
+          let response = await fetch(
+            `/api/open/subproduct/season/${product.colors[0].seasons[0].slug}`
+          );
+          let result = await response.json();
+
+          if (result.success) {
+            // Gets the 10 first products
+            const slicedArray = result.data.slice(0, 8);
+            setProducts(slicedArray);
+            setLoadingList(false);
+            return;
+          }
+          setLoadingList(false);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchProducts();
+  }, [product]);
+
+  console.log(isLoading);
+
   /*   if (!isLoading) {
     if (product.length < 1) {
       return <ErrorPage statusCode={404} />;
@@ -84,6 +173,7 @@ const ProductPage: NextPage = (props) => {
       footer={<Footer />}
       styles={{
         main: {
+          width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -113,16 +203,45 @@ const ProductPage: NextPage = (props) => {
           maxWidth: "1320px",
         }}
       >
-        {product ? (
+        {product && product.mainProduct && products ? (
           <Flex direction={"column"} sx={{ width: "100%" }}>
-            <Flex sx={{ width: "100%" }}>
-              <Flex sx={{ width: "50%", height: "60vh" }} align="center">
+            <Flex
+              sx={(theme) => ({
+                width: "100%",
+                [theme.fn.smallerThan("xs")]: {
+                  flexDirection: "column",
+                },
+              })}
+              gap={20}
+            >
+              <Flex
+                sx={(theme) => ({
+                  width: "50%",
+                  [theme.fn.smallerThan("xs")]: {
+                    width: "100%",
+                  },
+                })}
+                align="flex-start"
+              >
                 <Carousel
                   classNames={classes}
                   mx="auto"
                   align="center"
-                  height={"50vh"}
+                  height={"55vh"}
+                  styles={(theme) => ({
+                    viewport: {
+                      [theme.fn.smallerThan("xs")]: {
+                        height: "40vh",
+                      },
+                    },
+                    container: {
+                      [theme.fn.smallerThan("xs")]: {
+                        height: "40vh",
+                      },
+                    },
+                  })}
                   loop
+                  slideSize={"101%"}
                 >
                   {product.images ? (
                     product.images.map((image: string, index: number) => {
@@ -131,12 +250,19 @@ const ProductPage: NextPage = (props) => {
                           <Image
                             fit="contain"
                             styles={{
-                              root: { display: "flex", align: "center" },
+                              root: {
+                                display: "flex",
+                                align: "center",
+                                justifyContent: "center",
+                              },
                               imageWrapper: {
                                 display: "flex",
                                 align: "center",
                               },
-                              figure: { display: "flex", align: "center" },
+                              figure: {
+                                display: "flex",
+                                align: "center",
+                              },
                             }}
                             src={`/uploads/${image}`}
                           />
@@ -148,21 +274,28 @@ const ProductPage: NextPage = (props) => {
                   )}
                 </Carousel>
               </Flex>
-              <Flex sx={{ width: "50%" }} direction={"column"}>
+              <Flex
+                sx={(theme) => ({
+                  width: "50%",
+                  [theme.fn.smallerThan("xs")]: {
+                    width: "100%",
+                  },
+                })}
+                direction={"column"}
+              >
                 <Flex direction={"column"}>
                   <Title color="dimmed" order={5}>
-                    {product.mainProduct ? product.mainProduct.brand : null}
+                    {product.mainProduct.brand}
                   </Title>
                   <Title order={1}>{product.title}</Title>
                 </Flex>
                 <Flex justify={"space-between"}>
                   <Flex>
-                    <Text>
-                      {product.mainProduct
-                        ? product.mainProduct.price.$numberDecimal
-                        : null}{" "}
-                      KR{" "}
-                    </Text>
+                    <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+                      <Text>
+                        {product.mainProduct.price.$numberDecimal + " KR"}
+                      </Text>
+                    </MediaQuery>
                   </Flex>
                   <Flex>
                     {product.colors
@@ -170,21 +303,42 @@ const ProductPage: NextPage = (props) => {
                           return color.seasons.map(
                             (season: SeasonDocument, index: number) => {
                               return (
-                                <Flex
-                                  key={index}
-                                  py={5}
-                                  px={10}
-                                  mr={20}
-                                  align="center"
-                                  sx={(theme) => ({
-                                    borderRadius: "10px",
-                                    backgroundColor: theme.colors.brand[2],
-                                  })}
+                                <Tooltip
+                                  color="black"
+                                  label={season.title}
+                                  withArrow
                                 >
-                                  <Text color={"white"} size={"sm"}>
-                                    {season.title}
-                                  </Text>
-                                </Flex>
+                                  <Flex
+                                    mt={10}
+                                    key={index}
+                                    mr={20}
+                                    w={30}
+                                    h={30}
+                                    justify="center"
+                                    align="center"
+                                    sx={(theme) => ({
+                                      borderRadius: "50%",
+                                      border: "1px solid black",
+                                      [theme.fn.smallerThan("md")]: {
+                                        marginRight: 10,
+                                        width: 25,
+                                        height: 25,
+                                      },
+                                    })}
+                                  >
+                                    <Text
+                                      color={"black"}
+                                      size={"sm"}
+                                      sx={(theme) => ({
+                                        [theme.fn.smallerThan("md")]: {
+                                          fontSize: theme.fontSizes.xs,
+                                        },
+                                      })}
+                                    >
+                                      {season.title.slice(0, 2)}
+                                    </Text>
+                                  </Flex>
+                                </Tooltip>
                               );
                             }
                           );
@@ -194,38 +348,96 @@ const ProductPage: NextPage = (props) => {
                 </Flex>
 
                 <Flex mt={20} gap={10} direction={"column"}>
-                  {product.mainProduct ? (
-                    <>
-                      <Text size={14}>{product.mainProduct.description1}</Text>
-                      <Text size={14}>
-                        {product.mainProduct.description2
-                          ? product.mainProduct.description2
-                          : null}
-                      </Text>
-                    </>
-                  ) : null}
+                  <Text size={14}>{product.mainProduct.description1}</Text>
+                  <Text size={14}>
+                    {product.mainProduct.description2
+                      ? product.mainProduct.description2
+                      : null}
+                  </Text>
                 </Flex>
-                <Button mt={20}>KÖP NU</Button>
-                {product.mainProduct ? (
-                  <Flex
-                    mt={40}
-                    p={20}
-                    bg="gray.0"
-                    direction="column"
-                    sx={{ borderRadius: "10px" }}
-                  >
-                    <Title order={4}>Ingredienser</Title>
-                    <Text size={"sm"}>{product.mainProduct.ingredients}</Text>
-                    <Text mt={20} size={"sm"}>
-                      Artikelnummer: {product.partNo}
-                    </Text>
-                  </Flex>
+                {product.availableQty < 1 ? (
+                  <Text mt={20} size={14} color="red">
+                    Tillfällig slut
+                  </Text>
                 ) : null}
+                <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+                  <Button
+                    disabled={product.availableQty < 1 ? true : false}
+                    mt={20}
+                    onClick={() => handleClick()}
+                  >
+                    KÖP NU
+                  </Button>
+                </MediaQuery>
+                <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
+                  <Box>
+                    <Details product={product} />
+                  </Box>
+                </MediaQuery>
               </Flex>
             </Flex>
-            <Flex mt={20} sx={{ width: "100%" }}>
+
+            <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
+              <Box>
+                <Details product={product} />
+              </Box>
+            </MediaQuery>
+            <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
               <Title order={3}>Andra har också köpt</Title>
+              <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
+                <Box>
+                  <CarouselProduct
+                    products={products}
+                    slideGap="md"
+                    slideSize="30.3333%"
+                    slidesToScroll={undefined}
+                  />
+                </Box>
+              </MediaQuery>
+              <MediaQuery
+                query="(max-width: 767px) or (min-width: 1200px)"
+                styles={{ display: "none" }}
+              >
+                <Box>
+                  <CarouselProduct
+                    products={products}
+                    slideGap="md"
+                    slideSize="50%"
+                    slidesToScroll={2}
+                  />
+                </Box>
+              </MediaQuery>
+              <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
+                <Box>
+                  <CarouselProduct
+                    products={products}
+                    slideGap="xs"
+                    slideSize="100%"
+                    slidesToScroll={undefined}
+                  />
+                </Box>
+              </MediaQuery>
             </Flex>
+            <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
+              <Flex
+                pos={"fixed"}
+                bottom={0}
+                right={0}
+                left={0}
+                h={70}
+                bg="gray.2"
+                justify={"space-between"}
+                align="center"
+                px={20}
+                sx={{ zIndex: 3 }}
+              >
+                <Text weight={"bold"}>
+                  {" "}
+                  {product.mainProduct.price.$numberDecimal + " KR"}
+                </Text>
+                <Button onClick={() => handleClick()}>KÖP NU</Button>
+              </Flex>
+            </MediaQuery>
           </Flex>
         ) : null}
       </Box>
