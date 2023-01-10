@@ -27,19 +27,13 @@ const SeasonPage: NextPage = (props) => {
   const [products, setProducts] = useState<any>([]);
   const [season, setSeason] = useState<SeasonDocument>();
   const [openedCart, setOpenedCart] = useState(false);
-  const [isLoading, setIsLoading] = useState({
-    products: true,
-    season: true,
-  });
+  const [error, setError] = useState(200);
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setIsLoading((existingValues) => ({
-          ...existingValues,
-          products: true,
-        }));
+        setError(200);
         if (seasonSlug) {
           let response = await fetch(
             `/api/open/subproduct/season/${seasonSlug}`
@@ -48,16 +42,10 @@ const SeasonPage: NextPage = (props) => {
 
           if (result.success) {
             setProducts(result.data);
-            setIsLoading((existingValues) => ({
-              ...existingValues,
-              products: false,
-            }));
+            setError(200);
             return;
           }
-          setIsLoading((existingValues) => ({
-            ...existingValues,
-            products: false,
-          }));
+          setError(404);
         }
       } catch (err) {
         console.error(err);
@@ -65,25 +53,16 @@ const SeasonPage: NextPage = (props) => {
     };
     const fetchSeason = async () => {
       try {
-        setIsLoading((existingValues) => ({
-          ...existingValues,
-          season: true,
-        }));
+        setError(200);
         let response = await fetch(`/api/open/season/${seasonSlug}`);
         let result = await response.json();
 
         if (result.success) {
           setSeason(result.data);
-          setIsLoading((existingValues) => ({
-            ...existingValues,
-            season: false,
-          }));
+          setError(200);
           return;
         }
-        setIsLoading((existingValues) => ({
-          ...existingValues,
-          season: false,
-        }));
+        setError(404);
       } catch (err) {
         console.error(err);
       }
@@ -108,10 +87,8 @@ const SeasonPage: NextPage = (props) => {
       }
     });
   }
-  if (!isLoading.products && !isLoading.season) {
-    if (products.length < 1 || !season) {
-      return <ErrorPage statusCode={404} />;
-    }
+  if (products && error > 200) {
+    return <ErrorPage statusCode={error} />;
   }
   return (
     <AppShell
@@ -126,7 +103,7 @@ const SeasonPage: NextPage = (props) => {
         },
       }}
     >
-      {isLoading.season ? null : (
+      {!season ? null : (
         <Flex sx={{ width: "100%" }}>
           <Breadcrumbs>
             <BreadCrumb href={"/"} title={"Hem"} />
@@ -147,7 +124,7 @@ const SeasonPage: NextPage = (props) => {
           alignItems: "center",
         }}
       >
-        {isLoading.products ? null : (
+        {!products ? null : (
           <>
             <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
               <Title order={1}>{season?.title}</Title>
@@ -174,7 +151,7 @@ const SeasonPage: NextPage = (props) => {
                 {products?.map((product: any, index: number) => {
                   return (
                     <Grid.Col key={index} md={4} sm={5} xs={6}>
-                      <ProductCard product={product} openCart={setOpenedCart} />
+                      <ProductCard product={product} />
                     </Grid.Col>
                   );
                 })}

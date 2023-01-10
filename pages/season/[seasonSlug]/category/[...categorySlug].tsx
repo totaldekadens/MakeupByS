@@ -6,12 +6,11 @@ import {
   Title,
   Text,
   Breadcrumbs,
-  Drawer,
 } from "@mantine/core";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef, SetStateAction } from "react";
+import { useEffect, useState } from "react";
 import BreadCrumb from "../../../../components/BreadCrumb";
 import Cart from "../../../../components/cart/Cart";
 import Footer from "../../../../components/Footer";
@@ -27,81 +26,53 @@ const CategoryPage: NextPage = (props) => {
   const [products, setProducts] = useState<any>([]);
   const [category, setCategory] = useState<CategoryDocument>();
   const [season, setSeason] = useState<SeasonDocument>();
-  const [opened, setOpened] = useState(false);
-  const [isLoading, setIsLoading] = useState({
-    products: true,
-    category: true,
-    season: true,
-  });
-
+  const [error, setError] = useState(200);
+  console.log(products);
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setIsLoading((existingValues) => ({
-          ...existingValues,
-          products: true,
-        }));
+        setError(200);
         let response = await fetch(
           `/api/open/subproduct/categorybyseason/${categorySlug}?seasonSlug=${seasonSlug}`
         );
         let result = await response.json();
         if (result.success) {
           setProducts(result.data);
-          setIsLoading((existingValues) => ({
-            ...existingValues,
-            products: false,
-          }));
+          setError(200);
           return;
         }
-        setIsLoading((existingValues) => ({
-          ...existingValues,
-          products: false,
-        }));
+        setError(404);
       } catch (err) {
         console.error(err);
       }
     };
     const fetchCategory = async () => {
       try {
-        setIsLoading((existingValues) => ({
-          ...existingValues,
-          category: true,
-        }));
+        setError(200);
         let response = await fetch(`/api/open/category/${categorySlug}`);
         let result = await response.json();
         if (result.success) {
           setCategory(result.data);
-          setIsLoading((existingValues) => ({
-            ...existingValues,
-            category: false,
-          }));
+          setError(200);
           return;
         }
-        setIsLoading((existingValues) => ({
-          ...existingValues,
-          category: false,
-        }));
+        setError(404);
       } catch (err) {
         console.error(err);
       }
     };
     const fetchSeason = async () => {
       try {
-        setIsLoading((existingValues) => ({
-          ...existingValues,
-          season: true,
-        }));
+        setError(200);
         let response = await fetch(`/api/open/season/${seasonSlug}`);
         let result = await response.json();
         if (result.success) {
           setSeason(result.data);
-          setIsLoading((existingValues) => ({
-            ...existingValues,
-            season: false,
-          }));
+          setError(200);
           return;
         }
+        setError(404);
       } catch (err) {
         console.error(err);
       }
@@ -111,11 +82,10 @@ const CategoryPage: NextPage = (props) => {
     fetchProducts();
   }, [categorySlug]);
 
-  if (!isLoading.products && !isLoading.season && !isLoading.category) {
-    if (products.length < 1 || !season || !category) {
-      return <ErrorPage statusCode={404} />;
-    }
+  if (products && error > 200) {
+    return <ErrorPage statusCode={error} />;
   }
+
   return (
     <AppShell
       fixed={false}
@@ -129,7 +99,7 @@ const CategoryPage: NextPage = (props) => {
         },
       }}
     >
-      {isLoading.season || isLoading.category ? null : (
+      {!season || !category ? null : (
         <Flex sx={{ width: "100%" }}>
           <Breadcrumbs>
             <BreadCrumb href={"/"} title={"Hem"} />
@@ -145,7 +115,7 @@ const CategoryPage: NextPage = (props) => {
         </Flex>
       )}
       <Box style={{ marginTop: 60, minHeight: "100vh", maxWidth: "1320px" }}>
-        {isLoading.products ? null : (
+        {!products ? null : (
           <>
             <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
               <Title order={1}>{category?.title}</Title>
@@ -157,7 +127,7 @@ const CategoryPage: NextPage = (props) => {
                   {products?.map((product: any, index: number) => {
                     return (
                       <Grid.Col key={index} md={4} sm={5} xs={6}>
-                        <ProductCard product={product} openCart={setOpened} />
+                        <ProductCard product={product} />
                       </Grid.Col>
                     );
                   })}
