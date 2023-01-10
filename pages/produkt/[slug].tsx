@@ -16,6 +16,7 @@ import { useLocalStorage } from "@mantine/hooks";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState, useContext } from "react";
+import { boolean } from "yup";
 import { LineItem } from "../../components/AddToCartIcon";
 import BreadCrumb from "../../components/BreadCrumb";
 import Cart from "../../components/cart/Cart";
@@ -25,6 +26,7 @@ import Header from "../../components/Header";
 import CarouselProduct from "../../components/product/CarouselProduct";
 import Details from "../../components/product/Details";
 import { SeasonDocument } from "../../models/Season";
+import ErrorPage from "../ErrorPage";
 
 const ProductPage: NextPage = (props) => {
   // Context
@@ -33,11 +35,8 @@ const ProductPage: NextPage = (props) => {
   // States
   const [product, setProduct] = useState<any>([]);
   const [products, setProducts] = useState<any>([]);
-  const [opened, setOpened] = useState(false);
-  const [isLoading, setIsLoading] = useState({
-    products: true,
-    product: true,
-  });
+
+  const [error, setError] = useState(200);
 
   // Router
   const router = useRouter();
@@ -51,22 +50,6 @@ const ProductPage: NextPage = (props) => {
   // Use mantines useStyle
   const { classes } = useStyles();
 
-  const setLoadingSingle = (bool: boolean) => {
-    setIsLoading((existingValues) => ({
-      ...existingValues,
-      product: bool,
-    }));
-  };
-
-  const setLoadingList = (bool: boolean) => {
-    setIsLoading((existingValues) => ({
-      ...existingValues,
-      products: bool,
-    }));
-  };
-  if (product && product.mainProduct) {
-    const price = Number(product.mainProduct.price.$numberDecimal);
-  }
   const handleClick = () => {
     if (product && product.mainProduct) {
       const price = Number(product.mainProduct.price.$numberDecimal);
@@ -115,15 +98,15 @@ const ProductPage: NextPage = (props) => {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        setLoadingSingle(true);
+        setError(200);
         let response = await fetch(`/api/open/subproduct/${slug}`);
         let result = await response.json();
         if (result.success) {
           setProduct(result.data);
-          setLoadingSingle(false);
+          setError(200);
           return;
         }
-        setLoadingSingle(false);
+        setError(404);
       } catch (err) {
         console.error(err);
       }
@@ -135,7 +118,7 @@ const ProductPage: NextPage = (props) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setLoadingList(true);
+        setError(200);
         if (product && product.colors) {
           let response = await fetch(
             `/api/open/subproduct/season/${product.colors[0].seasons[0].slug}`
@@ -143,13 +126,13 @@ const ProductPage: NextPage = (props) => {
           let result = await response.json();
 
           if (result.success) {
-            // Gets the 10 first products
+            // Gets the 8 first products
             const slicedArray = result.data.slice(0, 8);
             setProducts(slicedArray);
-            setLoadingList(false);
+            setError(200);
             return;
           }
-          setLoadingList(false);
+          setError(404);
         }
       } catch (err) {
         console.error(err);
@@ -159,13 +142,10 @@ const ProductPage: NextPage = (props) => {
     fetchProducts();
   }, [product]);
 
-  console.log(isLoading);
+  if (product && slug && error > 200) {
+    return <ErrorPage statusCode={error} />;
+  }
 
-  /*   if (!isLoading) {
-    if (product.length < 1) {
-      return <ErrorPage statusCode={404} />;
-    }
-  } */
   return (
     <AppShell
       fixed={false}
