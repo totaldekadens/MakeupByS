@@ -284,6 +284,7 @@ const ProductPage: NextPage = (props) => {
                             (season: SeasonDocument, index: number) => {
                               return (
                                 <Tooltip
+                                  key={index}
                                   color="black"
                                   label={season.title}
                                   withArrow
@@ -398,26 +399,29 @@ const ProductPage: NextPage = (props) => {
                 </Box>
               </MediaQuery>
             </Flex>
-            <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
-              <Flex
-                pos={"fixed"}
-                bottom={0}
-                right={0}
-                left={0}
-                h={70}
-                bg="gray.2"
-                justify={"space-between"}
-                align="center"
-                px={20}
-                sx={{ zIndex: 3 }}
-              >
-                <Text weight={"bold"}>
-                  {" "}
-                  {product.mainProduct.price.$numberDecimal + " KR"}
-                </Text>
-                <Button onClick={() => handleClick()}>KÖP NU</Button>
-              </Flex>
-            </MediaQuery>
+
+            {product.availableQty < 1 ? null : (
+              <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
+                <Flex
+                  pos={"fixed"}
+                  bottom={0}
+                  right={0}
+                  left={0}
+                  h={70}
+                  bg="gray.2"
+                  justify={"space-between"}
+                  align="center"
+                  px={20}
+                  sx={{ zIndex: 3 }}
+                >
+                  <Text weight={"bold"}>
+                    {" "}
+                    {product.mainProduct.price.$numberDecimal + " KR"}
+                  </Text>
+                  <Button onClick={() => handleClick()}>KÖP NU</Button>
+                </Flex>
+              </MediaQuery>
+            )}
           </Flex>
         ) : null}
       </Box>
