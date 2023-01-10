@@ -11,6 +11,7 @@ import {
   Image,
   createStyles,
   Button,
+  MediaQuery,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { NextPage } from "next";
@@ -113,15 +114,31 @@ const ProductPage: NextPage = (props) => {
           maxWidth: "1320px",
         }}
       >
-        {product ? (
+        {product && product.mainProduct ? (
           <Flex direction={"column"} sx={{ width: "100%" }}>
-            <Flex sx={{ width: "100%" }} gap={20}>
-              <Flex sx={{ width: "50%", height: "60vh" }} align="flex-start">
+            <Flex
+              sx={(theme) => ({
+                width: "100%",
+                [theme.fn.smallerThan("xs")]: {
+                  flexDirection: "column",
+                },
+              })}
+              gap={20}
+            >
+              <Flex
+                sx={(theme) => ({
+                  width: "50%",
+                  [theme.fn.smallerThan("xs")]: {
+                    width: "100%",
+                  },
+                })}
+                align="flex-start"
+              >
                 <Carousel
                   classNames={classes}
                   mx="auto"
                   align="center"
-                  height={"50vh"}
+                  height={"40vh"}
                   loop
                 >
                   {product.images ? (
@@ -152,21 +169,28 @@ const ProductPage: NextPage = (props) => {
                   )}
                 </Carousel>
               </Flex>
-              <Flex sx={{ width: "50%" }} direction={"column"}>
+              <Flex
+                sx={(theme) => ({
+                  width: "50%",
+                  [theme.fn.smallerThan("xs")]: {
+                    width: "100%",
+                  },
+                })}
+                direction={"column"}
+              >
                 <Flex direction={"column"}>
                   <Title color="dimmed" order={5}>
-                    {product.mainProduct ? product.mainProduct.brand : null}
+                    {product.mainProduct.brand}
                   </Title>
                   <Title order={1}>{product.title}</Title>
                 </Flex>
                 <Flex justify={"space-between"}>
                   <Flex>
-                    <Text>
-                      {product.mainProduct
-                        ? product.mainProduct.price.$numberDecimal
-                        : null}{" "}
-                      KR{" "}
-                    </Text>
+                    <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+                      <Text>
+                        {product.mainProduct.price.$numberDecimal + " KR"}
+                      </Text>
+                    </MediaQuery>
                   </Flex>
                   <Flex>
                     {product.colors
@@ -196,48 +220,84 @@ const ProductPage: NextPage = (props) => {
                       : null}
                   </Flex>
                 </Flex>
-                {product.mainProduct ? (
-                  <>
-                    <Flex mt={20} gap={10} direction={"column"}>
-                      <Text size={14}>{product.mainProduct.description1}</Text>
-                      <Text size={14}>
-                        {product.mainProduct.description2
-                          ? product.mainProduct.description2
-                          : null}
-                      </Text>
-                    </Flex>
-                    {product.availableQty < 1 ? (
-                      <Text mt={20} size={14} color="red">
-                        Tillfällig slut
-                      </Text>
-                    ) : null}
-                    <Button
-                      disabled={product.availableQty < 1 ? true : false}
-                      mt={20}
-                    >
-                      KÖP NU
-                    </Button>
 
-                    <Flex
-                      mt={40}
-                      p={20}
-                      bg="gray.0"
-                      direction="column"
-                      sx={{ borderRadius: "10px" }}
-                    >
-                      <Title order={4}>Ingredienser</Title>
-                      <Text size={"sm"}>{product.mainProduct.ingredients}</Text>
-                      <Text mt={20} size={"sm"}>
-                        Artikelnummer: {product.partNo}
-                      </Text>
-                    </Flex>
-                  </>
+                <Flex mt={20} gap={10} direction={"column"}>
+                  <Text size={14}>{product.mainProduct.description1}</Text>
+                  <Text size={14}>
+                    {product.mainProduct.description2
+                      ? product.mainProduct.description2
+                      : null}
+                  </Text>
+                </Flex>
+                {product.availableQty < 1 ? (
+                  <Text mt={20} size={14} color="red">
+                    Tillfällig slut
+                  </Text>
                 ) : null}
+                <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+                  <Button
+                    disabled={product.availableQty < 1 ? true : false}
+                    mt={20}
+                  >
+                    KÖP NU
+                  </Button>
+                </MediaQuery>
+                <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
+                  <Flex
+                    mt={40}
+                    p={20}
+                    bg="gray.2"
+                    direction="column"
+                    sx={{ borderRadius: "10px" }}
+                  >
+                    <Title order={4}>Ingredienser</Title>
+                    <Text size={"sm"}>{product.mainProduct.ingredients}</Text>
+                    <Text mt={20} size={"sm"}>
+                      Artikelnummer: {product.partNo}
+                    </Text>
+                  </Flex>
+                </MediaQuery>
               </Flex>
             </Flex>
+
+            <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
+              <Flex
+                mt={40}
+                p={20}
+                bg="gray.2"
+                direction="column"
+                sx={{ borderRadius: "10px" }}
+              >
+                <Title order={4}>Ingredienser</Title>
+                <Text size={"sm"}>{product.mainProduct.ingredients}</Text>
+                <Text mt={20} size={"sm"}>
+                  Artikelnummer: {product.partNo}
+                </Text>
+              </Flex>
+            </MediaQuery>
             <Flex mt={20} sx={{ width: "100%" }}>
               <Title order={3}>Andra har också köpt</Title>
             </Flex>
+            <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
+              <Flex
+                pos={"fixed"}
+                bottom={0}
+                right={0}
+                left={0}
+                h={70}
+                bg="gray.2"
+                //bg="brand.1"
+                justify={"space-between"}
+                align="center"
+                px={20}
+              >
+                <Text weight={"bold"}>
+                  {" "}
+                  {product.mainProduct.price.$numberDecimal + " KR"}
+                </Text>
+                <Button>Köp</Button>
+              </Flex>
+            </MediaQuery>
           </Flex>
         ) : null}
       </Box>
