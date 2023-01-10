@@ -15,13 +15,26 @@ import Link from "next/link";
 import LoginButton from "./LoginButton";
 import Searchbar from "./Searchbar";
 import { IconCheck } from "@tabler/icons";
-import SearchbarMobile from "./SearchbarMobile";
 import MobileLoginButton from "./MobileLoginButtons";
 import MobileBurgerMenu from "./MobileBurgerMenu";
 import ButtonSeasonFrontPage from "./ButtonSeasonFrontPage";
+import SearchMobileFrontPage from "./SearchMobileFrontpage";
+import { useCallback, useEffect, useState } from "react";
+import { useWindowScroll } from "@mantine/hooks";
 
 const FrontPageHeader = () => {
   const session = useSession();
+
+  const [ fix, setFix ] = useState(false)
+
+  function setFixed() {
+    if(window.scrollY >= 500) {
+      setFix(true)
+    }else {
+      setFix(false)
+    }
+    window.addEventListener("scroll", setFixed)
+  }
   
 
   return (
@@ -39,12 +52,13 @@ const FrontPageHeader = () => {
           },
         })}
       >
-        <Image src="/uploads/fadeblacksvg.svg" pos={"absolute"} top={0} />
+        <Image src="/uploads/fadeblacksvg.svg" pos={"absolute"} top={0}/>
         <BackgroundImage src="/uploads/hero.jpg">
           <Flex
             direction={"column"}
             align={"center"}
             sx={(theme) => ({
+              position: "sticky",
               width: "100%",
               height: "650px",
               [theme.fn.smallerThan("sm")]: {
@@ -69,7 +83,8 @@ const FrontPageHeader = () => {
                   marginTop: "5px",
                   paddingBottom: "9px",
                 },
-                })}>
+              })}
+            >
               <Flex
                 sx={(theme) => ({
                   zIndex: 2,
@@ -141,13 +156,14 @@ const FrontPageHeader = () => {
             </Flex>
 
             <Flex
+              className="navbar"
               justify={"space-between"}
               px={15}
               sx={(theme) => ({
                 zIndex: 2,
                 width: "100%",
                 [theme.fn.smallerThan("xs")]: {
-                  alignItems: "flex-end"
+                  alignItems: "flex-end",
                 },
               })}
             >
@@ -216,6 +232,9 @@ const FrontPageHeader = () => {
               <LoginButton />
               <MobileLoginButton />
             </Flex>
+
+                <SearchMobileFrontPage />
+
             <Flex>
               <ButtonSeasonFrontPage />
             </Flex>
@@ -237,28 +256,38 @@ const FrontPageHeader = () => {
                   alignItems: "center",
                   flexDirection: "column",
                   gap: 50,
-                  marginRight: 0,                
+                  marginRight: 0,
                   width: 350,
                 },
               })}
             >
-              <Flex sx={(theme) => ({ width: "50%",
-              [theme.fn.smallerThan("xs")]: {
+              <Flex
+                sx={(theme) => ({
+                  width: "50%",
+                  [theme.fn.smallerThan("xs")]: {
                     width: "60%",
-                  }, })}>
-
-                <Text lineClamp={5} color={"white"} fz={"40px"} fw={"bold"}sx={(theme)=> ({
-                   [theme.fn.smallerThan("lg")]: {
-                    fontSize: "30px",
                   },
-                   [theme.fn.smallerThan("sm")]: {
-                    fontSize: "25px",
-                  },
-                   [theme.fn.smallerThan("xs")]: {
-                    fontSize: "20px",
-                  },
-                })}>
-                  Ta reda på vilken säsong du tillhör och få skräddarsydda produkter som passar just dig
+                })}
+              >
+                <Text
+                  lineClamp={5}
+                  color={"white"}
+                  fz={"40px"}
+                  fw={"bold"}
+                  sx={(theme) => ({
+                    [theme.fn.smallerThan("lg")]: {
+                      fontSize: "30px",
+                    },
+                    [theme.fn.smallerThan("sm")]: {
+                      fontSize: "25px",
+                    },
+                    [theme.fn.smallerThan("xs")]: {
+                      fontSize: "20px",
+                    },
+                  })}
+                >
+                  Ta reda på vilken säsong du tillhör och få skräddarsydda
+                  produkter som passar just dig
                 </Text>
               </Flex>
 
@@ -282,18 +311,7 @@ const FrontPageHeader = () => {
             {/*  */}
           </Flex>
         </BackgroundImage>
-
       </MantineHeader>
-
-      <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-        <Flex
-          sx={(theme) => ({
-            backgroundColor: theme.colors.brand[2],
-          })}
-        >
-          <SearchbarMobile />
-        </Flex>
-      </MediaQuery>
     </>
   );
 };

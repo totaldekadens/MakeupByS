@@ -41,9 +41,8 @@ const MobileLoginButton: FC = () => {
     <>
       <Flex
         gap={"xs"}
-        justify="center"
+        justify="flex-end"
         align="flex-end"
-        pr={"10px"}
         sx={(theme) => ({
           [theme.fn.largerThan("xs")]: {
             display: "none",
