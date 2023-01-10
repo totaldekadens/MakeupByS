@@ -42,7 +42,7 @@ const Searchbar = () => {
         styles={{
           input: {
             borderBottom: "1px solid white",
-            placeholder: "white",
+            color: "white"
           },
         }}
       ></Autocomplete>
