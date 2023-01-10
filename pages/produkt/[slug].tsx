@@ -69,7 +69,7 @@ const ProductPage: NextPage = (props) => {
     };
 
     fetchProduct();
-  }, []);
+  }, [slug]);
 
   console.log(product);
   /*   if (!isLoading) {
@@ -115,8 +115,8 @@ const ProductPage: NextPage = (props) => {
       >
         {product ? (
           <Flex direction={"column"} sx={{ width: "100%" }}>
-            <Flex sx={{ width: "100%" }}>
-              <Flex sx={{ width: "50%", height: "60vh" }} align="center">
+            <Flex sx={{ width: "100%" }} gap={20}>
+              <Flex sx={{ width: "50%", height: "60vh" }} align="flex-start">
                 <Carousel
                   classNames={classes}
                   mx="auto"
@@ -131,7 +131,11 @@ const ProductPage: NextPage = (props) => {
                           <Image
                             fit="contain"
                             styles={{
-                              root: { display: "flex", align: "center" },
+                              root: {
+                                display: "flex",
+                                align: "center",
+                                justifyContent: "center",
+                              },
                               imageWrapper: {
                                 display: "flex",
                                 align: "center",
@@ -192,34 +196,42 @@ const ProductPage: NextPage = (props) => {
                       : null}
                   </Flex>
                 </Flex>
-
-                <Flex mt={20} gap={10} direction={"column"}>
-                  {product.mainProduct ? (
-                    <>
+                {product.mainProduct ? (
+                  <>
+                    <Flex mt={20} gap={10} direction={"column"}>
                       <Text size={14}>{product.mainProduct.description1}</Text>
                       <Text size={14}>
                         {product.mainProduct.description2
                           ? product.mainProduct.description2
                           : null}
                       </Text>
-                    </>
-                  ) : null}
-                </Flex>
-                <Button mt={20}>KÖP NU</Button>
-                {product.mainProduct ? (
-                  <Flex
-                    mt={40}
-                    p={20}
-                    bg="gray.0"
-                    direction="column"
-                    sx={{ borderRadius: "10px" }}
-                  >
-                    <Title order={4}>Ingredienser</Title>
-                    <Text size={"sm"}>{product.mainProduct.ingredients}</Text>
-                    <Text mt={20} size={"sm"}>
-                      Artikelnummer: {product.partNo}
-                    </Text>
-                  </Flex>
+                    </Flex>
+                    {product.availableQty < 1 ? (
+                      <Text mt={20} size={14} color="red">
+                        Tillfällig slut
+                      </Text>
+                    ) : null}
+                    <Button
+                      disabled={product.availableQty < 1 ? true : false}
+                      mt={20}
+                    >
+                      KÖP NU
+                    </Button>
+
+                    <Flex
+                      mt={40}
+                      p={20}
+                      bg="gray.0"
+                      direction="column"
+                      sx={{ borderRadius: "10px" }}
+                    >
+                      <Title order={4}>Ingredienser</Title>
+                      <Text size={"sm"}>{product.mainProduct.ingredients}</Text>
+                      <Text mt={20} size={"sm"}>
+                        Artikelnummer: {product.partNo}
+                      </Text>
+                    </Flex>
+                  </>
                 ) : null}
               </Flex>
             </Flex>
