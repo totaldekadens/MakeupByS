@@ -1,18 +1,19 @@
 import { Card, Flex, Title, Image, Text, Box } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import Link from "next/link";
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useContext } from "react";
 import AddToCartIcon from "./AddToCartIcon";
+import { openedCartContext } from "./context/OpenCartProvider";
 
 type Props = {
   product: any;
-  openCart: Dispatch<SetStateAction<boolean>>;
 };
 
-const ProductCard: FC<Props> = ({ product, openCart }) => {
+const ProductCard: FC<Props> = ({ product }) => {
   const path = `/uploads/${product.images[0]}`;
   const { hovered, ref } = useHover();
   const price = Number(product.mainProduct.price.$numberDecimal);
+
   return (
     <Link href={`/produkt/${product.slug}`}>
       <Card

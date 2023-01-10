@@ -12,18 +12,22 @@ import {
   createStyles,
   Button,
   MediaQuery,
+  Tooltip,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef, SetStateAction, useContext } from "react";
+import { PropertyName } from "typescript";
 import { LineItem } from "../../components/AddToCartIcon";
 import BreadCrumb from "../../components/BreadCrumb";
 import Cart from "../../components/cart/Cart";
 import { openedCartContext } from "../../components/context/OpenCartProvider";
 import Footer from "../../components/Footer";
 import Header from "../../components/Header";
+import CarouselProduct from "../../components/product/CarouselProduct";
+import Details from "../../components/product/Details";
 import ProductCard from "../../components/ProductCard";
 import { CategoryDocument } from "../../models/Category";
 import { SeasonDocument } from "../../models/Season";
@@ -35,13 +39,16 @@ const ProductPage: NextPage = (props) => {
 
   // States
   const [product, setProduct] = useState<any>([]);
+  const [products, setProducts] = useState<any>([]);
   const [opened, setOpened] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState({
+    products: true,
+    product: true,
+  });
 
   // Router
   const router = useRouter();
   const { slug } = router.query;
-
   // Local storage
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
@@ -49,21 +56,28 @@ const ProductPage: NextPage = (props) => {
   });
 
   const { classes } = useStyles();
+  console.log(products);
+  const setLoading = (key: PropertyName, bool: boolean) => {
+    setIsLoading((existingValues) => ({
+      ...existingValues,
+      key: bool,
+    }));
+  };
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         console.log("kör useeffect");
-        setIsLoading(true);
+        setLoading(product, true);
         let response = await fetch(`/api/open/subproduct/${slug}`);
         let result = await response.json();
         if (result.success) {
           setProduct(result.data);
-          setIsLoading(false);
+          setLoading(product, false);
           return;
         }
-        setIsLoading(false);
+        setLoading(product, false);
       } catch (err) {
         console.error(err);
       }
@@ -72,7 +86,35 @@ const ProductPage: NextPage = (props) => {
     fetchProduct();
   }, [slug]);
 
-  console.log(product);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setLoading(products, true);
+        if (product && product.colors) {
+          let response = await fetch(
+            `/api/open/subproduct/season/${product.colors[0].seasons[0].slug}`
+          );
+          let result = await response.json();
+
+          if (result.success) {
+            // Gets the 10 first products
+            const slicedArray = result.data.slice(0, 8);
+            setProducts(slicedArray);
+            setLoading(products, false);
+            return;
+          }
+          setLoading(products, false);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchProducts();
+  }, [product]);
+
+  console.log(isLoading);
+
   /*   if (!isLoading) {
     if (product.length < 1) {
       return <ErrorPage statusCode={404} />;
@@ -85,6 +127,7 @@ const ProductPage: NextPage = (props) => {
       footer={<Footer />}
       styles={{
         main: {
+          width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -114,7 +157,7 @@ const ProductPage: NextPage = (props) => {
           maxWidth: "1320px",
         }}
       >
-        {product && product.mainProduct ? (
+        {product && product.mainProduct && products ? (
           <Flex direction={"column"} sx={{ width: "100%" }}>
             <Flex
               sx={(theme) => ({
@@ -198,21 +241,44 @@ const ProductPage: NextPage = (props) => {
                           return color.seasons.map(
                             (season: SeasonDocument, index: number) => {
                               return (
-                                <Flex
-                                  key={index}
-                                  py={5}
-                                  px={10}
-                                  mr={20}
-                                  align="center"
-                                  sx={(theme) => ({
-                                    borderRadius: "10px",
-                                    backgroundColor: theme.colors.brand[2],
-                                  })}
+                                <Tooltip
+                                  color="black"
+                                  label={season.title}
+                                  withArrow
                                 >
-                                  <Text color={"white"} size={"sm"}>
-                                    {season.title}
-                                  </Text>
-                                </Flex>
+                                  <Flex
+                                    key={index}
+                                    mr={20}
+                                    w={30}
+                                    h={30}
+                                    justify="center"
+                                    align="center"
+                                    sx={(theme) => ({
+                                      borderRadius: "50%",
+                                      border: "1px solid black",
+                                      [theme.fn.smallerThan("md")]: {
+                                        marginRight: 10,
+                                        width: 25,
+                                        height: 25,
+                                      },
+                                      [theme.fn.smallerThan("xs")]: {
+                                        marginTop: 10,
+                                      },
+                                    })}
+                                  >
+                                    <Text
+                                      color={"black"}
+                                      size={"sm"}
+                                      sx={(theme) => ({
+                                        [theme.fn.smallerThan("md")]: {
+                                          fontSize: theme.fontSizes.xs,
+                                        },
+                                      })}
+                                    >
+                                      {season.title.slice(0, 2)}
+                                    </Text>
+                                  </Flex>
+                                </Tooltip>
                               );
                             }
                           );
@@ -243,40 +309,53 @@ const ProductPage: NextPage = (props) => {
                   </Button>
                 </MediaQuery>
                 <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
-                  <Flex
-                    mt={40}
-                    p={20}
-                    bg="gray.2"
-                    direction="column"
-                    sx={{ borderRadius: "10px" }}
-                  >
-                    <Title order={4}>Ingredienser</Title>
-                    <Text size={"sm"}>{product.mainProduct.ingredients}</Text>
-                    <Text mt={20} size={"sm"}>
-                      Artikelnummer: {product.partNo}
-                    </Text>
-                  </Flex>
+                  <Box>
+                    <Details product={product} />
+                  </Box>
                 </MediaQuery>
               </Flex>
             </Flex>
 
             <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
-              <Flex
-                mt={40}
-                p={20}
-                bg="gray.2"
-                direction="column"
-                sx={{ borderRadius: "10px" }}
-              >
-                <Title order={4}>Ingredienser</Title>
-                <Text size={"sm"}>{product.mainProduct.ingredients}</Text>
-                <Text mt={20} size={"sm"}>
-                  Artikelnummer: {product.partNo}
-                </Text>
-              </Flex>
+              <Box>
+                <Details product={product} />
+              </Box>
             </MediaQuery>
-            <Flex mt={20} sx={{ width: "100%" }}>
+            <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
               <Title order={3}>Andra har också köpt</Title>
+              <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
+                <Box>
+                  <CarouselProduct
+                    products={products}
+                    slideGap="md"
+                    slideSize="30.3333%"
+                    slidesToScroll={undefined}
+                  />
+                </Box>
+              </MediaQuery>
+              <MediaQuery
+                query="(max-width: 767px) or (min-width: 1200px)"
+                styles={{ display: "none" }}
+              >
+                <Box>
+                  <CarouselProduct
+                    products={products}
+                    slideGap="md"
+                    slideSize="50%"
+                    slidesToScroll={2}
+                  />
+                </Box>
+              </MediaQuery>
+              <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
+                <Box>
+                  <CarouselProduct
+                    products={products}
+                    slideGap="xs"
+                    slideSize="100%"
+                    slidesToScroll={undefined}
+                  />
+                </Box>
+              </MediaQuery>
             </Flex>
             <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
               <Flex
@@ -286,16 +365,16 @@ const ProductPage: NextPage = (props) => {
                 left={0}
                 h={70}
                 bg="gray.2"
-                //bg="brand.1"
                 justify={"space-between"}
                 align="center"
                 px={20}
+                sx={{ zIndex: 3 }}
               >
                 <Text weight={"bold"}>
                   {" "}
                   {product.mainProduct.price.$numberDecimal + " KR"}
                 </Text>
-                <Button>Köp</Button>
+                <Button>KÖP NU</Button>
               </Flex>
             </MediaQuery>
           </Flex>
