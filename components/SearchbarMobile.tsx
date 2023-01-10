@@ -11,6 +11,11 @@ const SearchbarMobile = () => {
         placeholder="Sök..."
         variant="unstyled"
         data={["Smink", "Läppstift"]}
+        styles={{
+          input: {
+          color: "white"
+          },
+        }}
         sx={(theme) => ({
           width: "100%",
           backgroundColor: theme.colors.brand[2],
