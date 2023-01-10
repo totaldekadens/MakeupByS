@@ -12,6 +12,7 @@ const Searchbar = () => {
         mr={5}
         align="flex-end"
         sx={(theme) => ({
+          zIndex: 2,
           [theme.fn.smallerThan("xs")]: {
             display: "none",
           },

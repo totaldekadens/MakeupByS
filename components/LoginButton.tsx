@@ -47,6 +47,7 @@ const LoginButton: FC = () => {
         align="flex-end"
         direction="row"
         sx={(theme) => ({
+          zIndex: 2,
           [theme.fn.smallerThan("lg")]: {
             minWidth: "180px",
           },
