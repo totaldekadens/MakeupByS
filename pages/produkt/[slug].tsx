@@ -31,6 +31,7 @@ import Details from "../../components/product/Details";
 import ProductCard from "../../components/ProductCard";
 import { CategoryDocument } from "../../models/Category";
 import { SeasonDocument } from "../../models/Season";
+import useAddToCart from "../../utils/useAddToCart";
 import ErrorPage from "../ErrorPage";
 
 const ProductPage: NextPage = (props) => {
@@ -56,12 +57,50 @@ const ProductPage: NextPage = (props) => {
   });
 
   const { classes } = useStyles();
-  console.log(products);
+
   const setLoading = (key: PropertyName, bool: boolean) => {
     setIsLoading((existingValues) => ({
       ...existingValues,
       key: bool,
     }));
+  };
+
+  const price = Number(product.mainProduct.price.$numberDecimal);
+  const handleClick = () => {
+    const lineItem = {
+      quantity: 1,
+      price_data: {
+        currency: "sek",
+        unit_amount: price,
+        product_data: {
+          name: product.title,
+          description: product.description,
+          images: product.images,
+          metadata: {
+            id: product._id,
+            weight: product.mainProduct.weight ? product.mainProduct.weight : 0,
+          },
+        },
+      },
+    };
+
+    let cartCopy = [...cartItems];
+
+    let foundIndex = cartCopy.findIndex(
+      (cartItem) => cartItem.price_data.product_data.metadata.id === product._id
+    );
+
+    if (foundIndex >= 0) {
+      if (cartCopy[foundIndex].quantity >= product.availableQty) {
+        return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
+      }
+      cartCopy[foundIndex].quantity++;
+    } else {
+      cartCopy.push(lineItem);
+    }
+
+    setCartItems(cartCopy);
+    setOpenedCart(true);
   };
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
@@ -318,6 +357,7 @@ const ProductPage: NextPage = (props) => {
                   <Button
                     disabled={product.availableQty < 1 ? true : false}
                     mt={20}
+                    onClick={() => handleClick()}
                   >
                     KÖP NU
                   </Button>
@@ -388,7 +428,7 @@ const ProductPage: NextPage = (props) => {
                   {" "}
                   {product.mainProduct.price.$numberDecimal + " KR"}
                 </Text>
-                <Button>KÖP NU</Button>
+                <Button onClick={() => handleClick()}>KÖP NU</Button>
               </Flex>
             </MediaQuery>
           </Flex>
