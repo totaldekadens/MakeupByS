@@ -3,11 +3,9 @@ import {
   AppShell,
   Box,
   Flex,
-  Grid,
   Title,
   Text,
   Breadcrumbs,
-  Drawer,
   Image,
   createStyles,
   Button,
@@ -16,10 +14,8 @@ import {
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef, SetStateAction, useContext } from "react";
-import { PropertyName } from "typescript";
+import { useEffect, useState, useContext } from "react";
 import { LineItem } from "../../components/AddToCartIcon";
 import BreadCrumb from "../../components/BreadCrumb";
 import Cart from "../../components/cart/Cart";
@@ -28,11 +24,7 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import CarouselProduct from "../../components/product/CarouselProduct";
 import Details from "../../components/product/Details";
-import ProductCard from "../../components/ProductCard";
-import { CategoryDocument } from "../../models/Category";
 import { SeasonDocument } from "../../models/Season";
-import useAddToCart from "../../utils/useAddToCart";
-import ErrorPage from "../ErrorPage";
 
 const ProductPage: NextPage = (props) => {
   // Context
@@ -56,67 +48,82 @@ const ProductPage: NextPage = (props) => {
     defaultValue: [],
   });
 
+  // Use mantines useStyle
   const { classes } = useStyles();
 
-  const setLoading = (key: PropertyName, bool: boolean) => {
+  const setLoadingSingle = (bool: boolean) => {
     setIsLoading((existingValues) => ({
       ...existingValues,
-      key: bool,
+      product: bool,
     }));
   };
 
-  const price = Number(product.mainProduct.price.$numberDecimal);
+  const setLoadingList = (bool: boolean) => {
+    setIsLoading((existingValues) => ({
+      ...existingValues,
+      products: bool,
+    }));
+  };
+  if (product && product.mainProduct) {
+    const price = Number(product.mainProduct.price.$numberDecimal);
+  }
   const handleClick = () => {
-    const lineItem = {
-      quantity: 1,
-      price_data: {
-        currency: "sek",
-        unit_amount: price,
-        product_data: {
-          name: product.title,
-          description: product.description,
-          images: product.images,
-          metadata: {
-            id: product._id,
-            weight: product.mainProduct.weight ? product.mainProduct.weight : 0,
+    if (product && product.mainProduct) {
+      const price = Number(product.mainProduct.price.$numberDecimal);
+
+      const lineItem = {
+        quantity: 1,
+        price_data: {
+          currency: "sek",
+          unit_amount: price,
+          product_data: {
+            name: product.title,
+            description: product.description,
+            images: product.images,
+            metadata: {
+              id: product._id,
+              weight: product.mainProduct.weight
+                ? product.mainProduct.weight
+                : 0,
+            },
           },
         },
-      },
-    };
+      };
 
-    let cartCopy = [...cartItems];
+      let cartCopy = [...cartItems];
 
-    let foundIndex = cartCopy.findIndex(
-      (cartItem) => cartItem.price_data.product_data.metadata.id === product._id
-    );
+      let foundIndex = cartCopy.findIndex(
+        (cartItem) =>
+          cartItem.price_data.product_data.metadata.id === product._id
+      );
 
-    if (foundIndex >= 0) {
-      if (cartCopy[foundIndex].quantity >= product.availableQty) {
-        return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
+      if (foundIndex >= 0) {
+        if (cartCopy[foundIndex].quantity >= product.availableQty) {
+          return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
+        }
+        cartCopy[foundIndex].quantity++;
+      } else {
+        cartCopy.push(lineItem);
       }
-      cartCopy[foundIndex].quantity++;
-    } else {
-      cartCopy.push(lineItem);
-    }
 
-    setCartItems(cartCopy);
-    setOpenedCart(true);
+      setCartItems(cartCopy);
+      setOpenedCart(true);
+    }
   };
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        console.log("kör useeffect");
-        setLoading(product, true);
+        setLoadingSingle(true);
         let response = await fetch(`/api/open/subproduct/${slug}`);
         let result = await response.json();
         if (result.success) {
           setProduct(result.data);
-          setLoading(product, false);
+          setLoadingSingle(false);
           return;
         }
-        setLoading(product, false);
+        setLoadingSingle(false);
       } catch (err) {
         console.error(err);
       }
@@ -128,7 +135,7 @@ const ProductPage: NextPage = (props) => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        setLoading(products, true);
+        setLoadingList(true);
         if (product && product.colors) {
           let response = await fetch(
             `/api/open/subproduct/season/${product.colors[0].seasons[0].slug}`
@@ -139,10 +146,10 @@ const ProductPage: NextPage = (props) => {
             // Gets the 10 first products
             const slicedArray = result.data.slice(0, 8);
             setProducts(slicedArray);
-            setLoading(products, false);
+            setLoadingList(false);
             return;
           }
-          setLoading(products, false);
+          setLoadingList(false);
         }
       } catch (err) {
         console.error(err);
