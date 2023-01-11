@@ -1,53 +1,33 @@
-import {
-  AppShell,
-  Title,
-  Box,
-  Button,
-  Text,
-  Accordion,
-  Flex,
-  Table,
-  MediaQuery,
-  HoverCard,
-} from "@mantine/core";
+import { AppShell, Title, Button, Text, Accordion, Flex } from "@mantine/core";
 import { NextPage } from "next";
 import Footer from "../components/Footer";
 import Header from "../components/Header";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Cart from "../components/cart/Cart";
 import { useEffect, useState } from "react";
-import { IconInfoCircle, IconPoint } from "@tabler/icons";
-import CartItemConfirmation from "../components/checkout/CartItemConfirmation";
-import { LineItem } from "../components/AddToCartIcon";
 import OrderSummary from "../components/OrderSummary";
 import WrapContainer from "../components/layout/WrapContainer";
+import useFetchHelper from "../utils/useFetchHelper";
+import ErrorPage from "./ErrorPage";
 
 const MyPage: NextPage = () => {
   const { data: session } = useSession();
-  const [error, setError] = useState(200);
+  const [status, setStatus] = useState(200);
+  const [isLoadingOrders, setIsLoadingOrders] = useState(true);
   const [orders, setOrders] = useState<any>();
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        setError(200);
-
-        let response = await fetch(
-          `/api/customer/orders/${session?.user.email}`
-        );
-        let result = await response.json();
-        if (result.success) {
-          setOrders(result.data);
-          setError(200);
-          return;
-        }
-        setError(404);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchOrders();
+    useFetchHelper(
+      setStatus,
+      setIsLoadingOrders,
+      setOrders,
+      `/api/customer/orders/${session?.user.email}`
+    );
   }, [session]);
+
+  if (!isLoadingOrders && status > 299) {
+    return <ErrorPage statusCode={status} />;
+  }
 
   // Descending order
   if (orders) {

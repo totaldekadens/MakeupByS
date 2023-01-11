@@ -20,6 +20,7 @@ import WrapContainer from "../../../components/layout/WrapContainer";
 import ProductCard from "../../../components/ProductCard";
 import { CategoryDocument } from "../../../models/Category";
 import { SeasonDocument } from "../../../models/Season";
+import useFetchHelper from "../../../utils/useFetchHelper";
 import ErrorPage from "../../ErrorPage";
 
 const SeasonPage: NextPage = (props) => {
@@ -28,48 +29,24 @@ const SeasonPage: NextPage = (props) => {
   const [products, setProducts] = useState<any>([]);
   const [season, setSeason] = useState<SeasonDocument>();
   const [openedCart, setOpenedCart] = useState(false);
-  const [error, setError] = useState(200);
+  const [status, setStatus] = useState(200);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [isLoadingSeason, setIsLoadingSeason] = useState(true);
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setError(200);
-        if (seasonSlug) {
-          let response = await fetch(
-            `/api/open/subproduct/season/${seasonSlug}`
-          );
-          let result = await response.json();
-
-          if (result.success) {
-            setProducts(result.data);
-            setError(200);
-            return;
-          }
-          setError(404);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    const fetchSeason = async () => {
-      try {
-        setError(200);
-        let response = await fetch(`/api/open/season/${seasonSlug}`);
-        let result = await response.json();
-
-        if (result.success) {
-          setSeason(result.data);
-          setError(200);
-          return;
-        }
-        setError(404);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchSeason();
-    fetchProducts();
+    useFetchHelper(
+      setStatus,
+      setIsLoadingProducts,
+      setProducts,
+      `/api/open/subproduct/season/${seasonSlug}`
+    );
+    useFetchHelper(
+      setStatus,
+      setIsLoadingSeason,
+      setSeason,
+      `/api/open/season/${seasonSlug}`
+    );
   }, [seasonSlug]);
 
   let categories: CategoryDocument[] = [];
@@ -88,8 +65,9 @@ const SeasonPage: NextPage = (props) => {
       }
     });
   }
-  if (products && error > 200) {
-    return <ErrorPage statusCode={error} />;
+
+  if (!isLoadingProducts && !isLoadingSeason && status > 299) {
+    return <ErrorPage statusCode={status} />;
   }
   return (
     <AppShell
