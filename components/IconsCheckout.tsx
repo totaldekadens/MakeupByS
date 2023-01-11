@@ -58,7 +58,7 @@ const IconsCheckout: FC = () => {
         })}
       >
         {session.data?.user ? (
-          <Link href="/mypage">
+          <Link href="/minsida">
             <Flex
               sx={(theme) => ({
                 height: 12,
@@ -94,7 +94,7 @@ const IconsCheckout: FC = () => {
           </Link>
         ) : (
           <Link
-            href="/mypage"
+            href="/minsida"
             style={{ display: "flex", alignItems: "center" }}
           >
             <IconUser size={36} color="white" className={classes.icons} />

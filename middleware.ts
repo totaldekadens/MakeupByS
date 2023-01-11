@@ -6,9 +6,9 @@ import { NextRequest, NextResponse } from "next/server";
 // Todo: Lägg till ytterligare skydd för apierna.
 export default withAuth(
   function middleware(req) {
-    // If you are logged in but not have the role "admin" when you visit an URL including "admin", you will be redirected to /mypage.
+    // If you are logged in but not have the role "admin" when you visit an URL including "admin", you will be redirected to /minsida.
     if (!req.nextauth.token?.admin && req.nextUrl.pathname.includes("/admin")) {
-      return NextResponse.redirect(new URL("/mypage", req.url));
+      return NextResponse.redirect(new URL("/minsida", req.url));
     }
   },
   {
@@ -23,5 +23,5 @@ export default withAuth(
 
 // If no one is logged in and tries to enter URLS below, you will be redirected to /signin
 export const config = {
-  matcher: ["/admin/:path*", "/mypage"],
+  matcher: ["/admin/:path*", "/minsida"],
 };

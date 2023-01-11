@@ -99,7 +99,7 @@ const MyPage: NextPage = () => {
                         padding: 0,
                       },
                     })}
-                    defaultValue="customization"
+                    defaultValue={null}
                   >
                     <Accordion.Item value="customization">
                       <Accordion.Control>

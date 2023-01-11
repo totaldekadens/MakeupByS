@@ -50,7 +50,7 @@ const MobileLoginButton: FC = () => {
         })}
       >
         {session.data?.user ? (
-          <Link href="/mypage">
+          <Link href="/minsida">
             <Flex sx={{ height: 7 }}>
               <ThemeIcon color="teal" variant="light" radius="xl" size={8}>
                 <IconCheck size={6} />
