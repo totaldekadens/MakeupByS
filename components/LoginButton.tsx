@@ -57,7 +57,7 @@ const LoginButton: FC = () => {
         })}
       >
         {session.data?.user ? (
-          <Link href="/mypage">
+          <Link href="/minsida">
             <Box sx={{ height: 20 }}>
               <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
                 <IconCheck size={8} />

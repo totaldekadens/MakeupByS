@@ -54,8 +54,7 @@ const MobileBurgerMenu: FC = () => {
   return (
     <>
       <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-        <Flex
-        sx={{alignItems: "flex-end", paddingBottom: "2px"}}>
+        <Flex sx={{ alignItems: "flex-end", paddingBottom: "2px" }}>
           <Burger
             left={"20px"}
             color="white"
@@ -94,7 +93,7 @@ const MobileBurgerMenu: FC = () => {
         >
           <Flex styles={{ height: "70px" }}>
             {session.data?.user ? (
-              <Link href="/mypage">
+              <Link href="/minsida">
                 <Box sx={{ height: 70 }}>
                   <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
                     <IconCheck size={8} />
@@ -138,29 +137,29 @@ const MobileBurgerMenu: FC = () => {
               </Flex>
             )}
           </Flex>
-            {session.data?.user.admin ? (
-              <Link href="/admin">
-                <Box sx={{ height: 70 }}>
-                  <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
-                    <IconCheck size={8} />
-                  </ThemeIcon>
-                  <Box ref={ref}>
-                    <IconHomeCog
-                      color={hovered ? "#CC9887" : "white"}
-                      size={36}
-                    />
-                    <Title
-                      sx={{
-                        color: "white",
-                        fontSize: "12px",
-                      }}
-                    >
-                      {session.data?.user.name.replace(/ .*/, "")}
-                    </Title>
-                  </Box>
+          {session.data?.user.admin ? (
+            <Link href="/admin">
+              <Box sx={{ height: 70 }}>
+                <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
+                  <IconCheck size={8} />
+                </ThemeIcon>
+                <Box ref={ref}>
+                  <IconHomeCog
+                    color={hovered ? "#CC9887" : "white"}
+                    size={36}
+                  />
+                  <Title
+                    sx={{
+                      color: "white",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {session.data?.user.name.replace(/ .*/, "")}
+                  </Title>
                 </Box>
-              </Link>
-            ) : null}
+              </Box>
+            </Link>
+          ) : null}
           {/* quiz */}
           <Flex>
             <Box sx={{ paddingTop: 25 }}>
@@ -226,24 +225,28 @@ const MobileBurgerMenu: FC = () => {
           </Flex>
           {/* cart */}
         </Flex>
-        <Link href={"/mypage"}>
+        <Link href={"/minsida"}>
           <Box>
-        <Flex
-          onClick={() => setOpened(false)}
-          sx={{paddingLeft: "26px", marginBottom: "20px", alignItems: "center", width: "295px",}}
-        >
-            <Box sx={{width: "100%"}}>
-            <Title h={"30px"} color={"white"} size={"lg"}
+            <Flex
+              onClick={() => setOpened(false)}
+              sx={{
+                paddingLeft: "26px",
+                marginBottom: "20px",
+                alignItems: "center",
+                width: "295px",
+              }}
             >
-              Mina sidor
-            </Title>
-            </Box>
-                <Box>
-                  <IconSquareRoundedArrowRight color="white"/>
-                </Box>
-        </Flex>
-        </Box>
-          </Link>
+              <Box sx={{ width: "100%" }}>
+                <Title h={"30px"} color={"white"} size={"lg"}>
+                  Mina sidor
+                </Title>
+              </Box>
+              <Box>
+                <IconSquareRoundedArrowRight color="white" />
+              </Box>
+            </Flex>
+          </Box>
+        </Link>
         {/* knappar season */}
         <Flex
           sx={(theme) => ({
@@ -337,9 +340,13 @@ const MobileBurgerMenu: FC = () => {
           </Link>
         </Flex>
         <Box sx={{ paddingLeft: "26px" }}>
-        <Flex sx={{width: "270px", alignItems: "center", cursor: "pointer"}}>
-            <Box sx={{width: "100%"}}>
-            <Title color={"white"} size={"lg"}>Kategorier</Title>
+          <Flex
+            sx={{ width: "270px", alignItems: "center", cursor: "pointer" }}
+          >
+            <Box sx={{ width: "100%" }}>
+              <Title color={"white"} size={"lg"}>
+                Kategorier
+              </Title>
             </Box>
             <Box>
               <IconSquareRoundedArrowRight color="white" />
@@ -347,9 +354,13 @@ const MobileBurgerMenu: FC = () => {
           </Flex>
 
           <Space h="lg"></Space>
-          <Flex sx={{width: "270px", alignItems: "center", cursor: "pointer"}}>
-            <Box sx={{width: "100%"}}>
-            <Title color={"white"} size={"lg"}>Kategorier</Title>
+          <Flex
+            sx={{ width: "270px", alignItems: "center", cursor: "pointer" }}
+          >
+            <Box sx={{ width: "100%" }}>
+              <Title color={"white"} size={"lg"}>
+                Kategorier
+              </Title>
             </Box>
             <Box>
               <IconSquareRoundedArrowRight color="white" />
@@ -357,9 +368,13 @@ const MobileBurgerMenu: FC = () => {
           </Flex>
 
           <Space h="lg"></Space>
-          <Flex sx={{width: "270px", alignItems: "center", cursor: "pointer"}}>
-            <Box sx={{width: "100%"}}>
-            <Title color={"white"} size={"lg"}>Kategorier</Title>
+          <Flex
+            sx={{ width: "270px", alignItems: "center", cursor: "pointer" }}
+          >
+            <Box sx={{ width: "100%" }}>
+              <Title color={"white"} size={"lg"}>
+                Kategorier
+              </Title>
             </Box>
             <Box>
               <IconSquareRoundedArrowRight color="white" />
@@ -368,9 +383,13 @@ const MobileBurgerMenu: FC = () => {
 
           <Space h="lg"></Space>
 
-          <Flex sx={{width: "270px", alignItems: "center", cursor: "pointer"}}>
-            <Box sx={{width: "100%"}}>
-            <Title color={"white"} size={"lg"}>Kategorier</Title>
+          <Flex
+            sx={{ width: "270px", alignItems: "center", cursor: "pointer" }}
+          >
+            <Box sx={{ width: "100%" }}>
+              <Title color={"white"} size={"lg"}>
+                Kategorier
+              </Title>
             </Box>
             <Box>
               <IconSquareRoundedArrowRight color="white" />
