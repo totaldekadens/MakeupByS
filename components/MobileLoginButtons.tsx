@@ -51,26 +51,22 @@ const MobileLoginButton: FC = () => {
       >
         {session.data?.user ? (
           <Link href="/minsida">
-            <Flex sx={{ height: 7 }}>
-              <ThemeIcon color="teal" variant="light" radius="xl" size={8}>
-                <IconCheck size={6} />
-              </ThemeIcon>
-            </Flex>
-            <Box ref={ref}>
-              <IconUser color={hovered ? "#CC9887" : "white"} size={24} />
+            <Box pos={"relative"}>
+              <Flex pos={"absolute"} top={-6} sx={{ height: 7 }}>
+                <ThemeIcon color="teal" variant="light" radius="xl" size={8}>
+                  <IconCheck size={6} />
+                </ThemeIcon>
+              </Flex>
+              <Box ref={ref}>
+                <IconUser color={hovered ? "#CC9887" : "white"} size={26} />
+              </Box>
             </Box>
           </Link>
         ) : (
           <Link href="/">
-            <IconUser size={24} color="white" onClick={() => signIn()} />
+            <IconUser size={26} color="white" onClick={() => signIn()} />
           </Link>
         )}
-
-        {session.data?.user.admin ? (
-          <Link href="/admin">
-            <IconHomeCog size={24} color="white" />
-          </Link>
-        ) : null}
 
         <Box pos={"relative"}>
           {quantity && quantity > 0 ? (

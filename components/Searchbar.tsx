@@ -3,11 +3,16 @@ import { IconSearch, IconX } from "@tabler/icons";
 
 const Searchbar = () => {
   return (
-    <Flex align="flex-end" direction="row" sx={(theme) => ({
-      [theme.fn.smallerThan("xs")]: {
-        display: "none",
-      },
-    })}>
+    <Flex
+      mb={8}
+      align="flex-end"
+      direction="row"
+      sx={(theme) => ({
+        [theme.fn.smallerThan("xs")]: {
+          display: "none",
+        },
+      })}
+    >
       <Flex
         mr={5}
         align="flex-end"
@@ -29,7 +34,7 @@ const Searchbar = () => {
         variant="unstyled"
         data={["Smink", "Läppstift"]}
         sx={(theme) => ({
-          [theme.fn.smallerThan("md")]: {
+          [theme.fn.smallerThan("lg")]: {
             minWidth: "180px",
           },
           [theme.fn.smallerThan("sm")]: {
@@ -42,7 +47,7 @@ const Searchbar = () => {
         styles={{
           input: {
             borderBottom: "1px solid white",
-            color: "white"
+            color: "white",
           },
         }}
       ></Autocomplete>

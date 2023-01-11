@@ -4,6 +4,7 @@ import {
   Flex,
   Space,
   MediaQuery,
+  Text,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -14,104 +15,135 @@ import { IconCheck } from "@tabler/icons";
 import SearchbarMobile from "./SearchbarMobile";
 import MobileLoginButton from "./MobileLoginButtons";
 import MobileBurgerMenu from "./MobileBurgerMenu";
+import { useEffect, useRef, useState } from "react";
 
 const Header = () => {
   const session = useSession();
+  const [scrollY, setScrollY] = useState<number>(0);
+  const [hide, setHide] = useState<boolean>(false);
+
+  // Refs
+  const valueRef = useRef<any | null>();
+  valueRef.current = scrollY;
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
+
+  const handleScroll = () => {
+    setScrollY(window.scrollY);
+    let previousScrollY = valueRef.current;
+
+    if (previousScrollY < window.scrollY) {
+      setHide(true);
+    } else {
+      setHide(false);
+    }
+  };
 
   return (
     <>
       <MantineHeader
-        fixed={false}
-        height={220}
-        px={100}
+        fixed={true}
+        height={200}
+        px={20}
         sx={(theme) => ({
           backgroundColor: theme.colors.brand[2],
           display: "flex",
           justifyContent: "space-between",
           borderBottom: "none",
-          alignItems: "center",
-          [theme.fn.smallerThan("lg")]: {
-            paddingLeft: "30px",
-            paddingRight: "30px",
+          height: hide ? 150 : 200,
+          paddingTop: 10,
+          [theme.fn.smallerThan("md")]: {
+            height: hide ? 150 : 180,
+            paddingTop: hide ? 20 : 10,
+          },
+          [theme.fn.smallerThan("sm")]: {
+            height: hide ? 135 : 150,
+            paddingTop: hide ? 25 : 10,
           },
           [theme.fn.smallerThan("xs")]: {
-            height: "120px",
+            height: hide ? "75px" : "85px",
+            alignItems: hide ? "center" : "flex-start",
+            paddingTop: hide ? 0 : 10,
           },
         })}
       >
         <Flex direction={"column"} align={"center"} sx={{ width: "100%" }}>
           <Flex
-            mt={10}
-            justify={"center"}
+            justify={"space-around"}
             align={"center"}
             sx={(theme) => ({
+              display: hide ? "none" : "flex",
               width: "100%",
-              [theme.fn.smallerThan("xs")]: {
-                alignContent: "flex-start",
-                top: "0px",
-                position: "absolute",
-              },
+              [theme.fn.smallerThan("xs")]: {},
             })}
           >
             <Flex
-              sx={(theme) => ({
-                [theme.fn.smallerThan("xs")]: {
-                  display: "none",
-                },
-              })}
+              gap={20}
+              justify={"center"}
+              align="center"
+              sx={(theme) => ({ width: "100%" })}
             >
-              <Title fw={"400"} mr={30} tt={"uppercase"} c={"white"} fz={"md"}>
-                <IconCheck size={18} /> fri frakt från sverige
-              </Title>
+              <Flex align={"center"} gap={5}>
+                <IconCheck color="white" size={18} />
+                <Text
+                  fw={"400"}
+                  tt={"uppercase"}
+                  c={"white"}
+                  fz={"md"}
+                  sx={(theme) => ({
+                    [theme.fn.smallerThan("sm")]: {
+                      fontSize: 14,
+                    },
+                    [theme.fn.smallerThan("xs")]: {
+                      fontSize: 11,
+                    },
+                  })}
+                >
+                  fri frakt från sverige
+                </Text>
+              </Flex>
 
               <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
                 <Space w={"lg"} />
               </MediaQuery>
-
-              <Title fw={"400"} ml={10} tt={"uppercase"} c={"white"} fz={"md"}>
-                <IconCheck size={18} /> 100% vegan
-              </Title>
-            </Flex>
-
-            <Flex
-              sx={(theme) => ({
-                [theme.fn.largerThan("xs")]: {
-                  display: "none",
-                },
-              })}
-            >
-              <Title
-                fw={"400"}
-                mr={30}
-                tt={"uppercase"}
-                c={"white"}
-                fz={"12px"}
-              >
-                <IconCheck size={12} /> fri frakt från sverige
-              </Title>
-
-              <Space w={"lg"} />
-
-              <Title
-                fw={"400"}
-                ml={10}
-                tt={"uppercase"}
-                c={"white"}
-                fz={"12px"}
-              >
-                <IconCheck size={12} /> 100% vegan
-              </Title>
+              <Flex align={"center"} gap={5}>
+                <IconCheck color="white" size={18} />
+                <Text
+                  fw={"400"}
+                  tt={"uppercase"}
+                  c={"white"}
+                  fz={"md"}
+                  sx={(theme) => ({
+                    [theme.fn.smallerThan("sm")]: {
+                      fontSize: 14,
+                    },
+                    [theme.fn.smallerThan("xs")]: {
+                      fontSize: 11,
+                    },
+                  })}
+                >
+                  100% vegan
+                </Text>
+              </Flex>
             </Flex>
           </Flex>
 
           <Flex
+            pt={22}
             justify={"space-between"}
-            px={15}
+            align="flex-end"
             sx={(theme) => ({
               width: "100%",
+              paddingTop: hide ? 0 : 22,
+              [theme.fn.smallerThan("md")]: {
+                paddingTop: hide ? 0 : 10,
+              },
               [theme.fn.smallerThan("xs")]: {
-                position: "absolute",
-                top: "60px",
+                alignItems: "center",
+                paddingTop: hide ? 0 : 15,
               },
             })}
           >
@@ -121,60 +153,24 @@ const Header = () => {
             <MobileBurgerMenu />
 
             <Link href="/">
-              {session.data?.user ? (
-                <Title
-                  fw={500}
-                  size="xxx-large"
-                  pt={25}
-                  color="white"
-                  sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {
-                      paddingRight: "70px",
-                    },
-                    [theme.fn.smallerThan("md")]: {
-                      paddingRight: "10px",
-                    },
-                    [theme.fn.smallerThan("sm")]: {
-                      fontSize: "xx-large",
-                      paddingRight: "0px",
-                      paddingLeft: "20px",
-                    },
-                    [theme.fn.smallerThan("xs")]: {
-                      paddingTop: "5px",
-                      fontSize: "x-large",
-                    },
-                  })}
-                >
-                  MakeUpByS
-                </Title>
-              ) : (
-                <Title
-                  fw={500}
-                  size="xxx-large"
-                  pt={20}
-                  color="white"
-                  sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {
-                      paddingRight: "70px",
-                    },
-                    [theme.fn.smallerThan("md")]: {
-                      paddingRight: "10px",
-                    },
-                    [theme.fn.smallerThan("sm")]: {
-                      fontSize: "xx-large",
-                      paddingRight: "0px",
-                      paddingLeft: "20px",
-                    },
-                    [theme.fn.smallerThan("xs")]: {
-                      paddingTop: "5px",
-                      paddingLeft: "5px",
-                      fontSize: "x-large",
-                    },
-                  })}
-                >
-                  MakeUpByS
-                </Title>
-              )}
+              <Title
+                fw={500}
+                size={48}
+                color="white"
+                sx={(theme) => ({
+                  [theme.fn.smallerThan("md")]: {
+                    fontSize: 43,
+                  },
+                  [theme.fn.smallerThan("sm")]: {
+                    fontSize: 35,
+                  },
+                  [theme.fn.smallerThan("xs")]: {
+                    fontSize: "x-large",
+                  },
+                })}
+              >
+                MakeUpByS
+              </Title>
             </Link>
             <LoginButton />
             <MobileLoginButton />
@@ -187,6 +183,7 @@ const Header = () => {
 
       <MediaQuery largerThan="xs" styles={{ display: "none" }}>
         <Flex
+          mt={85}
           sx={(theme) => ({
             backgroundColor: theme.colors.brand[2],
           })}

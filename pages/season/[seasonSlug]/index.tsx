@@ -7,6 +7,8 @@ import {
   Title,
   Text,
   Breadcrumbs,
+  Sx,
+  MantineTheme,
 } from "@mantine/core";
 import { NextPage } from "next";
 import Link from "next/link";
@@ -16,6 +18,7 @@ import BreadCrumb from "../../../components/BreadCrumb";
 import Cart from "../../../components/cart/Cart";
 import Footer from "../../../components/Footer";
 import Header from "../../../components/Header";
+import MarginTopContainer from "../../../components/layout/MarginTopContainer";
 import WrapContainer from "../../../components/layout/WrapContainer";
 import ProductCard from "../../../components/ProductCard";
 import { CategoryDocument } from "../../../models/Category";
@@ -28,7 +31,6 @@ const SeasonPage: NextPage = (props) => {
   const { seasonSlug } = router.query;
   const [products, setProducts] = useState<any>([]);
   const [season, setSeason] = useState<SeasonDocument>();
-  const [openedCart, setOpenedCart] = useState(false);
   const [status, setStatus] = useState(200);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [isLoadingSeason, setIsLoadingSeason] = useState(true);
@@ -74,62 +76,64 @@ const SeasonPage: NextPage = (props) => {
       fixed={false}
       header={<Header />}
       footer={<Footer />}
-      styles={{
+      styles={(theme) => ({
         main: {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         },
-      }}
+      })}
     >
-      {!season ? null : (
-        <Flex sx={{ width: "100%" }}>
-          <Breadcrumbs>
-            <BreadCrumb href={"/"} title={"Hem"} />
-            <BreadCrumb
-              href={`/season/${season?.slug}`}
-              title={season?.title}
-            />
-          </Breadcrumbs>
-        </Flex>
-      )}
-      <WrapContainer>
-        {!products ? null : (
-          <>
-            <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
-              <Title order={1}>{season?.title}</Title>
-              <Text color="dimmed">{season?.description}</Text>
-            </Flex>
-            {products[0] ? (
-              <Flex justify={"center"} mt="sm" gap="lg" wrap={"wrap"}>
-                {categories.map((category, index) => {
-                  return (
-                    <Link
-                      key={index}
-                      href={`/season/${seasonSlug}/category/${category.slug}`}
-                    >
-                      <Button variant="outline" color="brand.2">
-                        {category.title}
-                      </Button>
-                    </Link>
-                  );
-                })}
-              </Flex>
-            ) : null}
-            <Flex mt="xl" wrap="wrap" justify={"center"}>
-              <Grid justify={"center"}>
-                {products?.map((product: any, index: number) => {
-                  return (
-                    <Grid.Col key={index} md={4} sm={5} xs={6}>
-                      <ProductCard product={product} />
-                    </Grid.Col>
-                  );
-                })}
-              </Grid>
-            </Flex>
-          </>
+      <MarginTopContainer>
+        {!season ? null : (
+          <Flex sx={{ width: "100%" }}>
+            <Breadcrumbs>
+              <BreadCrumb href={"/"} title={"Hem"} />
+              <BreadCrumb
+                href={`/season/${season?.slug}`}
+                title={season?.title}
+              />
+            </Breadcrumbs>
+          </Flex>
         )}
-      </WrapContainer>
+        <WrapContainer>
+          {!products ? null : (
+            <>
+              <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
+                <Title order={1}>{season?.title}</Title>
+                <Text color="dimmed">{season?.description}</Text>
+              </Flex>
+              {products[0] ? (
+                <Flex justify={"center"} mt="sm" gap="lg" wrap={"wrap"}>
+                  {categories.map((category, index) => {
+                    return (
+                      <Link
+                        key={index}
+                        href={`/season/${seasonSlug}/category/${category.slug}`}
+                      >
+                        <Button variant="outline" color="brand.2">
+                          {category.title}
+                        </Button>
+                      </Link>
+                    );
+                  })}
+                </Flex>
+              ) : null}
+              <Flex mt="xl" wrap="wrap" justify={"center"}>
+                <Grid justify={"center"}>
+                  {products?.map((product: any, index: number) => {
+                    return (
+                      <Grid.Col key={index} md={4} sm={5} xs={6}>
+                        <ProductCard product={product} />
+                      </Grid.Col>
+                    );
+                  })}
+                </Grid>
+              </Flex>
+            </>
+          )}
+        </WrapContainer>
+      </MarginTopContainer>
       <Cart />
     </AppShell>
   );
