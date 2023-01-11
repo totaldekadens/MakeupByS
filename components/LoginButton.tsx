@@ -43,13 +43,16 @@ const LoginButton: FC = () => {
       <Flex
         miw={250}
         gap={"md"}
-        justify="center"
+        justify="flex-end"
         align="flex-end"
         direction="row"
         sx={(theme) => ({
           zIndex: 2,
           [theme.fn.smallerThan("lg")]: {
             minWidth: "180px",
+          },
+          [theme.fn.smallerThan("lg")]: {
+            minWidth: "150px",
           },
           [theme.fn.smallerThan("xs")]: {
             display: "none",

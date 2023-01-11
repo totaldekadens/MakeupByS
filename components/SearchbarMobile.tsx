@@ -13,15 +13,13 @@ const SearchbarMobile = () => {
         data={["Smink", "Läppstift"]}
         styles={{
           input: {
-          color: "white"
+            color: "white",
           },
         }}
         sx={(theme) => ({
           width: "100%",
+          height: 40,
           backgroundColor: theme.colors.brand[2],
-          [theme.fn.largerThan("xs")]: {
-            display: "none",
-          },
         })}
       ></Autocomplete>
     </Flex>

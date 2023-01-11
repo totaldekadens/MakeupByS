@@ -54,7 +54,7 @@ const MobileBurgerMenu: FC = () => {
   return (
     <>
       <MediaQuery largerThan="xs" styles={{ display: "none" }}>
-        <Flex sx={{ alignItems: "flex-end", paddingBottom: "2px" }}>
+        <Flex sx={{ alignItems: "flex-end", paddingBottom: "2px", width: 58 }}>
           <Burger
             left={"20px"}
             color="white"
