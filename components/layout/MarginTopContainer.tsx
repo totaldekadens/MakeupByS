@@ -7,6 +7,7 @@ const MarginTopContainer: FC<PropsWithChildren> = ({ children }) => {
       sx={(theme) => ({
         width: "100%",
         flexDirection: "column",
+        alignItems: "center",
         marginTop: 200,
         [theme.fn.smallerThan("md")]: {
           marginTop: 180,

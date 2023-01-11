@@ -27,6 +27,8 @@ import MarginTopContainer from "../../components/layout/MarginTopContainer";
 import CarouselProduct from "../../components/product/CarouselProduct";
 import Details from "../../components/product/Details";
 import { SeasonDocument } from "../../models/Season";
+import useFetchHelper from "../../utils/useFetchHelper";
+import useWindowSize from "../../utils/useWindowSize";
 import ErrorPage from "../ErrorPage";
 
 const ProductPage: NextPage = (props) => {
@@ -36,8 +38,9 @@ const ProductPage: NextPage = (props) => {
   // States
   const [product, setProduct] = useState<any>([]);
   const [products, setProducts] = useState<any>([]);
-
-  const [error, setError] = useState(200);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+  const [isLoadingProduct, setIsLoadingProduct] = useState(true);
+  const [status, setStatus] = useState(200);
 
   // Router
   const router = useRouter();
@@ -47,6 +50,9 @@ const ProductPage: NextPage = (props) => {
     key: "cart",
     defaultValue: [],
   });
+
+  // Gets current window height and window width
+  let size = useWindowSize();
 
   // Use mantines useStyle
   const { classes } = useStyles();
@@ -97,54 +103,27 @@ const ProductPage: NextPage = (props) => {
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
-    const fetchProduct = async () => {
-      try {
-        setError(200);
-        let response = await fetch(`/api/open/subproduct/${slug}`);
-        let result = await response.json();
-        if (result.success) {
-          setProduct(result.data);
-          setError(200);
-          return;
-        }
-        setError(404);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchProduct();
+    useFetchHelper(
+      setStatus,
+      setIsLoadingProduct,
+      setProduct,
+      `/api/open/subproduct/${slug}`
+    );
   }, [slug]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setError(200);
-        if (product && product.colors) {
-          let response = await fetch(
-            `/api/open/subproduct/season/${product.colors[0].seasons[0].slug}`
-          );
-          let result = await response.json();
-
-          if (result.success) {
-            // Gets the 8 first products
-            const slicedArray = result.data.slice(0, 8);
-            setProducts(slicedArray);
-            setError(200);
-            return;
-          }
-          setError(404);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchProducts();
+    if (product && product.colors) {
+      useFetchHelper(
+        setStatus,
+        setIsLoadingProducts,
+        setProducts,
+        `/api/open/subproduct/season/${product.colors[0].seasons[0].slug}`
+      );
+    }
   }, [product]);
 
-  if (product && slug && error > 200) {
-    return <ErrorPage statusCode={error} />;
+  if (!isLoadingProduct && status > 299) {
+    return <ErrorPage statusCode={status} />;
   }
 
   return (
@@ -152,14 +131,18 @@ const ProductPage: NextPage = (props) => {
       fixed={false}
       header={<Header />}
       footer={<Footer />}
-      styles={{
+      styles={(theme) => ({
+        body: {
+          backgroundColor: theme.colors.brand[2], // test
+        },
         main: {
           width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
+          backgroundColor: "white", // test
         },
-      }}
+      })}
     >
       <MarginTopContainer>
         <Flex sx={{ width: "100%" }}>
@@ -380,19 +363,21 @@ const ProductPage: NextPage = (props) => {
                     />
                   </Box>
                 </MediaQuery>
-                <MediaQuery
-                  query="(max-width: 767px) or (min-width: 1200px)"
-                  styles={{ display: "none" }}
+
+                <Box
+                  sx={{
+                    display:
+                      size.width < 767 || size.width > 1200 ? "none" : "block",
+                  }}
                 >
-                  <Box>
-                    <CarouselProduct
-                      products={products}
-                      slideGap="md"
-                      slideSize="50%"
-                      slidesToScroll={2}
-                    />
-                  </Box>
-                </MediaQuery>
+                  <CarouselProduct
+                    products={products}
+                    slideGap="md"
+                    slideSize="50%"
+                    slidesToScroll={2}
+                  />
+                </Box>
+
                 <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
                   <Box>
                     <CarouselProduct
