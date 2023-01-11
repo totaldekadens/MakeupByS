@@ -20,6 +20,7 @@ import { IconInfoCircle, IconPoint } from "@tabler/icons";
 import CartItemConfirmation from "../components/checkout/CartItemConfirmation";
 import { LineItem } from "../components/AddToCartIcon";
 import OrderSummary from "../components/OrderSummary";
+import WrapContainer from "../components/layout/WrapContainer";
 
 const MyPage: NextPage = () => {
   const { data: session } = useSession();
@@ -54,17 +55,19 @@ const MyPage: NextPage = () => {
   }
   return (
     <>
-      <AppShell fixed={false} header={<Header />} footer={<Footer />}>
-        <Box
-          style={{
-            marginTop: 60,
-            minHeight: "100vh",
-            maxWidth: "1320px",
+      <AppShell
+        fixed={false}
+        header={<Header />}
+        footer={<Footer />}
+        styles={{
+          main: {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-          }}
-        >
+          },
+        }}
+      >
+        <WrapContainer>
           <Title
             sx={(theme) => ({
               [theme.fn.smallerThan("xs")]: {
@@ -162,7 +165,7 @@ const MyPage: NextPage = () => {
           <Button mx={10} color="white" onClick={() => signOut()}>
             Logga ut
           </Button>
-        </Box>
+        </WrapContainer>
         <Cart />
       </AppShell>
     </>

@@ -15,6 +15,7 @@ import BreadCrumb from "../../../../components/BreadCrumb";
 import Cart from "../../../../components/cart/Cart";
 import Footer from "../../../../components/Footer";
 import Header from "../../../../components/Header";
+import WrapContainer from "../../../../components/layout/WrapContainer";
 import ProductCard from "../../../../components/ProductCard";
 import { CategoryDocument } from "../../../../models/Category";
 import { SeasonDocument } from "../../../../models/Season";
@@ -114,7 +115,7 @@ const CategoryPage: NextPage = (props) => {
           </Breadcrumbs>
         </Flex>
       )}
-      <Box style={{ marginTop: 60, minHeight: "100vh", maxWidth: "1320px" }}>
+      <WrapContainer>
         {!products ? null : (
           <>
             <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
@@ -136,7 +137,7 @@ const CategoryPage: NextPage = (props) => {
             ) : null}
           </>
         )}
-      </Box>
+      </WrapContainer>
       <Cart />
     </AppShell>
   );
