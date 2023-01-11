@@ -1,6 +1,7 @@
 import { AppShell, Flex, Title, Text } from "@mantine/core";
 import { NextPage } from "next";
 import Header from "../components/Header";
+import MarginTopContainer from "../components/layout/MarginTopContainer";
 
 type Props = {
   statusCode: number;
@@ -19,14 +20,16 @@ const ErrorPage: NextPage<Props> = (props) => {
 
   return (
     <AppShell fixed={false} header={<Header />}>
-      <Flex
-        align="center"
-        direction="column"
-        style={{ marginTop: 60, width: "100%" }}
-      >
-        <Title>{foundCode?.status}</Title>
-        <Text>{foundCode?.description}</Text>
-      </Flex>
+      <MarginTopContainer>
+        <Flex
+          align="center"
+          direction="column"
+          style={{ marginTop: 60, width: "100%" }}
+        >
+          <Title>{foundCode?.status}</Title>
+          <Text>{foundCode?.description}</Text>
+        </Flex>
+      </MarginTopContainer>
     </AppShell>
   );
 };
