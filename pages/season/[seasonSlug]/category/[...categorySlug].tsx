@@ -15,6 +15,7 @@ import BreadCrumb from "../../../../components/BreadCrumb";
 import Cart from "../../../../components/cart/Cart";
 import Footer from "../../../../components/Footer";
 import Header from "../../../../components/Header";
+import MarginTopContainer from "../../../../components/layout/MarginTopContainer";
 import WrapContainer from "../../../../components/layout/WrapContainer";
 import ProductCard from "../../../../components/ProductCard";
 import { CategoryDocument } from "../../../../models/Category";
@@ -69,52 +70,54 @@ const CategoryPage: NextPage = (props) => {
       fixed={false}
       header={<Header />}
       footer={<Footer />}
-      styles={{
+      styles={(theme) => ({
         main: {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         },
-      }}
+      })}
     >
-      {!season || !category ? null : (
-        <Flex sx={{ width: "100%" }}>
-          <Breadcrumbs>
-            <BreadCrumb href={"/"} title={"Hem"} />
-            <BreadCrumb
-              href={`/season/${season?.slug}`}
-              title={season?.title}
-            />
-            <BreadCrumb
-              href={`/season/${season?.slug}/category/${categorySlug}`}
-              title={category?.title}
-            />
-          </Breadcrumbs>
-        </Flex>
-      )}
-      <WrapContainer>
-        {!products ? null : (
-          <>
-            <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
-              <Title order={1}>{category?.title}</Title>
-              <Text color="dimmed">{category?.description}</Text>
-            </Flex>
-            {products ? (
-              <Flex mt="xl" wrap="wrap" justify={"center"}>
-                <Grid justify={"center"}>
-                  {products?.map((product: any, index: number) => {
-                    return (
-                      <Grid.Col key={index} md={4} sm={5} xs={6}>
-                        <ProductCard product={product} />
-                      </Grid.Col>
-                    );
-                  })}
-                </Grid>
-              </Flex>
-            ) : null}
-          </>
+      <MarginTopContainer>
+        {!season || !category ? null : (
+          <Flex sx={{ width: "100%" }}>
+            <Breadcrumbs>
+              <BreadCrumb href={"/"} title={"Hem"} />
+              <BreadCrumb
+                href={`/season/${season?.slug}`}
+                title={season?.title}
+              />
+              <BreadCrumb
+                href={`/season/${season?.slug}/category/${categorySlug}`}
+                title={category?.title}
+              />
+            </Breadcrumbs>
+          </Flex>
         )}
-      </WrapContainer>
+        <WrapContainer>
+          {!products ? null : (
+            <>
+              <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
+                <Title order={1}>{category?.title}</Title>
+                <Text color="dimmed">{category?.description}</Text>
+              </Flex>
+              {products ? (
+                <Flex mt="xl" wrap="wrap" justify={"center"}>
+                  <Grid justify={"center"}>
+                    {products?.map((product: any, index: number) => {
+                      return (
+                        <Grid.Col key={index} md={4} sm={5} xs={6}>
+                          <ProductCard product={product} />
+                        </Grid.Col>
+                      );
+                    })}
+                  </Grid>
+                </Flex>
+              ) : null}
+            </>
+          )}
+        </WrapContainer>
+      </MarginTopContainer>
       <Cart />
     </AppShell>
   );
