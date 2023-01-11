@@ -5,7 +5,6 @@ import {
   Space,
   MediaQuery,
   Text,
-  Box,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -54,20 +53,26 @@ const Header = () => {
           display: "flex",
           justifyContent: "space-between",
           borderBottom: "none",
-          alignItems: "center",
-          height: hide ? 160 : 200,
+          height: hide ? 150 : 200,
+          paddingTop: 10,
+          [theme.fn.smallerThan("md")]: {
+            height: hide ? 150 : 180,
+            paddingTop: hide ? 20 : 10,
+          },
           [theme.fn.smallerThan("sm")]: {
-            paddingTop: hide ? 10 : "unset",
-            height: hide ? 140 : 170,
+            height: hide ? 135 : 150,
+            paddingTop: hide ? 25 : 10,
           },
           [theme.fn.smallerThan("xs")]: {
             height: hide ? "75px" : "85px",
+            alignItems: hide ? "center" : "flex-start",
+            paddingTop: hide ? 0 : 10,
           },
         })}
       >
         <Flex direction={"column"} align={"center"} sx={{ width: "100%" }}>
           <Flex
-            justify={"center"}
+            justify={"space-around"}
             align={"center"}
             sx={(theme) => ({
               display: hide ? "none" : "flex",
@@ -76,25 +81,24 @@ const Header = () => {
             })}
           >
             <Flex
-              align={"center"}
-              sx={(theme) => ({
-                [theme.fn.smallerThan("xs")]: {
-                  display: "none",
-                },
-              })}
+              gap={20}
+              justify={"center"}
+              align="center"
+              sx={(theme) => ({ width: "100%" })}
             >
-              <Flex>
+              <Flex align={"center"} gap={5}>
                 <IconCheck color="white" size={18} />
                 <Text
-                  ml={5}
                   fw={"400"}
-                  mr={30}
                   tt={"uppercase"}
                   c={"white"}
                   fz={"md"}
                   sx={(theme) => ({
                     [theme.fn.smallerThan("sm")]: {
                       fontSize: 14,
+                    },
+                    [theme.fn.smallerThan("xs")]: {
+                      fontSize: 11,
                     },
                   })}
                 >
@@ -105,12 +109,10 @@ const Header = () => {
               <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
                 <Space w={"lg"} />
               </MediaQuery>
-              <Flex>
+              <Flex align={"center"} gap={5}>
                 <IconCheck color="white" size={18} />
                 <Text
-                  ml={5}
                   fw={"400"}
-                  mr={30}
                   tt={"uppercase"}
                   c={"white"}
                   fz={"md"}
@@ -118,39 +120,11 @@ const Header = () => {
                     [theme.fn.smallerThan("sm")]: {
                       fontSize: 14,
                     },
+                    [theme.fn.smallerThan("xs")]: {
+                      fontSize: 11,
+                    },
                   })}
                 >
-                  100% vegan
-                </Text>
-              </Flex>
-            </Flex>
-
-            <Flex
-              sx={(theme) => ({
-                alignItems: "center",
-                justifyContent: "space-around",
-                [theme.fn.largerThan("xs")]: {
-                  display: "none",
-                },
-              })}
-            >
-              <Flex align={"center"}>
-                <IconCheck color="white" size={12} />
-                <Text
-                  ml={10}
-                  mr={30}
-                  tt={"uppercase"}
-                  color={"white"}
-                  size={11}
-                >
-                  fri frakt från sverige
-                </Text>
-              </Flex>
-
-              <Space w={"lg"} />
-              <Flex align={"center"}>
-                <IconCheck color="white" size={12} />
-                <Text ml={10} tt={"uppercase"} c={"white"} size={11}>
                   100% vegan
                 </Text>
               </Flex>
@@ -158,14 +132,18 @@ const Header = () => {
           </Flex>
 
           <Flex
-            pt={20}
+            pt={22}
             justify={"space-between"}
             align="flex-end"
             sx={(theme) => ({
               width: "100%",
-              paddingTop: hide ? 0 : 20,
-              [theme.fn.smallerThan("xs")]: {
+              paddingTop: hide ? 0 : 22,
+              [theme.fn.smallerThan("md")]: {
                 paddingTop: hide ? 0 : 10,
+              },
+              [theme.fn.smallerThan("xs")]: {
+                alignItems: "center",
+                paddingTop: hide ? 0 : 15,
               },
             })}
           >
@@ -175,42 +153,24 @@ const Header = () => {
             <MobileBurgerMenu />
 
             <Link href="/">
-              {session.data?.user ? (
-                <Title
-                  fw={500}
-                  size="xxx-large"
-                  color="white"
-                  sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {},
-                    [theme.fn.smallerThan("md")]: {},
-                    [theme.fn.smallerThan("sm")]: {
-                      fontSize: "xx-large",
-                    },
-                    [theme.fn.smallerThan("xs")]: {},
-                  })}
-                >
-                  MakeUpByS
-                </Title>
-              ) : (
-                <Title
-                  fw={500}
-                  size="xxx-large"
-                  color="white"
-                  sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {},
-                    [theme.fn.smallerThan("md")]: {},
-                    [theme.fn.smallerThan("sm")]: {
-                      fontSize: "xx-large",
-                    },
-                    [theme.fn.smallerThan("xs")]: {
-                      paddingTop: hide ? 0 : 7,
-                      fontSize: "x-large",
-                    },
-                  })}
-                >
-                  MakeUpByS
-                </Title>
-              )}
+              <Title
+                fw={500}
+                size={48}
+                color="white"
+                sx={(theme) => ({
+                  [theme.fn.smallerThan("md")]: {
+                    fontSize: 43,
+                  },
+                  [theme.fn.smallerThan("sm")]: {
+                    fontSize: 35,
+                  },
+                  [theme.fn.smallerThan("xs")]: {
+                    fontSize: "x-large",
+                  },
+                })}
+              >
+                MakeUpByS
+              </Title>
             </Link>
             <LoginButton />
             <MobileLoginButton />

@@ -48,10 +48,11 @@ const LoginButton: FC = () => {
         direction="row"
         sx={(theme) => ({
           zIndex: 2,
+          gap: session.data?.user.admin ? 10 : 16,
           [theme.fn.smallerThan("lg")]: {
             minWidth: "180px",
           },
-          [theme.fn.smallerThan("lg")]: {
+          [theme.fn.smallerThan("sm")]: {
             minWidth: "150px",
           },
           [theme.fn.smallerThan("xs")]: {
@@ -61,13 +62,15 @@ const LoginButton: FC = () => {
       >
         {session.data?.user ? (
           <Link href="/minsida">
-            <Box sx={{ height: 20 }}>
-              <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
-                <IconCheck size={8} />
-              </ThemeIcon>
-            </Box>
-            <Box ref={ref}>
-              <IconUser color={hovered ? "#CC9887" : "white"} size={36} />
+            <Box pos="relative">
+              <Box pos={"absolute"} top={-17} left={-1} sx={{ height: 20 }}>
+                <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
+                  <IconCheck size={8} />
+                </ThemeIcon>
+              </Box>
+              <Box ref={ref}>
+                <IconUser color={hovered ? "#CC9887" : "white"} size={36} />
+              </Box>
             </Box>
           </Link>
         ) : (
