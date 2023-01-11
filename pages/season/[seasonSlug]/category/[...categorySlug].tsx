@@ -36,30 +36,36 @@ const CategoryPage: NextPage = (props) => {
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
-    useFetchHelper(
-      setStatus,
-      setIsLoadingProducts,
-      setProducts,
-      `/api/open/subproduct/categorybyseason/${categorySlug}?seasonSlug=${seasonSlug}`
-    );
-    useFetchHelper(
-      setStatus,
-      setIsLoadingCategory,
-      setCategory,
-      `/api/open/category/${categorySlug}`
-    );
-    useFetchHelper(
-      setStatus,
-      setIsLoadingSeason,
-      setSeason,
-      `/api/open/season/${seasonSlug}`
-    );
+    if (categorySlug) {
+      useFetchHelper(
+        setStatus,
+        setIsLoadingProducts,
+        setProducts,
+        `/api/open/subproduct/categorybyseason/${categorySlug[0]}?seasonSlug=${seasonSlug}`
+      );
+      useFetchHelper(
+        setStatus,
+        setIsLoadingCategory,
+        setCategory,
+        `/api/open/category/${categorySlug[0]}`
+      );
+    }
+    if (seasonSlug) {
+      useFetchHelper(
+        setStatus,
+        setIsLoadingSeason,
+        setSeason,
+        `/api/open/season/${seasonSlug}`
+      );
+    }
   }, [categorySlug]);
 
   if (
     !isLoadingProducts &&
     !isLoadingSeason &&
     !isLoadingCategory &&
+    categorySlug &&
+    seasonSlug &&
     status > 299
   ) {
     return <ErrorPage statusCode={status} />;
@@ -87,10 +93,12 @@ const CategoryPage: NextPage = (props) => {
                 href={`/season/${season?.slug}`}
                 title={season?.title}
               />
-              <BreadCrumb
-                href={`/season/${season?.slug}/category/${categorySlug}`}
-                title={category?.title}
-              />
+              {categorySlug ? (
+                <BreadCrumb
+                  href={`/season/${season?.slug}/category/${categorySlug[0]}`}
+                  title={category?.title}
+                />
+              ) : null}
             </Breadcrumbs>
           </Flex>
         )}

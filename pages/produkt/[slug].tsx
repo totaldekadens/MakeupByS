@@ -103,12 +103,14 @@ const ProductPage: NextPage = (props) => {
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
-    useFetchHelper(
-      setStatus,
-      setIsLoadingProduct,
-      setProduct,
-      `/api/open/subproduct/${slug}`
-    );
+    if (slug) {
+      useFetchHelper(
+        setStatus,
+        setIsLoadingProduct,
+        setProduct,
+        `/api/open/subproduct/${slug}`
+      );
+    }
   }, [slug]);
 
   useEffect(() => {

@@ -37,18 +37,20 @@ const SeasonPage: NextPage = (props) => {
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
-    useFetchHelper(
-      setStatus,
-      setIsLoadingProducts,
-      setProducts,
-      `/api/open/subproduct/season/${seasonSlug}`
-    );
-    useFetchHelper(
-      setStatus,
-      setIsLoadingSeason,
-      setSeason,
-      `/api/open/season/${seasonSlug}`
-    );
+    if (seasonSlug) {
+      useFetchHelper(
+        setStatus,
+        setIsLoadingProducts,
+        setProducts,
+        `/api/open/subproduct/season/${seasonSlug}`
+      );
+      useFetchHelper(
+        setStatus,
+        setIsLoadingSeason,
+        setSeason,
+        `/api/open/season/${seasonSlug}`
+      );
+    }
   }, [seasonSlug]);
 
   let categories: CategoryDocument[] = [];
@@ -68,7 +70,7 @@ const SeasonPage: NextPage = (props) => {
     });
   }
 
-  if (!isLoadingProducts && !isLoadingSeason && status > 299) {
+  if (!isLoadingProducts && !isLoadingSeason && seasonSlug && status > 299) {
     return <ErrorPage statusCode={status} />;
   }
   return (
