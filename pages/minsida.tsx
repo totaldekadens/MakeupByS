@@ -56,7 +56,7 @@ const MyPage: NextPage = () => {
             })}
             order={1}
           >
-            Välkommen {session?.user.name} !
+            Välkommen {session?.user.name.replace(/ .*/, "")} !
           </Title>
           <Text align="center">Nedan kan du se dina senaste beställningar</Text>
           <Flex
@@ -71,6 +71,7 @@ const MyPage: NextPage = () => {
               orders.map((order: any) => {
                 return (
                   <Accordion
+                    styles={{ control: { padding: 5 } }}
                     sx={(theme) => ({
                       marginTop: 20,
                       width: "550px",
@@ -105,10 +106,14 @@ const MyPage: NextPage = () => {
                                 },
                               })}
                             >
-                              {order.registerDate}
+                              {order.shippingDate
+                                ? order.shippingDate
+                                : order.registerDate}
                             </Text>
                             <Flex
                               p={6}
+                              pt={2}
+                              pb={2}
                               bg={order.status.color}
                               sx={(theme) => ({
                                 borderRadius: "7px",
@@ -123,7 +128,7 @@ const MyPage: NextPage = () => {
                                     fontSize: 10,
                                   },
                                 })}
-                                size={14}
+                                size={12}
                               >
                                 {order.status.status}
                               </Text>
