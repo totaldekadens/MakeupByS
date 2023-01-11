@@ -22,9 +22,8 @@ const SignIn: NextPage = () => {
   const session = useSession();
   const router = useRouter();
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
-  const [toggleButtonText, setToggleButtonText] = useState<string>(
-    "Registrera/Skapa konto"
-  );
+  const [toggleButtonText, setToggleButtonText] =
+    useState<string>("Skapa konto här...");
 
   // Redirect user back to the previous visited page when logged in
   useEffect(() => {
@@ -50,29 +49,28 @@ const SignIn: NextPage = () => {
         <MarginTopContainer>
           <Flex
             justify="center"
-            align="center"
+            mt={50}
             sx={(theme) => ({
               minHeight: "100vh",
-              backgroundColor: theme.white,
+
               [theme.fn.smallerThan(600)]: {
                 marginTop: 50,
               },
               [theme.fn.smallerThan(500)]: {
                 alignItems: "flex-start",
-                marginTop: 100,
-                marginBottom: 100,
               },
             })}
           >
             <Box
               p={32}
               sx={(theme) => ({
-                backgroundColor: theme.black,
+                height: "auto",
                 borderRadius: "8px",
+
                 width: "430px",
                 [theme.fn.smallerThan(500)]: {
                   width: "90%",
-                  backgroundColor: theme.white,
+                  paddingTop: 0,
                 },
                 [theme.fn.smallerThan(400)]: {
                   width: "95%",
@@ -88,7 +86,7 @@ const SignIn: NextPage = () => {
                   })}
                 >
                   <Title
-                    color="white"
+                    color="black"
                     order={3}
                     transform="uppercase"
                     sx={(theme) => ({
@@ -105,16 +103,21 @@ const SignIn: NextPage = () => {
                     fullWidth
                     onClick={() => {
                       setShowSignUp(false);
-                      setToggleButtonText("Registrera/Skapa konto");
+                      setToggleButtonText("Skapa konto här...");
+                    }}
+                    styles={{
+                      label: {
+                        fontSize: 12,
+                        fontWeight: "lighter",
+                      },
                     }}
                     sx={(theme) => ({
-                      backgroundColor: theme.black,
+                      backgroundColor: theme.white,
+                      color: "black",
                       "&:hover": {
-                        backgroundColor: theme.colors.grape[2],
-                      },
-                      [theme.fn.smallerThan(500)]: {
-                        color: theme.black,
-                        backgroundColor: theme.white,
+                        backgroundColor: "unset",
+                        color: theme.colors.brand[8],
+                        border: "1px solid " + theme.colors.brand[8],
                       },
                     })}
                   >
@@ -124,17 +127,20 @@ const SignIn: NextPage = () => {
               ) : (
                 <Container
                   sx={(theme) => ({
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
                     minWidth: 352,
                     [theme.fn.smallerThan(500)]: {
-                      minWidth: "90%",
+                      width: "90%",
                     },
                     [theme.fn.smallerThan(400)]: {
-                      minWidth: "95%",
+                      width: "95%",
                     },
                   })}
                 >
                   <Title
-                    color="white"
+                    color="black"
                     order={3}
                     transform="uppercase"
                     sx={(theme) => ({
@@ -153,14 +159,19 @@ const SignIn: NextPage = () => {
                       setShowSignUp(true);
                       setToggleButtonText("Gå tillbaka till inloggning");
                     }}
-                    sx={(theme) => ({
-                      backgroundColor: theme.black,
-                      "&:hover": {
-                        backgroundColor: theme.colors.red[4],
+                    styles={{
+                      label: {
+                        fontSize: 12,
+                        fontWeight: "lighter",
                       },
-                      [theme.fn.smallerThan(500)]: {
-                        color: theme.black,
-                        backgroundColor: theme.white,
+                    }}
+                    sx={(theme) => ({
+                      backgroundColor: theme.white,
+                      color: "black",
+                      "&:hover": {
+                        backgroundColor: "unset",
+                        color: theme.colors.brand[8],
+                        border: "1px solid " + theme.colors.brand[8],
                       },
                     })}
                   >

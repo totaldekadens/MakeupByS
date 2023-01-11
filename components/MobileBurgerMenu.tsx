@@ -76,7 +76,6 @@ const MobileBurgerMenu: FC = () => {
         size="md"
         overlayOpacity={0.4}
         overlayBlur={1}
-        transition="rotate-left"
         transitionDuration={200}
         transitionTimingFunction="ease"
         styles={{
