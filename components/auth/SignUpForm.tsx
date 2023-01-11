@@ -142,13 +142,12 @@ const SignUpForm = () => {
           <TextInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             label="Namn*"
             placeholder="Anna Svensson"
             name="name"
@@ -157,13 +156,12 @@ const SignUpForm = () => {
           <TextInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             label="Email*"
             placeholder="email@email.com"
             name="email"
@@ -172,13 +170,12 @@ const SignUpForm = () => {
           <PasswordInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             label="Lösenord*"
             placeholder="********"
             name="password"
@@ -187,13 +184,12 @@ const SignUpForm = () => {
           <PasswordInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             placeholder="********"
             label="Bekräfta lösenordet*"
             name="confirmPassword"
@@ -202,13 +198,12 @@ const SignUpForm = () => {
           <TextInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             label="Telefon*"
             placeholder="0767123456"
             name="phone"
@@ -219,13 +214,12 @@ const SignUpForm = () => {
           <TextInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             label="Adress*"
             placeholder="Vasagatan 3"
             name="address"
@@ -234,13 +228,12 @@ const SignUpForm = () => {
           <TextInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             label="CO"
             placeholder="CO"
             name="co"
@@ -249,13 +242,12 @@ const SignUpForm = () => {
           <TextInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             label="Postkod*"
             placeholder="12345"
             name="postalcode"
@@ -264,13 +256,12 @@ const SignUpForm = () => {
           <TextInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             label="Stad*"
             placeholder="Göteborg"
             name="city"
@@ -279,13 +270,12 @@ const SignUpForm = () => {
           <TextInput
             styles={(theme) => ({
               label: {
-                color: "white",
+                color: "black",
                 [theme.fn.smallerThan(500)]: {
                   color: theme.black,
                 },
               },
             })}
-            mt="xs"
             label="Land*"
             placeholder="Sverige"
             name="country"

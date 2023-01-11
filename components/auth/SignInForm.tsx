@@ -50,6 +50,7 @@ const SignInForm = () => {
     <>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
+          w={240}
           mt="xs"
           label="email"
           styles={(theme) => ({

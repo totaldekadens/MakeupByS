@@ -49,16 +49,9 @@ const SignIn: NextPage = () => {
         <MarginTopContainer>
           <Flex
             justify="center"
-            mt={50}
+            mt={20}
             sx={(theme) => ({
               minHeight: "100vh",
-
-              [theme.fn.smallerThan(600)]: {
-                marginTop: 50,
-              },
-              [theme.fn.smallerThan(500)]: {
-                alignItems: "flex-start",
-              },
             })}
           >
             <Box
@@ -66,14 +59,10 @@ const SignIn: NextPage = () => {
               sx={(theme) => ({
                 height: "auto",
                 borderRadius: "8px",
-
                 width: "430px",
                 [theme.fn.smallerThan(500)]: {
-                  width: "90%",
-                  paddingTop: 0,
-                },
-                [theme.fn.smallerThan(400)]: {
-                  width: "95%",
+                  width: "100%",
+                  paddingTop: 20,
                 },
               })}
             >
@@ -87,8 +76,10 @@ const SignIn: NextPage = () => {
                 >
                   <Title
                     color="black"
-                    order={3}
+                    order={2}
+                    align="center"
                     transform="uppercase"
+                    mb={20}
                     sx={(theme) => ({
                       [theme.fn.smallerThan(500)]: {
                         color: theme.black,
@@ -132,20 +123,22 @@ const SignIn: NextPage = () => {
                     alignItems: "center",
                     minWidth: 352,
                     [theme.fn.smallerThan(500)]: {
-                      width: "90%",
+                      width: "100%",
                     },
                     [theme.fn.smallerThan(400)]: {
-                      width: "95%",
+                      width: "100%",
                     },
                   })}
                 >
                   <Title
                     color="black"
-                    order={3}
+                    order={2}
                     transform="uppercase"
+                    mb={20}
                     sx={(theme) => ({
                       [theme.fn.smallerThan(500)]: {
                         color: theme.black,
+                        marginBottom: 0,
                       },
                     })}
                   >
