@@ -1,4 +1,4 @@
-import { LineItem } from "../components/AddToCartIcon";
+import { LineItem } from "../components/cart/AddToCartIcon";
 
 const useHandleRemoveCartItem = async (
   product: LineItem,

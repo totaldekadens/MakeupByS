@@ -4,7 +4,7 @@ import { FC } from "react";
 import useHandleDecrement from "../../utils/useHandleDecrement";
 import UseHandleIncrement from "../../utils/useHandleIncrement";
 import useHandleRemoveCartItem from "../../utils/useHandleRemoveCartItem";
-import { LineItem } from "../AddToCartIcon";
+import { LineItem } from "../cart/AddToCartIcon";
 
 type Props = {
   cartItem: LineItem;

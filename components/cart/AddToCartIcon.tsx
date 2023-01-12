@@ -3,7 +3,7 @@ import { IconShoppingBag, IconPlus } from "@tabler/icons";
 import { Dispatch, FC, SetStateAction, useContext } from "react";
 import { useHover } from "@mantine/hooks";
 import { useLocalStorage } from "@mantine/hooks";
-import { openedCartContext } from "./context/OpenCartProvider";
+import { openedCartContext } from "../context/OpenCartProvider";
 
 type Props = {
   color: string;

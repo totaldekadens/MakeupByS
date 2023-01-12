@@ -2,7 +2,7 @@ import { Flex, Title, Text, Button } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
 import { FC, useContext } from "react";
 import getStripe from "../../utils/get-stripejs";
-import { LineItem } from "../AddToCartIcon";
+import { LineItem } from "../cart/AddToCartIcon";
 import { checkoutContext } from "../context/checkoutProvider";
 
 const TotalSum: FC = () => {

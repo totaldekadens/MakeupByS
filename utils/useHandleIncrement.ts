@@ -1,5 +1,5 @@
 import { useLocalStorage } from "@mantine/hooks";
-import { LineItem } from "../components/AddToCartIcon";
+import { LineItem } from "../components/cart/AddToCartIcon";
 import useSlugify from "./useSlugify";
 
 const UseHandleIncrement = async (

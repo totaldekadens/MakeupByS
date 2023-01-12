@@ -17,7 +17,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState, useContext } from "react";
 import { boolean } from "yup";
-import { LineItem } from "../../components/AddToCartIcon";
+import { LineItem } from "../../components/cart/AddToCartIcon";
 import BreadCrumb from "../../components/BreadCrumb";
 import Cart from "../../components/cart/Cart";
 import { openedCartContext } from "../../components/context/OpenCartProvider";

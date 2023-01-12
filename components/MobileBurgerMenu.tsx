@@ -20,7 +20,7 @@ import {
   IconShoppingBag,
 } from "@tabler/icons";
 import { useHover, useLocalStorage } from "@mantine/hooks";
-import { LineItem } from "./AddToCartIcon";
+import { LineItem } from "./cart/AddToCartIcon";
 import { FC, useContext, useEffect, useState } from "react";
 import { openedCartContext } from "./context/OpenCartProvider";
 

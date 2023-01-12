@@ -17,7 +17,7 @@ import Footer from "../../../../components/Footer";
 import Header from "../../../../components/Header";
 import MarginTopContainer from "../../../../components/layout/MarginTopContainer";
 import WrapContainer from "../../../../components/layout/WrapContainer";
-import ProductCard from "../../../../components/ProductCard";
+import ProductCard from "../../../../components/product/ProductCard";
 import { CategoryDocument } from "../../../../models/Category";
 import { SeasonDocument } from "../../../../models/Season";
 import useFetchHelper from "../../../../utils/useFetchHelper";

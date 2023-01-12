@@ -12,7 +12,7 @@ import { IconX } from "@tabler/icons";
 import Link from "next/link";
 import { FC, useContext } from "react";
 import useWindowSize from "../../utils/useWindowSize";
-import { LineItem } from "../AddToCartIcon";
+import { LineItem } from "./AddToCartIcon";
 import { openedCartContext } from "../context/OpenCartProvider";
 import CartItem from "./CartItem";
 

@@ -1,5 +1,5 @@
 import { useLocalStorage } from "@mantine/hooks";
-import { LineItem } from "../components/AddToCartIcon";
+import { LineItem } from "../components/cart/AddToCartIcon";
 
 const useHandleDecrement = async (
   product: LineItem,

@@ -1,6 +1,6 @@
 import { Flex, Table, Text } from "@mantine/core";
 import { FC } from "react";
-import { LineItem } from "../AddToCartIcon";
+import { LineItem } from "../cart/AddToCartIcon";
 import ContainerWithBorder from "../layout/ContainerWithBorder";
 import CartItemCheckout from "./CartItemCheckout";
 

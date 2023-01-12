@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { FC, PropsWithChildren, useState } from "react";
-import { LineItem } from "../AddToCartIcon";
+import { LineItem } from "../cart/AddToCartIcon";
 
 interface Props {}
 // Fix interface

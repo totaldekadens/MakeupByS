@@ -13,7 +13,7 @@ import { IconInfoCircle, IconPoint } from "@tabler/icons";
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { LineItem } from "../components/AddToCartIcon";
+import { LineItem } from "../components/cart/AddToCartIcon";
 import CartItemConfirmation from "../components/checkout/CartItemConfirmation";
 import { Checkout } from "../components/context/checkoutProvider";
 import HeaderCheckout from "../components/layout/HeaderCheckout";
