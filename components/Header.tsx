@@ -183,9 +183,14 @@ const Header = () => {
 
       <MediaQuery largerThan="xs" styles={{ display: "none" }}>
         <Flex
-          mt={85}
+          pos={"fixed"}
+          right={0}
+          left={0}
+          top={hide ? 75 : 85}
           sx={(theme) => ({
+            zIndex: 100,
             backgroundColor: theme.colors.brand[2],
+            display: hide ? "none" : "flex",
           })}
         >
           <SearchbarMobile />
