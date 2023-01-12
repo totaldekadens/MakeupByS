@@ -1,6 +1,8 @@
 import dbConnect from "../../../../utils/dbConnect";
 import Order, { OrderDocument } from "../../../../models/Order";
 import { NextApiRequest, NextApiResponse } from "next";
+import OrderStatus from "../../../../models/OrderStatus";
+import User from "../../../../models/User";
 
 export default async function handler(
   req: NextApiRequest,
@@ -41,20 +43,15 @@ export default async function handler(
 
     case "GET":
       try {
-        const Orders = await Order.find({});
-        /*  .populate({
-            path: "mainProduct",
-            model: MainProduct,
-            populate: {
-              path: "category",
-              model: Category,
-            },
+        const Orders = await Order.find({})
+          .populate({
+            path: "status",
+            model: OrderStatus,
           })
           .populate({
-            path: "colors",
-            model: Color,
-            populate: { path: "seasons", model: Season },
-          }); */
+            path: "existingCustomer",
+            model: User,
+          });
         res.status(200).json({ success: true, data: Orders });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
