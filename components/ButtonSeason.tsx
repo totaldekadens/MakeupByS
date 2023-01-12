@@ -19,7 +19,7 @@ const ButtonSeason = () => {
         },
       })}
     >
-      <Link href={`/season/var`}>
+      <Link href={`/sasong/var`}>
         <Button
           sx={(theme) => ({
             backgroundColor: theme.colors.brand[9],
@@ -35,7 +35,7 @@ const ButtonSeason = () => {
         </Button>
       </Link>
 
-      <Link href={`/season/sommar`}>
+      <Link href={`/sasong/sommar`}>
         <Button
           sx={(theme) => ({
             backgroundColor: theme.colors.brand[9],
@@ -51,7 +51,7 @@ const ButtonSeason = () => {
         </Button>
       </Link>
 
-      <Link href={`/season/host`}>
+      <Link href={`/sasong/host`}>
         <Button
           sx={(theme) => ({
             backgroundColor: theme.colors.brand[9],
@@ -67,7 +67,7 @@ const ButtonSeason = () => {
         </Button>
       </Link>
 
-      <Link href={`/season/vinter`}>
+      <Link href={`/sasong/vinter`}>
         <Button
           sx={(theme) => ({
             backgroundColor: theme.colors.brand[9],

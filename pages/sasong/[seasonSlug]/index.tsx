@@ -48,7 +48,7 @@ const SeasonPage: NextPage = (props) => {
         setStatus,
         setIsLoadingSeason,
         setSeason,
-        `/api/open/season/${seasonSlug}`
+        `/api/open/sasong/${seasonSlug}`
       );
     }
   }, [seasonSlug]);
@@ -92,7 +92,7 @@ const SeasonPage: NextPage = (props) => {
             <Breadcrumbs>
               <BreadCrumb href={"/"} title={"Hem"} />
               <BreadCrumb
-                href={`/season/${season?.slug}`}
+                href={`/sasong/${season?.slug}`}
                 title={season?.title}
               />
             </Breadcrumbs>
@@ -111,7 +111,7 @@ const SeasonPage: NextPage = (props) => {
                     return (
                       <Link
                         key={index}
-                        href={`/season/${seasonSlug}/category/${category.slug}`}
+                        href={`/sasong/${seasonSlug}/kategori/${category.slug}`}
                       >
                         <Button variant="outline" color="brand.2">
                           {category.title}
