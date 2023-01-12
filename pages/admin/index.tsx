@@ -47,9 +47,10 @@ const Admin: NextPage<Props> = ({ orders }) => {
             sx={{ width: "100%" }}
           >
             {orders ? (
-              orders.map((order: any) => {
+              orders.map((order: any, index: number) => {
                 return (
                   <Accordion
+                    key={index}
                     styles={{ control: { padding: 5 } }}
                     sx={(theme) => ({
                       marginTop: 20,

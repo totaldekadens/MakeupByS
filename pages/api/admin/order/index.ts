@@ -44,7 +44,19 @@ export default async function handler(
     case "PUT":
       try {
         // Shall be able to update status. And depending on status different updates need to be made.
+        const todayDate = new Date()
+          .toISOString()
+          .slice(0, 16)
+          .replace("T", " ");
+
         const updateOrder: OrderDocument = req.body;
+
+        // Make this one dynammic. shall check if its status "Färdigbehandlad"
+        if (req.body.status == "63b94ba666d02095eb80e865") {
+          updateOrder.shippingDate = todayDate;
+
+          // Remove quantity on products (reserved quantity)
+        }
 
         const order = await Order.findOneAndUpdate(
           { _id: req.body._id },

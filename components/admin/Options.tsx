@@ -26,7 +26,7 @@ const Options = () => {
         return (
           <Link key={index} href={button.link}>
             <Button
-              size="xs"
+              //size="xs"
               w={100}
               variant={button.active ? "filled" : "outline"}
               color="brand.7"
