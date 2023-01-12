@@ -90,12 +90,12 @@ const CategoryPage: NextPage = (props) => {
             <Breadcrumbs>
               <BreadCrumb href={"/"} title={"Hem"} />
               <BreadCrumb
-                href={`/season/${season?.slug}`}
+                href={`/sasong/${season?.slug}`}
                 title={season?.title}
               />
               {categorySlug ? (
                 <BreadCrumb
-                  href={`/season/${season?.slug}/category/${categorySlug[0]}`}
+                  href={`/sasong/${season?.slug}/kategori/${categorySlug[0]}`}
                   title={category?.title}
                 />
               ) : null}

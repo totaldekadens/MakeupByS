@@ -269,7 +269,7 @@ const MobileBurgerMenu: FC = () => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            href={`/season/var`}
+            href={`/sasong/var`}
           >
             <Button
               onClick={() => setOpened(false)}
@@ -289,7 +289,7 @@ const MobileBurgerMenu: FC = () => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            href={`/season/sommar`}
+            href={`/sasong/sommar`}
           >
             <Button
               onClick={() => setOpened(false)}
@@ -309,7 +309,7 @@ const MobileBurgerMenu: FC = () => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            href={`/season/host`}
+            href={`/sasong/host`}
           >
             <Button
               onClick={() => setOpened(false)}
@@ -329,7 +329,7 @@ const MobileBurgerMenu: FC = () => {
               alignItems: "center",
               justifyContent: "center",
             }}
-            href={`/season/vinter`}
+            href={`/sasong/vinter`}
           >
             <Button
               onClick={() => setOpened(false)}
