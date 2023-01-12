@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import { signIn } from "next-auth/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import * as Yup from "yup";
@@ -299,7 +300,7 @@ const SignUpForm = () => {
       >
         Bli medlem
       </Button>
-      <Flex justify="center" sx={{ width: "100%" }}>
+      <Flex mt={5} sx={{ width: "100%" }}>
         <Text
           w={340}
           size={9}
@@ -316,9 +317,15 @@ const SignUpForm = () => {
             },
           })}
         >
-          Genom att registrera ditt konto godkänner du MakeUpByS´s Villkor(länk)
-          för användning och köp. Samt bekräftar att du läst vår
-          Integritetspolicy(Länk).
+          Genom att registrera ditt konto godkänner du MakeUpByS´s{" "}
+          <Link href={"/kopvillkor"}>
+            <b>villkor</b>
+          </Link>{" "}
+          för användning och köp. Samt bekräftar att du läst vår{" "}
+          <Link href={"/integritet"}>
+            <b>Integritetspolicy</b>
+          </Link>
+          .
         </Text>
       </Flex>
     </form>
