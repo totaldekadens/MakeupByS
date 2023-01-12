@@ -1,27 +1,16 @@
-import { AppShell, Title, Flex, Tabs, Text } from "@mantine/core";
+import { AppShell, Title, Flex, Accordion, Text } from "@mantine/core";
 import { GetStaticProps, NextPage } from "next";
 import HeaderCheckout from "../../components/layout/HeaderCheckout";
 import { useEffect, useRef, useState } from "react";
-import OrderHandler from "../../components/admin/OrderHandler";
-import ProductHandler from "../../components/admin/ProductHandler";
-import CategoryHandler from "../../components/admin/CategoryHandler";
-import CustomerHandler from "../../components/admin/CustomerHandler";
-import FreightHandler from "../../components/admin/FreightHandler";
 import dbConnect from "../../utils/dbConnect";
+import Options from "../../components/admin/Options";
+import OrderSummary from "../../components/OrderSummary";
 
 type Props = {
   orders: any;
 };
 
 const Admin: NextPage<Props> = ({ orders }) => {
-  const list = [
-    { name: "Beställningar", component: OrderHandler },
-    { name: "Produkter", component: ProductHandler },
-    { name: "Kategorier", component: CategoryHandler },
-    { name: "Frakt", component: FreightHandler },
-    { name: "Kunder", component: CustomerHandler },
-  ];
-  const [activeTab, setActiveTab] = useState<string | null>("Beställningar");
   const [activeOrders, setActiveOrders] = useState(0);
 
   // Refs
@@ -41,66 +30,101 @@ const Admin: NextPage<Props> = ({ orders }) => {
       }
     };
     getNumber();
-  }, [activeTab]);
+  }, [orders]);
 
   return (
     <>
       <AppShell fixed={false} header={<HeaderCheckout />}>
         <Flex direction={"column"} align="center" style={{ marginTop: 60 }}>
           <Title order={1}>ADMIN</Title>
-          <Flex gap={5} mt={20}>
-            <Tabs
-              styles={(theme) => ({
-                tab: {
-                  border: "1.5px solid " + theme.colors.brand[7],
-                  backgroundColor: "white",
-                  color: theme.colors.brand[7],
-                  fontWeight: "bold",
-                },
-              })}
-              value={activeTab}
-              onTabChange={setActiveTab}
-              color="brand.7"
-              variant="pills"
-            >
-              <Tabs.List>
-                {list
-                  ? list.map((button, index) => {
-                      return (
-                        <Tabs.Tab key={index} value={button.name}>
-                          <Flex>
-                            <Text>{button.name} </Text>
-                            {button.name == "Beställningar" ? (
-                              <Flex
-                                ml={8}
-                                bg={"brand.0"}
-                                h={21}
-                                w={28}
-                                justify="center"
-                                align={"center"}
-                                sx={(theme) => ({
-                                  borderRadius: "50%",
-                                })}
-                              >
-                                <Text color={"red.9"} size={11} weight="bold">
-                                  {activeOrders}
-                                </Text>
-                              </Flex>
-                            ) : null}
-                          </Flex>
-                        </Tabs.Tab>
-                      );
-                    })
-                  : null}
-              </Tabs.List>
-              {list.map((button, index) => {
+          <Options />
+          <Flex
+            direction={"column"}
+            mt={40}
+            mb={40}
+            justify={"center"}
+            align="center"
+            sx={{ width: "100%" }}
+          >
+            {orders ? (
+              orders.map((order: any) => {
                 return (
-                  <Tabs.Panel key={index} value={button.name}>
-                    <button.component />
-                  </Tabs.Panel>
+                  <Accordion
+                    styles={{ control: { padding: 5 } }}
+                    sx={(theme) => ({
+                      marginTop: 20,
+                      width: "550px",
+                      [theme.fn.smallerThan("sm")]: {
+                        width: "470px",
+                      },
+                      [theme.fn.smallerThan("xs")]: {
+                        width: "100%",
+                        padding: 0,
+                      },
+                    })}
+                    defaultValue={null}
+                  >
+                    <Accordion.Item value="customization">
+                      <Accordion.Control>
+                        <Flex justify={"space-between"} align={"center"}>
+                          <Text
+                            sx={(theme) => ({
+                              [theme.fn.smallerThan("xs")]: {
+                                fontSize: 14,
+                              },
+                            })}
+                          >
+                            Order: {order.orderNo}
+                          </Text>
+                          <Flex align={"center"} gap={15}>
+                            <Text
+                              size={14}
+                              sx={(theme) => ({
+                                [theme.fn.smallerThan("xs")]: {
+                                  fontSize: 11,
+                                },
+                              })}
+                            >
+                              {order.shippingDate
+                                ? order.shippingDate
+                                : order.registerDate}
+                            </Text>
+                            <Flex
+                              p={6}
+                              pt={2}
+                              pb={2}
+                              bg={order.status.color}
+                              sx={(theme) => ({
+                                borderRadius: "7px",
+                                [theme.fn.smallerThan("xs")]: {
+                                  padding: 4,
+                                },
+                              })}
+                            >
+                              <Text
+                                sx={(theme) => ({
+                                  [theme.fn.smallerThan("xs")]: {
+                                    fontSize: 10,
+                                  },
+                                })}
+                                size={12}
+                              >
+                                {order.status.status}
+                              </Text>
+                            </Flex>
+                          </Flex>
+                        </Flex>
+                      </Accordion.Control>
+                      <Accordion.Panel>
+                        <OrderSummary order={order} />
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  </Accordion>
                 );
-              })}
-            </Tabs>
+              })
+            ) : (
+              <Text>Du har ännu inte lagt en order</Text>
+            )}
           </Flex>
         </Flex>
       </AppShell>

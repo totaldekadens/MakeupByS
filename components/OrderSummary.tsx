@@ -9,9 +9,10 @@ import {
 } from "@mantine/core";
 
 import { IconInfoCircle, IconPoint } from "@tabler/icons";
-
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { FC } from "react";
-
+import SelectStatus from "./admin/SelectStatus";
 import CartItemConfirmation from "./checkout/CartItemConfirmation";
 
 type Props = {
@@ -19,6 +20,10 @@ type Props = {
 };
 
 const OrderSummary: FC<Props> = ({ order }) => {
+  // Admin part
+  const router = useRouter();
+  const session = useSession();
+
   // Gets list of finished displayed products
   const rows = order?.lineItems.map((cartItem: any, index: number) => (
     <CartItemConfirmation key={index} cartItem={cartItem} />
@@ -247,6 +252,9 @@ const OrderSummary: FC<Props> = ({ order }) => {
               </Text>
             </Flex>
           </Flex>
+          {session.data?.user.admin && router.pathname == "/admin" ? (
+            <SelectStatus order={order} />
+          ) : null}
         </Flex>
       </Flex>
     </Flex>

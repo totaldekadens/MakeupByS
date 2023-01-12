@@ -40,7 +40,6 @@ export const checkoutContext = React.createContext<checkoutContextData>({
 
 const CheckOutProvider: FC<PropsWithChildren<Props>> = (props) => {
   const [checkout, setCheckout] = useState<Checkout | undefined>(object);
-  console.log(checkout);
   return (
     <checkoutContext.Provider value={{ checkout, setCheckout }}>
       {props.children}
