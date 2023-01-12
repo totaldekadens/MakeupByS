@@ -21,8 +21,23 @@ const SelectStatus: FC<Props> = ({ order }) => {
     { value: "", label: "" },
   ]);
 
-  const handleClick = () => {
-    // Uppdatera status på ordern här!
+  // Updates the order with new status
+  const handleClick = async () => {
+    order.status = status;
+    order.existingCustomer = order.existingCustomer._id;
+
+    const request = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(order),
+    };
+
+    const response = await fetch("/api/admin/order", request);
+    let result = await response.json();
+    console.log(result);
+    // Todo: Continue with errorboundary and add a popup modal so the user gets some feedback
   };
 
   useEffect(() => {

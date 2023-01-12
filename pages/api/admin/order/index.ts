@@ -41,6 +41,28 @@ export default async function handler(
       res.status(400).json({ success: false, data: "Break error" });
       break;
 
+    case "PUT":
+      try {
+        // Shall be able to update status. And depending on status different updates need to be made.
+        const updateOrder: OrderDocument = req.body;
+
+        const order = await Order.findOneAndUpdate(
+          { _id: req.body._id },
+          updateOrder,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+        if (!order) {
+          return res.status(400).json({ success: false });
+        }
+        res.status(200).json({ success: true, data: order });
+      } catch (error) {
+        res.status(400).json({ success: false, data: error });
+      }
+      break;
+
     case "GET":
       try {
         const Orders = await Order.find({})
