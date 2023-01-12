@@ -1,5 +1,6 @@
 import mongoose, { Types } from "mongoose";
-import { LineItem } from "../components/AddToCartIcon";
+import { LineItem } from "../components/cart/AddToCartIcon";
+
 import { ChosenOption } from "../components/checkout/Courrier";
 import { Cost, Option } from "./Courrier";
 import { Address } from "./User";
