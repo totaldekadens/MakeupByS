@@ -50,12 +50,12 @@ const SignInForm = () => {
     <>
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
+          w={240}
           mt="xs"
-          variant="filled"
           label="email"
           styles={(theme) => ({
             label: {
-              color: "white",
+              color: "black",
               [theme.fn.smallerThan(500)]: {
                 color: theme.black,
               },
@@ -68,7 +68,7 @@ const SignInForm = () => {
         <PasswordInput
           styles={(theme) => ({
             label: {
-              color: "white",
+              color: "black",
               [theme.fn.smallerThan(500)]: {
                 color: theme.black,
               },
@@ -85,9 +85,11 @@ const SignInForm = () => {
           fullWidth
           type="submit"
           sx={(theme) => ({
-            backgroundColor: theme.colors.gray[8],
+            backgroundColor: theme.colors.brand[7],
             "&:hover": {
-              backgroundColor: theme.colors.blue[1],
+              backgroundColor: theme.colors.brand[8],
+              color: "white",
+              border: "unset",
             },
           })}
         >

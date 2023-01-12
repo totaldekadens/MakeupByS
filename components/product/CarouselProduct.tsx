@@ -1,7 +1,7 @@
 import { Carousel } from "@mantine/carousel";
 import { MantineNumberSize } from "@mantine/core";
 import { FC } from "react";
-import ProductCard from "../ProductCard";
+import ProductCard from "./ProductCard";
 
 type Props = {
   products: any;

@@ -14,7 +14,7 @@ import { CourrierDocument, Option } from "../../models/Courrier";
 import { checkoutContext } from "../context/checkoutProvider";
 import ContainerWithBorder from "../layout/ContainerWithBorder";
 import useWindowSize from "../../utils/useWindowSize";
-import { LineItem } from "../AddToCartIcon";
+import { LineItem } from "../cart/AddToCartIcon";
 
 export type ChosenOption = {
   id: string;

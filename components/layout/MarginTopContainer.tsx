@@ -13,7 +13,7 @@ const MarginTopContainer: FC<PropsWithChildren> = ({ children }) => {
           marginTop: 180,
         },
         [theme.fn.smallerThan("sm")]: { marginTop: 150 },
-        [theme.fn.smallerThan("xs")]: { marginTop: 0 },
+        [theme.fn.smallerThan("xs")]: { marginTop: 121 },
       })}
     >
       {children}

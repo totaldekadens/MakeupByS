@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Flex, Box, ThemeIcon, Text } from "@mantine/core";
 import { IconUser, IconHomeCog, IconCheck } from "@tabler/icons";
 import { useHover, useLocalStorage } from "@mantine/hooks";
-import { LineItem } from "./AddToCartIcon";
+import { LineItem } from "./cart/AddToCartIcon";
 import { FC, useEffect, useState } from "react";
 import { createStyles } from "@mantine/core";
 

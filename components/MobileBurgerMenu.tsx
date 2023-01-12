@@ -20,7 +20,7 @@ import {
   IconShoppingBag,
 } from "@tabler/icons";
 import { useHover, useLocalStorage } from "@mantine/hooks";
-import { LineItem } from "./AddToCartIcon";
+import { LineItem } from "./cart/AddToCartIcon";
 import { FC, useContext, useEffect, useState } from "react";
 import { openedCartContext } from "./context/OpenCartProvider";
 
@@ -76,7 +76,6 @@ const MobileBurgerMenu: FC = () => {
         size="md"
         overlayOpacity={0.4}
         overlayBlur={1}
-        transition="rotate-left"
         transitionDuration={200}
         transitionTimingFunction="ease"
         styles={{

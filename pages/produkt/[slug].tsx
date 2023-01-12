@@ -17,7 +17,7 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState, useContext } from "react";
 import { boolean } from "yup";
-import { LineItem } from "../../components/AddToCartIcon";
+import { LineItem } from "../../components/cart/AddToCartIcon";
 import BreadCrumb from "../../components/BreadCrumb";
 import Cart from "../../components/cart/Cart";
 import { openedCartContext } from "../../components/context/OpenCartProvider";
@@ -103,12 +103,14 @@ const ProductPage: NextPage = (props) => {
 
   // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
   useEffect(() => {
-    useFetchHelper(
-      setStatus,
-      setIsLoadingProduct,
-      setProduct,
-      `/api/open/subproduct/${slug}`
-    );
+    if (slug) {
+      useFetchHelper(
+        setStatus,
+        setIsLoadingProduct,
+        setProduct,
+        `/api/open/subproduct/${slug}`
+      );
+    }
   }, [slug]);
 
   useEffect(() => {

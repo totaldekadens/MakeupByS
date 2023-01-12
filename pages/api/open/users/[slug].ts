@@ -2,6 +2,7 @@ import dbConnect from "../../../../utils/dbConnect";
 import User from "../../../../models/User";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
+import useCensorString from "../../../../utils/useCensorString";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   // https://github.com/stripe/stripe-node#configuration
@@ -41,16 +42,22 @@ export default async function handler(
             .status(400)
             .json({ success: false, data: "User not found" });
         }
-
-        var censoredPhone =
-          user.phone.slice(0, 3) +
-          "*".repeat(user.phone.length - 1) +
-          user.phone.slice(-2);
+        const censoredPhone = useCensorString(user.phone);
+        const censoredName = useCensorString(user.name);
+        const censoredStreet = useCensorString(user.address.line1);
+        const censoredPostalCode = useCensorString(user.address.postal_code);
+        const censoredCity = useCensorString(user.address.city);
 
         const restrictedUser: RestrictedUser = {
-          name: user.name,
+          name: censoredName,
           email: user.email,
-          address: user.address,
+          address: {
+            line1: censoredStreet,
+            line2: user.address.line2,
+            postal_code: censoredPostalCode,
+            city: censoredCity,
+            country: user.address.country,
+          },
           phone: censoredPhone,
         };
 

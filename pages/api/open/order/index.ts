@@ -61,10 +61,18 @@ export default async function handler(
       newOrder.orderNo = createOrderNumber;
       newOrder.orderNoStripe = req.body.sessionId;
       newOrder.status = orderStatus._id;
-      newOrder.name = req.body.checkout.name;
+      newOrder.name = req.body.checkout.address.delivery
+        ? req.body.checkout.name
+        : user
+        ? user.name
+        : req.body.checkout.name;
+      newOrder.phone = req.body.checkout.address.delivery
+        ? req.body.checkout.phone
+        : user
+        ? user.phone
+        : req.body.checkout.phone;
       newOrder.email = req.body.checkout.email;
-      newOrder.phone = user ? user.phone : req.body.checkout.phone;
-      newOrder.invoiceAddress = req.body.checkout.address.invoice;
+      newOrder.invoiceAddress = user ? user.address : req.body.checkout.invoice;
       newOrder.deliveryAddress = req.body.checkout.address.delivery;
       newOrder.courrier = req.body.checkout.courrier;
       newOrder.existingCustomer = user ? user._id : null;

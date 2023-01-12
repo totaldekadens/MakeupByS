@@ -2,8 +2,8 @@ import { Card, Flex, Title, Image, Text, Box } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import Link from "next/link";
 import { Dispatch, FC, SetStateAction, useContext } from "react";
-import AddToCartIcon from "./AddToCartIcon";
-import { openedCartContext } from "./context/OpenCartProvider";
+import AddToCartIcon from "../cart/AddToCartIcon";
+import { openedCartContext } from "../context/OpenCartProvider";
 
 type Props = {
   product: any;
