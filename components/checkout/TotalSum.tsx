@@ -1,5 +1,6 @@
 import { Flex, Title, Text, Button } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
+import Link from "next/link";
 import { FC, useContext } from "react";
 import getStripe from "../../utils/get-stripejs";
 import { LineItem } from "../cart/AddToCartIcon";
@@ -67,8 +68,14 @@ const TotalSum: FC = () => {
         Gå till betalning
       </Button>
       <Text mt={5} size={"xs"}>
-        Genom att fortsätta till betalning godkänner jag Almänna villkor, samt
-        bekräftar att jag tagit del av, och förstått butikens integritetpolicy
+        Genom att fortsätta till betalning godkänner jag Almänna{" "}
+        <Link href={"/kopvillkor"}>
+          <b>villkor</b>
+        </Link>{" "}
+        , samt bekräftar att jag tagit del av, och förstått butikens{" "}
+        <Link href={"/integritet"}>
+          <b>Integritetspolicy</b>
+        </Link>
       </Text>
     </Flex>
   );
