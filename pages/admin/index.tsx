@@ -1,5 +1,5 @@
-import { AppShell, Title, Box, Button, Flex, Tabs, Text } from "@mantine/core";
-import { NextPage } from "next";
+import { AppShell, Title, Flex, Tabs, Text } from "@mantine/core";
+import { GetStaticProps, NextPage } from "next";
 import HeaderCheckout from "../../components/layout/HeaderCheckout";
 import { useEffect, useRef, useState } from "react";
 import OrderHandler from "../../components/admin/OrderHandler";
@@ -7,11 +7,13 @@ import ProductHandler from "../../components/admin/ProductHandler";
 import CategoryHandler from "../../components/admin/CategoryHandler";
 import CustomerHandler from "../../components/admin/CustomerHandler";
 import FreightHandler from "../../components/admin/FreightHandler";
-import useFetchHelper from "../../utils/useFetchHelper";
-import { OrderDocument } from "../../models/Order";
-import { Types } from "mongoose";
+import dbConnect from "../../utils/dbConnect";
 
-const Admin: NextPage = () => {
+type Props = {
+  orders: any;
+};
+
+const Admin: NextPage<Props> = ({ orders }) => {
   const list = [
     { name: "Beställningar", component: OrderHandler },
     { name: "Produkter", component: ProductHandler },
@@ -19,29 +21,18 @@ const Admin: NextPage = () => {
     { name: "Frakt", component: FreightHandler },
     { name: "Kunder", component: CustomerHandler },
   ];
-
   const [activeTab, setActiveTab] = useState<string | null>("Beställningar");
-  const [orders, setOrders] = useState<any>();
-  const [status, setStatus] = useState(200);
-  const [isLoadingOrders, setIsLoadingOrders] = useState(true);
   const [activeOrders, setActiveOrders] = useState(0);
 
   // Refs
   const valueRef = useRef<any | null>();
   valueRef.current = orders;
 
-  // Gets orders and return how many needs to be handled
+  // Returns how many orders needs to be handled
   useEffect(() => {
-    useFetchHelper(
-      setStatus,
-      setIsLoadingOrders,
-      setOrders,
-      `/api/admin/order/`
-    );
     const getNumber = () => {
       let orderReference = valueRef.current;
       if (orders) {
-        console.log(orderReference);
         const getActiveOrders = orderReference.filter(
           (order: any) => order.status.status == "Behandlas"
         );
@@ -52,7 +43,6 @@ const Admin: NextPage = () => {
     getNumber();
   }, [activeTab]);
 
-  console.log(activeOrders);
   return (
     <>
       <AppShell fixed={false} header={<HeaderCheckout />}>
@@ -92,12 +82,7 @@ const Admin: NextPage = () => {
                                   borderRadius: "50%",
                                 })}
                               >
-                                <Text
-                                  pt={2}
-                                  color={"red.9"}
-                                  size={10}
-                                  weight="bold"
-                                >
+                                <Text color={"red.9"} size={11} weight="bold">
                                   {activeOrders}
                                 </Text>
                               </Flex>
@@ -121,6 +106,16 @@ const Admin: NextPage = () => {
       </AppShell>
     </>
   );
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  await dbConnect();
+
+  let response = await fetch(`${process.env.NEXT_DOMAIN}/api/admin/order/`);
+  let result = await response.json();
+  return {
+    props: { orders: result.data },
+  };
 };
 
 export default Admin;
