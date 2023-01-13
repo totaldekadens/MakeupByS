@@ -11,6 +11,7 @@ import {
 
 export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
   colorScheme,
+
   headings: {
     sizes: {
       // Exempel på om vi vill ha en annan font weight på headings utöver default
@@ -49,13 +50,11 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
     // Här kan vi påverka styling för samtliga komponenter från Mantine.
 
     Box: {
-      styles: (
-        theme: MantineTheme,
-      ): Record<string, CSSObject> => ({
+      styles: (theme: MantineTheme): Record<string, CSSObject> => ({
         frontHeroShadow: {
           boxShadow: "black 10px 200px 100px",
-        }
-      })
+        },
+      }),
     },
 
     Button: {
@@ -68,7 +67,7 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
           minWidth: "150px",
           [theme.fn.smallerThan("xs")]: {
             minWidth: "130px",
-        },
+          },
           // Här kan vi lägga in styling för Button-komponenten i Mantine
           "&:hover": {
             backgroundColor: "whitesmoke",

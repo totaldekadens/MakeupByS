@@ -134,15 +134,11 @@ const ProductPage: NextPage = (props) => {
       header={<Header />}
       footer={<Footer />}
       styles={(theme) => ({
-        body: {
-          backgroundColor: theme.colors.brand[2], // test
-        },
         main: {
           width: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          backgroundColor: "white", // test
         },
       })}
     >

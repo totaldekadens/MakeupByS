@@ -31,15 +31,12 @@ export default class _Document extends Document {
     return (
       <Html style={{ scrollBehavior: "smooth" }}>
         <Head>
+          <meta name="theme-color" content="#E5B4AD"></meta>
+          <link rel="preconnect" href="https://fonts.googleapis.com"></link>
           <link
-            rel="shortcut icon"
-            type="image/png"
-            href="/logos/advtHero_logo_mini.png"
-          />
-          <link
-            href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Mada:wght@200;300;400;500;600;700;900&display=swap"
             rel="stylesheet"
-          />
+          ></link>
         </Head>
         <body>
           <Main />

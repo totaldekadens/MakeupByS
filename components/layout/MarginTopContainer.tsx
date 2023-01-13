@@ -1,19 +1,21 @@
 import { Flex } from "@mantine/core";
-import { FC, PropsWithChildren } from "react";
+import { FC, PropsWithChildren, useContext } from "react";
+import { hideContext } from "../context/HideProvider";
 
 const MarginTopContainer: FC<PropsWithChildren> = ({ children }) => {
+  const { hide, setHide } = useContext(hideContext);
   return (
     <Flex
       sx={(theme) => ({
         width: "100%",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: 200,
+        marginTop: hide ? 150 : 200,
         [theme.fn.smallerThan("md")]: {
-          marginTop: 180,
+          marginTop: hide ? 150 : 180,
         },
-        [theme.fn.smallerThan("sm")]: { marginTop: 150 },
-        [theme.fn.smallerThan("xs")]: { marginTop: 121 },
+        [theme.fn.smallerThan("sm")]: { marginTop: hide ? 135 : 150 },
+        [theme.fn.smallerThan("xs")]: { marginTop: hide ? 85 : 121 },
       })}
     >
       {children}

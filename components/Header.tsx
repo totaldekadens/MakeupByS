@@ -15,32 +15,12 @@ import { IconCheck } from "@tabler/icons";
 import SearchbarMobile from "./SearchbarMobile";
 import MobileLoginButton from "./MobileLoginButtons";
 import MobileBurgerMenu from "./MobileBurgerMenu";
-import { useEffect, useRef, useState } from "react";
+import { useContext } from "react";
+import { hideContext } from "./context/HideProvider";
 
 const Header = () => {
   const session = useSession();
-  const [scrollY, setScrollY] = useState<number>(0);
-  const [hide, setHide] = useState<boolean>(false);
-
-  // Refs
-  const valueRef = useRef<any | null>();
-  valueRef.current = scrollY;
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  });
-
-  const handleScroll = () => {
-    setScrollY(window.scrollY);
-    let previousScrollY = valueRef.current;
-
-    if (previousScrollY < window.scrollY) {
-      setHide(true);
-    } else {
-      setHide(false);
-    }
-  };
+  const { hide, setHide } = useContext(hideContext);
 
   return (
     <>

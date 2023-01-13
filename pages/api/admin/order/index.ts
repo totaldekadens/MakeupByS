@@ -1,6 +1,8 @@
 import dbConnect from "../../../../utils/dbConnect";
 import Order, { OrderDocument } from "../../../../models/Order";
 import { NextApiRequest, NextApiResponse } from "next";
+import OrderStatus from "../../../../models/OrderStatus";
+import User from "../../../../models/User";
 
 export default async function handler(
   req: NextApiRequest,
@@ -39,22 +41,51 @@ export default async function handler(
       res.status(400).json({ success: false, data: "Break error" });
       break;
 
+    case "PUT":
+      try {
+        // Shall be able to update status. And depending on status different updates need to be made.
+        const todayDate = new Date()
+          .toISOString()
+          .slice(0, 16)
+          .replace("T", " ");
+
+        const updateOrder: OrderDocument = req.body;
+
+        // Make this one dynamic. Shall check if its status "Färdigbehandlad"
+        if (req.body.status == "63b94ba666d02095eb80e865") {
+          updateOrder.shippingDate = todayDate;
+
+          // Remove quantity on products (reserved quantity)
+        }
+
+        const order = await Order.findOneAndUpdate(
+          { _id: req.body._id },
+          updateOrder,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+        if (!order) {
+          return res.status(400).json({ success: false });
+        }
+        res.status(200).json({ success: true, data: order });
+      } catch (error) {
+        res.status(400).json({ success: false, data: error });
+      }
+      break;
+
     case "GET":
       try {
-        const Orders = await Order.find({});
-        /*  .populate({
-            path: "mainProduct",
-            model: MainProduct,
-            populate: {
-              path: "category",
-              model: Category,
-            },
+        const Orders = await Order.find({})
+          .populate({
+            path: "status",
+            model: OrderStatus,
           })
           .populate({
-            path: "colors",
-            model: Color,
-            populate: { path: "seasons", model: Season },
-          }); */
+            path: "existingCustomer",
+            model: User,
+          });
         res.status(200).json({ success: true, data: Orders });
       } catch (error) {
         res.status(400).json({ success: false, data: error });

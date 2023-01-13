@@ -48,7 +48,7 @@ const SeasonPage: NextPage = (props) => {
         setStatus,
         setIsLoadingSeason,
         setSeason,
-        `/api/open/sasong/${seasonSlug}`
+        `/api/open/season/${seasonSlug}`
       );
     }
   }, [seasonSlug]);
