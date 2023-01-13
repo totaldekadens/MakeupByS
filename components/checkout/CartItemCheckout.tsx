@@ -13,7 +13,7 @@ type Props = {
     val: LineItem[] | ((prevState: LineItem[]) => LineItem[])
   ) => void;
 };
-
+// Displays cart item in checkout
 const CartItemCheckout: FC<Props> = ({ cartItem, cartItems, setCartItems }) => {
   return (
     <tr key={cartItem.price_data.product_data.name}>

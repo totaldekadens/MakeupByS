@@ -10,10 +10,9 @@ import {
 } from "@mantine/core";
 import { IconInfoCircle, IconPoint } from "@tabler/icons";
 import { FC, useContext, useEffect, useRef, useState } from "react";
-import { CourrierDocument, Option } from "../../models/Courrier";
+import { CourrierDocument } from "../../models/Courrier";
 import { checkoutContext } from "../context/checkoutProvider";
 import ContainerWithBorder from "../layout/ContainerWithBorder";
-import useWindowSize from "../../utils/useWindowSize";
 import { LineItem } from "../cart/AddToCartIcon";
 
 export type ChosenOption = {
@@ -39,15 +38,11 @@ const Courrier: FC = () => {
   // States
   const [courriers, setCourriers] = useState<CourrierDocument[] | []>([]);
   const [value, setValue] = useState("");
-  const [freight, setFreight] = useState();
   const [weight, setWeight] = useState<number>();
 
   // Refs
   const valueRef = useRef<any | null>();
   valueRef.current = checkout;
-
-  // Gets current window height and window width
-  let size = useWindowSize();
 
   // Gets totalsum of cart items
   let totalSum = checkout.cartItems.reduce(
@@ -237,7 +232,7 @@ const Courrier: FC = () => {
                                   {option.cost.map((freightCost, index) => {
                                     if (
                                       weight &&
-                                      weight < freightCost.maxWeight &&
+                                      weight <= freightCost.maxWeight &&
                                       weight > freightCost.minWeight
                                     ) {
                                       return (

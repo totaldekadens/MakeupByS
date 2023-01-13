@@ -1,6 +1,6 @@
 import { Box } from "@mantine/core";
 import { IconShoppingBag, IconPlus } from "@tabler/icons";
-import { Dispatch, FC, SetStateAction, useContext } from "react";
+import { FC, useContext } from "react";
 import { useHover } from "@mantine/hooks";
 import { useLocalStorage } from "@mantine/hooks";
 import { openedCartContext } from "../context/OpenCartProvider";
@@ -24,6 +24,7 @@ export type LineItem = {
   };
 };
 
+// Adds product (or if it already exists, increases qty) to cart and opens it.
 const AddToCartIcon: FC<Props> = ({ color, product }) => {
   const { hovered, ref } = useHover();
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
@@ -58,7 +59,7 @@ const AddToCartIcon: FC<Props> = ({ color, product }) => {
 
     if (foundIndex >= 0) {
       if (cartCopy[foundIndex].quantity >= product.availableQty) {
-        return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
+        return alert("Finns tyvärr inga fler produkter"); // #136 Fixa modal till denna sen
       }
       cartCopy[foundIndex].quantity++;
     } else {
