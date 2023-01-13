@@ -153,11 +153,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       populate: {
         path: "seasons",
         model: Season,
-        //match: { slug: { $in: slug } },  // Check why this doesnt work!
       },
     });
 
-  // Todo if time: #67 Find a better way. Should be able to filter the query above. Check aggregation and virtuals with match
+  // Todo if time: #67 Find a better way. Should be able to filter the query above.
+  // Check aggregation and virtuals with match
   let list: any = [];
   subProducts.forEach((product) => {
     product.colors.forEach((color: ColorDocument) => {

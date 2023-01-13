@@ -5,7 +5,6 @@ import {
   Flex,
   Title,
   Text,
-  Breadcrumbs,
   Image,
   createStyles,
   Button,
@@ -13,12 +12,10 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { useLocalStorage } from "@mantine/hooks";
-import { NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState, useContext } from "react";
-import { boolean } from "yup";
+import { useContext } from "react";
 import { LineItem } from "../../components/cart/AddToCartIcon";
-import BreadCrumb from "../../components/BreadCrumb";
 import Cart from "../../components/cart/Cart";
 import { openedCartContext } from "../../components/context/OpenCartProvider";
 import Footer from "../../components/Footer";
@@ -26,26 +23,27 @@ import Header from "../../components/Header";
 import MarginTopContainer from "../../components/layout/MarginTopContainer";
 import CarouselProduct from "../../components/product/CarouselProduct";
 import Details from "../../components/product/Details";
-import { SeasonDocument } from "../../models/Season";
-import useFetchHelper from "../../utils/useFetchHelper";
+import Season, { SeasonDocument } from "../../models/Season";
 import useWindowSize from "../../utils/useWindowSize";
-import ErrorPage from "../_error";
 import { IconChevronLeft } from "@tabler/icons";
+import SubProduct from "../../models/SubProduct";
+import dbConnect from "../../utils/dbConnect";
+import MainProduct from "../../models/MainProduct";
+import Category from "../../models/Category";
+import Color, { ColorDocument } from "../../models/Color";
 
-const ProductPage: NextPage = (props) => {
+type Props = {
+  product: any;
+  products: any;
+};
+
+const ProductPage: NextPage<Props> = ({ product, products }) => {
   // Context
   const { openedCart, setOpenedCart } = useContext(openedCartContext);
 
-  // States
-  const [product, setProduct] = useState<any>([]);
-  const [products, setProducts] = useState<any>([]);
-  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
-  const [isLoadingProduct, setIsLoadingProduct] = useState(true);
-  const [status, setStatus] = useState(200);
-
   // Router
   const router = useRouter();
-  const { slug } = router.query;
+
   // Local storage
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
@@ -90,7 +88,7 @@ const ProductPage: NextPage = (props) => {
 
       if (foundIndex >= 0) {
         if (cartCopy[foundIndex].quantity >= product.availableQty) {
-          return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
+          return alert("Finns tyvärr inga fler produkter"); // #136 Fixa modal till denna sen
         }
         cartCopy[foundIndex].quantity++;
       } else {
@@ -101,33 +99,6 @@ const ProductPage: NextPage = (props) => {
       setOpenedCart(true);
     }
   };
-
-  // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
-  useEffect(() => {
-    if (slug) {
-      useFetchHelper(
-        setStatus,
-        setIsLoadingProduct,
-        setProduct,
-        `/api/open/subproduct/${slug}`
-      );
-    }
-  }, [slug]);
-
-  useEffect(() => {
-    if (product && product.colors) {
-      useFetchHelper(
-        setStatus,
-        setIsLoadingProducts,
-        setProducts,
-        `/api/open/subproduct/season/${product.colors[0].seasons[0].slug}`
-      );
-    }
-  }, [product]);
-
-  if (!isLoadingProduct && status > 299) {
-    return <ErrorPage statusCode={status} />;
-  }
 
   return (
     <AppShell
@@ -436,6 +407,77 @@ const ProductPage: NextPage = (props) => {
       <Cart />
     </AppShell>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  await dbConnect();
+  const products = await SubProduct.find({});
+
+  const paths = products.map((product: any) => ({
+    params: { slug: product.slug },
+  }));
+
+  return { paths, fallback: true };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  await dbConnect();
+
+  const product = await SubProduct.findOne({ slug: params?.slug })
+    .populate({
+      path: "mainProduct",
+      model: MainProduct,
+      populate: {
+        path: "category",
+        model: Category,
+      },
+    })
+    .populate({
+      path: "colors",
+      model: Color,
+      populate: {
+        path: "seasons",
+        model: Season,
+      },
+    });
+
+  const subProducts = await SubProduct.find({})
+    .populate({
+      path: "mainProduct",
+      model: MainProduct,
+      populate: {
+        path: "category",
+        model: Category,
+      },
+    })
+    .populate({
+      path: "colors",
+      model: Color,
+      populate: {
+        path: "seasons",
+        model: Season,
+      },
+    });
+
+  // Todo if time: #67 Find a better way. Should be able to filter the query above.
+  //Check aggregation and virtuals with match
+  let list: any = [];
+  subProducts.forEach((product) => {
+    product.colors.forEach((color: ColorDocument) => {
+      color.seasons.forEach((season: any) => {
+        if (season.slug == product.colors[0].seasons[0].slug) {
+          list.push(product);
+        }
+      });
+    });
+  });
+
+  return {
+    props: {
+      product: JSON.parse(JSON.stringify(product)),
+      products: JSON.parse(JSON.stringify(list)),
+    },
+  };
 };
 
 const useStyles = createStyles((_theme, _params, getRef) => ({
