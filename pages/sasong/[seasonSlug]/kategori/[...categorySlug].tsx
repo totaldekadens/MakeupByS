@@ -21,7 +21,7 @@ import ProductCard from "../../../../components/product/ProductCard";
 import { CategoryDocument } from "../../../../models/Category";
 import { SeasonDocument } from "../../../../models/Season";
 import useFetchHelper from "../../../../utils/useFetchHelper";
-import ErrorPage from "../../../ErrorPage";
+import ErrorPage from "../../../_error";
 
 const CategoryPage: NextPage = (props) => {
   const router = useRouter();

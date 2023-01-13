@@ -7,8 +7,6 @@ import {
   Title,
   Text,
   Breadcrumbs,
-  Sx,
-  MantineTheme,
 } from "@mantine/core";
 import { NextPage } from "next";
 import Link from "next/link";
@@ -24,7 +22,7 @@ import ProductCard from "../../../components/product/ProductCard";
 import { CategoryDocument } from "../../../models/Category";
 import { SeasonDocument } from "../../../models/Season";
 import useFetchHelper from "../../../utils/useFetchHelper";
-import ErrorPage from "../../ErrorPage";
+import ErrorPage from "../../_error";
 
 const SeasonPage: NextPage = (props) => {
   const router = useRouter();
