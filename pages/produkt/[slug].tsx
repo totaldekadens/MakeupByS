@@ -29,7 +29,7 @@ import Details from "../../components/product/Details";
 import { SeasonDocument } from "../../models/Season";
 import useFetchHelper from "../../utils/useFetchHelper";
 import useWindowSize from "../../utils/useWindowSize";
-import ErrorPage from "../ErrorPage";
+import ErrorPage from "../_error";
 
 const ProductPage: NextPage = (props) => {
   // Context

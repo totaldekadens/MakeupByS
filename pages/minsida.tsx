@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import OrderSummary from "../components/OrderSummary";
 import WrapContainer from "../components/layout/WrapContainer";
 import useFetchHelper from "../utils/useFetchHelper";
-import ErrorPage from "./ErrorPage";
+import ErrorPage from "./_error";
 import MarginTopContainer from "../components/layout/MarginTopContainer";
 
 const MyPage: NextPage = () => {
