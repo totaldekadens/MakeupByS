@@ -35,7 +35,6 @@ const FrontPageHeader = () => {
     }
     window.addEventListener("scroll", setFixed)
   }
-  
 
   return (
     <>
@@ -52,7 +51,13 @@ const FrontPageHeader = () => {
           },
         })}
       >
-        <Image src="/uploads/fadeblacksvg.svg" pos={"absolute"} top={0}/>
+        <MediaQuery smallerThan={"sm"} styles={{display: "none"}}>
+          <Image src="/uploads/fadeblacksvg.svg" pos={"absolute"} top={0}/>
+        </MediaQuery>
+
+        <MediaQuery largerThan={"sm"} styles={{display: "none"}}>
+          <Image src="/uploads/fadeblackmobilesvg.svg" pos={"absolute"} top={0}/>
+        </MediaQuery>
         <BackgroundImage src="/uploads/hero.jpg">
           <Flex
             direction={"column"}
