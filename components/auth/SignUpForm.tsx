@@ -6,6 +6,7 @@ import {
   PasswordInput,
   TextInput,
   Text,
+  Select,
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import { signIn } from "next-auth/react";
@@ -268,18 +269,12 @@ const SignUpForm = () => {
             name="city"
             {...form.getInputProps("city")}
           />
-          <TextInput
-            styles={(theme) => ({
-              label: {
-                color: "black",
-                [theme.fn.smallerThan(500)]: {
-                  color: theme.black,
-                },
-              },
-            })}
+          <Select
+            mt="xs"
             label="Land*"
             placeholder="Sverige"
             name="country"
+            data={[{ value: "Sverige", label: "Sverige" }]}
             {...form.getInputProps("country")}
           />
         </Box>
