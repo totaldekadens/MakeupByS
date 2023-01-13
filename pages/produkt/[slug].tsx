@@ -30,6 +30,7 @@ import { SeasonDocument } from "../../models/Season";
 import useFetchHelper from "../../utils/useFetchHelper";
 import useWindowSize from "../../utils/useWindowSize";
 import ErrorPage from "../_error";
+import { IconChevronLeft } from "@tabler/icons";
 
 const ProductPage: NextPage = (props) => {
   // Context
@@ -144,20 +145,36 @@ const ProductPage: NextPage = (props) => {
     >
       <MarginTopContainer>
         <Flex sx={{ width: "100%" }}>
-          <Breadcrumbs>
-            <BreadCrumb href={"/"} title={"Hem"} />
-            <BreadCrumb href={"/"} title={""} />
-          </Breadcrumbs>
-          <Text
-            sx={{ cursor: "pointer" }}
-            onClick={() => router.back()}
-            color={"brand.6"}
-            size={"sm"}
+          <Flex
+            w={100}
+            justify="flex-start"
+            align={"center"}
+            onClick={() => {
+              router.back();
+            }}
+            sx={(theme) => ({
+              cursor: "pointer",
+              [theme.fn.smallerThan("xs")]: {
+                width: 70,
+              },
+            })}
           >
-            Tillbaka
-          </Text>
-        </Flex>
+            <IconChevronLeft size={14} color="#375F69" />
 
+            <Text
+              size={13}
+              sx={(theme) => ({
+                [theme.fn.smallerThan("xs")]: {
+                  fontSize: 13,
+                },
+              })}
+              color={"brand.6"}
+              align="center"
+            >
+              Tillbaka
+            </Text>
+          </Flex>
+        </Flex>
         <Box
           style={{
             marginTop: 30,
