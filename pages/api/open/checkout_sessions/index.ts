@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
+import { LineItem } from "../../../../components/cart/AddToCartIcon";
 import User from "../../../../models/User";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",
@@ -17,13 +18,13 @@ export default async function handler(
       }
 
       // Needed to do the amount times 100 to be correct with the amount in stripe
-      req.body.cartItems.forEach((item: any) => {
+      req.body.cartItems.forEach((item: LineItem) => {
         item.price_data.unit_amount = item.price_data.unit_amount * 100;
       });
 
       // #100  Byt ut domän sedan.
       // Added liveURL to images so they can be displayed in stripe
-      req.body.cartItems.forEach((item: any) => {
+      req.body.cartItems.forEach((item: LineItem) => {
         let newImageUrl: string[] = [];
         item.price_data.product_data.images.forEach(
           (image: string, index: number) => {

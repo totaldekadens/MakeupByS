@@ -2,7 +2,9 @@ import { Button, Flex, Select } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
+import { OrderDocument } from "../../models/Order";
 import { OrderStatusDocument } from "../../models/OrderStatus";
+import { PopulatedOrder } from "../../utils/types";
 
 type SelectType = {
   value: string;

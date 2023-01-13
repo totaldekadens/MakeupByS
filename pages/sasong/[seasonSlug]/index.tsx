@@ -24,9 +24,10 @@ import MainProduct from "../../../models/MainProduct";
 import Season, { SeasonDocument } from "../../../models/Season";
 import SubProduct from "../../../models/SubProduct";
 import dbConnect from "../../../utils/dbConnect";
+import { PopulatedProduct } from "../../../utils/types";
 
 type Props = {
-  products: any;
+  products: PopulatedProduct[];
   season: SeasonDocument;
 };
 
@@ -39,7 +40,7 @@ const SeasonPage: NextPage<Props> = ({ products, season }) => {
 
   let categories: CategoryDocument[] = [];
   if (products) {
-    products.forEach((product: any) => {
+    products.forEach((product) => {
       if (categories.length < 1) {
         categories.push(product.mainProduct.category);
         return;
@@ -104,7 +105,7 @@ const SeasonPage: NextPage<Props> = ({ products, season }) => {
               ) : null}
               <Flex mt="xl" wrap="wrap" justify={"center"}>
                 <Grid justify={"center"}>
-                  {products?.map((product: any, index: number) => {
+                  {products?.map((product, index) => {
                     return (
                       <Grid.Col key={index} md={4} sm={5} xs={6}>
                         <ProductCard product={product} />
@@ -160,7 +161,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Check aggregation and virtuals with match
   let list: any = [];
   subProducts.forEach((product) => {
-    product.colors.forEach((color: ColorDocument) => {
+    product.colors.forEach((color: any) => {
       color.seasons.forEach((season: any) => {
         if (season.slug == params?.seasonSlug) {
           list.push(product);

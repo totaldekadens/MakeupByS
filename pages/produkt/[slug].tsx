@@ -31,10 +31,11 @@ import dbConnect from "../../utils/dbConnect";
 import MainProduct from "../../models/MainProduct";
 import Category from "../../models/Category";
 import Color, { ColorDocument } from "../../models/Color";
+import { PopulatedColor, PopulatedProduct } from "../../utils/types";
 
 type Props = {
-  product: any;
-  products: any;
+  product: PopulatedProduct;
+  products: PopulatedProduct[];
 };
 
 const ProductPage: NextPage<Props> = ({ product, products }) => {
@@ -67,7 +68,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
           unit_amount: price,
           product_data: {
             name: product.title,
-            description: product.description,
+            description: product.mainProduct.description1,
             images: product.images,
             metadata: {
               id: product._id,
@@ -255,50 +256,48 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                     </Flex>
                     <Flex>
                       {product.colors
-                        ? product.colors.map((color: any) => {
-                            return color.seasons.map(
-                              (season: SeasonDocument, index: number) => {
-                                return (
-                                  <Tooltip
+                        ? product.colors.map((color) => {
+                            return color.seasons.map((season, index) => {
+                              return (
+                                <Tooltip
+                                  key={index}
+                                  color="black"
+                                  label={season.title}
+                                  withArrow
+                                >
+                                  <Flex
+                                    mt={10}
                                     key={index}
-                                    color="black"
-                                    label={season.title}
-                                    withArrow
+                                    mr={20}
+                                    w={30}
+                                    h={30}
+                                    justify="center"
+                                    align="center"
+                                    sx={(theme) => ({
+                                      borderRadius: "50%",
+                                      border: "1px solid black",
+                                      [theme.fn.smallerThan("md")]: {
+                                        marginRight: 10,
+                                        width: 25,
+                                        height: 25,
+                                      },
+                                    })}
                                   >
-                                    <Flex
-                                      mt={10}
-                                      key={index}
-                                      mr={20}
-                                      w={30}
-                                      h={30}
-                                      justify="center"
-                                      align="center"
+                                    <Text
+                                      color={"black"}
+                                      size={"sm"}
                                       sx={(theme) => ({
-                                        borderRadius: "50%",
-                                        border: "1px solid black",
                                         [theme.fn.smallerThan("md")]: {
-                                          marginRight: 10,
-                                          width: 25,
-                                          height: 25,
+                                          fontSize: theme.fontSizes.xs,
                                         },
                                       })}
                                     >
-                                      <Text
-                                        color={"black"}
-                                        size={"sm"}
-                                        sx={(theme) => ({
-                                          [theme.fn.smallerThan("md")]: {
-                                            fontSize: theme.fontSizes.xs,
-                                          },
-                                        })}
-                                      >
-                                        {season.title.slice(0, 2)}
-                                      </Text>
-                                    </Flex>
-                                  </Tooltip>
-                                );
-                              }
-                            );
+                                      {season.title.slice(0, 2)}
+                                    </Text>
+                                  </Flex>
+                                </Tooltip>
+                              );
+                            });
                           })
                         : null}
                     </Flex>
@@ -413,7 +412,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   await dbConnect();
   const products = await SubProduct.find({});
 
-  const paths = products.map((product: any) => ({
+  const paths = products.map((product) => ({
     params: { slug: product.slug },
   }));
 
@@ -461,10 +460,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   // Todo if time: #67 Find a better way. Should be able to filter the query above.
   //Check aggregation and virtuals with match
-  let list: any = [];
+  let list: any[] = [];
   subProducts.forEach((product) => {
-    product.colors.forEach((color: ColorDocument) => {
-      color.seasons.forEach((season: any) => {
+    product.colors.forEach((color: PopulatedColor) => {
+      color.seasons.forEach((season) => {
         if (season.slug == product.colors[0].seasons[0].slug) {
           list.push(product);
         }

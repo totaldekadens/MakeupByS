@@ -1,10 +1,11 @@
 import { Carousel } from "@mantine/carousel";
 import { MantineNumberSize } from "@mantine/core";
 import { FC } from "react";
+import { PopulatedProduct } from "../../utils/types";
 import ProductCard from "./ProductCard";
 
 type Props = {
-  products: any;
+  products: PopulatedProduct[];
   slideGap: MantineNumberSize | undefined;
   slideSize: string;
   slidesToScroll?: number | "auto" | undefined;
@@ -26,7 +27,7 @@ const CarouselProduct: FC<Props> = ({
       align="start"
     >
       {products.length > 0 ? (
-        products.map((item: any, index: number) => {
+        products.map((item, index) => {
           return (
             <Carousel.Slide key={index}>
               <ProductCard product={item} />

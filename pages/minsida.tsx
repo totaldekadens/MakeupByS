@@ -10,12 +10,13 @@ import WrapContainer from "../components/layout/WrapContainer";
 import useFetchHelper from "../utils/useFetchHelper";
 import ErrorPage from "./_error";
 import MarginTopContainer from "../components/layout/MarginTopContainer";
+import { PopulatedOrder } from "../utils/types";
 
 const MyPage: NextPage = () => {
   const { data: session } = useSession();
   const [status, setStatus] = useState(200);
   const [isLoadingOrders, setIsLoadingOrders] = useState(true);
-  const [orders, setOrders] = useState<any>();
+  const [orders, setOrders] = useState<PopulatedOrder[]>();
 
   useEffect(() => {
     useFetchHelper(
@@ -32,7 +33,7 @@ const MyPage: NextPage = () => {
 
   // Descending order
   if (orders) {
-    orders.sort((a: any, b: any) => (a.orderNo < b.orderNo ? 1 : -1));
+    orders.sort((a, b) => (a.orderNo < b.orderNo ? 1 : -1));
   }
   return (
     <>
@@ -72,7 +73,7 @@ const MyPage: NextPage = () => {
               sx={{ width: "100%" }}
             >
               {orders ? (
-                orders.map((order: any, index: number) => {
+                orders.map((order, index: number) => {
                   return (
                     <Accordion
                       key={index}
@@ -100,7 +101,7 @@ const MyPage: NextPage = () => {
                                 },
                               })}
                             >
-                              Order: {order.orderNo}
+                              {"Order: " + order.orderNo}
                             </Text>
                             <Flex align={"center"} gap={15}>
                               <Text

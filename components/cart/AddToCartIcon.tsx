@@ -4,10 +4,12 @@ import { FC, useContext } from "react";
 import { useHover } from "@mantine/hooks";
 import { useLocalStorage } from "@mantine/hooks";
 import { openedCartContext } from "../context/OpenCartProvider";
+import { PopulatedProduct } from "../../utils/types";
+import { Types } from "mongoose";
 
 type Props = {
   color: string;
-  product: any;
+  product: PopulatedProduct;
 };
 
 export type LineItem = {
@@ -19,7 +21,7 @@ export type LineItem = {
       name: string;
       description: string;
       images: string[];
-      metadata: { id: string; weight: number };
+      metadata: { id: string | Types.ObjectId; weight: number };
     };
   };
 };
@@ -41,7 +43,7 @@ const AddToCartIcon: FC<Props> = ({ color, product }) => {
         unit_amount: price,
         product_data: {
           name: product.title,
-          description: product.description,
+          description: product.mainProduct.description1,
           images: product.images,
           metadata: {
             id: product._id,
@@ -54,7 +56,8 @@ const AddToCartIcon: FC<Props> = ({ color, product }) => {
     let cartCopy = [...cartItems];
 
     let foundIndex = cartCopy.findIndex(
-      (cartItem) => cartItem.price_data.product_data.metadata.id === product._id
+      (cartItem) =>
+        cartItem.price_data.product_data.metadata.id === product._id.toString()
     );
 
     if (foundIndex >= 0) {

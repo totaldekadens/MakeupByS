@@ -19,13 +19,14 @@ import WrapContainer from "../../../../components/layout/WrapContainer";
 import ProductCard from "../../../../components/product/ProductCard";
 import { CategoryDocument } from "../../../../models/Category";
 import { SeasonDocument } from "../../../../models/Season";
+import { PopulatedProduct } from "../../../../utils/types";
 import useFetchHelper from "../../../../utils/useFetchHelper";
 import ErrorPage from "../../../_error";
 
 const CategoryPage: NextPage = (props) => {
   const router = useRouter();
   const { categorySlug, seasonSlug } = router.query;
-  const [products, setProducts] = useState<any>([]);
+  const [products, setProducts] = useState<PopulatedProduct[]>([]);
   const [category, setCategory] = useState<CategoryDocument>();
   const [season, setSeason] = useState<SeasonDocument>();
   const [status, setStatus] = useState(200);
@@ -112,7 +113,7 @@ const CategoryPage: NextPage = (props) => {
               {products ? (
                 <Flex mt="xl" wrap="wrap" justify={"center"}>
                   <Grid justify={"center"}>
-                    {products?.map((product: any, index: number) => {
+                    {products?.map((product, index) => {
                       return (
                         <Grid.Col key={index} md={4} sm={5} xs={6}>
                           <ProductCard product={product} />
