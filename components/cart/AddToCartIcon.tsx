@@ -74,7 +74,7 @@ const AddToCartIcon: FC<Props> = ({ color, product }) => {
       <Box
         onClick={handleClick}
         ref={ref}
-        sx={{ width: "100%", height: "100%" }}
+        sx={{ width: "100%", height: "100%", zIndex: 2 }}
       >
         <Box pos={"absolute"} sx={{ right: 11, top: 13 }}>
           <IconShoppingBag strokeWidth={1.25} size={30} color={color} />
