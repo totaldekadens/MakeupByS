@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { AppShell } from "@mantine/core";
 import { useState } from "react";
+import MarginTopContainer from "../components/layout/MarginTopContainer";
 
 export default function Colors() {
   let list: Color[] = [
@@ -955,61 +956,63 @@ export default function Colors() {
       </Head>
       <AppShell fixed={false} header={<Header />} footer={<Footer />}>
         <main style={{ marginTop: 60, minHeight: "100vh" }}>
-          <h1>Färger</h1>
-          <div>
-            {seasons.map((season, index) => {
-              return (
-                <button
-                  key={index}
-                  onClick={() => {
-                    handleClick(season.title);
-                  }}
-                >
-                  {season.title}
-                </button>
-              );
-            })}
-          </div>
-          Vald säsong: {activeSeason}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              flexWrap: "wrap",
-              width: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div style={{ display: "flex" }}>
-              {colorTags.map((colorTag, index) => {
+          <MarginTopContainer>
+            <h1>Färger</h1>
+            <div>
+              {seasons.map((season, index) => {
                 return (
-                  <div
+                  <button
                     key={index}
-                    style={{ display: "flex", flexDirection: "column" }}
+                    onClick={() => {
+                      handleClick(season.title);
+                    }}
                   >
-                    <h3>{colorTag.color}</h3>
-                    {filteredListBySeason
-                      .filter((color) =>
-                        color.colorTag.includes(colorTag.color)
-                      )
-                      .map((filteredColor, index) => (
-                        <div
-                          key={index}
-                          style={{
-                            backgroundColor: filteredColor.hexcolor,
-                            width: "100px",
-                            height: "50px",
-                          }}
-                        >
-                          {filteredColor.hexcolor}
-                        </div>
-                      ))}
-                  </div>
+                    {season.title}
+                  </button>
                 );
               })}
             </div>
-          </div>
+            Vald säsong: {activeSeason}
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                flexWrap: "wrap",
+                width: "100%",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ display: "flex" }}>
+                {colorTags.map((colorTag, index) => {
+                  return (
+                    <div
+                      key={index}
+                      style={{ display: "flex", flexDirection: "column" }}
+                    >
+                      <h3>{colorTag.color}</h3>
+                      {filteredListBySeason
+                        .filter((color) =>
+                          color.colorTag.includes(colorTag.color)
+                        )
+                        .map((filteredColor, index) => (
+                          <div
+                            key={index}
+                            style={{
+                              backgroundColor: filteredColor.hexcolor,
+                              width: "100px",
+                              height: "50px",
+                            }}
+                          >
+                            {filteredColor.hexcolor}
+                          </div>
+                        ))}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </MarginTopContainer>
         </main>
       </AppShell>
     </>

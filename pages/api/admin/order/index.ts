@@ -51,7 +51,7 @@ export default async function handler(
 
         const updateOrder: OrderDocument = req.body;
 
-        // Make this one dynammic. shall check if its status "Färdigbehandlad"
+        // Make this one dynamic. Shall check if its status "Färdigbehandlad"
         if (req.body.status == "63b94ba666d02095eb80e865") {
           updateOrder.shippingDate = todayDate;
 

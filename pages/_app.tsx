@@ -6,6 +6,7 @@ import { MantineProvider } from "@mantine/core";
 import { getTheme } from "../styles/theme";
 import CheckOutProvider from "../components/context/checkoutProvider";
 import OpenedCartProvider from "../components/context/OpenCartProvider";
+import HideProvider from "../components/context/HideProvider";
 
 export default function App({
   Component,
@@ -21,7 +22,9 @@ export default function App({
       >
         <CheckOutProvider>
           <OpenedCartProvider>
-            <Component {...pageProps} />
+            <HideProvider>
+              <Component {...pageProps} />
+            </HideProvider>
           </OpenedCartProvider>
         </CheckOutProvider>
       </MantineProvider>
