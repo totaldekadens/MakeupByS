@@ -26,6 +26,7 @@
     "embla-carousel-react": "^7.0.5",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.5",
+    "gray-matter": "^4.0.3",
     "mongoose": "^6.7.3",
     "next": "^13.0.5",
     "next-auth": "^4.17.0",
