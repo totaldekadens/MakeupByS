@@ -229,6 +229,7 @@ const ProductPage: NextPage = (props) => {
                         return (
                           <Carousel.Slide key={index}>
                             <Image
+                              alt={image}
                               fit="contain"
                               styles={{
                                 root: {
