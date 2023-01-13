@@ -8,9 +8,8 @@ import {
   Breadcrumbs,
 } from "@mantine/core";
 import { NextPage } from "next";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import BreadCrumb from "../../../../components/BreadCrumb";
 import Cart from "../../../../components/cart/Cart";
 import Footer from "../../../../components/Footer";
@@ -34,7 +33,8 @@ const CategoryPage: NextPage = (props) => {
   const [isLoadingSeason, setIsLoadingSeason] = useState(true);
   const [isLoadingCategory, setIsLoadingCategory] = useState(true);
 
-  // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
+  // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps,
+  //but couldnt get ahead of it probably
   useEffect(() => {
     if (categorySlug) {
       useFetchHelper(
