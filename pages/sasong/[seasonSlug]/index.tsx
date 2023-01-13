@@ -1,6 +1,5 @@
 import {
   AppShell,
-  Box,
   Button,
   Flex,
   Grid,
@@ -8,10 +7,10 @@ import {
   Text,
   Breadcrumbs,
 } from "@mantine/core";
-import { NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import BreadCrumb from "../../../components/BreadCrumb";
 import Cart from "../../../components/cart/Cart";
 import Footer from "../../../components/Footer";
@@ -19,37 +18,24 @@ import Header from "../../../components/Header";
 import MarginTopContainer from "../../../components/layout/MarginTopContainer";
 import WrapContainer from "../../../components/layout/WrapContainer";
 import ProductCard from "../../../components/product/ProductCard";
-import { CategoryDocument } from "../../../models/Category";
-import { SeasonDocument } from "../../../models/Season";
-import useFetchHelper from "../../../utils/useFetchHelper";
-import ErrorPage from "../../_error";
+import Category, { CategoryDocument } from "../../../models/Category";
+import Color, { ColorDocument } from "../../../models/Color";
+import MainProduct from "../../../models/MainProduct";
+import Season, { SeasonDocument } from "../../../models/Season";
+import SubProduct from "../../../models/SubProduct";
+import dbConnect from "../../../utils/dbConnect";
 
-const SeasonPage: NextPage = (props) => {
+type Props = {
+  products: any;
+  season: SeasonDocument;
+};
+
+const SeasonPage: NextPage<Props> = ({ products, season }) => {
   const router = useRouter();
   const { seasonSlug } = router.query;
-  const [products, setProducts] = useState<any>([]);
-  const [season, setSeason] = useState<SeasonDocument>();
   const [status, setStatus] = useState(200);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [isLoadingSeason, setIsLoadingSeason] = useState(true);
-
-  // Fetching via useeffect. Todo if time: #66: Tried with getStaticProps, but couldnt get ahead of it probably bec of node v. 19.
-  useEffect(() => {
-    if (seasonSlug) {
-      useFetchHelper(
-        setStatus,
-        setIsLoadingProducts,
-        setProducts,
-        `/api/open/subproduct/season/${seasonSlug}`
-      );
-      useFetchHelper(
-        setStatus,
-        setIsLoadingSeason,
-        setSeason,
-        `/api/open/season/${seasonSlug}`
-      );
-    }
-  }, [seasonSlug]);
 
   let categories: CategoryDocument[] = [];
   if (products) {
@@ -68,9 +54,6 @@ const SeasonPage: NextPage = (props) => {
     });
   }
 
-  if (!isLoadingProducts && !isLoadingSeason && seasonSlug && status > 299) {
-    return <ErrorPage statusCode={status} />;
-  }
   return (
     <AppShell
       fixed={false}
@@ -137,6 +120,61 @@ const SeasonPage: NextPage = (props) => {
       <Cart />
     </AppShell>
   );
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  await dbConnect();
+  const seasons = await Season.find({});
+
+  const paths = seasons.map((season: SeasonDocument) => ({
+    params: { seasonSlug: season.slug },
+  }));
+
+  return { paths, fallback: true };
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  await dbConnect();
+
+  const season = await Season.findOne({ slug: params?.seasonSlug });
+
+  const subProducts = await SubProduct.find({})
+    .populate({
+      path: "mainProduct",
+      model: MainProduct,
+      populate: {
+        path: "category",
+        model: Category,
+      },
+    })
+    .populate({
+      path: "colors",
+      model: Color,
+      populate: {
+        path: "seasons",
+        model: Season,
+        //match: { slug: { $in: slug } },  // Check why this doesnt work!
+      },
+    });
+
+  // Todo if time: #67 Find a better way. Should be able to filter the query above. Check aggregation and virtuals with match
+  let list: any = [];
+  subProducts.forEach((product) => {
+    product.colors.forEach((color: ColorDocument) => {
+      color.seasons.forEach((season: any) => {
+        if (season.slug == params?.seasonSlug) {
+          list.push(product);
+        }
+      });
+    });
+  });
+
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(list)),
+      season: JSON.parse(JSON.stringify(season)),
+    },
+  };
 };
 
 export default SeasonPage;
