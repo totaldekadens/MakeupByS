@@ -13,7 +13,7 @@ export const openedCartContext = React.createContext<openedCartContextData>({
   openedCart: false,
   setOpenedCart: () => {},
 });
-
+// Decides whether the cart is open or not
 const OpenedCartProvider: FC<PropsWithChildren<Props>> = (props) => {
   const [openedCart, setOpenedCart] = useState<boolean>(false);
 

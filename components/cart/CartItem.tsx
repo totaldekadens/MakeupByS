@@ -14,6 +14,7 @@ type Props = {
   ) => void;
 };
 
+// Displays cart item in cart
 const CartItem: FC<Props> = ({ product, cartItems, setCartItems }) => {
   return (
     <Flex

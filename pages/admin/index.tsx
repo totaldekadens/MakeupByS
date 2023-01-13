@@ -5,9 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import dbConnect from "../../utils/dbConnect";
 import Options from "../../components/admin/Options";
 import OrderSummary from "../../components/OrderSummary";
-import Order from "../../models/Order";
-import OrderStatus from "../../models/OrderStatus";
-import User from "../../models/User";
 
 type Props = {
   orders: any;

@@ -43,13 +43,13 @@ const DeliveryForm: FC<Props> = ({
 }) => {
   const form = useForm<FormValues>({
     initialValues: {
-      name: deliveryInfo?.name || "",
-      address: deliveryInfo?.address.line1 || "",
-      postalcode: deliveryInfo?.address.postal_code || "",
-      city: deliveryInfo?.address.city || "",
-      country: deliveryInfo?.address.country || "",
-      phone: deliveryInfo?.phone || "",
-      co: deliveryInfo?.address.line2 || "",
+      name: "",
+      address: "",
+      postalcode: "",
+      city: "",
+      country: "",
+      phone: "",
+      co: "",
     },
     validate: yupResolver(schema),
     validateInputOnChange: true,

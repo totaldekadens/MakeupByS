@@ -1,15 +1,11 @@
-import { Flex, Group, Image, Title, Text, MediaQuery } from "@mantine/core";
-import { IconCircleMinus, IconCirclePlus, IconTrash } from "@tabler/icons";
+import { Flex, Image, Title, Text } from "@mantine/core";
 import { FC } from "react";
-import useHandleDecrement from "../../utils/useHandleDecrement";
-import UseHandleIncrement from "../../utils/useHandleIncrement";
-import useHandleRemoveCartItem from "../../utils/useHandleRemoveCartItem";
 import { LineItem } from "../cart/AddToCartIcon";
 
 type Props = {
   cartItem: LineItem;
 };
-
+// Displays cart item in order confirmation
 const CartItemConfirmation: FC<Props> = ({ cartItem }) => {
   return (
     <tr key={cartItem.price_data.product_data.name}>
