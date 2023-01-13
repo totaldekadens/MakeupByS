@@ -66,7 +66,7 @@ const Options = () => {
             <Menu.Dropdown w={200}>
               {list.map((button, index) => {
                 return (
-                  <Menu.Item color="brand.7">
+                  <Menu.Item key={index} color="brand.7">
                     <Link key={index} href={button.link}>
                       {button.name}
                     </Link>

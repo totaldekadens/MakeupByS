@@ -5,6 +5,9 @@ import { useEffect, useRef, useState } from "react";
 import dbConnect from "../../utils/dbConnect";
 import Options from "../../components/admin/Options";
 import OrderSummary from "../../components/OrderSummary";
+import Order from "../../models/Order";
+import OrderStatus from "../../models/OrderStatus";
+import User from "../../models/User";
 
 type Props = {
   orders: any;
@@ -135,12 +138,19 @@ const Admin: NextPage<Props> = ({ orders }) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
   await dbConnect();
+  try {
+    let response = await fetch(`${process.env.NEXT_DOMAIN}/api/admin/order/`);
+    let result = await response.json();
 
-  let response = await fetch(`${process.env.NEXT_DOMAIN}/api/admin/order/`);
-  let result = await response.json();
-  return {
-    props: { orders: result.data },
-  };
+    if (!result.success) {
+      return { notFound: true };
+    }
+    return {
+      props: { orders: result.data },
+    };
+  } catch (err) {
+    return { notFound: true };
+  }
 };
 
 export default Admin;
