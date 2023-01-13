@@ -204,6 +204,7 @@ const ProductPage: NextPage = (props) => {
                   align="flex-start"
                 >
                   <Carousel
+                    withControls={product.images.length < 2 ? false : true}
                     classNames={classes}
                     mx="auto"
                     align="center"
