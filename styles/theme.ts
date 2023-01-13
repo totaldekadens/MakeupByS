@@ -49,13 +49,6 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
   components: {
     // Här kan vi påverka styling för samtliga komponenter från Mantine.
 
-    Box: {
-      styles: (theme: MantineTheme): Record<string, CSSObject> => ({
-        frontHeroShadow: {
-          boxShadow: "black 10px 200px 100px",
-        },
-      }),
-    },
 
     Button: {
       styles: (
