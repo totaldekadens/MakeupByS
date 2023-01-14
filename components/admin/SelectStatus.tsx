@@ -53,6 +53,11 @@ const SelectStatus: FC<Props> = ({ order }) => {
     let result = await response.json();
 
     if (result.success) {
+      // Todo: Ändra antal här!
+
+      // if status == Färdigbehandlad ta bort antal från reserverQty
+      // if status == Avbruten, flytta antalen från reservedQty till availabeQty.
+
       const object: Response = {
         title: "Ordern är uppdaterad",
         reason: "success",
