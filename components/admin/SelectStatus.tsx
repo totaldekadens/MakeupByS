@@ -1,10 +1,11 @@
-import { Button, Flex, Select } from "@mantine/core";
+import { Box, Button, Flex, Select } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
 import { OrderDocument } from "../../models/Order";
 import { OrderStatusDocument } from "../../models/OrderStatus";
 import { PopulatedOrder } from "../../utils/types";
+import ResponseModal from "../layout/ResponseModal";
 
 type SelectType = {
   value: string;
@@ -15,6 +16,12 @@ type Props = {
   order: any;
 };
 
+type Response = {
+  title: string;
+  reason: "info" | "error" | "success";
+  description?: string;
+};
+
 const SelectStatus: FC<Props> = ({ order }) => {
   const router = useRouter();
   const session = useSession();
@@ -22,11 +29,18 @@ const SelectStatus: FC<Props> = ({ order }) => {
   const [statusList, setStatusList] = useState<SelectType[]>([
     { value: "", label: "" },
   ]);
+  const [opened, setOpened] = useState(false);
+  const [response, setResponse] = useState<Response>({
+    title: "",
+    reason: "info",
+  });
 
   // Updates the order with new status
   const handleClick = async () => {
     order.status = status;
-    order.existingCustomer = order.existingCustomer._id;
+    order.existingCustomer
+      ? (order.existingCustomer = order.existingCustomer._id)
+      : null;
 
     const request = {
       method: "PUT",
@@ -35,11 +49,24 @@ const SelectStatus: FC<Props> = ({ order }) => {
       },
       body: JSON.stringify(order),
     };
-
     const response = await fetch("/api/admin/order", request);
     let result = await response.json();
-    console.log(result);
-    // Todo: Continue with errorboundary and add a popup modal so the user gets some feedback
+
+    if (result.success) {
+      const object: Response = {
+        title: "Ordern är uppdaterad",
+        reason: "success",
+      };
+      setResponse(object);
+      setOpened(true);
+      return;
+    }
+    const object: Response = {
+      title: "Något gick fel, ordern är inte uppdaterad",
+      reason: "error",
+    };
+    setResponse(object);
+    setOpened(true);
   };
 
   useEffect(() => {
@@ -47,15 +74,25 @@ const SelectStatus: FC<Props> = ({ order }) => {
       let response = await fetch(`/api/open/orderstatus/`);
       let result = await response.json();
 
+      // Customizes the list of statuses depending on current status on order
       if (result.success) {
         let newList: SelectType[] = [];
         result.data.forEach((status: OrderStatusDocument) => {
-          if (order.status.status == status.status) {
-            return;
-          }
           if (status._id) {
+            let id = status._id.toString();
+
+            if (
+              order.status.status == status.status ||
+              (order.status._id != "63b94b6966d02095eb80e861" &&
+                order.status._id != "63b94c1066d02095eb80e868") ||
+              (order.status._id == "63b94c1066d02095eb80e868" &&
+                id == "63b94ba666d02095eb80e865")
+            ) {
+              return;
+            }
+
             let object = {
-              value: status._id.toString(),
+              value: id,
               label: status.status,
             };
             newList.push(object);
@@ -67,22 +104,33 @@ const SelectStatus: FC<Props> = ({ order }) => {
     getOrderStatus();
   }, [order]);
   return (
-    <Flex
-      wrap={"wrap"}
-      gap={10}
-      align="center"
-      mt={40}
-      justify={"flex-end"}
-      sx={{ width: "100%" }}
-    >
-      <Select
-        placeholder="Välj ny status"
-        value={status}
-        onChange={setStatus}
-        data={statusList}
-      />
-      <Button onClick={() => handleClick()}>Ändra status</Button>
-    </Flex>
+    <>
+      {order.status._id == "63b94ba666d02095eb80e865" ? (
+        <Box></Box>
+      ) : order.status._id == "63b94c3e66d02095eb80e86b" ? (
+        <Box></Box>
+      ) : (
+        <Flex
+          wrap={"wrap"}
+          gap={10}
+          align="center"
+          mt={40}
+          justify={"flex-end"}
+          sx={{ width: "100%" }}
+        >
+          <>
+            <Select
+              placeholder="Välj ny status"
+              value={status}
+              onChange={setStatus}
+              data={statusList}
+            />
+            <Button onClick={() => handleClick()}>Ändra status</Button>
+          </>
+        </Flex>
+      )}
+      <ResponseModal info={response} setOpened={setOpened} opened={opened} />
+    </>
   );
 };
 export default SelectStatus;
