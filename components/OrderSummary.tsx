@@ -12,11 +12,12 @@ import { IconInfoCircle, IconPoint } from "@tabler/icons";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FC } from "react";
+import { PopulatedOrder } from "../utils/types";
 import SelectStatus from "./admin/SelectStatus";
 import CartItemConfirmation from "./checkout/CartItemConfirmation";
 
 type Props = {
-  order: any;
+  order: PopulatedOrder;
 };
 
 const OrderSummary: FC<Props> = ({ order }) => {
@@ -25,12 +26,12 @@ const OrderSummary: FC<Props> = ({ order }) => {
   const session = useSession();
 
   // Gets list of finished displayed products
-  const rows = order?.lineItems.map((cartItem: any, index: number) => (
+  const rows = order?.lineItems.map((cartItem, index: number) => (
     <CartItemConfirmation key={index} cartItem={cartItem} />
   ));
 
   let totalSum = order?.lineItems.reduce(
-    (sum: any, item: any) => sum + item.price_data.unit_amount * item.quantity,
+    (sum, item) => sum + item.price_data.unit_amount * item.quantity,
     0
   );
 

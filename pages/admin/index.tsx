@@ -9,13 +9,14 @@ import Router from "next/router";
 import Order from "../../models/Order";
 import OrderStatus from "../../models/OrderStatus";
 import User from "../../models/User";
+import { PopulatedOrder } from "../../utils/types";
 
 type Props = {
-  orders: any;
+  orders: PopulatedOrder[];
 };
 
 const Admin: NextPage<Props> = ({ orders }) => {
-  const [activeOrders, setActiveOrders] = useState(0);
+  const [activeOrders, setActiveOrders] = useState<number>(0);
 
   // Refs
   const valueRef = useRef<any | null>();
@@ -24,10 +25,10 @@ const Admin: NextPage<Props> = ({ orders }) => {
   // Returns how many orders needs to be handled
   useEffect(() => {
     const getNumber = () => {
-      let orderReference = valueRef.current;
+      let orderReference: PopulatedOrder[] = valueRef.current;
       if (orders) {
         const getActiveOrders = orderReference.filter(
-          (order: any) => order.status.status == "Behandlas"
+          (order) => order.status.status == "Behandlas"
         );
         const getLength = getActiveOrders.length;
         setActiveOrders(getLength);
@@ -51,7 +52,7 @@ const Admin: NextPage<Props> = ({ orders }) => {
             sx={{ width: "100%" }}
           >
             {orders ? (
-              orders.map((order: any, index: number) => {
+              orders.map((order, index) => {
                 return (
                   <Accordion
                     key={index}
@@ -79,7 +80,7 @@ const Admin: NextPage<Props> = ({ orders }) => {
                               },
                             })}
                           >
-                            Order: {order.orderNo}
+                            {"Order: " + order.orderNo}
                           </Text>
                           <Flex align={"center"} gap={15}>
                             <Text
@@ -140,7 +141,7 @@ const Admin: NextPage<Props> = ({ orders }) => {
 export const getStaticProps: GetStaticProps = async (context) => {
   await dbConnect();
 
-  const res: any = await Order.find({})
+  const res: PopulatedOrder[] = await Order.find({})
     .populate({
       path: "status",
       model: OrderStatus,

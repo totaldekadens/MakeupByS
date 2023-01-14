@@ -90,7 +90,6 @@ const OrderSchema = new mongoose.Schema<OrderDocument>({
 });
 
 export type OrderDocument = {
-  filter(arg0: (order: any) => boolean): unknown;
   status: Types.ObjectId;
   orderNo: Number;
   orderNoStripe: string;

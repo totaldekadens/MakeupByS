@@ -1,8 +1,9 @@
 import { Flex, Title, Text } from "@mantine/core";
 import { FC } from "react";
+import { PopulatedProduct } from "../../utils/types";
 
 type Props = {
-  product: any;
+  product: PopulatedProduct;
 };
 
 const Details: FC<Props> = ({ product }) => {
