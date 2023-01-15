@@ -5,7 +5,7 @@ import { FC, useEffect, useState } from "react";
 import { OrderStatusDocument } from "../../models/OrderStatus";
 import ResponseModal from "../layout/ResponseModal";
 
-type SelectType = {
+export type SelectType = {
   value: string;
   label: string;
 };

@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction } from "react";
-import { Modal, Text, Flex } from "@mantine/core";
+import { Modal, Text, Flex, Button } from "@mantine/core";
 import { IconCheck, IconInfoCircle, IconX } from "@tabler/icons";
 
 type Props = {
@@ -13,6 +13,10 @@ type Props = {
 };
 
 const ResponseModal: FC<Props> = ({ info, setOpened, opened }) => {
+  const handleClick = () => {
+    setOpened(false);
+    window.location.reload();
+  };
   return (
     <>
       <Modal
@@ -32,6 +36,9 @@ const ResponseModal: FC<Props> = ({ info, setOpened, opened }) => {
         }
       >
         <Text>{info.description}</Text>
+        <Flex justify={"flex-end"}>
+          <Button onClick={() => handleClick()}>OK</Button>
+        </Flex>
       </Modal>
     </>
   );

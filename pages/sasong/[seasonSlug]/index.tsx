@@ -34,9 +34,6 @@ type Props = {
 const SeasonPage: NextPage<Props> = ({ products, season }) => {
   const router = useRouter();
   const { seasonSlug } = router.query;
-  const [status, setStatus] = useState(200);
-  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
-  const [isLoadingSeason, setIsLoadingSeason] = useState(true);
 
   let categories: CategoryDocument[] = [];
   if (products) {
