@@ -16,7 +16,6 @@ import { useEffect, useState } from "react";
 import { LineItem } from "../components/cart/AddToCartIcon";
 import CartItemConfirmation from "../components/checkout/CartItemConfirmation";
 import { Checkout } from "../components/context/checkoutProvider";
-import HeaderCheckout from "../components/layout/HeaderCheckout";
 import HeaderSuccess from "../components/layout/HeaderSuccess";
 import ContainerWithBorder from "../components/layout/ContainerWithBorder";
 import { OrderDocument } from "../models/Order";
@@ -61,7 +60,7 @@ const SuccessPage: NextPage = (props) => {
 
           const body = JSON.stringify({ cartItem, sessionId });
 
-          let response = await fetch("/api/open/order", {
+          let response = await fetch("/api/open/subproduct/createdorder", {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body,
@@ -120,7 +119,7 @@ const SuccessPage: NextPage = (props) => {
       } else if (response.status == 400) {
         router.push("/");
       } else {
-        router.push(`/kassa?message=${result.data}`);
+        router.push(`/kassa?message=${response.statusText}`);
       }
     }
     verifyPayment();

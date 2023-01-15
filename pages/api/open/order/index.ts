@@ -85,62 +85,6 @@ export default async function handler(
     } catch (err) {
       res.status(500).json({ success: false, data: err });
     }
-  } else if (method === "PUT") {
-    try {
-      // If orderno already exist don't continue
-      const findOrder = await Order.findOne({
-        orderNoStripe: req.body.sessionId,
-      });
-      if (findOrder) {
-        res
-          .status(400)
-          .json({ success: false, data: "Ordern existerar redan" });
-        return;
-      }
-
-      // Gets data in right format
-      const todayDate = new Date().toISOString().slice(0, 16).replace("T", " ");
-
-      // Gets product we want to change quantity on
-      const subProduct = await SubProduct.findOne({
-        _id: req.body.cartItem.price_data.product_data.metadata.id,
-      });
-
-      if (subProduct) {
-        const newAvailableQuantity =
-          subProduct.availableQty - req.body.cartItem.quantity;
-
-        const newreservedQuantity = subProduct.reservedQty
-          ? subProduct.reservedQty + req.body.cartItem.quantity
-          : 0 + req.body.cartItem.quantity;
-
-        const product = await SubProduct.findOneAndUpdate(
-          { _id: req.body.cartItem.price_data.product_data.metadata.id },
-          {
-            $set: {
-              availableQty: newAvailableQuantity,
-              reservedQty: newreservedQuantity,
-              lastUpdated: todayDate,
-            },
-          },
-          {
-            new: true,
-            runValidators: true,
-            multi: true,
-          }
-        );
-
-        if (!product) {
-          return res
-            .status(400)
-            .json({ success: false, data: "Product not updated" });
-        }
-        return res.status(200).json({ success: true, data: product });
-      }
-      res.status(400).json({ success: false, data: "Ordern är inte betald" });
-    } catch (err) {
-      res.status(500).json({ success: false, data: err });
-    }
   } else {
     res.setHeader("Allow", "POST");
     res.status(405).end("Method Not Allowed");
