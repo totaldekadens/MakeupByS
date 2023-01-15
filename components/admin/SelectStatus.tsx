@@ -141,7 +141,6 @@ const SelectStatus: FC<Props> = ({ order }) => {
       try {
         let response = await fetch(`/api/open/orderstatus/`);
         let result = await response.json();
-
         // Customizes the list of statuses depending on current status on order
         if (result.success) {
           let newList: SelectType[] = [];

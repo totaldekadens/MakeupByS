@@ -1,5 +1,5 @@
 import { AppShell, Title, Flex, Accordion, Text, Select } from "@mantine/core";
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import HeaderCheckout from "../../components/layout/HeaderCheckout";
 import { useEffect, useRef, useState } from "react";
 import dbConnect from "../../utils/dbConnect";
@@ -21,7 +21,7 @@ const Admin: NextPage<Props> = ({ orders }) => {
     "63b94b6966d02095eb80e861"
   );
   const [currentOrders, setCurrentOrders] = useState<PopulatedOrder[]>();
-
+  console.log(orders);
   // Refs
   const valueRef = useRef<any | null>();
   valueRef.current = orders;
@@ -206,7 +206,7 @@ const Admin: NextPage<Props> = ({ orders }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
   await dbConnect();
 
   const res: PopulatedOrder[] = await Order.find({})
