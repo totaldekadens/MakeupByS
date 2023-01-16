@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import {
   Modal,
   Text,
@@ -18,16 +18,16 @@ import { CategoryDocument } from "../../models/Category";
 
 type Props = {
   product: PopulatedProduct;
-  categories: CategoryDocument[];
   opened: boolean;
   setOpened: Dispatch<SetStateAction<boolean>>;
+  setIsUpdated: Dispatch<SetStateAction<boolean>>;
 };
 
 const ProductModal: FC<Props> = ({
   product,
   setOpened,
   opened,
-  categories,
+  setIsUpdated,
 }) => {
   const [editMainProduct, setEditMainProduct] = useState<boolean>(false);
   const [editSubProduct, setEditSubProduct] = useState<boolean>(false);
@@ -91,7 +91,7 @@ const ProductModal: FC<Props> = ({
                   <EditMainProductForm
                     product={product}
                     setEditMainProduct={setEditMainProduct}
-                    categories={categories}
+                    setIsUpdated={setIsUpdated}
                   />
                 ) : (
                   <>

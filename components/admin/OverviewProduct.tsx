@@ -1,15 +1,15 @@
 import { Flex, Image, Title, Text, Group, MediaQuery } from "@mantine/core";
 import { IconEdit, IconTrash } from "@tabler/icons";
-import { FC, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import { CategoryDocument } from "../../models/Category";
 import { PopulatedProduct } from "../../utils/types";
 import ProductModal from "../layout/ProductModal";
 type Props = {
   product: PopulatedProduct;
-  categories: CategoryDocument[];
+  setIsUpdated: Dispatch<SetStateAction<boolean>>;
 };
 
-const OverviewProduct: FC<Props> = ({ product, categories }) => {
+const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
   const [opened, setOpened] = useState(false);
   return (
     <tr key={product.title}>
@@ -81,7 +81,7 @@ const OverviewProduct: FC<Props> = ({ product, categories }) => {
         product={product}
         setOpened={setOpened}
         opened={opened}
-        categories={categories}
+        setIsUpdated={setIsUpdated}
       />
     </tr>
   );

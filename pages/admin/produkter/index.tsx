@@ -26,64 +26,33 @@ import OverviewProduct from "../../../components/admin/OverviewProduct";
 
 type Props = {
   products: PopulatedProduct[];
-  categories: CategoryDocument[];
 };
 
-const ProductHandler: NextPage<Props> = ({ products, categories }) => {
+const ProductHandler: NextPage<Props> = ({ products }) => {
   const [activeOrders, setActiveOrders] = useState<number>(0);
-  const [currentProducts, setCurrentOrders] = useState<PopulatedOrder[]>();
+  const [currentProducts, setCurrentProducts] =
+    useState<PopulatedProduct[]>(products);
   const [currentStatus, setCurrentStatus] = useState<string | null>(
     "Överblick"
   );
+  const [isUpdated, setIsUpdated] = useState<boolean>(false);
   // Refs
   const valueRef = useRef<any | null>();
   valueRef.current = products;
-  console.log(categories);
+
+  // If product is updated the productlist will be updated
   useEffect(() => {
-    // Returns products with chosen status
-    /*   const getCurrentOrders = () => {
-      if (products) {
-        let orderReference: PopulatedOrder[] = valueRef.current;
-        const filteredOrders = orderReference.filter((products) => {
-          const id = product.status!._id?.toString();
-          if (id == currentStatus) {
-            return true;
-          }
-          return false;
-        });
-
-        setCurrentOrders(filteredOrders);
+    const updateProducts = async () => {
+      const response = await fetch("/api/open/subproduct");
+      let result = await response.json();
+      if (result.success) {
+        setCurrentProducts(result.data);
+        setIsUpdated(false);
       }
+      setIsUpdated(false);
     };
-    getCurrentOrders();  */
-  }, [products]);
-
-  // Gets an array with statuses in use and then adjusts it to a Select component
-  /*  let statuses: any= [];
-  if (products) {
-    products.forEach((product) => {
-      if (statuses.length < 1) {
-        statuses.push(product.status);
-        return;
-      }
-      const findStatus = statuses.find(
-        (status) => status.status == product.status.status
-      );
-      if (!findStatus) {
-        statuses.push(product.status);
-        return;
-      }
-    });
-  }
-  const selectList: SelectType[] = statuses.map((status) => ({
-    label: status.status,
-    value: status._id ? status._id.toString() : "",
-  })); */
-
-  // Sorts products in a descending product
-  /*   if (currentOrders) {
-    currentOrders.sort((a, b) => (a.orderNo < b.orderNo ? 1 : -1));
-  } */
+    updateProducts();
+  }, [isUpdated]);
 
   const selectList = [
     { label: "Överblick", value: "OverviewProducts" },
@@ -92,8 +61,12 @@ const ProductHandler: NextPage<Props> = ({ products, categories }) => {
     { label: "Ta bort produkt", value: "DeleteProduct" },
   ];
 
-  const rows = products.map((product, index) => (
-    <OverviewProduct key={index} product={product} categories={categories} />
+  const rows = currentProducts.map((product, index) => (
+    <OverviewProduct
+      key={index}
+      product={product}
+      setIsUpdated={setIsUpdated}
+    />
   ));
   return (
     <>
@@ -185,11 +158,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       populate: { path: "seasons", model: Season },
     });
 
-  const categories = await Category.find({});
   return {
     props: {
       products: JSON.parse(JSON.stringify(subProducts)),
-      categories: JSON.parse(JSON.stringify(categories)),
     },
   };
 };

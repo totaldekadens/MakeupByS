@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import { Decimal128, Types } from "mongoose";
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import * as Yup from "yup";
 import Category, { CategoryDocument } from "../../models/Category";
 import { MainProductDocument } from "../../models/MainProduct";
@@ -38,16 +38,25 @@ const schema = Yup.object<ShapeOf<FormValues>>({
 
 type Props = {
   product: PopulatedProduct;
-  categories: CategoryDocument[];
   setEditMainProduct: Dispatch<SetStateAction<boolean>>;
+  setIsUpdated: Dispatch<SetStateAction<boolean>>;
 };
 
 const EditMainProductForm: FC<Props> = ({
   product,
   setEditMainProduct,
-  categories,
+  setIsUpdated,
 }) => {
-  const [selectList, setSelectList] = useState<SelectType[]>();
+  const [categories, setCategories] = useState<CategoryDocument[]>();
+
+  useEffect(() => {
+    const getCategories = async () => {
+      const response = await fetch("/api/open/category");
+      let result = await response.json();
+      setCategories(result.data);
+    };
+    getCategories();
+  }, [product]);
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -65,6 +74,7 @@ const EditMainProductForm: FC<Props> = ({
 
   const handleSubmit = async (values: FormValues) => {
     const updatedInfo: MainProductDocument = {
+      _id: product.mainProduct._id,
       partNo: product.mainProduct.partNo,
       brand: values.brand,
       price: values.price,
@@ -77,6 +87,21 @@ const EditMainProductForm: FC<Props> = ({
 
     console.log(updatedInfo);
     // Uppdatera databasen här!
+
+    const request = {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(updatedInfo),
+    };
+    const response = await fetch("/api/admin/mainproduct", request);
+    let result = await response.json();
+    console.log(result);
+    if (result.success) {
+      setIsUpdated(true);
+      setEditMainProduct(false);
+    }
   };
 
   const list: SelectType[] | null = categories
