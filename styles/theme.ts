@@ -49,7 +49,6 @@ export const getTheme = (colorScheme: ColorScheme): MantineThemeOverride => ({
   components: {
     // Här kan vi påverka styling för samtliga komponenter från Mantine.
 
-
     Button: {
       styles: (
         theme: MantineTheme,

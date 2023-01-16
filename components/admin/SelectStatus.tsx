@@ -2,12 +2,10 @@ import { Box, Button, Flex, Select } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { FC, useEffect, useState } from "react";
-import { OrderDocument } from "../../models/Order";
 import { OrderStatusDocument } from "../../models/OrderStatus";
-import { PopulatedOrder } from "../../utils/types";
 import ResponseModal from "../layout/ResponseModal";
 
-type SelectType = {
+export type SelectType = {
   value: string;
   label: string;
 };
@@ -35,75 +33,142 @@ const SelectStatus: FC<Props> = ({ order }) => {
     reason: "info",
   });
 
-  // Updates the order with new status
+  // Updates the order with new status and adjusts quantity on products in DB
   const handleClick = async () => {
-    order.status = status;
-    order.existingCustomer
-      ? (order.existingCustomer = order.existingCustomer._id)
-      : null;
+    try {
+      order.status = status;
+      order.existingCustomer
+        ? (order.existingCustomer = order.existingCustomer._id)
+        : null;
 
-    const request = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(order),
-    };
-    const response = await fetch("/api/admin/order", request);
-    let result = await response.json();
+      const request = {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(order),
+      };
+      const response = await fetch("/api/admin/order", request);
+      let result = await response.json();
 
-    if (result.success) {
-      // Todo: Ändra antal här!
-
-      // if status == Färdigbehandlad ta bort antal från reserverQty
-      // if status == Avbruten, flytta antalen från reservedQty till availabeQty.
-
+      if (result.success) {
+        // if status == Färdigbehandlad
+        if (result.data.status == "63b94ba666d02095eb80e865") {
+          try {
+            for (let i = 0; i < result.data.lineItems!.length; i++) {
+              let lineItem = result.data.lineItems[i];
+              const newRequest = {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(lineItem),
+              };
+              const newResponse = await fetch(
+                "/api/admin/subproduct/shippedorder",
+                newRequest
+              );
+              let newResult = await newResponse.json();
+              if (!newResult.success) {
+                const object: Response = {
+                  title: "Något gick fel!",
+                  description:
+                    "Orderstatus är uppdaterad men inte antalet i databasen. Kontakta administratör",
+                  reason: "error",
+                };
+                setResponse(object);
+                setOpened(true);
+                return;
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+          // if status == Avbruten
+        } else if (result.data.status == "63b94c3e66d02095eb80e86b") {
+          try {
+            for (let i = 0; i < result.data.lineItems!.length; i++) {
+              let lineItem = result.data.lineItems[i];
+              const newRequest = {
+                method: "PUT",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(lineItem),
+              };
+              const newResponse = await fetch(
+                "/api/admin/subproduct/cancelledorder",
+                newRequest
+              );
+              let newResult = await newResponse.json();
+              if (!newResult.success) {
+                const object: Response = {
+                  title: "Något gick fel!",
+                  description:
+                    "Orderstatus är uppdaterad men inte antalet i databasen. Kontakta administratör",
+                  reason: "error",
+                };
+                setResponse(object);
+                setOpened(true);
+                return;
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+        const object: Response = {
+          title: "Ordern är uppdaterad",
+          reason: "success",
+        };
+        setResponse(object);
+        setOpened(true);
+        return;
+      }
       const object: Response = {
-        title: "Ordern är uppdaterad",
-        reason: "success",
+        title: "Något gick fel, ordern är inte uppdaterad",
+        reason: "error",
       };
       setResponse(object);
       setOpened(true);
-      return;
+    } catch (err) {
+      console.log(err);
     }
-    const object: Response = {
-      title: "Något gick fel, ordern är inte uppdaterad",
-      reason: "error",
-    };
-    setResponse(object);
-    setOpened(true);
   };
 
   useEffect(() => {
     const getOrderStatus = async () => {
-      let response = await fetch(`/api/open/orderstatus/`);
-      let result = await response.json();
+      try {
+        let response = await fetch(`/api/open/orderstatus/`);
+        let result = await response.json();
+        // Customizes the list of statuses depending on current status on order
+        if (result.success) {
+          let newList: SelectType[] = [];
+          result.data.forEach((status: OrderStatusDocument) => {
+            if (status._id) {
+              let id = status._id.toString();
 
-      // Customizes the list of statuses depending on current status on order
-      if (result.success) {
-        let newList: SelectType[] = [];
-        result.data.forEach((status: OrderStatusDocument) => {
-          if (status._id) {
-            let id = status._id.toString();
+              if (
+                order.status.status == status.status ||
+                (order.status._id != "63b94b6966d02095eb80e861" &&
+                  order.status._id != "63b94c1066d02095eb80e868") ||
+                (order.status._id == "63b94c1066d02095eb80e868" &&
+                  id == "63b94ba666d02095eb80e865")
+              ) {
+                return;
+              }
 
-            if (
-              order.status.status == status.status ||
-              (order.status._id != "63b94b6966d02095eb80e861" &&
-                order.status._id != "63b94c1066d02095eb80e868") ||
-              (order.status._id == "63b94c1066d02095eb80e868" &&
-                id == "63b94ba666d02095eb80e865")
-            ) {
-              return;
+              let object = {
+                value: id,
+                label: status.status,
+              };
+              newList.push(object);
             }
-
-            let object = {
-              value: id,
-              label: status.status,
-            };
-            newList.push(object);
-          }
-        });
-        setStatusList(newList);
+          });
+          setStatusList(newList);
+        }
+      } catch (err) {
+        console.log(err);
       }
     };
     getOrderStatus();

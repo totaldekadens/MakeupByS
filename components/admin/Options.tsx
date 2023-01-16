@@ -1,4 +1,4 @@
-import { Button, Flex, MediaQuery, Menu } from "@mantine/core";
+import { Button, Flex, MediaQuery, Menu, Text } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -43,9 +43,22 @@ const Options = () => {
             return (
               <Link key={index} href={button.link}>
                 <Button
-                  sx={{ minWidth: 100 }}
+                  sx={(theme) => ({
+                    minWidth: 100,
+                    "&:hover": {
+                      backgroundColor: button.active
+                        ? theme.colors.brand[7]
+                        : "white",
+                      color: button.active
+                        ? theme.colors.brand[0]
+                        : theme.colors.brand[2],
+                      borderColor: button.active
+                        ? theme.colors.brand[7]
+                        : theme.colors.brand[2],
+                    },
+                  })}
                   variant={button.active ? "filled" : "outline"}
-                  color="brand.7"
+                  color={button.active ? "brand.7" : "brand.2"}
                 >
                   {button.name}
                 </Button>
@@ -56,12 +69,24 @@ const Options = () => {
       </MediaQuery>
       <MediaQuery largerThan="sm" styles={{ display: "none" }}>
         <Flex gap={5} mt={20}>
-          <Menu opened={opened} onChange={setOpened}>
+          <Menu
+            styles={(theme) => ({
+              dropdown: { width: 300 },
+              item: {
+                width: 180,
+                height: 50,
+                "&:hover": { backgroundColor: theme.colors.brand[1] },
+              },
+            })}
+            shadow="md"
+            opened={opened}
+            onChange={setOpened}
+          >
             <Menu.Target>
-              <Button>
-                {currentPage}{" "}
+              <Flex align={"center"} sx={{ cursor: "pointer" }}>
+                <Text>{currentPage}</Text>
                 <IconChevronDown style={{ marginLeft: 13 }} size={14} />
-              </Button>
+              </Flex>
             </Menu.Target>
             <Menu.Dropdown w={200}>
               {list.map((button, index) => {
