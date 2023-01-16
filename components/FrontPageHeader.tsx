@@ -46,12 +46,12 @@ const FrontPageHeader = () => {
         })}
       >
         <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
-          <Image src="/uploads/fadeblacksvg.svg" pos={"absolute"} top={0} />
+          <Image sx={{display: hide ? "none" : "flex"}} src="/uploads/fadetoblackbig.svg" pos={"absolute"} top={0} />
         </MediaQuery>
 
         <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
           <Image
-            sx={{display: hide ? "none" : "flex",}}
+            sx={{display: hide ? "none" : "flex"}}
             src="/uploads/fadeblackmobilesvg.svg"
             pos={"absolute"}
             top={0}
@@ -59,6 +59,7 @@ const FrontPageHeader = () => {
         </MediaQuery>
         <BackgroundImage sx={(theme) => ({
           height: hide ? 190 : 650,
+          width: "100%",
           [theme.fn.smallerThan("sm")]: {
             height: hide ? 150 : 550,
           },
