@@ -7,6 +7,7 @@ import {
   Select,
   Pagination,
   Table,
+  MediaQuery,
 } from "@mantine/core";
 import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import HeaderCheckout from "../../../components/layout/HeaderCheckout";
@@ -110,11 +111,8 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
             <Flex
               justify="flex-end"
               sx={(theme) => ({
-                width: "550px",
+                width: "600px",
                 [theme.fn.smallerThan("sm")]: {
-                  width: "470px",
-                },
-                [theme.fn.smallerThan("xs")]: {
                   width: "100%",
                 },
               })}
@@ -128,31 +126,39 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
               />
             </Flex>
 
-            <ContainerWithBorder>
+            <Flex
+              direction={"column"}
+              p={30}
+              mt="xl"
+              sx={(theme) => ({
+                border: `1px solid ${theme.colors.gray[3]}`,
+                borderRadius: "10px",
+                width: "600px",
+
+                [theme.fn.smallerThan("sm")]: {
+                  padding: 10,
+                  width: "100%",
+                },
+              })}
+            >
               <Table>
                 <thead>
                   <tr>
                     <th>Produkt</th>
-                    <th>Art.nr</th>
-                    <th>Kategori</th>
+                    <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+                      <th>Art.nr</th>
+                    </MediaQuery>
+                    <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+                      <th>Kategori</th>
+                    </MediaQuery>
                     <th>Res. antal</th>
                     <th>Tillg. antal</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>{rows}</tbody>
               </Table>
-            </ContainerWithBorder>
-            {products ? (
-              products.map((product, index) => {
-                return (
-                  <Flex sx={{ width: "100%" }}>
-                    <Text>{product.title}</Text>
-                  </Flex>
-                );
-              })
-            ) : (
-              <Text></Text>
-            )}
+            </Flex>
           </Flex>
         </Flex>
       </AppShell>
