@@ -19,67 +19,70 @@ import MobileLoginButton from "./MobileLoginButtons";
 import MobileBurgerMenu from "./MobileBurgerMenu";
 import ButtonSeasonFrontPage from "./ButtonSeasonFrontPage";
 import SearchMobileFrontPage from "./SearchMobileFrontpage";
-import { useCallback, useEffect, useState } from "react";
-import { useWindowScroll } from "@mantine/hooks";
+import { hideContext } from "./context/HideProvider";
+import { useCallback, useContext, useEffect, useState } from "react";
 
 const FrontPageHeader = () => {
   const session = useSession();
-
-  const [ fix, setFix ] = useState(false)
-
-  function setFixed() {
-    if(window.scrollY >= 500) {
-      setFix(true)
-    }else {
-      setFix(false)
-    }
-    window.addEventListener("scroll", setFixed)
-  }
+  const { hide, setHide } = useContext(hideContext);
 
   return (
     <>
       <MantineHeader
-        fixed={false}
-        height={"600px"}
+        fixed={true}
+        height={"650px"}
         sx={(theme) => ({
           display: "flex",
           justifyContent: "space-between",
           borderBottom: "none",
           alignItems: "center",
+          height: hide ? 190 : 650,
+          [theme.fn.smallerThan("sm")]: {
+            height: hide ? 150 : 550,
+          },
           [theme.fn.smallerThan("xs")]: {
-            height: "auto",
+            height: hide ? 100 : 420,
           },
         })}
       >
-        <MediaQuery smallerThan={"sm"} styles={{display: "none"}}>
-          <Image src="/uploads/fadeblacksvg.svg" pos={"absolute"} top={0}/>
+        <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
+          <Image src="/uploads/fadeblacksvg.svg" pos={"absolute"} top={0} />
         </MediaQuery>
 
-        <MediaQuery largerThan={"sm"} styles={{display: "none"}}>
-          <Image src="/uploads/fadeblackmobilesvg.svg" pos={"absolute"} top={0}/>
+        <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
+          <Image
+            sx={{display: hide ? "none" : "flex",}}
+            src="/uploads/fadeblackmobilesvg.svg"
+            pos={"absolute"}
+            top={0}
+          />
         </MediaQuery>
-        <BackgroundImage src="/uploads/hero.jpg">
+        <BackgroundImage sx={(theme) => ({
+          height: hide ? 190 : 650,
+          [theme.fn.smallerThan("sm")]: {
+            height: hide ? 150 : 550,
+          },
+          [theme.fn.smallerThan("xs")]: {
+            height: hide ? 100 : 420,
+            paddingTop: hide ? 20 : 10,
+          },
+        })} src="/uploads/hero.jpg">
           <Flex
+          className="asdasd"
             direction={"column"}
             align={"center"}
             sx={(theme) => ({
-              position: "sticky",
               width: "100%",
-              height: "650px",
-              [theme.fn.smallerThan("sm")]: {
-                height: "580px",
-              },
-              [theme.fn.smallerThan("xs")]: {
-                height: "500px",
-              },
             })}
           >
             <Flex
-              mt={28}
+            className="asdasdfff"
+              mt={10}
               justify={"center"}
               align={"center"}
               sx={(theme) => ({
                 zIndex: 2,
+                display: hide ? "none" : "flex",
                 width: "100%",
                 [theme.fn.smallerThan("sm")]: {
                   marginTop: "0px",
@@ -161,7 +164,6 @@ const FrontPageHeader = () => {
             </Flex>
 
             <Flex
-              className="navbar"
               justify={"space-between"}
               px={15}
               sx={(theme) => ({
@@ -199,7 +201,6 @@ const FrontPageHeader = () => {
                       [theme.fn.smallerThan("xs")]: {
                         paddingTop: "5px",
                         fontSize: "x-large",
-                        paddingLeft: "70px",
                       },
                     })}
                   >
@@ -238,7 +239,7 @@ const FrontPageHeader = () => {
               <MobileLoginButton />
             </Flex>
 
-                <SearchMobileFrontPage />
+            <SearchMobileFrontPage />
 
             <Flex>
               <ButtonSeasonFrontPage />
@@ -252,11 +253,11 @@ const FrontPageHeader = () => {
                 gap: 100,
                 justifyContent: "center",
                 alignItems: "center",
+                display: hide ? "none" : "flex",
                 [theme.fn.smallerThan("sm")]: {
                   marginRight: 50,
                 },
                 [theme.fn.smallerThan("xs")]: {
-                  marginTop: "40px",
                   justifyContent: "flex-end",
                   alignItems: "center",
                   flexDirection: "column",
