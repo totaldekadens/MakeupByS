@@ -66,7 +66,7 @@ export type SubProductDocument = {
   partNo: string;
   slug: string;
   images: string[];
-  setSlug: (title: String) => void;
+  setSlug?: (title: String) => void;
   colors: Types.ObjectId[];
   createdDate?: string;
   lastUpdated?: string;

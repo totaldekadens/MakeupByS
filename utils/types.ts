@@ -50,7 +50,7 @@ export type PopulatedProduct = {
     description2?: string;
     weight?: number;
     discount?: number;
-    _id?: Types.ObjectId;
+    _id: Types.ObjectId;
   };
   title: string;
   partNo: string;

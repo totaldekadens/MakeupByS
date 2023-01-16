@@ -2,14 +2,11 @@ import {
   AppShell,
   Title,
   Flex,
-  Accordion,
-  Text,
   Select,
-  Pagination,
   Table,
   MediaQuery,
 } from "@mantine/core";
-import { GetServerSideProps, GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import HeaderCheckout from "../../../components/layout/HeaderCheckout";
 import { useEffect, useRef, useState } from "react";
 import dbConnect from "../../../utils/dbConnect";
@@ -21,8 +18,7 @@ import MainProduct from "../../../models/MainProduct";
 import Category, { CategoryDocument } from "../../../models/Category";
 import Color from "../../../models/Color";
 import Season from "../../../models/Season";
-import ContainerWithBorder from "../../../components/layout/ContainerWithBorder";
-import OverviewProduct from "../../../components/admin/OverviewProduct";
+import OverviewProduct from "../../../components/admin/product/OverviewProduct";
 
 type Props = {
   products: PopulatedProduct[];
@@ -85,7 +81,7 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
             <Flex
               justify="flex-end"
               sx={(theme) => ({
-                width: "600px",
+                width: "640px",
                 [theme.fn.smallerThan("sm")]: {
                   width: "100%",
                 },
@@ -107,7 +103,7 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
               sx={(theme) => ({
                 border: `1px solid ${theme.colors.gray[3]}`,
                 borderRadius: "10px",
-                width: "600px",
+                width: "640px",
 
                 [theme.fn.smallerThan("sm")]: {
                   padding: 10,

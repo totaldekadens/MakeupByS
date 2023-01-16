@@ -1,9 +1,9 @@
 import { Flex, Image, Title, Text, Group, MediaQuery } from "@mantine/core";
 import { IconEdit, IconTrash } from "@tabler/icons";
 import { Dispatch, FC, SetStateAction, useState } from "react";
-import { CategoryDocument } from "../../models/Category";
-import { PopulatedProduct } from "../../utils/types";
-import ProductModal from "../layout/ProductModal";
+import { CategoryDocument } from "../../../models/Category";
+import { PopulatedProduct } from "../../../utils/types";
+import ProductModal from "./ProductModal";
 type Props = {
   product: PopulatedProduct;
   setIsUpdated: Dispatch<SetStateAction<boolean>>;

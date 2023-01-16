@@ -50,7 +50,7 @@ export type MainProductDocument = {
   description2?: string;
   weight?: number;
   discount?: number;
-  _id?: Types.ObjectId;
+  _id: Types.ObjectId;
 };
 
 export default mongoose.models.MainProduct ||

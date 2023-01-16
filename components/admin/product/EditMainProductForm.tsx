@@ -11,10 +11,10 @@ import { useForm, yupResolver } from "@mantine/form";
 import { Decimal128, Types } from "mongoose";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import * as Yup from "yup";
-import Category, { CategoryDocument } from "../../models/Category";
-import { MainProductDocument } from "../../models/MainProduct";
-import { PopulatedProduct } from "../../utils/types";
-import { SelectType } from "./SelectStatus";
+import Category, { CategoryDocument } from "../../../models/Category";
+import { MainProductDocument } from "../../../models/MainProduct";
+import { PopulatedProduct } from "../../../utils/types";
+import { SelectType } from "../SelectStatus";
 
 interface FormValues {
   brand: string;
@@ -84,9 +84,6 @@ const EditMainProductForm: FC<Props> = ({
       description2: values.description2,
       ingredients: values.ingredients,
     };
-
-    console.log(updatedInfo);
-    // Uppdatera databasen här!
 
     const request = {
       method: "PUT",
