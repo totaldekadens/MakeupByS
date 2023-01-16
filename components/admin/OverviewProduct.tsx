@@ -1,12 +1,14 @@
 import { Flex, Image, Title, Text, Group, MediaQuery } from "@mantine/core";
 import { IconEdit, IconTrash } from "@tabler/icons";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { PopulatedProduct } from "../../utils/types";
+import ProductModal from "../layout/ProductModal";
 type Props = {
   product: PopulatedProduct;
 };
 
 const OverviewProduct: FC<Props> = ({ product }) => {
+  const [opened, setOpened] = useState(false);
   return (
     <tr key={product.title}>
       <td style={{ height: "50px" }}>
@@ -18,7 +20,12 @@ const OverviewProduct: FC<Props> = ({ product }) => {
             fit="contain"
           />
           <Flex direction={"column"}>
-            <Text size={10} sx={{}} color="dimmed">
+            <Text
+              onClick={() => setOpened(true)}
+              size={10}
+              sx={{ cursor: "pointer" }}
+              color="dimmed"
+            >
               {product.title}
             </Text>
             <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
@@ -68,6 +75,7 @@ const OverviewProduct: FC<Props> = ({ product }) => {
           <IconTrash size={14} />
         </Flex>
       </td>
+      <ProductModal product={product} setOpened={setOpened} opened={opened} />
     </tr>
   );
 };
