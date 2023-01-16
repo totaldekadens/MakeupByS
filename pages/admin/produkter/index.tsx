@@ -18,7 +18,7 @@ import { PopulatedOrder, PopulatedProduct } from "../../../utils/types";
 import { SelectType } from "../../../components/admin/SelectStatus";
 import SubProduct from "../../../models/SubProduct";
 import MainProduct from "../../../models/MainProduct";
-import Category from "../../../models/Category";
+import Category, { CategoryDocument } from "../../../models/Category";
 import Color from "../../../models/Color";
 import Season from "../../../models/Season";
 import ContainerWithBorder from "../../../components/layout/ContainerWithBorder";
@@ -26,9 +26,10 @@ import OverviewProduct from "../../../components/admin/OverviewProduct";
 
 type Props = {
   products: PopulatedProduct[];
+  categories: CategoryDocument[];
 };
 
-const ProductHandler: NextPage<Props> = ({ products }) => {
+const ProductHandler: NextPage<Props> = ({ products, categories }) => {
   const [activeOrders, setActiveOrders] = useState<number>(0);
   const [currentProducts, setCurrentOrders] = useState<PopulatedOrder[]>();
   const [currentStatus, setCurrentStatus] = useState<string | null>(
@@ -37,7 +38,7 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
   // Refs
   const valueRef = useRef<any | null>();
   valueRef.current = products;
-
+  console.log(categories);
   useEffect(() => {
     // Returns products with chosen status
     /*   const getCurrentOrders = () => {
@@ -92,7 +93,7 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
   ];
 
   const rows = products.map((product, index) => (
-    <OverviewProduct key={index} product={product} />
+    <OverviewProduct key={index} product={product} categories={categories} />
   ));
   return (
     <>
@@ -184,8 +185,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       populate: { path: "seasons", model: Season },
     });
 
+  const categories = await Category.find({});
   return {
-    props: { products: JSON.parse(JSON.stringify(subProducts)) },
+    props: {
+      products: JSON.parse(JSON.stringify(subProducts)),
+      categories: JSON.parse(JSON.stringify(categories)),
+    },
   };
 };
 

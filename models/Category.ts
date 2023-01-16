@@ -29,7 +29,7 @@ export type CategoryDocument = {
   description: string;
   slug: string;
   setSlug: (title: String) => void;
-  _id?: Types.ObjectId;
+  _id: Types.ObjectId;
 };
 
 export default mongoose.models.Category ||

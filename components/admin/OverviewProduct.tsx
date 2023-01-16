@@ -1,13 +1,15 @@
 import { Flex, Image, Title, Text, Group, MediaQuery } from "@mantine/core";
 import { IconEdit, IconTrash } from "@tabler/icons";
 import { FC, useState } from "react";
+import { CategoryDocument } from "../../models/Category";
 import { PopulatedProduct } from "../../utils/types";
 import ProductModal from "../layout/ProductModal";
 type Props = {
   product: PopulatedProduct;
+  categories: CategoryDocument[];
 };
 
-const OverviewProduct: FC<Props> = ({ product }) => {
+const OverviewProduct: FC<Props> = ({ product, categories }) => {
   const [opened, setOpened] = useState(false);
   return (
     <tr key={product.title}>
@@ -75,7 +77,12 @@ const OverviewProduct: FC<Props> = ({ product }) => {
           <IconTrash size={14} />
         </Flex>
       </td>
-      <ProductModal product={product} setOpened={setOpened} opened={opened} />
+      <ProductModal
+        product={product}
+        setOpened={setOpened}
+        opened={opened}
+        categories={categories}
+      />
     </tr>
   );
 };

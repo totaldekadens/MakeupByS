@@ -1,56 +1,43 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import {
   Modal,
   Text,
   Flex,
   Button,
-  MediaQuery,
-  Box,
   Tooltip,
   Title,
   Image,
   createStyles,
 } from "@mantine/core";
-import {
-  IconCheck,
-  IconEdit,
-  IconInfoCircle,
-  IconTrash,
-  IconX,
-} from "@tabler/icons";
+import { IconEdit, IconTrash } from "@tabler/icons";
 import { PopulatedProduct } from "../../utils/types";
-import Details from "../product/Details";
 import { Carousel } from "@mantine/carousel";
-import MainProduct from "../../models/MainProduct";
+import Section from "../admin/Section";
+import EditMainProductForm from "../admin/EditMainProductForm";
+import { CategoryDocument } from "../../models/Category";
 
 type Props = {
   product: PopulatedProduct;
+  categories: CategoryDocument[];
   opened: boolean;
   setOpened: Dispatch<SetStateAction<boolean>>;
 };
-//////////////////
-type Section = {
-  title: string;
-  description: string;
-};
 
-export const Section: FC<Section> = ({ title, description }) => {
-  return (
-    <Flex gap={10}>
-      <Text size={14} weight="bold">
-        {title + ":"}
-      </Text>
-      <Text size={14}>{description}</Text>
-    </Flex>
-  );
-};
-/////////////////////
-const ProductModal: FC<Props> = ({ product, setOpened, opened }) => {
+const ProductModal: FC<Props> = ({
+  product,
+  setOpened,
+  opened,
+  categories,
+}) => {
+  const [editMainProduct, setEditMainProduct] = useState<boolean>(false);
+  const [editSubProduct, setEditSubProduct] = useState<boolean>(false);
+
   const { classes } = useStyles();
   const handleClick = () => {
     setOpened(false);
     window.location.reload();
   };
+
   return (
     <>
       <Modal
@@ -91,53 +78,71 @@ const ProductModal: FC<Props> = ({ product, setOpened, opened }) => {
                     Huvudartikel:
                   </Title>
                   <Flex gap={10}>
-                    <IconEdit style={{ cursor: "pointer" }} size={24} />
+                    <IconEdit
+                      onClick={() => {
+                        setEditMainProduct(true);
+                      }}
+                      style={{ cursor: "pointer" }}
+                      size={24}
+                    />
                   </Flex>
                 </Flex>
-                <Section
-                  title="Artikelnummer"
-                  description={product.mainProduct.partNo}
-                />
-                <Section
-                  title="Märke"
-                  description={product.mainProduct.brand}
-                />
-                <Section
-                  title="Pris"
-                  description={product.mainProduct.price.$numberDecimal + " KR"}
-                />
+                {editMainProduct ? (
+                  <EditMainProductForm
+                    product={product}
+                    setEditMainProduct={setEditMainProduct}
+                    categories={categories}
+                  />
+                ) : (
+                  <>
+                    <Section
+                      title="Artikelnummer"
+                      description={product.mainProduct.partNo}
+                    />
+                    <Section
+                      title="Märke"
+                      description={product.mainProduct.brand}
+                    />
+                    <Section
+                      title="Pris"
+                      description={
+                        product.mainProduct.price.$numberDecimal + " KR"
+                      }
+                    />
 
-                <Section
-                  title="Kategori"
-                  description={product.mainProduct.category.title}
-                />
-                <Section
-                  title="Vikt"
-                  description={product.mainProduct.weight + " g"}
-                />
+                    <Section
+                      title="Kategori"
+                      description={product.mainProduct.category.title}
+                    />
+                    <Section
+                      title="Vikt"
+                      description={product.mainProduct.weight + " g"}
+                    />
 
-                <Flex direction="column">
-                  <Text size={14} weight="bold">
-                    Beskrivning 1:
-                  </Text>
-                  <Text size={14}>{product.mainProduct.description1}</Text>
-                </Flex>
-                <Flex direction="column">
-                  <Text size={14} weight="bold">
-                    Beskrivning 2: (valbar)
-                  </Text>
-                  <Text size={14}>
-                    {product.mainProduct.description2
-                      ? product.mainProduct.description2
-                      : null}
-                  </Text>
-                </Flex>
-                <Flex direction="column">
-                  <Text size={14} weight="bold">
-                    Ingredienser:
-                  </Text>
-                  <Text size={14}>{product.mainProduct.ingredients}</Text>
-                </Flex>
+                    <Flex direction="column">
+                      <Text size={14} weight="bold">
+                        Beskrivning 1:
+                      </Text>
+                      <Text size={14}>{product.mainProduct.description1}</Text>
+                    </Flex>
+                    <Flex direction="column">
+                      <Text size={14} weight="bold">
+                        Beskrivning 2: (valbar)
+                      </Text>
+                      <Text size={14}>
+                        {product.mainProduct.description2
+                          ? product.mainProduct.description2
+                          : null}
+                      </Text>
+                    </Flex>
+                    <Flex direction="column">
+                      <Text size={14} weight="bold">
+                        Ingredienser:
+                      </Text>
+                      <Text size={14}>{product.mainProduct.ingredients}</Text>
+                    </Flex>
+                  </>
+                )}
               </Flex>
               <Flex
                 sx={(theme) => ({
@@ -160,6 +165,14 @@ const ProductModal: FC<Props> = ({ product, setOpened, opened }) => {
 
                 <Section title="Artikelnummer" description={product.partNo} />
                 <Section title="Titel" description={product.title} />
+                <Section
+                  title="Tillgängligt antal"
+                  description={product.availableQty}
+                />
+                <Section
+                  title="Reserverat antal"
+                  description={product.reservedQty}
+                />
                 <Flex gap={10}>
                   <Text size={14} weight="bold">
                     Färg:
@@ -241,14 +254,10 @@ const ProductModal: FC<Props> = ({ product, setOpened, opened }) => {
                   align="center"
                   styles={(theme) => ({
                     viewport: {
-                      [theme.fn.smallerThan("xs")]: {
-                        height: "40vh",
-                      },
+                      height: "40vh",
                     },
                     container: {
-                      [theme.fn.smallerThan("xs")]: {
-                        height: "40vh",
-                      },
+                      height: "40vh",
                     },
                   })}
                   loop
