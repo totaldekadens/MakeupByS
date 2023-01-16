@@ -1,4 +1,12 @@
-import { AppShell, Title, Flex, Accordion, Text, Select } from "@mantine/core";
+import {
+  AppShell,
+  Title,
+  Flex,
+  Accordion,
+  Text,
+  Select,
+  Pagination,
+} from "@mantine/core";
 import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import HeaderCheckout from "../../components/layout/HeaderCheckout";
 import { useEffect, useRef, useState } from "react";
@@ -21,7 +29,6 @@ const Admin: NextPage<Props> = ({ orders }) => {
     "63b94b6966d02095eb80e861"
   );
   const [currentOrders, setCurrentOrders] = useState<PopulatedOrder[]>();
-  console.log(orders);
   // Refs
   const valueRef = useRef<any | null>();
   valueRef.current = orders;
