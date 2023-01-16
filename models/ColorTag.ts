@@ -30,7 +30,7 @@ export type ColorTagDocument = {
   slug: string;
   hexcolor: string;
   setSlug: (title: String) => void;
-  _id?: Types.ObjectId;
+  _id: Types.ObjectId;
 };
 
 export default mongoose.models.ColorTag ||

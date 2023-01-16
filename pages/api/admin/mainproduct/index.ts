@@ -46,6 +46,31 @@ export default async function handler(
         res.status(400).json({ success: false, message: error });
       }
       break;
+
+    case "PUT":
+      try {
+        // Fix validation for already existing category except the one you update
+
+        const updateMainProduct: MainProductDocument = req.body;
+
+        const mainProduct = await MainProduct.findOneAndUpdate(
+          { _id: req.body._id },
+          updateMainProduct,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+        if (!mainProduct) {
+          return res
+            .status(400)
+            .json({ success: false, data: "MainProduct not found" });
+        }
+        res.status(200).json({ success: true, data: mainProduct });
+      } catch (error) {
+        res.status(400).json({ success: false, data: error });
+      }
+      break;
     default:
       res.status(400).json({ success: false, data: "Break error" });
       break;
