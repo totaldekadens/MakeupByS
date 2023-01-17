@@ -23,5 +23,10 @@ export default withAuth(
 
 // If no one is logged in and tries to enter URLS below, you will be redirected to /signin
 export const config = {
-  matcher: ["/admin/:path*", "/minsida"],
+  matcher: [
+    "/admin/:path*",
+    "/minsida",
+    "/api/admin/:path*",
+    "/api/customer/:path*",
+  ],
 };

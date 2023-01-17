@@ -48,7 +48,7 @@ export default async function handler(
         updateSubProduct.mainProduct = req.body.mainProduct;
         updateSubProduct.partNo = mainProduct?.partNo + "-" + req.body.title;
         updateSubProduct.title = req.body.title;
-        updateSubProduct.setSlug(req.body.title);
+        updateSubProduct.setSlug!(req.body.title);
         updateSubProduct.images = req.body.images;
         updateSubProduct.colors = req.body.colors;
         updateSubProduct.availableQty = req.body.availableQty;
