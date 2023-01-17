@@ -55,15 +55,15 @@ const Options = () => {
   });
 
   useEffect(() => {
-    const getNumber = () => {
+    const getPageName = () => {
       list.forEach((path) => {
-        if (router.pathname == path.link) {
+        if (router.pathname.includes(path.ref)) {
           setCurrentPage(path.name);
         } else {
         }
       });
     };
-    getNumber();
+    getPageName();
   }, [opened]);
   return (
     <>
@@ -103,7 +103,7 @@ const Options = () => {
         </Flex>
       </MediaQuery>
       <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-        <Flex gap={5} mt={20}>
+        <Flex gap={5}>
           <Menu
             styles={(theme) => ({
               dropdown: { width: 300 },
@@ -118,8 +118,12 @@ const Options = () => {
             onChange={setOpened}
           >
             <Menu.Target>
-              <Flex align={"center"} sx={{ cursor: "pointer" }}>
-                <Text>{currentPage}</Text>
+              <Flex
+                align={"center"}
+                justify="center"
+                sx={{ cursor: "pointer", width: 300 }}
+              >
+                <Text size={26}>{currentPage}</Text>
                 <IconChevronDown style={{ marginLeft: 13 }} size={14} />
               </Flex>
             </Menu.Target>

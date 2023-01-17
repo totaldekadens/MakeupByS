@@ -78,3 +78,16 @@ export type PopulatedProduct = {
   discount?: number;
   _id: Types.ObjectId;
 };
+
+export type PopulatedMainProduct = {
+  description1: string;
+  partNo: string;
+  ingredients: string;
+  brand: string;
+  price: { $numberDecimal: Schema.Types.Decimal128 };
+  category: CategoryDocument;
+  description2?: string;
+  weight?: number;
+  discount?: number;
+  _id: Types.ObjectId;
+};

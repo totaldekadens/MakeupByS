@@ -21,46 +21,46 @@ import { ColorDocument } from "../../../models/Color";
 import { ColorTagDocument } from "../../../models/ColorTag";
 import { MainProductDocument } from "../../../models/MainProduct";
 import { SubProductDocument } from "../../../models/SubProduct";
-import { PopulatedProduct } from "../../../utils/types";
+import { PopulatedMainProduct, PopulatedProduct } from "../../../utils/types";
 import { SelectType } from "../SelectStatus";
-import MultiSelectColor from "./MultiSelect";
+import MultiSelectColor from "./MultiSelectColor";
 
 export interface FormValues {
   availableQty: number;
   colors: any;
   images: any;
+  mainProduct: any;
+  title: string;
 }
 
 const schema = Yup.object<ShapeOf<FormValues>>({
   availableQty: Yup.number().required("Vänligen fyll i antal"),
   colors: Yup.array().required("Vänligen fyll i färg"),
   images: Yup.array().required("Vänligen fyll i bilder"),
+  mainProduct: Yup.string().required("Vänligen fyll i mainProduct"),
+  title: Yup.string().required("Vänligen fyll i titel"),
 });
 
 type Props = {
-  product: PopulatedProduct;
-  setEditSubProduct: Dispatch<SetStateAction<boolean>>;
-  setIsUpdated: Dispatch<SetStateAction<boolean>>;
+  setIsCreated: Dispatch<SetStateAction<boolean>>;
+  mainProducts: PopulatedMainProduct[];
 };
 
-const EditSubProductForm: FC<Props> = ({
-  product,
-  setEditSubProduct,
-  setIsUpdated,
-}) => {
+const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
   // States
   const [colors, setColors] = useState<SelectType[]>([]);
   const [colortags, setColorTags] = useState<SelectType[]>([]);
-
   const [multiSelectColors, setMultiSelectColors] = useState<string[]>([]);
   const [valueTag, setValueTag] = useState<string | null>(null);
-  const [direction, setDirection] = useState("set");
+  const [currentMainProduct, setCurrentMainProduct] = useState<string | null>(
+    null
+  );
+
   // Gets colortags on load
   useEffect(() => {
     const getColorTags = async () => {
       const response = await fetch("/api/open/colortag");
       let result = await response.json();
-
       const list: SelectType[] = result.data.map((color: ColorTagDocument) => ({
         label: color.color,
         value: color._id.toString(),
@@ -68,7 +68,7 @@ const EditSubProductForm: FC<Props> = ({
       setColorTags(list);
     };
     getColorTags();
-  }, [product]);
+  }, []);
 
   // Gets all colors belonging to chosen color tag
   useEffect(() => {
@@ -95,12 +95,26 @@ const EditSubProductForm: FC<Props> = ({
     getColors();
   }, [valueTag]);
 
-  const colorIds = product.colors.map((color) => color._id?.toString());
+  const mainProductSelect = mainProducts
+    ? mainProducts.map((product) => ({
+        label:
+          product.partNo +
+          " - " +
+          product.category.title +
+          " - " +
+          product.brand,
+        value: product._id.toString(),
+      }))
+    : [];
+
+  // const colorIds = product.colors.map((color) => color._id?.toString());
   const form = useForm<FormValues>({
     initialValues: {
-      availableQty: product.availableQty || 0,
-      colors: colorIds,
-      images: product.images,
+      availableQty: 0,
+      colors: [],
+      images: [],
+      title: "",
+      mainProduct: "",
     },
     validate: yupResolver(schema),
     validateInputOnChange: true,
@@ -108,32 +122,18 @@ const EditSubProductForm: FC<Props> = ({
 
   // Updates product with new info
   const handleSubmit = async (values: FormValues) => {
-    if (direction == "remove" && product.availableQty < values.availableQty) {
-      // #136 Fix modal!
-      alert("Kan inte ta bort mer än vad som finns");
-      return;
-    }
-
-    const updatedInfo: SubProductDocument = {
-      _id: product._id,
-      title: product.title,
-      slug: product.slug,
-      mainProduct: product.mainProduct._id,
-      partNo: product.partNo,
-      availableQty:
-        direction == "add"
-          ? Number(product.availableQty) + Number(values.availableQty)
-          : direction == "remove"
-          ? Number(product.availableQty) - Number(values.availableQty)
-          : Number(values.availableQty),
+    console.log("komme rjag in? ");
+    console.log(values);
+    const createProduct: any = {
+      title: values.title,
+      mainProduct: currentMainProduct,
+      availableQty: Number(values.availableQty),
       images: values.images,
-      colors:
-        multiSelectColors.length > 0
-          ? (multiSelectColors as unknown as Types.ObjectId[])
-          : (values.colors as unknown as Types.ObjectId[]),
+      colors: multiSelectColors,
     };
 
-    const request = {
+    console.log(createProduct);
+    /*   const request = {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -148,7 +148,7 @@ const EditSubProductForm: FC<Props> = ({
       setIsUpdated(true);
       setEditSubProduct(false);
       return;
-    }
+    } */
     // #136 Modal error!
   };
 
@@ -164,36 +164,69 @@ const EditSubProductForm: FC<Props> = ({
         }}
       >
         <Flex justify={"center"} direction="column" sx={{ width: "90%" }}>
-          <TextInput
-            mt="xs"
-            label="Artikelnummer"
-            placeholder={product.partNo}
-            name="brand"
-            disabled
-          />
+          <Flex gap={10}>
+            <Select
+              searchable
+              w={270}
+              value={currentMainProduct}
+              onChange={setCurrentMainProduct}
+              placeholder="Välj huvudartikel"
+              label="Huvudartikel"
+              data={mainProductSelect}
+              name="mainProduct"
+            />
+            <Flex direction={"column"} sx={{ width: 400 }}>
+              {currentMainProduct
+                ? mainProducts.map((product, index) => {
+                    const id = product._id.toString();
+                    if (id == currentMainProduct) {
+                      return (
+                        <>
+                          <Flex key={index} direction={"column"}>
+                            <Text weight={"bold"} size={"xs"}>
+                              Pris:
+                            </Text>
+                            <Text size={"xs"}>
+                              {Number(product.price.$numberDecimal) + " KR"}
+                            </Text>
+                          </Flex>
+                          <Flex direction={"column"}>
+                            <Text weight={"bold"} size={"xs"}>
+                              Vikt:
+                            </Text>
+                            <Text size={"xs"}>{product.weight}</Text>
+                          </Flex>
+                          <Flex direction={"column"}>
+                            <Text weight={"bold"} size={"xs"}>
+                              Beskrivning 1:
+                            </Text>
+                            <Text size={"xs"}>{product.description1}</Text>
+                          </Flex>
+                          <Flex direction={"column"}>
+                            <Text weight={"bold"} size={"xs"}>
+                              Beskrivning 2:
+                            </Text>
+                            <Text size={"xs"}>{product.description2}</Text>
+                          </Flex>
+                        </>
+                      );
+                    }
+                  })
+                : null}
+            </Flex>
+          </Flex>
+
           <TextInput
             mt="xs"
             label="Titel"
-            placeholder={product.title}
-            name="brand"
-            disabled
+            placeholder={"Produktens namn"}
+            name="title"
+            {...form.getInputProps("title")}
           />
-          <Radio.Group
-            mt={10}
-            value={direction}
-            onChange={setDirection}
-            name={"Tillgängligt antal"}
-            label="Antal"
-            description={"Tillgängligt antal: " + product.availableQty}
-          >
-            <Radio value="set" label="Sätt" />
-            <Radio value="add" label="Lägg till" />
-            <Radio value="remove" label="Ta bort" />
-          </Radio.Group>
           <NumberInput
             min={0}
             mt="xs"
-            label=""
+            label="Antal"
             placeholder={0}
             name="availableQty"
             {...form.getInputProps("availableQty")}
@@ -206,22 +239,6 @@ const EditSubProductForm: FC<Props> = ({
             name="images"
             {...form.getInputProps("images")}
           />
-          <Flex mt={30} sx={{ width: "100%" }} h={150}>
-            {product.images.map((image, index) => {
-              return (
-                <Flex
-                  key={index}
-                  direction={"column"}
-                  align={"center"}
-                  w={100}
-                  h={100}
-                >
-                  <Image src={`/uploads/${image}`} />
-                  <Text size={"xs"}>{image}</Text>
-                </Flex>
-              );
-            })}
-          </Flex>
           <Select
             label="Färg*"
             data={colortags}
@@ -232,19 +249,10 @@ const EditSubProductForm: FC<Props> = ({
             data={colors}
             value={multiSelectColors}
             setValue={setMultiSelectColors}
-            form={form}
+            form={form} // check
           />
         </Flex>
-
         <Flex mt={20} gap="md">
-          <Button
-            onClick={() => {
-              setEditSubProduct(false);
-            }}
-            variant="outline"
-          >
-            Avbryt
-          </Button>
           <Button
             w={200}
             fullWidth
@@ -258,7 +266,7 @@ const EditSubProductForm: FC<Props> = ({
               },
             })}
           >
-            Bekräfta ändringar
+            Skapa produkt
           </Button>
         </Flex>
       </form>
@@ -266,4 +274,4 @@ const EditSubProductForm: FC<Props> = ({
   );
 };
 
-export default EditSubProductForm;
+export default CreateSubProductForm;
