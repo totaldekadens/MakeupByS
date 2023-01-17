@@ -122,8 +122,6 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
 
   // Updates product with new info
   const handleSubmit = async (values: FormValues) => {
-    console.log("komme rjag in? ");
-    console.log(values);
     const createProduct: any = {
       title: values.title,
       mainProduct: currentMainProduct,
@@ -132,6 +130,7 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
       colors: multiSelectColors,
     };
 
+    // Bara Lägga till bilder kvar!!
     console.log(createProduct);
     /*   const request = {
       method: "PUT",
@@ -164,10 +163,22 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
         }}
       >
         <Flex justify={"center"} direction="column" sx={{ width: "90%" }}>
-          <Flex gap={10}>
+          <Flex
+            gap={10}
+            sx={(theme) => ({
+              [theme.fn.smallerThan("sm")]: {
+                flexDirection: "column",
+              },
+            })}
+          >
             <Select
               searchable
               w={270}
+              sx={(theme) => ({
+                [theme.fn.smallerThan("xs")]: {
+                  width: "100%",
+                },
+              })}
               value={currentMainProduct}
               onChange={setCurrentMainProduct}
               placeholder="Välj huvudartikel"
@@ -175,7 +186,15 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
               data={mainProductSelect}
               name="mainProduct"
             />
-            <Flex direction={"column"} sx={{ width: 400 }}>
+            <Flex
+              direction={"column"}
+              sx={(theme) => ({
+                width: 400,
+                [theme.fn.smallerThan("xs")]: {
+                  width: "90%",
+                },
+              })}
+            >
               {currentMainProduct
                 ? mainProducts.map((product, index) => {
                     const id = product._id.toString();
