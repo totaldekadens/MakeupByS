@@ -9,15 +9,45 @@ const Options = () => {
   const [opened, setOpened] = useState(false);
   const [currentPage, setCurrentPage] = useState<string>("Beställningar");
   const list = [
-    { name: "Beställningar", link: "/admin", active: true },
-    { name: "Produkter", link: "/admin/produkter", active: false },
-    { name: "Kategorier", link: "/admin/kategorier", active: false },
-    { name: "Frakt", link: "/admin/frakt", active: false },
-    { name: "Kunder", link: "/admin/kunder", active: false },
+    {
+      name: "Beställningar",
+      link: "/admin/bestallningar",
+      active: true,
+      ref: "bestallningar",
+      disabled: false,
+    },
+    {
+      name: "Produkter",
+      link: "/admin/produkter",
+      active: false,
+      ref: "produkter",
+      disabled: false,
+    },
+    {
+      name: "Kategorier",
+      link: "/admin/kategorier",
+      active: false,
+      ref: "kategorier",
+      disabled: true,
+    },
+    {
+      name: "Frakt",
+      link: "/admin/frakt",
+      active: false,
+      ref: "frakt",
+      disabled: true,
+    },
+    {
+      name: "Kunder",
+      link: "/admin/kunder",
+      active: false,
+      ref: "kunder",
+      disabled: true,
+    },
   ];
 
   list.forEach((path) => {
-    if (router.pathname == path.link) {
+    if (router.pathname.includes(path.ref)) {
       path.active = true;
     } else {
       path.active = false;
@@ -41,8 +71,13 @@ const Options = () => {
         <Flex gap={5} mt={20}>
           {list.map((button, index) => {
             return (
-              <Link key={index} href={button.link}>
+              <Link
+                key={index}
+                href={button.disabled ? "#" : button.link}
+                style={{ pointerEvents: button.disabled ? "none" : "unset" }}
+              >
                 <Button
+                  disabled={button.disabled}
                   sx={(theme) => ({
                     minWidth: 100,
                     "&:hover": {

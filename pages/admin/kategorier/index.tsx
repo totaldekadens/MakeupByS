@@ -15,7 +15,6 @@ const CategoryHandler = () => {
   return (
     <AppShell fixed={false} header={<HeaderCheckout />}>
       <Flex direction={"column"} align="center" style={{ marginTop: 60 }}>
-        <Title order={1}>ADMIN</Title>
         <Options />
       </Flex>
     </AppShell>

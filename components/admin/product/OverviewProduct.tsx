@@ -65,17 +65,7 @@ const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
         <Text size={10}>{product.availableQty}</Text>
       </td>
       <td>
-        <Flex
-          gap={6}
-          sx={(theme) => ({
-            [theme.fn.smallerThan("xs")]: {
-              flexDirection: "column",
-            },
-          })}
-        >
-          <IconEdit size={14} />
-          <IconTrash size={14} />
-        </Flex>
+        <IconTrash size={14} />
       </td>
       <ProductModal
         product={product}
