@@ -7,6 +7,9 @@ import {
   Text,
   Textarea,
   MultiSelect,
+  Radio,
+  Image,
+  Box,
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import { Decimal128, Types } from "mongoose";
@@ -29,8 +32,8 @@ export interface FormValues {
 
 const schema = Yup.object<ShapeOf<FormValues>>({
   availableQty: Yup.number().required("Vänligen fyll i antal"),
-  colors: Yup.string().required("Vänligen fyll i färg"),
-  images: Yup.string().required("Vänligen fyll i bilder"),
+  colors: Yup.array().required("Vänligen fyll i färg"),
+  images: Yup.array().required("Vänligen fyll i bilder"),
 });
 
 type Props = {
@@ -49,7 +52,7 @@ const EditSubProductForm: FC<Props> = ({
   const [colortags, setColorTags] = useState<SelectType[]>([]);
   const [value, setValue] = useState<string[]>([]);
   const [valueTag, setValueTag] = useState<string | null>(null);
-
+  const [direction, setDirection] = useState("set");
   // Gets colortags on load
   useEffect(() => {
     const getColorTags = async () => {
@@ -90,10 +93,11 @@ const EditSubProductForm: FC<Props> = ({
     getColors();
   }, [valueTag]);
 
+  const colorIds = product.colors.map((color) => color._id?.toString());
   const form = useForm<FormValues>({
     initialValues: {
       availableQty: product.availableQty || 0,
-      colors: product.colors,
+      colors: colorIds,
       images: product.images,
     },
     validate: yupResolver(schema),
@@ -102,15 +106,29 @@ const EditSubProductForm: FC<Props> = ({
 
   // Updates product with new info
   const handleSubmit = async (values: FormValues) => {
+    if (direction == "remove" && product.availableQty < values.availableQty) {
+      // #136 Fix modal!
+      alert("Kan inte ta bort mer än vad som finns");
+      return;
+    }
+
     const updatedInfo: SubProductDocument = {
       _id: product._id,
       title: product.title,
       slug: product.slug,
       mainProduct: product.mainProduct._id,
       partNo: product.partNo,
-      availableQty: values.availableQty,
+      availableQty:
+        direction == "add"
+          ? Number(product.availableQty) + Number(values.availableQty)
+          : direction == "remove"
+          ? Number(product.availableQty) - Number(values.availableQty)
+          : Number(values.availableQty),
       images: values.images,
-      colors: values.colors,
+      colors:
+        value.length > 0
+          ? (value as unknown as Types.ObjectId[])
+          : (values.colors as unknown as Types.ObjectId[]),
     };
 
     const request = {
@@ -122,11 +140,14 @@ const EditSubProductForm: FC<Props> = ({
     };
     const response = await fetch("/api/admin/subproduct", request);
     let result = await response.json();
-    console.log(result);
+
     if (result.success) {
+      // #136 Modal success!
       setIsUpdated(true);
       setEditSubProduct(false);
+      return;
     }
+    // #136 Modal error!
   };
 
   return (
@@ -155,7 +176,26 @@ const EditSubProductForm: FC<Props> = ({
             name="brand"
             disabled
           />
-
+          <Radio.Group
+            mt={10}
+            value={direction}
+            onChange={setDirection}
+            name={"Tillgängligt antal"}
+            label="Antal"
+            description={"Tillgängligt antal: " + product.availableQty}
+          >
+            <Radio value="set" label="Sätt" />
+            <Radio value="add" label="Lägg till" />
+            <Radio value="remove" label="Ta bort" />
+          </Radio.Group>
+          <TextInput
+            mt="xs"
+            label=""
+            placeholder={0}
+            name="availableQty"
+            {...form.getInputProps("availableQty")}
+            w={100}
+          />
           <TextInput
             mt="xs"
             label="Bild*"
@@ -163,6 +203,22 @@ const EditSubProductForm: FC<Props> = ({
             name="images"
             {...form.getInputProps("images")}
           />
+          <Flex mt={30} sx={{ width: "100%" }} h={150}>
+            {product.images.map((image, index) => {
+              return (
+                <Flex
+                  key={index}
+                  direction={"column"}
+                  align={"center"}
+                  w={100}
+                  h={100}
+                >
+                  <Image src={`/uploads/${image}`} />
+                  <Text size={"xs"}>{image}</Text>
+                </Flex>
+              );
+            })}
+          </Flex>
           <Select
             label="Färg*"
             data={colortags}

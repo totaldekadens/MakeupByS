@@ -71,6 +71,53 @@ export default async function handler(
         res.status(400).json({ success: false, message: error });
       }
       break;
+    case "PUT":
+      try {
+        // Fix validation for already existing sub product except the one you update
+
+        // Check i Main product exists
+        /*       const mainProduct: MainProductDocument | null =
+          await MainProduct.findOne({
+            _id: req.body.mainProduct,
+          });
+
+        if (!mainProduct) {
+          return res.status(404).send({
+            success: false,
+            data: "Main product could not be found",
+          });
+        } */
+
+        const todayDate = new Date()
+          .toISOString()
+          .slice(0, 16)
+          .replace("T", " ");
+        //console.log(req.body);
+        const updateSubProduct: SubProductDocument = req.body;
+        //updateSubProduct.setSlug!(req.body.title);
+        updateSubProduct.lastUpdated = todayDate;
+
+        console.log(updateSubProduct);
+        const subProduct = await SubProduct.findOneAndUpdate(
+          { _id: req.body._id },
+          updateSubProduct,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+
+        console.log(subProduct);
+        if (!subProduct) {
+          return res
+            .status(400)
+            .json({ success: false, data: "Product not found" });
+        }
+        res.status(200).json({ success: true, data: subProduct });
+      } catch (error) {
+        res.status(400).json({ success: false, data: error });
+      }
+      break;
     default:
       res.status(400).json({ success: false, data: "Break error" });
       break;

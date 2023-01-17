@@ -195,9 +195,10 @@ const ProductModal: FC<Props> = ({
                         Färg:
                       </Text>
                       <Flex>
-                        {product.colors.map((color) => {
+                        {product.colors.map((color, index) => {
                           return (
                             <Flex
+                              key={index}
                               w={30}
                               h={30}
                               sx={{ borderRadius: "50%" }}
