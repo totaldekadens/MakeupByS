@@ -53,8 +53,6 @@ const FrontPageHeader = () => {
             },
           })}
         >
-
-          {/* navbar */}
           <Flex
             justify={"space-between"}
             px={15}
@@ -66,9 +64,8 @@ const FrontPageHeader = () => {
               },
             })}
           >
-            <Searchbar />
 
-            {/* burger componenet här */}
+            <Searchbar />
             <MobileBurgerMenu />
 
             <Link href="/">
