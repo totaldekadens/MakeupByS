@@ -23,7 +23,8 @@
     "pages/api/admin/index.js",
     "pages/api/open/color/index.js",
     "pages/api/open/mainproduct/index.js",
-    "pages/api/customer/user/[id].js"
+    "pages/api/customer/user/[id].js",
+    "components/admin/uploadform/index.jsx"
   ],
   "exclude": ["node_modules"]
 }

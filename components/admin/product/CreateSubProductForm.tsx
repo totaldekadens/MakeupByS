@@ -1,43 +1,32 @@
 import {
   Button,
   Flex,
-  MediaQuery,
   Select,
   TextInput,
   Text,
-  Textarea,
-  MultiSelect,
-  Radio,
-  Image,
   Box,
   NumberInput,
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
-import { Decimal128, Types } from "mongoose";
+import { Types } from "mongoose";
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import * as Yup from "yup";
-import Category, { CategoryDocument } from "../../../models/Category";
 import { ColorDocument } from "../../../models/Color";
 import { ColorTagDocument } from "../../../models/ColorTag";
-import { MainProductDocument } from "../../../models/MainProduct";
-import { SubProductDocument } from "../../../models/SubProduct";
 import { PopulatedMainProduct, PopulatedProduct } from "../../../utils/types";
 import { SelectType } from "../SelectStatus";
 import MultiSelectColor from "./MultiSelectColor";
+import UploadForm from "./UploadForm";
 
 export interface FormValues {
   availableQty: number;
-  colors: any;
-  images: any;
-  mainProduct: any;
+  colors: string[] | Types.ObjectId[];
   title: string;
 }
 
 const schema = Yup.object<ShapeOf<FormValues>>({
   availableQty: Yup.number().required("Vänligen fyll i antal"),
   colors: Yup.array().required("Vänligen fyll i färg"),
-  images: Yup.array().required("Vänligen fyll i bilder"),
-  mainProduct: Yup.string().required("Vänligen fyll i mainProduct"),
   title: Yup.string().required("Vänligen fyll i titel"),
 });
 
@@ -55,7 +44,10 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
   const [currentMainProduct, setCurrentMainProduct] = useState<string | null>(
     null
   );
+  const [imageList, setImageList] = useState<string[]>([]);
+  const [fileList, setFileList] = useState<File[]>([]);
 
+  console.log(imageList);
   // Gets colortags on load
   useEffect(() => {
     const getColorTags = async () => {
@@ -112,9 +104,9 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
     initialValues: {
       availableQty: 0,
       colors: [],
-      images: [],
+      //images: [],
       title: "",
-      mainProduct: "",
+      //mainProduct: "",
     },
     validate: yupResolver(schema),
     validateInputOnChange: true,
@@ -122,155 +114,146 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
 
   // Updates product with new info
   const handleSubmit = async (values: FormValues) => {
+    console.log("kommer jag in?");
     const createProduct: any = {
       title: values.title,
       mainProduct: currentMainProduct,
       availableQty: Number(values.availableQty),
-      images: values.images,
+      images: imageList,
       colors: multiSelectColors,
     };
 
-    // Bara Lägga till bilder kvar!!
-    console.log(createProduct);
-    /*   const request = {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedInfo),
-    };
-    const response = await fetch("/api/admin/subproduct", request);
-    let result = await response.json();
+    const body = new FormData();
 
-    if (result.success) {
-      // #136 Modal success!
-      setIsUpdated(true);
-      setEditSubProduct(false);
-      return;
-    } */
-    // #136 Modal error!
+    for (let i = 0; i < fileList.length; i++) {
+      let img = fileList[i];
+      body.append("file", img);
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        body,
+      });
+      let result = await response.json();
+      console.log(result);
+    }
+
+    console.log(createProduct);
   };
 
   return (
-    <>
-      <form
-        onSubmit={form.onSubmit(handleSubmit)}
-        style={{
-          width: "100%",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <Flex justify={"center"} direction="column" sx={{ width: "90%" }}>
-          <Flex
-            gap={10}
+    <form
+      onSubmit={form.onSubmit(handleSubmit)}
+      style={{
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Flex justify={"center"} direction="column" sx={{ width: "90%" }}>
+        <Flex
+          gap={10}
+          sx={(theme) => ({
+            [theme.fn.smallerThan("sm")]: {
+              flexDirection: "column",
+            },
+          })}
+        >
+          <Select
+            searchable
+            w={270}
             sx={(theme) => ({
-              [theme.fn.smallerThan("sm")]: {
-                flexDirection: "column",
+              [theme.fn.smallerThan("xs")]: {
+                width: "100%",
+              },
+            })}
+            value={currentMainProduct}
+            onChange={setCurrentMainProduct}
+            placeholder="Välj huvudartikel"
+            label="Huvudartikel"
+            data={mainProductSelect}
+            name="mainProduct"
+          />
+          <Flex
+            direction={"column"}
+            sx={(theme) => ({
+              width: 400,
+              [theme.fn.smallerThan("xs")]: {
+                width: "90%",
               },
             })}
           >
-            <Select
-              searchable
-              w={270}
-              sx={(theme) => ({
-                [theme.fn.smallerThan("xs")]: {
-                  width: "100%",
-                },
-              })}
-              value={currentMainProduct}
-              onChange={setCurrentMainProduct}
-              placeholder="Välj huvudartikel"
-              label="Huvudartikel"
-              data={mainProductSelect}
-              name="mainProduct"
-            />
-            <Flex
-              direction={"column"}
-              sx={(theme) => ({
-                width: 400,
-                [theme.fn.smallerThan("xs")]: {
-                  width: "90%",
-                },
-              })}
-            >
-              {currentMainProduct
-                ? mainProducts.map((product, index) => {
-                    const id = product._id.toString();
-                    if (id == currentMainProduct) {
-                      return (
-                        <>
-                          <Flex key={index} direction={"column"}>
-                            <Text weight={"bold"} size={"xs"}>
-                              Pris:
-                            </Text>
-                            <Text size={"xs"}>
-                              {Number(product.price.$numberDecimal) + " KR"}
-                            </Text>
-                          </Flex>
-                          <Flex direction={"column"}>
-                            <Text weight={"bold"} size={"xs"}>
-                              Vikt:
-                            </Text>
-                            <Text size={"xs"}>{product.weight}</Text>
-                          </Flex>
-                          <Flex direction={"column"}>
-                            <Text weight={"bold"} size={"xs"}>
-                              Beskrivning 1:
-                            </Text>
-                            <Text size={"xs"}>{product.description1}</Text>
-                          </Flex>
-                          <Flex direction={"column"}>
-                            <Text weight={"bold"} size={"xs"}>
-                              Beskrivning 2:
-                            </Text>
-                            <Text size={"xs"}>{product.description2}</Text>
-                          </Flex>
-                        </>
-                      );
-                    }
-                  })
-                : null}
-            </Flex>
+            {currentMainProduct
+              ? mainProducts.map((product, index) => {
+                  const id = product._id.toString();
+                  if (id == currentMainProduct) {
+                    return (
+                      <Box key={index}>
+                        <Flex key={index} direction={"column"}>
+                          <Text weight={"bold"} size={"xs"}>
+                            Pris:
+                          </Text>
+                          <Text size={"xs"}>
+                            {Number(product.price.$numberDecimal) + " KR"}
+                          </Text>
+                        </Flex>
+                        <Flex direction={"column"}>
+                          <Text weight={"bold"} size={"xs"}>
+                            Vikt:
+                          </Text>
+                          <Text size={"xs"}>{product.weight}</Text>
+                        </Flex>
+                        <Flex direction={"column"}>
+                          <Text weight={"bold"} size={"xs"}>
+                            Beskrivning 1:
+                          </Text>
+                          <Text size={"xs"}>{product.description1}</Text>
+                        </Flex>
+                        <Flex direction={"column"}>
+                          <Text weight={"bold"} size={"xs"}>
+                            Beskrivning 2:
+                          </Text>
+                          <Text size={"xs"}>{product.description2}</Text>
+                        </Flex>
+                      </Box>
+                    );
+                  }
+                })
+              : null}
           </Flex>
-
-          <TextInput
-            mt="xs"
-            label="Titel"
-            placeholder={"Produktens namn"}
-            name="title"
-            {...form.getInputProps("title")}
-          />
-          <NumberInput
-            min={0}
-            mt="xs"
-            label="Antal"
-            placeholder={0}
-            name="availableQty"
-            {...form.getInputProps("availableQty")}
-            w={100}
-          />
-          <TextInput
-            mt="xs"
-            label="Bild*"
-            placeholder="Bilder"
-            name="images"
-            {...form.getInputProps("images")}
-          />
-          <Select
-            label="Färg*"
-            data={colortags}
-            value={valueTag}
-            onChange={setValueTag}
-          />
-          <MultiSelectColor
-            data={colors}
-            value={multiSelectColors}
-            setValue={setMultiSelectColors}
-            form={form} // check
-          />
         </Flex>
+        <TextInput
+          mt="xs"
+          label="Titel"
+          placeholder={"Produktens namn"}
+          name="title"
+          {...form.getInputProps("title")}
+        />
+        <NumberInput
+          min={0}
+          mt="xs"
+          label="Antal"
+          placeholder={0}
+          name="availableQty"
+          {...form.getInputProps("availableQty")}
+          w={100}
+        />
+        <UploadForm
+          setImageList={setImageList}
+          value={fileList}
+          setValue={setFileList}
+        />
+        <Select
+          label="Färg*"
+          data={colortags}
+          value={valueTag}
+          onChange={setValueTag}
+        />
+        <MultiSelectColor
+          data={colors}
+          value={multiSelectColors}
+          setValue={setMultiSelectColors}
+          form={form}
+        />
         <Flex mt={20} gap="md">
           <Button
             w={200}
@@ -288,8 +271,8 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
             Skapa produkt
           </Button>
         </Flex>
-      </form>
-    </>
+      </Flex>
+    </form>
   );
 };
 

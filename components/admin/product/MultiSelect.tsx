@@ -68,7 +68,7 @@ const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
 const MultiSelectColor: FC<Props> = ({ data, value, setValue, form }) => {
   return (
     <MultiSelect
-      searchable
+      //searchable
       mt="xs"
       valueComponent={Value}
       itemComponent={SelectItem}
