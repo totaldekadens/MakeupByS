@@ -20,7 +20,7 @@ export default async (req, res) => {
       var oldPath = files.file.filepath;
       var newPath = `./public/uploads/${files.file.originalFilename}`;
       mv(oldPath, newPath, function (err) {});
-      res.status(200).json({ fields, files });
+      res.status(200).json({ success: true, data: { fields, files } });
     });
   });
 };

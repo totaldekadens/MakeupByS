@@ -1,5 +1,13 @@
 import { useState, useEffect, Dispatch, SetStateAction, FC } from "react";
-import { Button, Image, FileInput, Flex, Title, Text } from "@mantine/core";
+import {
+  Button,
+  Image,
+  FileInput,
+  Flex,
+  Title,
+  Text,
+  Box,
+} from "@mantine/core";
 import { IconUpload } from "@tabler/icons";
 
 type Props = {
@@ -13,11 +21,8 @@ const UploadForm: FC<Props> = ({ setImageList, value, setValue }) => {
 
   useEffect(() => {
     const uploadToClient = async () => {
-      console.log(value);
-      const hej = value.map((img) => URL.createObjectURL(img));
-      //console.log(createObjectURL);
-      console.log(hej);
-      setCreateObjectURL(hej);
+      const imageURLs = value.map((img) => URL.createObjectURL(img));
+      setCreateObjectURL(imageURLs);
       const imageList = value.map((img) => img.name);
       setImageList(imageList);
     };
@@ -25,8 +30,14 @@ const UploadForm: FC<Props> = ({ setImageList, value, setValue }) => {
   }, [value]);
 
   return (
-    <div>
-      <Title order={4}>Lägg till bilder:</Title>
+    <Box mt={20} mb={20}>
+      <Title order={6} color={"#212529"} size={13}>
+        Lägg till bilder:
+      </Title>{" "}
+      <Text size={12}>
+        Bilderna bör ha vit eller transparant bakgrund. Godkända format: png,
+        jpg, jpeg, webp
+      </Text>
       <FileInput
         icon={<IconUpload />}
         multiple
@@ -42,13 +53,13 @@ const UploadForm: FC<Props> = ({ setImageList, value, setValue }) => {
       >
         {createObjectURL.map((img, index) => {
           return (
-            <Flex w={180}>
-              <Image key={index} src={img} />
+            <Flex w={180} key={index}>
+              <Image src={img} />
             </Flex>
           );
         })}
       </Flex>
-    </div>
+    </Box>
   );
 };
 

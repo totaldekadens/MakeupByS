@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import { ColorDocument } from "../../../models/Color";
 import { ColorTagDocument } from "../../../models/ColorTag";
 import { PopulatedMainProduct, PopulatedProduct } from "../../../utils/types";
+import UploadToImagesToServer from "../../../utils/useUploadImagesToServer";
 import { SelectType } from "../SelectStatus";
 import MultiSelectColor from "./MultiSelectColor";
 import UploadForm from "./UploadForm";
@@ -99,14 +100,11 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
       }))
     : [];
 
-  // const colorIds = product.colors.map((color) => color._id?.toString());
   const form = useForm<FormValues>({
     initialValues: {
       availableQty: 0,
       colors: [],
-      //images: [],
       title: "",
-      //mainProduct: "",
     },
     validate: yupResolver(schema),
     validateInputOnChange: true,
@@ -114,7 +112,16 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
 
   // Updates product with new info
   const handleSubmit = async (values: FormValues) => {
-    console.log("kommer jag in?");
+    if (
+      imageList.length < 1 ||
+      !currentMainProduct ||
+      multiSelectColors.length < 1
+    ) {
+      // #136
+      alert("Allt måste fyllas i");
+      return;
+    }
+
     const createProduct: any = {
       title: values.title,
       mainProduct: currentMainProduct,
@@ -123,20 +130,30 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
       colors: multiSelectColors,
     };
 
-    const body = new FormData();
+    await UploadToImagesToServer(fileList);
 
-    for (let i = 0; i < fileList.length; i++) {
-      let img = fileList[i];
-      body.append("file", img);
-      const response = await fetch("/api/admin/upload", {
-        method: "POST",
-        body,
-      });
-      let result = await response.json();
-      console.log(result);
+    const request = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(createProduct),
+    };
+    const response = await fetch("/api/admin/subproduct", request);
+    let result = await response.json();
+    if (result.success) {
+      // #136
+      alert("Produkten är skapad");
+      setCurrentMainProduct("");
+      setImageList([]);
+      setMultiSelectColors([]);
+      setFileList([]);
+      setValueTag(null);
+      form.reset();
+      return;
     }
-
-    console.log(createProduct);
+    // #136
+    alert("Något gick fel");
   };
 
   return (
@@ -254,7 +271,15 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
           setValue={setMultiSelectColors}
           form={form}
         />
-        <Flex mt={20} gap="md">
+        <Flex
+          mt={40}
+          justify="flex-end"
+          sx={(theme) => ({
+            [theme.fn.smallerThan("xs")]: {
+              justifyContent: "center",
+            },
+          })}
+        >
           <Button
             w={200}
             fullWidth
