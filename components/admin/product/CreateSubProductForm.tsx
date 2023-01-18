@@ -48,7 +48,6 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
   const [imageList, setImageList] = useState<string[]>([]);
   const [fileList, setFileList] = useState<File[]>([]);
 
-  console.log(imageList);
   // Gets colortags on load
   useEffect(() => {
     const getColorTags = async () => {
