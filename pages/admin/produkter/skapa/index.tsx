@@ -1,9 +1,18 @@
-import { AppShell, Flex, Menu, Select, Title, Text } from "@mantine/core";
+import {
+  AppShell,
+  Flex,
+  Menu,
+  Select,
+  Title,
+  Text,
+  Accordion,
+} from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons";
 import { GetServerSideProps, NextPage } from "next";
 import Link from "next/link";
 import { useState } from "react";
 import Options from "../../../../components/admin/Options";
+import CreateMainProductForm from "../../../../components/admin/product/CreateMainProductForm";
 import CreateSubProductForm from "../../../../components/admin/product/CreateSubProductForm";
 import HeaderCheckout from "../../../../components/layout/HeaderCheckout";
 import WrapContainer from "../../../../components/layout/WrapContainer";
@@ -19,20 +28,11 @@ import dbConnect from "../../../../utils/dbConnect";
 import { PopulatedMainProduct } from "../../../../utils/types";
 
 type Props = {
-  products: SubProductDocument[];
-  colors: ColorDocument[];
-  colorTags: ColorTagDocument[];
-  mainProducts: PopulatedMainProduct[]; //MainProductDocument[];
+  mainProducts: PopulatedMainProduct[];
   categories: CategoryDocument[];
 };
 
-const CreateProduct: NextPage<Props> = ({
-  products,
-  colors,
-  colorTags,
-  mainProducts,
-  categories,
-}) => {
+const CreateProduct: NextPage<Props> = ({ mainProducts, categories }) => {
   const [opened, setOpened] = useState(false);
   const [currentPage, setCurrentPage] = useState<string>("Skapa produkt");
   const [isCreated, setisCreated] = useState<boolean>(false);
@@ -112,20 +112,35 @@ const CreateProduct: NextPage<Props> = ({
               },
             })}
           >
-            <Flex direction={"column"} sx={{ width: "100%" }}>
-              <Title mb={20} order={3}>
-                Skapa subartikel
-              </Title>
-              <CreateSubProductForm
-                setIsCreated={setisCreated}
-                mainProducts={mainProducts}
-              />
-            </Flex>
-            <Flex direction={"column"} sx={{ width: "100%" }}>
-              <Title mb={20} order={3}>
-                Skapa huvudartikel
-              </Title>
-            </Flex>
+            <Accordion
+              styles={{
+                item: { borderBottom: "unset" },
+              }}
+              defaultValue="customization"
+            >
+              <Accordion.Item value="sub">
+                <Accordion.Control>
+                  <Title order={4}>Skapa subartikel</Title>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <CreateSubProductForm
+                    setIsCreated={setisCreated}
+                    mainProducts={mainProducts}
+                  />
+                </Accordion.Panel>
+              </Accordion.Item>
+              <Accordion.Item value="main">
+                <Accordion.Control>
+                  <Title order={4}>Skapa huvudartikel</Title>
+                </Accordion.Control>
+                <Accordion.Panel>
+                  <CreateMainProductForm
+                    setIsCreated={setisCreated}
+                    categories={categories}
+                  />
+                </Accordion.Panel>
+              </Accordion.Item>
+            </Accordion>
           </Flex>
         </WrapContainer>
       </Flex>
@@ -140,18 +155,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     path: "category",
     model: Category,
   });
-  const colors = await Color.find({});
-  const colorTags = await ColorTag.find({});
-  const subProducts = await SubProduct.find({});
   const categories = await Category.find({});
 
   return {
     props: {
-      products: JSON.parse(JSON.stringify(subProducts)),
       mainProducts: JSON.parse(JSON.stringify(mainProducts)),
-      colors: JSON.parse(JSON.stringify(colors)),
       categories: JSON.parse(JSON.stringify(categories)),
-      colorTags: JSON.parse(JSON.stringify(colorTags)),
     },
   };
 };

@@ -37,7 +37,6 @@ const ProductModal: FC<Props> = ({
   const { classes } = useStyles();
   const handleClick = () => {
     setOpened(false);
-    //window.location.reload();
   };
 
   return (
@@ -326,7 +325,7 @@ const ProductModal: FC<Props> = ({
           </Flex>
         </Flex>
         <Flex mt={20} justify={"flex-end"}>
-          <Button onClick={() => handleClick()}>OK</Button>
+          <Button onClick={() => handleClick()}>Stäng</Button>
         </Flex>
       </Modal>
     </>

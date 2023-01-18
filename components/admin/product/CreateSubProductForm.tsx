@@ -185,7 +185,7 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
             value={currentMainProduct}
             onChange={setCurrentMainProduct}
             placeholder="Välj huvudartikel"
-            label="Huvudartikel"
+            label="Huvudartikel*"
             data={mainProductSelect}
             name="mainProduct"
           />
@@ -239,7 +239,7 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
         </Flex>
         <TextInput
           mt="xs"
-          label="Titel"
+          label="Titel*"
           placeholder={"Produktens namn"}
           name="title"
           {...form.getInputProps("title")}
@@ -247,7 +247,7 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
         <NumberInput
           min={0}
           mt="xs"
-          label="Antal"
+          label="Antal*"
           placeholder={0}
           name="availableQty"
           {...form.getInputProps("availableQty")}
