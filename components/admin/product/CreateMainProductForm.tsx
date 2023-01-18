@@ -9,14 +9,12 @@ import {
   NumberInput,
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
-import { IconChevronsDownLeft } from "@tabler/icons";
 import { Decimal128, Types } from "mongoose";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import * as Yup from "yup";
-import Category, { CategoryDocument } from "../../../models/Category";
-import { MainProductDocument } from "../../../models/MainProduct";
-import { PopulatedProduct } from "../../../utils/types";
-import { SelectType } from "../SelectStatus";
+import { CategoryDocument } from "../../../models/Category";
+import ResponseModal from "../../layout/ResponseModal";
+import { ResponseModalType, SelectType } from "../SelectStatus";
 
 interface FormValues {
   brand: string;
@@ -44,6 +42,11 @@ type Props = {
 };
 
 const CreateMainProductForm: FC<Props> = ({ categories, setIsCreated }) => {
+  const [opened, setOpened] = useState(false);
+  const [response, setResponse] = useState<ResponseModalType>({
+    title: "",
+    reason: "info",
+  });
   const form = useForm<FormValues>({
     initialValues: {
       brand: "",
@@ -81,12 +84,21 @@ const CreateMainProductForm: FC<Props> = ({ categories, setIsCreated }) => {
 
     if (result.success) {
       setIsCreated(true);
-      // #136
-      alert("Produkt skapad!");
+      const object: ResponseModalType = {
+        title: "Produkt skapad!",
+        reason: "success",
+      };
+      setResponse(object);
+      setOpened(true);
       window.location.reload();
       return;
     }
-    alert("Något gick fel");
+    const object: ResponseModalType = {
+      title: "Något gick fel!",
+      reason: "error",
+    };
+    setResponse(object);
+    setOpened(true);
   };
 
   const list: SelectType[] | null = categories
@@ -198,6 +210,7 @@ const CreateMainProductForm: FC<Props> = ({ categories, setIsCreated }) => {
           </Button>
         </Flex>
       </form>
+      <ResponseModal info={response} setOpened={setOpened} opened={opened} />
     </>
   );
 };

@@ -17,6 +17,8 @@ import EditMainProductForm from "./EditMainProductForm";
 import { CategoryDocument } from "../../../models/Category";
 import EditSubProductForm from "./EditSubProductForm";
 import useDeleteProduct from "../../../utils/useDeleteProduct";
+import { ResponseModalType } from "../SelectStatus";
+import ResponseModal from "../../layout/ResponseModal";
 
 type Props = {
   product: PopulatedProduct;
@@ -33,7 +35,11 @@ const ProductModal: FC<Props> = ({
 }) => {
   const [editMainProduct, setEditMainProduct] = useState<boolean>(false);
   const [editSubProduct, setEditSubProduct] = useState<boolean>(false);
-
+  const [openedResponse, setOpenedResponse] = useState(false);
+  const [response, setResponse] = useState<ResponseModalType>({
+    title: "",
+    reason: "info",
+  });
   const { classes } = useStyles();
   const handleClick = () => {
     setOpened(false);
@@ -171,6 +177,12 @@ const ProductModal: FC<Props> = ({
                       size={24}
                       onClick={() => {
                         useDeleteProduct(product._id, setIsUpdated);
+                        const object: ResponseModalType = {
+                          title: "Produkt borttagen!",
+                          reason: "success",
+                        };
+                        setResponse(object);
+                        setOpenedResponse(true);
                       }}
                     />
                   </Flex>
@@ -328,6 +340,11 @@ const ProductModal: FC<Props> = ({
           <Button onClick={() => handleClick()}>Stäng</Button>
         </Flex>
       </Modal>
+      <ResponseModal
+        info={response}
+        setOpened={setOpenedResponse}
+        opened={openedResponse}
+      />
     </>
   );
 };

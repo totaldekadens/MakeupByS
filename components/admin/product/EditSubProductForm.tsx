@@ -24,7 +24,8 @@ import { MainProductDocument } from "../../../models/MainProduct";
 import { SubProductDocument } from "../../../models/SubProduct";
 import { PopulatedProduct } from "../../../utils/types";
 import UploadToImagesToServer from "../../../utils/useUploadImagesToServer";
-import { SelectType } from "../SelectStatus";
+import ResponseModal from "../../layout/ResponseModal";
+import { ResponseModalType, SelectType } from "../SelectStatus";
 import MultiSelectColor from "./MultiSelect";
 import UploadForm from "./UploadForm";
 
@@ -61,6 +62,11 @@ const EditSubProductForm: FC<Props> = ({
   const [imageList, setImageList] = useState<string[]>([]);
   const [fileList, setFileList] = useState<File[]>([]);
   const [checked, setChecked] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const [response, setResponse] = useState<ResponseModalType>({
+    title: "",
+    reason: "info",
+  });
   // Gets colortags on load
   useEffect(() => {
     const getColorTags = async () => {
@@ -115,8 +121,12 @@ const EditSubProductForm: FC<Props> = ({
   // Updates product with new info
   const handleSubmit = async (values: FormValues) => {
     if (direction == "remove" && product.availableQty < values.availableQty) {
-      // #136 Fix modal!
-      alert("Kan inte ta bort mer än vad som finns");
+      const object: ResponseModalType = {
+        title: "Kan inte ta bort mer än vad som finns tillgängligt",
+        reason: "error",
+      };
+      setResponse(object);
+      setOpened(true);
       return;
     }
 
@@ -154,12 +164,22 @@ const EditSubProductForm: FC<Props> = ({
     let result = await response.json();
 
     if (result.success) {
-      // #136 Modal success!
+      const object: ResponseModalType = {
+        title: "Produkten är uppdaterad!",
+        reason: "success",
+      };
+      setResponse(object);
+      setOpened(true);
       setIsUpdated(true);
       setEditSubProduct(false);
       return;
     }
-    // #136 Modal error!
+    const object: ResponseModalType = {
+      title: "Något gick fel!",
+      reason: "error",
+    };
+    setResponse(object);
+    setOpened(true);
   };
 
   return (
@@ -291,6 +311,7 @@ const EditSubProductForm: FC<Props> = ({
           </Button>
         </Flex>
       </form>
+      <ResponseModal info={response} setOpened={setOpened} opened={opened} />
     </>
   );
 };

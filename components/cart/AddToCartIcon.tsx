@@ -1,11 +1,13 @@
 import { Box } from "@mantine/core";
 import { IconShoppingBag, IconPlus } from "@tabler/icons";
-import { FC, useContext } from "react";
+import { FC, useContext, useState } from "react";
 import { useHover } from "@mantine/hooks";
 import { useLocalStorage } from "@mantine/hooks";
 import { openedCartContext } from "../context/OpenCartProvider";
 import { PopulatedProduct } from "../../utils/types";
 import { Types } from "mongoose";
+import { ResponseModalType } from "../admin/SelectStatus";
+import ResponseModal from "../layout/ResponseModal";
 
 type Props = {
   color: string;
@@ -28,6 +30,11 @@ export type LineItem = {
 
 // Adds product (or if it already exists, increases qty) to cart and opens it.
 const AddToCartIcon: FC<Props> = ({ color, product }) => {
+  const [opened, setOpened] = useState(false);
+  const [response, setResponse] = useState<ResponseModalType>({
+    title: "",
+    reason: "info",
+  });
   const { hovered, ref } = useHover();
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
     key: "cart",
@@ -62,7 +69,13 @@ const AddToCartIcon: FC<Props> = ({ color, product }) => {
 
     if (foundIndex >= 0) {
       if (cartCopy[foundIndex].quantity >= product.availableQty) {
-        return alert("Finns tyvärr inga fler produkter"); // #136 Fixa modal till denna sen
+        const object: ResponseModalType = {
+          title: "Finns tyvärr inga fler produkter",
+          reason: "error",
+        };
+        setResponse(object);
+        setOpened(true);
+        return;
       }
       cartCopy[foundIndex].quantity++;
     } else {
@@ -91,6 +104,7 @@ const AddToCartIcon: FC<Props> = ({ color, product }) => {
           />
         </Box>
       </Box>
+      <ResponseModal info={response} setOpened={setOpened} opened={opened} />
     </>
   );
 };

@@ -14,7 +14,7 @@ import {
 import { useLocalStorage } from "@mantine/hooks";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { LineItem } from "../../components/cart/AddToCartIcon";
 import Cart from "../../components/cart/Cart";
 import { openedCartContext } from "../../components/context/OpenCartProvider";
@@ -32,6 +32,8 @@ import MainProduct from "../../models/MainProduct";
 import Category from "../../models/Category";
 import Color, { ColorDocument } from "../../models/Color";
 import { PopulatedColor, PopulatedProduct } from "../../utils/types";
+import { ResponseModalType } from "../../components/admin/SelectStatus";
+import ResponseModal from "../../components/layout/ResponseModal";
 
 type Props = {
   product: PopulatedProduct;
@@ -41,6 +43,12 @@ type Props = {
 const ProductPage: NextPage<Props> = ({ product, products }) => {
   // Context
   const { openedCart, setOpenedCart } = useContext(openedCartContext);
+  // States
+  const [opened, setOpened] = useState(false);
+  const [response, setResponse] = useState<ResponseModalType>({
+    title: "",
+    reason: "info",
+  });
 
   // Router
   const router = useRouter();
@@ -89,7 +97,13 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
 
       if (foundIndex >= 0) {
         if (cartCopy[foundIndex].quantity >= product.availableQty) {
-          return alert("Finns tyvärr inga fler produkter"); // #136 Fixa modal till denna sen
+          const object: ResponseModalType = {
+            title: "Finns tyvärr inga fler produkter",
+            reason: "error",
+          };
+          setResponse(object);
+          setOpened(true);
+          return;
         }
         cartCopy[foundIndex].quantity++;
       } else {
@@ -404,6 +418,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
         </Box>
       </MarginTopContainer>
       <Cart />
+      <ResponseModal info={response} setOpened={setOpened} opened={opened} />
     </AppShell>
   );
 };

@@ -14,7 +14,7 @@ type Props = {
   order: any;
 };
 
-type Response = {
+export type ResponseModalType = {
   title: string;
   reason: "info" | "error" | "success";
   description?: string;
@@ -28,7 +28,7 @@ const SelectStatus: FC<Props> = ({ order }) => {
     { value: "", label: "" },
   ]);
   const [opened, setOpened] = useState(false);
-  const [response, setResponse] = useState<Response>({
+  const [response, setResponse] = useState<ResponseModalType>({
     title: "",
     reason: "info",
   });
@@ -70,7 +70,7 @@ const SelectStatus: FC<Props> = ({ order }) => {
               );
               let newResult = await newResponse.json();
               if (!newResult.success) {
-                const object: Response = {
+                const object: ResponseModalType = {
                   title: "Något gick fel!",
                   description:
                     "Orderstatus är uppdaterad men inte antalet i databasen. Kontakta administratör",
@@ -102,7 +102,7 @@ const SelectStatus: FC<Props> = ({ order }) => {
               );
               let newResult = await newResponse.json();
               if (!newResult.success) {
-                const object: Response = {
+                const object: ResponseModalType = {
                   title: "Något gick fel!",
                   description:
                     "Orderstatus är uppdaterad men inte antalet i databasen. Kontakta administratör",
@@ -117,7 +117,7 @@ const SelectStatus: FC<Props> = ({ order }) => {
             console.log(err);
           }
         }
-        const object: Response = {
+        const object: ResponseModalType = {
           title: "Ordern är uppdaterad",
           reason: "success",
         };
@@ -125,7 +125,7 @@ const SelectStatus: FC<Props> = ({ order }) => {
         setOpened(true);
         return;
       }
-      const object: Response = {
+      const object: ResponseModalType = {
         title: "Något gick fel, ordern är inte uppdaterad",
         reason: "error",
       };
