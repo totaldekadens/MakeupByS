@@ -18,6 +18,7 @@ import { useContext } from "react";
 import { useSession } from "next-auth/react";
 import { hideContext } from "../components/context/HideProvider";
 import { IconCheck } from "@tabler/icons";
+import SeasonGrid from "../components/frontpageContent/SeasonGrid";
 
 export default function Home() {
   const { hide, setHide } = useContext(hideContext);
@@ -139,13 +140,13 @@ export default function Home() {
         <Flex
         className="quizbox"
           sx={(theme) => ({
-            marginTop: 200,
+            marginTop: 230,
             gap: 100,
             width: "80%",
             justifyContent: "left",
             alignItems: "left",
             [theme.fn.smallerThan("lg")]: {
-              marginTop: 190,
+              marginTop: 220,
               width: "82%",
             },
             [theme.fn.smallerThan("md")]: {
@@ -153,7 +154,7 @@ export default function Home() {
             },
             [theme.fn.smallerThan("sm")]: {
               width: "95%",
-              marginTop: 240,
+              marginTop: 300,
               gap: 30,
             },
             [theme.fn.smallerThan("xs")]: {
@@ -226,7 +227,18 @@ export default function Home() {
       <AppShell fixed={false} header={<FrontPageHeader />} footer={<Footer />}>
         <>
           <main style={{ marginTop: 60, minHeight: "100vh" }}>
-            <h1>Startsida</h1>
+          <Text
+            align="center"
+            fw={800}
+            color={"#1D464E"}
+            tt={"uppercase"}
+            fz={35}
+            ff={"mada"}
+            mb={40}
+            >
+              by season
+              </Text>
+              <SeasonGrid />
           </main>
           <Cart />
         </>
