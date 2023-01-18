@@ -16,6 +16,7 @@ import Section from "../Section";
 import EditMainProductForm from "./EditMainProductForm";
 import { CategoryDocument } from "../../../models/Category";
 import EditSubProductForm from "./EditSubProductForm";
+import useDeleteProduct from "../../../utils/useDeleteProduct";
 
 type Props = {
   product: PopulatedProduct;
@@ -36,7 +37,6 @@ const ProductModal: FC<Props> = ({
   const { classes } = useStyles();
   const handleClick = () => {
     setOpened(false);
-    //window.location.reload();
   };
 
   return (
@@ -166,7 +166,13 @@ const ProductModal: FC<Props> = ({
                       style={{ cursor: "pointer" }}
                       size={24}
                     />
-                    <IconTrash style={{ cursor: "pointer" }} size={24} />
+                    <IconTrash
+                      style={{ cursor: "pointer" }}
+                      size={24}
+                      onClick={() => {
+                        useDeleteProduct(product._id, setIsUpdated);
+                      }}
+                    />
                   </Flex>
                 </Flex>
                 {editSubProduct ? (
@@ -195,9 +201,10 @@ const ProductModal: FC<Props> = ({
                         Färg:
                       </Text>
                       <Flex>
-                        {product.colors.map((color) => {
+                        {product.colors.map((color, index) => {
                           return (
                             <Flex
+                              key={index}
                               w={30}
                               h={30}
                               sx={{ borderRadius: "50%" }}
@@ -318,7 +325,7 @@ const ProductModal: FC<Props> = ({
           </Flex>
         </Flex>
         <Flex mt={20} justify={"flex-end"}>
-          <Button onClick={() => handleClick()}>OK</Button>
+          <Button onClick={() => handleClick()}>Stäng</Button>
         </Flex>
       </Modal>
     </>

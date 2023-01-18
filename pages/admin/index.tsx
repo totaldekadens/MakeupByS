@@ -6,6 +6,9 @@ import {
   Text,
   Select,
   Pagination,
+  MediaQuery,
+  Button,
+  Menu,
 } from "@mantine/core";
 import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import HeaderCheckout from "../../components/layout/HeaderCheckout";
@@ -18,217 +21,93 @@ import OrderStatus, { OrderStatusDocument } from "../../models/OrderStatus";
 import User from "../../models/User";
 import { PopulatedOrder } from "../../utils/types";
 import { SelectType } from "../../components/admin/SelectStatus";
+import Link from "next/link";
+import { IconChevronDown } from "@tabler/icons";
+import { useRouter } from "next/router";
 
-type Props = {
-  orders: PopulatedOrder[];
-};
-
-const Admin: NextPage<Props> = ({ orders }) => {
-  const [activeOrders, setActiveOrders] = useState<number>(0);
-  const [currentStatus, setCurrentStatus] = useState<string | null>(
-    "63b94b6966d02095eb80e861"
-  );
-  const [currentOrders, setCurrentOrders] = useState<PopulatedOrder[]>();
-  // Refs
-  const valueRef = useRef<any | null>();
-  valueRef.current = orders;
-
-  useEffect(() => {
-    // Returns how many orders needs to be handled
-    const getNumber = () => {
-      let orderReference: PopulatedOrder[] = valueRef.current;
-      if (orders) {
-        const getActiveOrders = orderReference.filter(
-          (order) => order.status.status == "Behandlas"
-        );
-        const getLength = getActiveOrders.length;
-        setActiveOrders(getLength);
-      }
-    };
-    // Returns orders with chosen status
-    const getCurrentOrders = () => {
-      if (orders) {
-        let orderReference: PopulatedOrder[] = valueRef.current;
-        const filteredOrders = orderReference.filter((order) => {
-          const id = order.status!._id?.toString();
-          if (id == currentStatus) {
-            return true;
-          }
-          return false;
-        });
-
-        setCurrentOrders(filteredOrders);
-      }
-    };
-    getCurrentOrders();
-    getNumber();
-  }, [orders, currentStatus]);
-
-  // Gets an array with statuses in use and then adjusts it to a Select component
-  let statuses: OrderStatusDocument[] = [];
-  if (orders) {
-    orders.forEach((order) => {
-      if (statuses.length < 1) {
-        statuses.push(order.status);
-        return;
-      }
-      const findStatus = statuses.find(
-        (status) => status.status == order.status.status
-      );
-      if (!findStatus) {
-        statuses.push(order.status);
-        return;
-      }
-    });
-  }
-  const selectList: SelectType[] = statuses.map((status) => ({
-    label: status.status,
-    value: status._id ? status._id.toString() : "",
-  }));
-
-  // Sorts orders in a descending order
-  if (currentOrders) {
-    currentOrders.sort((a, b) => (a.orderNo < b.orderNo ? 1 : -1));
-  }
+const Admin: NextPage = ({}) => {
+  const router = useRouter();
+  const [opened, setOpened] = useState(false);
+  const [currentPage, setCurrentPage] = useState<string>("Beställningar");
+  const list = [
+    {
+      name: "Beställningar",
+      link: "/admin/bestallningar",
+      ref: "bestallningar",
+      disabled: false,
+    },
+    {
+      name: "Produkter",
+      link: "/admin/produkter",
+      ref: "produkter",
+      disabled: false,
+    },
+    {
+      name: "Kategorier",
+      link: "/admin/kategorier",
+      ref: "kategorier",
+      disabled: true,
+    },
+    { name: "Frakt", link: "/admin/frakt", ref: "frakt", disabled: true },
+    { name: "Kunder", link: "/admin/kunder", ref: "kunder", disabled: true },
+  ];
 
   return (
     <>
       <AppShell fixed={false} header={<HeaderCheckout />}>
         <Flex direction={"column"} align="center" style={{ marginTop: 60 }}>
           <Title order={1}>ADMIN</Title>
-          <Options />
+          {/*  <MediaQuery smallerThan="sm" styles={{ display: "none" }}> */}
           <Flex
-            direction={"column"}
-            mt={40}
-            mb={40}
-            justify={"center"}
-            align="center"
-            sx={{ width: "100%" }}
+            gap={10}
+            mt={20}
+            sx={(theme) => ({
+              width: "100%",
+              flexWrap: "wrap",
+              [theme.fn.smallerThan("xs")]: {
+                flexDirection: "column",
+              },
+            })}
+            justify="center"
           >
-            <Flex
-              justify="flex-end"
-              sx={(theme) => ({
-                width: "550px",
-                [theme.fn.smallerThan("sm")]: {
-                  width: "470px",
-                },
-                [theme.fn.smallerThan("xs")]: {
-                  width: "100%",
-                },
-              })}
-            >
-              <Select
-                placeholder="Välj ny status"
-                value={currentStatus}
-                onChange={setCurrentStatus}
-                data={selectList}
-                styles={{ root: { width: 150 } }}
-              />
-            </Flex>
-
-            {currentOrders ? (
-              currentOrders.map((order, index) => {
-                return (
-                  <Accordion
-                    key={index}
-                    styles={{ control: { padding: 5 } }}
+            {list.map((button, index) => {
+              return (
+                <Link
+                  style={{ pointerEvents: button.disabled ? "none" : "unset" }}
+                  key={index}
+                  href={button.disabled ? "#" : button.link}
+                >
+                  <Button
+                    disabled={button.disabled}
                     sx={(theme) => ({
-                      marginTop: 20,
-                      width: "550px",
-                      [theme.fn.smallerThan("sm")]: {
-                        width: "470px",
+                      fontSize: 18,
+                      minWidth: 200,
+                      width: 200,
+                      height: 150,
+                      "&:hover": {
+                        backgroundColor: theme.colors.brand[7],
+                        color: "white",
+                        borderColor: theme.colors.brand[7],
                       },
                       [theme.fn.smallerThan("xs")]: {
                         width: "100%",
-                        padding: 0,
+                        minWidth: "100%",
+                        height: "12vh",
                       },
                     })}
-                    defaultValue={null}
+                    variant={"outline"}
+                    color={"brand.2"}
                   >
-                    <Accordion.Item value="customization">
-                      <Accordion.Control>
-                        <Flex justify={"space-between"} align={"center"}>
-                          <Text
-                            sx={(theme) => ({
-                              [theme.fn.smallerThan("xs")]: {
-                                fontSize: 14,
-                              },
-                            })}
-                          >
-                            {"Order: " + order.orderNo}
-                          </Text>
-                          <Flex align={"center"} gap={15}>
-                            <Text
-                              size={14}
-                              sx={(theme) => ({
-                                [theme.fn.smallerThan("xs")]: {
-                                  fontSize: 11,
-                                },
-                              })}
-                            >
-                              {order.shippingDate
-                                ? order.shippingDate
-                                : order.registerDate}
-                            </Text>
-                            <Flex
-                              p={6}
-                              pt={2}
-                              pb={2}
-                              bg={order.status.color}
-                              sx={(theme) => ({
-                                borderRadius: "7px",
-                                [theme.fn.smallerThan("xs")]: {
-                                  padding: 4,
-                                },
-                              })}
-                            >
-                              <Text
-                                sx={(theme) => ({
-                                  [theme.fn.smallerThan("xs")]: {
-                                    fontSize: 10,
-                                  },
-                                })}
-                                size={12}
-                              >
-                                {order.status.status}
-                              </Text>
-                            </Flex>
-                          </Flex>
-                        </Flex>
-                      </Accordion.Control>
-                      <Accordion.Panel>
-                        <OrderSummary order={order} />
-                      </Accordion.Panel>
-                    </Accordion.Item>
-                  </Accordion>
-                );
-              })
-            ) : (
-              <Text></Text>
-            )}
+                    {button.name}
+                  </Button>
+                </Link>
+              );
+            })}
           </Flex>
         </Flex>
       </AppShell>
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  await dbConnect();
-
-  const res: PopulatedOrder[] = await Order.find({})
-    .populate({
-      path: "status",
-      model: OrderStatus,
-    })
-    .populate({
-      path: "existingCustomer",
-      model: User,
-    });
-
-  return {
-    props: { orders: JSON.parse(JSON.stringify(res)) },
-  };
 };
 
 export default Admin;

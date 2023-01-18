@@ -19,21 +19,21 @@ export default async function handler(
   switch (method) {
     case "POST":
       try {
-        const mainProductExist = await MainProduct.findOne({
-          partNo: req.body.partNo,
+        // Creates new part no
+        const getFilteredMainProduct = await MainProduct.find({
+          category: req.body.category,
         });
+        const list: string[] = getFilteredMainProduct.map(
+          (part) => part.partNo
+        );
+        list.sort((a, b) => (a < b ? 1 : -1));
+        const createdPartNo = Number(list[0]) + 1;
 
-        if (mainProductExist) {
-          return res.status(403).send({
-            success: false,
-            data: "A main product with this part number already exists",
-          });
-        }
-
+        // Creates Main product
         const newMainProduct: MainProductDocument = new MainProduct();
         newMainProduct.description1 = req.body.description1;
         newMainProduct.description2 = req.body.description2;
-        newMainProduct.partNo = req.body.partNo;
+        newMainProduct.partNo = createdPartNo.toString();
         newMainProduct.brand = req.body.brand;
         newMainProduct.price = req.body.price;
         newMainProduct.category = req.body.category;

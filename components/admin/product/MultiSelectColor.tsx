@@ -9,7 +9,7 @@ import {
 import { UseFormReturnType } from "@mantine/form";
 import { Dispatch, FC, forwardRef, SetStateAction } from "react";
 import { SelectType } from "../SelectStatus";
-import { FormValues } from "./EditSubProductForm";
+import { FormValues } from "./CreateSubProductForm";
 type Props = {
   data: SelectType[];
   value: string[];

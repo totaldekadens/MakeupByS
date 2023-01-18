@@ -21,6 +21,7 @@ export default async function handler(
   switch (method) {
     case "POST":
       try {
+        console.log(req.body);
         // Check i Main product exists
         const mainProduct: MainProductDocument | null =
           await MainProduct.findOne({
@@ -33,12 +34,12 @@ export default async function handler(
             data: "Main product could not be found",
           });
         }
-
+        console.log(mainProduct);
         // Check if new part number is unique
         const subProductExist = await SubProduct.findOne({
           partNo: mainProduct?.partNo + "-" + req.body.title,
         });
-
+        console.log("Här också?");
         if (subProductExist) {
           return res.status(403).send({
             success: false,
@@ -51,24 +52,55 @@ export default async function handler(
           .toISOString()
           .slice(0, 16)
           .replace("T", " ");
-
+        console.log("Här också???");
         const newSubProduct: SubProductDocument = new SubProduct();
-        newSubProduct._id = req.body._id;
-        newSubProduct.mainProduct = req.body.mainProduct;
-        newSubProduct.partNo = mainProduct?.partNo + "-" + formattedTitle;
         newSubProduct.title = req.body.title;
-        newSubProduct.setSlug!(req.body.title);
+        newSubProduct.mainProduct = req.body.mainProduct;
         newSubProduct.images = req.body.images;
-        newSubProduct.colors = req.body.colors;
         newSubProduct.availableQty = req.body.availableQty;
-        newSubProduct.discount = req.body.discount;
+        newSubProduct.colors = req.body.colors;
+        newSubProduct.partNo = mainProduct?.partNo + "-" + formattedTitle;
+        newSubProduct.setSlug(req.body.title);
         newSubProduct.createdDate = todayDate;
         newSubProduct.lastUpdated = todayDate;
 
+        console.log(newSubProduct);
         const subProduct = await SubProduct.create(newSubProduct);
+        console.log(subProduct);
         res.status(201).json({ success: true, data: subProduct });
       } catch (error) {
         res.status(400).json({ success: false, message: error });
+      }
+      break;
+    case "PUT":
+      try {
+        // Fix validation for already existing sub product except the one you update
+
+        const todayDate = new Date()
+          .toISOString()
+          .slice(0, 16)
+          .replace("T", " ");
+
+        const updateSubProduct: SubProductDocument = req.body;
+        updateSubProduct.lastUpdated = todayDate;
+
+        const subProduct = await SubProduct.findOneAndUpdate(
+          { _id: req.body._id },
+          updateSubProduct,
+          {
+            new: true,
+            runValidators: true,
+          }
+        );
+
+        if (!subProduct) {
+          return res
+            .status(400)
+            .json({ success: false, data: "Product not found" });
+        }
+        res.status(200).json({ success: true, data: subProduct });
+      } catch (error) {
+        res.status(400).json({ success: false, data: error });
       }
       break;
     default:

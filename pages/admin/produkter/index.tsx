@@ -5,6 +5,8 @@ import {
   Select,
   Table,
   MediaQuery,
+  Menu,
+  Text,
 } from "@mantine/core";
 import { GetServerSideProps, NextPage } from "next";
 import HeaderCheckout from "../../../components/layout/HeaderCheckout";
@@ -19,6 +21,8 @@ import Category, { CategoryDocument } from "../../../models/Category";
 import Color from "../../../models/Color";
 import Season from "../../../models/Season";
 import OverviewProduct from "../../../components/admin/product/OverviewProduct";
+import { IconChevronDown } from "@tabler/icons";
+import Link from "next/link";
 
 type Props = {
   products: PopulatedProduct[];
@@ -28,9 +32,8 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
   const [activeOrders, setActiveOrders] = useState<number>(0);
   const [currentProducts, setCurrentProducts] =
     useState<PopulatedProduct[]>(products);
-  const [currentStatus, setCurrentStatus] = useState<string | null>(
-    "Överblick"
-  );
+  const [opened, setOpened] = useState(false);
+  const [currentPage, setCurrentPage] = useState<string>("Överblick");
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
   // Refs
   const valueRef = useRef<any | null>();
@@ -50,11 +53,9 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
     updateProducts();
   }, [isUpdated]);
 
-  const selectList = [
-    { label: "Överblick", value: "OverviewProducts" },
-    { label: "Skapa produkt", value: "CreateProduct" },
-    { label: "Ändra produkt", value: "EditProduct" },
-    { label: "Ta bort produkt", value: "DeleteProduct" },
+  const list = [
+    { label: "Överblick", value: "/admin/produkter" },
+    { label: "Skapa produkt", value: "/admin/produkter/skapa" },
   ];
 
   const rows = currentProducts.map((product, index) => (
@@ -68,7 +69,6 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
     <>
       <AppShell fixed={false} header={<HeaderCheckout />}>
         <Flex direction={"column"} align="center" style={{ marginTop: 60 }}>
-          <Title>ADMIN</Title>
           <Options />
           <Flex
             direction={"column"}
@@ -87,13 +87,39 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
                 },
               })}
             >
-              <Select
-                placeholder={currentStatus ? currentStatus : "Meny"}
-                value={currentStatus}
-                onChange={setCurrentStatus}
-                data={selectList}
-                styles={{ root: { width: 150 } }}
-              />
+              <Flex gap={5} mt={20}>
+                <Menu
+                  styles={(theme) => ({
+                    dropdown: { width: 300 },
+                    item: {
+                      width: 180,
+                      height: 50,
+                      "&:hover": { backgroundColor: theme.colors.brand[1] },
+                    },
+                  })}
+                  shadow="md"
+                  opened={opened}
+                  onChange={setOpened}
+                >
+                  <Menu.Target>
+                    <Flex align={"center"} sx={{ cursor: "pointer" }}>
+                      <Text>{currentPage}</Text>
+                      <IconChevronDown style={{ marginLeft: 13 }} size={14} />
+                    </Flex>
+                  </Menu.Target>
+                  <Menu.Dropdown w={200}>
+                    {list.map((button, index) => {
+                      return (
+                        <Menu.Item key={index} color="brand.7">
+                          <Link key={index} href={button.value}>
+                            {button.label}
+                          </Link>
+                        </Menu.Item>
+                      );
+                    })}
+                  </Menu.Dropdown>
+                </Menu>
+              </Flex>
             </Flex>
 
             <Flex
