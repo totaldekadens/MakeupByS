@@ -28,7 +28,7 @@ export const SeasonGrid = () => {
         </Link>
       </Grid.Col>
       <Grid.Col span={8} md={3} sm={3} xs={3}>
-        <Link href={"/sasong.sommar"}>
+        <Link href={"/sasong/sommar"}>
           <Image
             src={"/uploads/sommar.jpg"}
             sx={{
