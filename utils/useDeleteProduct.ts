@@ -10,13 +10,11 @@ const useDeleteProduct = async (
   });
   let result = await response.json();
   console.log(result);
-  // #136
   if (result.success) {
-    alert("Produkt raderad");
     setIsUpdated(true);
-    return;
+    return true;
   }
-  alert("Produkt kunde inte raderas");
+  return false;
 };
 
 export default useDeleteProduct;

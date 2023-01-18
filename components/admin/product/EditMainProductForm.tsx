@@ -14,7 +14,8 @@ import * as Yup from "yup";
 import Category, { CategoryDocument } from "../../../models/Category";
 import { MainProductDocument } from "../../../models/MainProduct";
 import { PopulatedProduct } from "../../../utils/types";
-import { SelectType } from "../SelectStatus";
+import ResponseModal from "../../layout/ResponseModal";
+import { ResponseModalType, SelectType } from "../SelectStatus";
 
 interface FormValues {
   brand: string;
@@ -48,7 +49,11 @@ const EditMainProductForm: FC<Props> = ({
   setIsUpdated,
 }) => {
   const [categories, setCategories] = useState<CategoryDocument[]>();
-
+  const [opened, setOpened] = useState(false);
+  const [response, setResponse] = useState<ResponseModalType>({
+    title: "",
+    reason: "info",
+  });
   useEffect(() => {
     const getCategories = async () => {
       const response = await fetch("/api/open/category");
@@ -94,11 +99,23 @@ const EditMainProductForm: FC<Props> = ({
     };
     const response = await fetch("/api/admin/mainproduct", request);
     let result = await response.json();
-    console.log(result);
     if (result.success) {
+      const object: ResponseModalType = {
+        title: "Produkten är uppdaterad!",
+        reason: "success",
+      };
+      setResponse(object);
+      setOpened(true);
       setIsUpdated(true);
       setEditMainProduct(false);
+      return;
     }
+    const object: ResponseModalType = {
+      title: "Något gick fel!",
+      reason: "error",
+    };
+    setResponse(object);
+    setOpened(true);
   };
 
   const list: SelectType[] | null = categories
@@ -219,6 +236,7 @@ const EditMainProductForm: FC<Props> = ({
           </Button>
         </Flex>
       </form>
+      <ResponseModal info={response} setOpened={setOpened} opened={opened} />
     </>
   );
 };

@@ -1,6 +1,7 @@
 import { Dispatch, FC, SetStateAction } from "react";
 import { Modal, Text, Flex, Button } from "@mantine/core";
 import { IconCheck, IconInfoCircle, IconX } from "@tabler/icons";
+import { useRouter } from "next/router";
 
 type Props = {
   info: {
@@ -13,9 +14,13 @@ type Props = {
 };
 
 const ResponseModal: FC<Props> = ({ info, setOpened, opened }) => {
+  const router = useRouter();
+
   const handleClick = () => {
     setOpened(false);
-    window.location.reload();
+    if (router.pathname.includes("bestallningar")) {
+      window.location.reload();
+    }
   };
   return (
     <>

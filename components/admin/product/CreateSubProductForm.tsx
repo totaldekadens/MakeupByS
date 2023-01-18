@@ -15,7 +15,8 @@ import { ColorDocument } from "../../../models/Color";
 import { ColorTagDocument } from "../../../models/ColorTag";
 import { PopulatedMainProduct, PopulatedProduct } from "../../../utils/types";
 import UploadToImagesToServer from "../../../utils/useUploadImagesToServer";
-import { SelectType } from "../SelectStatus";
+import ResponseModal from "../../layout/ResponseModal";
+import { ResponseModalType, SelectType } from "../SelectStatus";
 import MultiSelectColor from "./MultiSelectColor";
 import UploadForm from "./UploadForm";
 
@@ -47,6 +48,11 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
   );
   const [imageList, setImageList] = useState<string[]>([]);
   const [fileList, setFileList] = useState<File[]>([]);
+  const [opened, setOpened] = useState(false);
+  const [response, setResponse] = useState<ResponseModalType>({
+    title: "",
+    reason: "info",
+  });
 
   // Gets colortags on load
   useEffect(() => {
@@ -116,8 +122,12 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
       !currentMainProduct ||
       multiSelectColors.length < 1
     ) {
-      // #136
-      alert("Allt måste fyllas i");
+      const object: ResponseModalType = {
+        title: "Alla fält måste fyllas i!",
+        reason: "error",
+      };
+      setResponse(object);
+      setOpened(true);
       return;
     }
 
@@ -141,8 +151,12 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
     const response = await fetch("/api/admin/subproduct", request);
     let result = await response.json();
     if (result.success) {
-      // #136
-      alert("Produkten är skapad");
+      const object: ResponseModalType = {
+        title: "Produkten är skapad!",
+        reason: "success",
+      };
+      setResponse(object);
+      setOpened(true);
       setCurrentMainProduct("");
       setImageList([]);
       setMultiSelectColors([]);
@@ -151,152 +165,159 @@ const CreateSubProductForm: FC<Props> = ({ setIsCreated, mainProducts }) => {
       form.reset();
       return;
     }
-    // #136
-    alert("Något gick fel");
+    const object: ResponseModalType = {
+      title: "Något gick fel!",
+      reason: "error",
+    };
+    setResponse(object);
+    setOpened(true);
   };
 
   return (
-    <form
-      onSubmit={form.onSubmit(handleSubmit)}
-      style={{
-        width: "100%",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Flex justify={"center"} direction="column" sx={{ width: "90%" }}>
-        <Flex
-          gap={10}
-          sx={(theme) => ({
-            [theme.fn.smallerThan("sm")]: {
-              flexDirection: "column",
-            },
-          })}
-        >
-          <Select
-            searchable
-            w={270}
+    <>
+      <form
+        onSubmit={form.onSubmit(handleSubmit)}
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Flex justify={"center"} direction="column" sx={{ width: "90%" }}>
+          <Flex
+            gap={10}
             sx={(theme) => ({
-              [theme.fn.smallerThan("xs")]: {
-                width: "100%",
+              [theme.fn.smallerThan("sm")]: {
+                flexDirection: "column",
               },
             })}
-            value={currentMainProduct}
-            onChange={setCurrentMainProduct}
-            placeholder="Välj huvudartikel"
-            label="Huvudartikel*"
-            data={mainProductSelect}
-            name="mainProduct"
+          >
+            <Select
+              searchable
+              w={270}
+              sx={(theme) => ({
+                [theme.fn.smallerThan("xs")]: {
+                  width: "100%",
+                },
+              })}
+              value={currentMainProduct}
+              onChange={setCurrentMainProduct}
+              placeholder="Välj huvudartikel"
+              label="Huvudartikel*"
+              data={mainProductSelect}
+              name="mainProduct"
+            />
+            <Flex
+              direction={"column"}
+              sx={(theme) => ({
+                width: 400,
+                [theme.fn.smallerThan("xs")]: {
+                  width: "90%",
+                },
+              })}
+            >
+              {currentMainProduct
+                ? mainProducts.map((product, index) => {
+                    const id = product._id.toString();
+                    if (id == currentMainProduct) {
+                      return (
+                        <Box key={index}>
+                          <Flex key={index} direction={"column"}>
+                            <Text weight={"bold"} size={"xs"}>
+                              Pris:
+                            </Text>
+                            <Text size={"xs"}>
+                              {Number(product.price.$numberDecimal) + " KR"}
+                            </Text>
+                          </Flex>
+                          <Flex direction={"column"}>
+                            <Text weight={"bold"} size={"xs"}>
+                              Vikt:
+                            </Text>
+                            <Text size={"xs"}>{product.weight}</Text>
+                          </Flex>
+                          <Flex direction={"column"}>
+                            <Text weight={"bold"} size={"xs"}>
+                              Beskrivning 1:
+                            </Text>
+                            <Text size={"xs"}>{product.description1}</Text>
+                          </Flex>
+                          <Flex direction={"column"}>
+                            <Text weight={"bold"} size={"xs"}>
+                              Beskrivning 2:
+                            </Text>
+                            <Text size={"xs"}>{product.description2}</Text>
+                          </Flex>
+                        </Box>
+                      );
+                    }
+                  })
+                : null}
+            </Flex>
+          </Flex>
+          <TextInput
+            mt="xs"
+            label="Titel*"
+            placeholder={"Produktens namn"}
+            name="title"
+            {...form.getInputProps("title")}
+          />
+          <NumberInput
+            min={0}
+            mt="xs"
+            label="Antal*"
+            placeholder={0}
+            name="availableQty"
+            {...form.getInputProps("availableQty")}
+            w={100}
+          />
+          <UploadForm
+            setImageList={setImageList}
+            value={fileList}
+            setValue={setFileList}
+          />
+          <Select
+            label="Färg*"
+            data={colortags}
+            value={valueTag}
+            onChange={setValueTag}
+          />
+          <MultiSelectColor
+            data={colors}
+            value={multiSelectColors}
+            setValue={setMultiSelectColors}
+            form={form}
           />
           <Flex
-            direction={"column"}
+            mt={40}
+            justify="flex-end"
             sx={(theme) => ({
-              width: 400,
               [theme.fn.smallerThan("xs")]: {
-                width: "90%",
+                justifyContent: "center",
               },
             })}
           >
-            {currentMainProduct
-              ? mainProducts.map((product, index) => {
-                  const id = product._id.toString();
-                  if (id == currentMainProduct) {
-                    return (
-                      <Box key={index}>
-                        <Flex key={index} direction={"column"}>
-                          <Text weight={"bold"} size={"xs"}>
-                            Pris:
-                          </Text>
-                          <Text size={"xs"}>
-                            {Number(product.price.$numberDecimal) + " KR"}
-                          </Text>
-                        </Flex>
-                        <Flex direction={"column"}>
-                          <Text weight={"bold"} size={"xs"}>
-                            Vikt:
-                          </Text>
-                          <Text size={"xs"}>{product.weight}</Text>
-                        </Flex>
-                        <Flex direction={"column"}>
-                          <Text weight={"bold"} size={"xs"}>
-                            Beskrivning 1:
-                          </Text>
-                          <Text size={"xs"}>{product.description1}</Text>
-                        </Flex>
-                        <Flex direction={"column"}>
-                          <Text weight={"bold"} size={"xs"}>
-                            Beskrivning 2:
-                          </Text>
-                          <Text size={"xs"}>{product.description2}</Text>
-                        </Flex>
-                      </Box>
-                    );
-                  }
-                })
-              : null}
+            <Button
+              w={200}
+              fullWidth
+              type="submit"
+              sx={(theme) => ({
+                backgroundColor: theme.colors.brand[8],
+                "&:hover": {
+                  backgroundColor: theme.colors.brand[7],
+                  color: theme.white,
+                  border: "unset",
+                },
+              })}
+            >
+              Skapa produkt
+            </Button>
           </Flex>
         </Flex>
-        <TextInput
-          mt="xs"
-          label="Titel*"
-          placeholder={"Produktens namn"}
-          name="title"
-          {...form.getInputProps("title")}
-        />
-        <NumberInput
-          min={0}
-          mt="xs"
-          label="Antal*"
-          placeholder={0}
-          name="availableQty"
-          {...form.getInputProps("availableQty")}
-          w={100}
-        />
-        <UploadForm
-          setImageList={setImageList}
-          value={fileList}
-          setValue={setFileList}
-        />
-        <Select
-          label="Färg*"
-          data={colortags}
-          value={valueTag}
-          onChange={setValueTag}
-        />
-        <MultiSelectColor
-          data={colors}
-          value={multiSelectColors}
-          setValue={setMultiSelectColors}
-          form={form}
-        />
-        <Flex
-          mt={40}
-          justify="flex-end"
-          sx={(theme) => ({
-            [theme.fn.smallerThan("xs")]: {
-              justifyContent: "center",
-            },
-          })}
-        >
-          <Button
-            w={200}
-            fullWidth
-            type="submit"
-            sx={(theme) => ({
-              backgroundColor: theme.colors.brand[8],
-              "&:hover": {
-                backgroundColor: theme.colors.brand[7],
-                color: theme.white,
-                border: "unset",
-              },
-            })}
-          >
-            Skapa produkt
-          </Button>
-        </Flex>
-      </Flex>
-    </form>
+      </form>
+      <ResponseModal info={response} setOpened={setOpened} opened={opened} />
+    </>
   );
 };
 

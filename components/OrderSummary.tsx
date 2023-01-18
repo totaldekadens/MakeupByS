@@ -11,7 +11,7 @@ import {
 import { IconInfoCircle, IconPoint } from "@tabler/icons";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { PopulatedOrder } from "../utils/types";
 import SelectStatus from "./admin/SelectStatus";
 import CartItemConfirmation from "./checkout/CartItemConfirmation";
@@ -253,7 +253,7 @@ const OrderSummary: FC<Props> = ({ order }) => {
               </Text>
             </Flex>
           </Flex>
-          {session.data?.user.admin && router.pathname == "/admin" ? (
+          {session.data?.user.admin && router.pathname.includes("admin") ? (
             <SelectStatus order={order} />
           ) : null}
         </Flex>
