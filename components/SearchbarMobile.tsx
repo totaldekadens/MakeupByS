@@ -14,6 +14,7 @@ const SearchbarMobile = () => {
         styles={{
           input: {
             color: "white",
+            "::placeholder": { color: "white" },
           },
         }}
         sx={(theme) => ({

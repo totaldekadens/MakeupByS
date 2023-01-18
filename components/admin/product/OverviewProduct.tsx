@@ -27,7 +27,7 @@ const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
           <Flex direction={"column"}>
             <Text
               onClick={() => setOpened(true)}
-              size={10}
+              size={11}
               sx={{ cursor: "pointer" }}
               color="dimmed"
             >
@@ -36,7 +36,7 @@ const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
             <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
               <Text size={7}>{product.partNo}</Text>
             </MediaQuery>
-            <Text size={10}>
+            <Text size={11}>
               {product.mainProduct.price.$numberDecimal + " KR"}{" "}
             </Text>
           </Flex>

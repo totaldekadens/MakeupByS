@@ -48,6 +48,10 @@ const Searchbar = () => {
           input: {
             borderBottom: "1px solid white",
             color: "white",
+            "::placeholder": { color: "white" },
+          },
+          root: {
+            "::placeholder": { color: "white" },
           },
         }}
       ></Autocomplete>
