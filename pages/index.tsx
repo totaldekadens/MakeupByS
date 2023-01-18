@@ -2,7 +2,6 @@ import Head from "next/head";
 import FrontPageHeader from "../components/FrontPageHeader";
 import Footer from "../components/Footer";
 import {
-  Header as MantineHeader,
   AppShell,
   MediaQuery,
   Image,
@@ -12,16 +11,33 @@ import {
   BackgroundImage,
   Space,
   Button,
+  createStyles,
+  Box,
 } from "@mantine/core";
 import Cart from "../components/cart/Cart";
-import { useContext } from "react";
-import { useSession } from "next-auth/react";
-import { hideContext } from "../components/context/HideProvider";
 import { IconCheck } from "@tabler/icons";
 import SeasonGrid from "../components/frontpageContent/SeasonGrid";
+import { PopulatedColor, PopulatedProduct } from "../utils/types";
+import { GetStaticProps, NextPage } from "next";
+import { useRouter } from "next/router";
+import useWindowSize from "../utils/useWindowSize";
+import dbConnect from "../utils/dbConnect";
+import SubProduct from "../models/SubProduct";
+import MainProduct from "../models/MainProduct";
+import Category from "../models/Category";
+import Color from "../models/Color";
+import Season from "../models/Season";
 
-export default function Home() {
-  const { hide, setHide } = useContext(hideContext);
+import CarouselProduct from "../components/product/CarouselProduct";
+
+type Props = {
+  product: PopulatedProduct;
+  products: PopulatedProduct[];
+};
+
+const Home: NextPage<Props> = ({ product, products }) => {
+
+  let size = useWindowSize();
 
   return (
     <>
@@ -76,12 +92,8 @@ export default function Home() {
               height: "40px",
               width: "100%",
 
-              [theme.fn.smallerThan("sm")]: {
-
-              },
-              [theme.fn.smallerThan("xs")]: {
-
-              },
+              [theme.fn.smallerThan("sm")]: {},
+              [theme.fn.smallerThan("xs")]: {},
             })}
           >
             <Flex
@@ -138,7 +150,7 @@ export default function Home() {
         </Flex>
 
         <Flex
-        className="quizbox"
+          className="quizbox"
           sx={(theme) => ({
             marginTop: 230,
             gap: 100,
@@ -167,8 +179,13 @@ export default function Home() {
             },
           })}
         >
-          <MediaQuery largerThan={"xs"} styles={{display: "none"}}>
-          <Title styles={{ width: "100%", paddingTop: "150px"}} color={"white"}>Make Up By Season</Title>
+          <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
+            <Title
+              styles={{ width: "100%", paddingTop: "150px" }}
+              color={"white"}
+            >
+              Make Up By Season
+            </Title>
           </MediaQuery>
           <Flex
             sx={(theme) => ({
@@ -180,7 +197,6 @@ export default function Home() {
               },
             })}
           >
-            
             <Text
               lineClamp={6}
               w={400}
@@ -227,22 +243,134 @@ export default function Home() {
       <AppShell fixed={false} header={<FrontPageHeader />} footer={<Footer />}>
         <>
           <main style={{ marginTop: 60, minHeight: "100vh" }}>
-          <Text
-            align="center"
-            fw={800}
-            color={"#1D464E"}
-            tt={"uppercase"}
-            fz={35}
-            ff={"mada"}
-            mb={40}
+            <Text
+              align="center"
+              fw={800}
+              color={"#1D464E"}
+              tt={"uppercase"}
+              fz={35}
+              ff={"mada"}
+              mb={40}
             >
-              by season
+              By Season
+            </Text>
+            <SeasonGrid />
+
+            <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
+              <Text
+                align="center"
+                fw={800}
+                color={"#1D464E"}
+                tt={"uppercase"}
+                fz={35}
+                ff={"mada"}
+                mb={30}
+                mt={100}
+              >
+                vårens nyheter
               </Text>
-              <SeasonGrid />
+              <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
+                <Box>
+                  <CarouselProduct
+                    products={products}
+                    slideGap="md"
+                    slideSize="30.3333%"
+                    slidesToScroll={undefined}
+                  />
+                </Box>
+              </MediaQuery>
+
+              <Box
+                sx={{
+                  display:
+                    size.width < 767 || size.width > 1200 ? "none" : "block",
+                }}
+              >
+                <CarouselProduct
+                  products={products}
+                  slideGap="md"
+                  slideSize="50%"
+                  slidesToScroll={2}
+                />
+              </Box>
+
+              <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
+                <Box>
+                  <CarouselProduct
+                    products={products}
+                    slideGap="xs"
+                    slideSize="100%"
+                    slidesToScroll={undefined}
+                  />
+                </Box>
+              </MediaQuery>
+            </Flex>
           </main>
           <Cart />
         </>
       </AppShell>
     </>
   );
-}
+};
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  await dbConnect();
+
+  const product = await SubProduct.findOne({ slug: params?.slug })
+    .populate({
+      path: "mainProduct",
+      model: MainProduct,
+      populate: {
+        path: "category",
+        model: Category,
+      },
+    })
+    .populate({
+      path: "colors",
+      model: Color,
+      populate: {
+        path: "seasons",
+        model: Season,
+      },
+    });
+
+  const subProducts = await SubProduct.find({})
+    .populate({
+      path: "mainProduct",
+      model: MainProduct,
+      populate: {
+        path: "category",
+        model: Category,
+      },
+    })
+    .populate({
+      path: "colors",
+      model: Color,
+      populate: {
+        path: "seasons",
+        model: Season,
+      },
+    });
+
+  // Todo if time: #67 Find a better way. Should be able to filter the query above.
+  //Check aggregation and virtuals with match
+  let list: any[] = [];
+  subProducts.forEach((product) => {
+    product.colors.forEach((color: PopulatedColor) => {
+      color.seasons.forEach((season) => {
+        if (season.slug == product.colors[0].seasons[0].slug) {
+          list.push(product);
+        }
+      });
+    });
+  });
+
+  return {
+    props: {
+      product: JSON.parse(JSON.stringify(product)),
+      products: JSON.parse(JSON.stringify(list)),
+    },
+  };
+};
+
+export default Home;

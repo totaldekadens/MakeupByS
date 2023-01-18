@@ -5,12 +5,12 @@ export const SeasonGrid = () => {
   return (
     <Grid justify={"center"} gutter={6} gutterXs={"xl"}>
       <Grid.Col styles={{ borderRadius: "5px" }} span={8} md={3} sm={3} xs={3}>
-        <Link href={"/"}>
+        <Link href={"/sasong/var"}>
           <Image
-            src={"/uploads/spring_640.jpg"}
+            src={"/uploads/vår.jpg"}
             sx={{
               img: {
-                borderRadius: "5px",
+                borderRadius: "10px",
               },
             }}
           />
@@ -23,17 +23,17 @@ export const SeasonGrid = () => {
               paddingBottom: "20px",
             }}
           >
-            Spring
+            Vår
           </Title>
         </Link>
       </Grid.Col>
       <Grid.Col span={8} md={3} sm={3} xs={3}>
-        <Link href={"/"}>
+        <Link href={"/sasong.sommar"}>
           <Image
-            src={"/uploads/summer_640.jpg"}
+            src={"/uploads/sommar.jpg"}
             sx={{
               img: {
-                borderRadius: "5px",
+                borderRadius: "10px",
               },
             }}
           />
@@ -46,17 +46,17 @@ export const SeasonGrid = () => {
               paddingBottom: "20px",
             }}
           >
-            Summer
+            Sommar
           </Title>
         </Link>
       </Grid.Col>
       <Grid.Col span={8} md={3} sm={3} xs={3}>
-        <Link href={"/"}>
+        <Link href={"/sasong/host"}>
           <Image
-            src={"/uploads/autumn_640.jpg"}
+            src={"/uploads/höst.jpg"}
             sx={{
               img: {
-                borderRadius: "5px",
+                borderRadius: "10px",
               },
             }}
           />
@@ -69,17 +69,17 @@ export const SeasonGrid = () => {
               paddingBottom: "20px",
             }}
           >
-            Autumn
+            Höst
           </Title>
         </Link>
       </Grid.Col>
       <Grid.Col span={8} md={3} sm={3} xs={3}>
-        <Link href={"/"}>
+        <Link href={"/sasong/vinter"}>
           <Image
-            src={"/uploads/winter_640.jpg"}
+            src={"/uploads/vinter.jpg"}
             sx={{
               img: {
-                borderRadius: "5px",
+                borderRadius: "10px",
               },
             }}
           />
@@ -92,7 +92,7 @@ export const SeasonGrid = () => {
               paddingBottom: "20px",
             }}
           >
-            Winter
+            Vinter
           </Title>
         </Link>
       </Grid.Col>
