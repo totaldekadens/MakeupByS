@@ -11,6 +11,7 @@ import {
   Image,
   Box,
   NumberInput,
+  Checkbox,
 } from "@mantine/core";
 import { useForm, yupResolver } from "@mantine/form";
 import { Decimal128, Types } from "mongoose";
@@ -22,8 +23,10 @@ import { ColorTagDocument } from "../../../models/ColorTag";
 import { MainProductDocument } from "../../../models/MainProduct";
 import { SubProductDocument } from "../../../models/SubProduct";
 import { PopulatedProduct } from "../../../utils/types";
+import UploadToImagesToServer from "../../../utils/useUploadImagesToServer";
 import { SelectType } from "../SelectStatus";
 import MultiSelectColor from "./MultiSelect";
+import UploadForm from "./UploadForm";
 
 export interface FormValues {
   availableQty: number;
@@ -55,6 +58,9 @@ const EditSubProductForm: FC<Props> = ({
   const [multiSelectColors, setMultiSelectColors] = useState<string[]>([]);
   const [valueTag, setValueTag] = useState<string | null>(null);
   const [direction, setDirection] = useState("set");
+  const [imageList, setImageList] = useState<string[]>([]);
+  const [fileList, setFileList] = useState<File[]>([]);
+  const [checked, setChecked] = useState(false);
   // Gets colortags on load
   useEffect(() => {
     const getColorTags = async () => {
@@ -114,7 +120,7 @@ const EditSubProductForm: FC<Props> = ({
       return;
     }
 
-    const updatedInfo: SubProductDocument = {
+    const updatedInfo = {
       _id: product._id,
       title: product.title,
       slug: product.slug,
@@ -126,12 +132,16 @@ const EditSubProductForm: FC<Props> = ({
           : direction == "remove"
           ? Number(product.availableQty) - Number(values.availableQty)
           : Number(values.availableQty),
-      images: values.images,
+      images: imageList.length > 0 ? imageList : values.images,
       colors:
         multiSelectColors.length > 0
           ? (multiSelectColors as unknown as Types.ObjectId[])
           : (values.colors as unknown as Types.ObjectId[]),
     };
+
+    if (checked) {
+      await UploadToImagesToServer(fileList);
+    }
 
     const request = {
       method: "PUT",
@@ -199,29 +209,48 @@ const EditSubProductForm: FC<Props> = ({
             {...form.getInputProps("availableQty")}
             w={100}
           />
-          <TextInput
-            mt="xs"
-            label="Bild*"
-            placeholder="Bilder"
-            name="images"
-            {...form.getInputProps("images")}
+          {checked ? null : (
+            <>
+              <TextInput
+                disabled
+                mt="xs"
+                label="Nuvarande bilder"
+                placeholder="Nuvarande bilder"
+                name="images"
+                {...form.getInputProps("images")}
+              />
+              <Flex mt={30} sx={{ width: "100%" }} h={150}>
+                {product.images.map((image, index) => {
+                  return (
+                    <Flex
+                      key={index}
+                      direction={"column"}
+                      align={"center"}
+                      w={100}
+                      h={100}
+                    >
+                      <Image src={`/uploads/${image}`} />
+                      <Text size={"xs"}>{image}</Text>
+                    </Flex>
+                  );
+                })}
+              </Flex>
+            </>
+          )}
+          <Checkbox
+            mt={40}
+            label={"Lägg till nya bilder"}
+            checked={checked}
+            onChange={(event) => setChecked(event.currentTarget.checked)}
           />
-          <Flex mt={30} sx={{ width: "100%" }} h={150}>
-            {product.images.map((image, index) => {
-              return (
-                <Flex
-                  key={index}
-                  direction={"column"}
-                  align={"center"}
-                  w={100}
-                  h={100}
-                >
-                  <Image src={`/uploads/${image}`} />
-                  <Text size={"xs"}>{image}</Text>
-                </Flex>
-              );
-            })}
-          </Flex>
+          {checked ? (
+            <UploadForm
+              setImageList={setImageList}
+              setValue={setFileList}
+              value={fileList}
+            />
+          ) : null}
+
           <Select
             label="Färg*"
             data={colortags}
