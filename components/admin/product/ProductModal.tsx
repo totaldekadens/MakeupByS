@@ -16,6 +16,7 @@ import Section from "../Section";
 import EditMainProductForm from "./EditMainProductForm";
 import { CategoryDocument } from "../../../models/Category";
 import EditSubProductForm from "./EditSubProductForm";
+import useDeleteProduct from "../../../utils/useDeleteProduct";
 
 type Props = {
   product: PopulatedProduct;
@@ -166,7 +167,13 @@ const ProductModal: FC<Props> = ({
                       style={{ cursor: "pointer" }}
                       size={24}
                     />
-                    <IconTrash style={{ cursor: "pointer" }} size={24} />
+                    <IconTrash
+                      style={{ cursor: "pointer" }}
+                      size={24}
+                      onClick={() => {
+                        useDeleteProduct(product._id, setIsUpdated);
+                      }}
+                    />
                   </Flex>
                 </Flex>
                 {editSubProduct ? (

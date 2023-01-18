@@ -1,8 +1,10 @@
 import { Flex, Image, Title, Text, Group, MediaQuery } from "@mantine/core";
 import { IconEdit, IconTrash } from "@tabler/icons";
+import { Types } from "mongoose";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { CategoryDocument } from "../../../models/Category";
 import { PopulatedProduct } from "../../../utils/types";
+import useDeleteProduct from "../../../utils/useDeleteProduct";
 import ProductModal from "./ProductModal";
 type Props = {
   product: PopulatedProduct;
@@ -11,6 +13,7 @@ type Props = {
 
 const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
   const [opened, setOpened] = useState(false);
+
   return (
     <tr key={product.title}>
       <td style={{ height: "50px" }}>
@@ -65,7 +68,13 @@ const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
         <Text size={10}>{product.availableQty}</Text>
       </td>
       <td>
-        <IconTrash size={14} />
+        <IconTrash
+          style={{ cursor: "pointer" }}
+          size={14}
+          onClick={() => {
+            useDeleteProduct(product._id, setIsUpdated);
+          }}
+        />
       </td>
       <ProductModal
         product={product}
