@@ -7,6 +7,8 @@ import {
   MediaQuery,
   Menu,
   Text,
+  Autocomplete,
+  TextInput,
 } from "@mantine/core";
 import { GetServerSideProps, NextPage } from "next";
 import HeaderCheckout from "../../../components/layout/HeaderCheckout";
@@ -29,12 +31,12 @@ type Props = {
 };
 
 const ProductHandler: NextPage<Props> = ({ products }) => {
-  const [activeOrders, setActiveOrders] = useState<number>(0);
   const [currentProducts, setCurrentProducts] =
     useState<PopulatedProduct[]>(products);
   const [opened, setOpened] = useState(false);
   const [currentPage, setCurrentPage] = useState<string>("Överblick");
   const [isUpdated, setIsUpdated] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState(""); // Autocomplete
   // Refs
   const valueRef = useRef<any | null>();
   valueRef.current = products;
@@ -52,6 +54,17 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
     };
     updateProducts();
   }, [isUpdated]);
+
+  // Filtering products depending on search input
+  useEffect(() => {
+    const updateProducts = async () => {
+      const filterProducts = products.filter((product) =>
+        product.partNo.includes(searchValue.toUpperCase())
+      );
+      setCurrentProducts(filterProducts);
+    };
+    updateProducts();
+  }, [searchValue]);
 
   const list = [
     { label: "Överblick", value: "/admin/produkter" },
@@ -87,7 +100,30 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
                 },
               })}
             >
-              <Flex gap={5} mt={20}>
+              <Flex
+                gap={5}
+                mt={20}
+                justify="space-between"
+                sx={{ width: "100%" }}
+              >
+                <TextInput
+                  radius={"md"}
+                  color="black"
+                  styles={{
+                    wrapper: { color: "black" },
+                    root: { color: "black" },
+                    input: {
+                      borderBottom: "1px solid #dee2e6",
+                      color: "black",
+                      "::placeholder": { color: "black" },
+                    },
+                  }}
+                  placeholder="Sök på produkt.."
+                  value={searchValue}
+                  onChange={(event) =>
+                    setSearchValue(event.currentTarget.value)
+                  }
+                />
                 <Menu
                   styles={(theme) => ({
                     dropdown: { width: 300 },
