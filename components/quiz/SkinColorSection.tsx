@@ -2,6 +2,7 @@ import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { Radio, Flex, Title, Image, Text } from "@mantine/core";
 import { SkinDocument } from "../../models/Skin";
 import { ListType } from "./EyeColorSection";
+import { useScrollIntoView, useWindowScroll } from "@mantine/hooks";
 
 type Props = {
   setValueSkin: Dispatch<SetStateAction<string>>;
@@ -16,14 +17,19 @@ const SkinColorSection: FC<Props> = ({
 }) => {
   // State
   const [skin, setSkin] = useState<SkinDocument[]>();
-
+  const [scroll, scrollTo] = useWindowScroll();
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 0,
+  });
   // Fetches list of skin colors fom DB
   useEffect(() => {
     const getResult = async () => {
       const response = await fetch("/api/open/skin");
       let result = await response.json();
+
       setSkin(result.data);
       setSkinList(result.data);
+      scrollIntoView({ alignment: "start" });
     };
     getResult();
   }, [valueSkin]);
@@ -50,7 +56,13 @@ const SkinColorSection: FC<Props> = ({
   const skinTypes = skin ? getTypes(skin) : getTypes([]);
 
   return (
-    <Flex direction={"column"} sx={{ minHeight: "80vh" }}>
+    <Flex
+      ref={targetRef}
+      direction={"column"}
+      sx={{
+        minHeight: "60vh",
+      }}
+    >
       <Flex
         gap={20}
         mb={30}
@@ -71,6 +83,7 @@ const SkinColorSection: FC<Props> = ({
         <Title
           sx={(theme) => ({
             [theme.fn.smallerThan("sm")]: { fontSize: 26 },
+            [theme.fn.smallerThan("xs")]: { fontSize: 24, textAlign: "center" },
           })}
         >
           Vilken hudton har du?

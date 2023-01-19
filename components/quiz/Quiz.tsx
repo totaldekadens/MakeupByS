@@ -7,6 +7,7 @@ import SkinColorSection from "./SkinColorSection";
 import { SkinDocument } from "../../models/Skin";
 import { EyeDocument } from "../../models/Eyes";
 import useWindowSize from "../../utils/useWindowSize";
+import { useWindowScroll } from "@mantine/hooks";
 
 type Props = {
   opened: boolean;
@@ -27,12 +28,9 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [eyesList, setEyesList] = useState<EyeDocument[]>();
   const [skinList, setSkinList] = useState<SkinDocument[]>();
   const [openNext, setOpenNext] = useState<number>(0);
-
+  const [scroll, scrollTo] = useWindowScroll();
   // Gets current window height and window width
   let size = useWindowSize();
-
-  // Sets height, minus known pixels in relation the container needs to be adjusted to
-  const setHeight = size.height - 300;
 
   // Sets the result of the quiz. First index in the list is the winner!
   useEffect(() => {
@@ -45,7 +43,6 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
         if (getHair.length > 0 && getSkin.length > 0 && getEyes.length > 0) {
           const mergeLists = [
             ...getHair[0].seasons,
-
             ...getEyes[0].seasons,
             ...getSkin[0].seasons,
           ];
@@ -79,51 +76,51 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   return (
     <>
       <Modal
-        styles={{
+        styles={(theme) => ({
           body: {
-            height: "80vh",
+            minHeight: "70vh",
             paddingLeft: 20,
             paddingRight: 20,
             paddingBottom: 20,
+            [theme.fn.smallerThan("sm")]: {
+              paddingLeft: 0,
+              paddingRight: 0,
+            },
           },
-        }}
-        size={"90%"}
+        })}
+        size={size.width > 576 ? "90%" : "95%"}
         centered
         opened={opened}
         onClose={() => setOpened(false)}
       >
-        <ScrollArea
-          style={{ height: setHeight, width: "100%" }}
-          scrollbarSize={8}
-        >
-          {openNext == 0 ? (
-            <HairColorSection
-              valueHair={valueHair}
-              setValueHair={setValueHair}
-              setHairList={setHairList}
-            />
-          ) : null}
+        {openNext == 0 ? (
+          <HairColorSection
+            valueHair={valueHair}
+            setValueHair={setValueHair}
+            setHairList={setHairList}
+          />
+        ) : null}
 
-          {openNext == 1 ? (
-            <EyeColorSection
-              valueEyes={valueEyes}
-              setValueEyes={setValueEyes}
-              setEyesList={setEyesList}
-            />
-          ) : null}
-          {openNext == 2 ? (
-            <SkinColorSection
-              valueSkin={valueSkin}
-              setValueSkin={setValueSkin}
-              setSkinList={setSkinList}
-            />
-          ) : null}
-          {openNext == 3 ? (
-            <Flex>
-              <Title>Här kommer ett resultat så småningom :) </Title>
-            </Flex>
-          ) : null}
-        </ScrollArea>
+        {openNext == 1 ? (
+          <EyeColorSection
+            valueEyes={valueEyes}
+            setValueEyes={setValueEyes}
+            setEyesList={setEyesList}
+          />
+        ) : null}
+        {openNext == 2 ? (
+          <SkinColorSection
+            valueSkin={valueSkin}
+            setValueSkin={setValueSkin}
+            setSkinList={setSkinList}
+          />
+        ) : null}
+        {openNext == 3 ? (
+          <Flex>
+            <Title>Här kommer ett resultat så småningom :) </Title>
+          </Flex>
+        ) : null}
+
         <Flex
           gap={20}
           mt={30}
@@ -132,6 +129,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             width: "100%",
             [theme.fn.smallerThan("xs")]: {
               justifyContent: "center",
+              flexDirection: "column",
             },
           })}
         >
@@ -150,28 +148,30 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
               Gå tillbaka
             </Button>
           )}
-
-          <Button
-            onClick={() => {
-              setOpenNext(openNext + 1);
-            }}
-            disabled={
-              openNext == 0 && valueHair
-                ? false
-                : openNext == 1 && valueEyes
-                ? false
-                : openNext == 2 && valueSkin
-                ? false
-                : true
-            }
-            sx={(theme) => ({
-              [theme.fn.smallerThan("xs")]: {
-                width: "100%",
-              },
-            })}
-          >
-            {openNext == 2 && valueSkin ? "Gå till resultat" : "Gå vidare"}
-          </Button>
+          {openNext == 3 ? null : (
+            <Button
+              onClick={() => {
+                setOpenNext(openNext + 1);
+                scrollTo({ y: 0 });
+              }}
+              disabled={
+                openNext == 0 && valueHair
+                  ? false
+                  : openNext == 1 && valueEyes
+                  ? false
+                  : openNext == 2 && valueSkin
+                  ? false
+                  : true
+              }
+              sx={(theme) => ({
+                [theme.fn.smallerThan("xs")]: {
+                  width: "100%",
+                },
+              })}
+            >
+              {openNext == 2 && valueSkin ? "Gå till resultat" : "Gå vidare"}
+            </Button>
+          )}
         </Flex>
       </Modal>
     </>

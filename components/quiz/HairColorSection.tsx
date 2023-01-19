@@ -50,7 +50,17 @@ const HairColorSection: FC<Props> = ({
   const hairTypes = hair ? getTypes(hair) : getTypes([]);
 
   return (
-    <Flex px={20} direction={"column"} sx={{ minHeight: "80vh" }}>
+    <Flex
+      px={20}
+      direction={"column"}
+      sx={(theme) => ({
+        minHeight: "60vh",
+        [theme.fn.smallerThan("xs")]: {
+          paddingRight: 10,
+          paddingLeft: 10,
+        },
+      })}
+    >
       <Flex
         gap={20}
         mb={30}
@@ -71,6 +81,7 @@ const HairColorSection: FC<Props> = ({
         <Title
           sx={(theme) => ({
             [theme.fn.smallerThan("sm")]: { fontSize: 26 },
+            [theme.fn.smallerThan("xs")]: { fontSize: 24, textAlign: "center" },
           })}
         >
           Vilken hårfärg har du?
@@ -95,9 +106,14 @@ const HairColorSection: FC<Props> = ({
                 sx={(theme) => ({
                   border: "1px solid lightGray",
                   borderRadius: "20px",
-                  [theme.fn.smallerThan("xs")]: {
+                  [theme.fn.smallerThan("sm")]: {
                     marginLeft: 0,
+                    gap: 5,
+                  },
+                  [theme.fn.smallerThan("xs")]: {
                     alignItems: "center",
+                    paddingLeft: 5,
+                    paddingRight: 5,
                   },
                 })}
               >
@@ -106,6 +122,9 @@ const HairColorSection: FC<Props> = ({
                   gap={20}
                   sx={(theme) => ({
                     flexWrap: "wrap",
+                    [theme.fn.smallerThan("sm")]: {
+                      gap: 10,
+                    },
                     [theme.fn.smallerThan("xs")]: {
                       alignItems: "center",
                       justifyContent: "center",

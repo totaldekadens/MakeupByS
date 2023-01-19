@@ -62,7 +62,7 @@ const EyeColorSection: FC<Props> = ({
   const EyeColorTypes = eyeColors ? getTypes(eyeColors) : getTypes([]);
 
   return (
-    <Flex direction={"column"} sx={{ minHeight: "80vh" }}>
+    <Flex direction={"column"} sx={{ minHeight: "60vh" }}>
       <Flex
         gap={20}
         mb={30}
@@ -83,6 +83,7 @@ const EyeColorSection: FC<Props> = ({
         <Title
           sx={(theme) => ({
             [theme.fn.smallerThan("sm")]: { fontSize: 26 },
+            [theme.fn.smallerThan("xs")]: { fontSize: 24, textAlign: "center" },
           })}
         >
           Vilken ögonfärg har du?
