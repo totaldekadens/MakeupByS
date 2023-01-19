@@ -1,92 +1,13 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import {
-  Modal,
-  Button,
-  Group,
-  Radio,
-  Flex,
-  Title,
-  Image,
-  Text,
-} from "@mantine/core";
-import { ListItem } from "@mantine/core/lib/List/ListItem/ListItem";
+import { Modal } from "@mantine/core";
 import { HairDocument } from "../../models/Hair";
+import HairColorSection from "./HairColorSection";
+import EyeColorSection from "./EyeColorSection";
 
 type Props = {
   opened: boolean;
   setOpened: Dispatch<SetStateAction<boolean>>;
 };
-
-const eyes: ListType[] = [
-  {
-    name: "blue",
-    type: "blue",
-    image: "/quiz/hair/B1.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
-      { name: "Vinter", bool: true, description: "" },
-    ],
-  },
-  {
-    name: "brown",
-    type: "dark",
-    image: "/quiz/hair/B1.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Vinter", bool: false, description: "" },
-    ],
-  },
-  {
-    name: "green",
-    type: "green",
-    image: "/quiz/hair/B1.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
-      { name: "Vinter", bool: false, description: "" },
-    ],
-  },
-];
-
-const skin: ListType[] = [
-  {
-    name: "pale",
-    type: "rosy",
-    image: "/quiz/hair/B1.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
-      { name: "Vinter", bool: false, description: "" },
-    ],
-  },
-  {
-    name: "dark",
-    type: "dark",
-    image: "/quiz/hair/B1.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
-      { name: "Vinter", bool: false, description: "" },
-    ],
-  },
-  {
-    name: "olive",
-    type: "olive",
-    image: "/quiz/hair/B1.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
-      { name: "Vinter", bool: false, description: "" },
-    ],
-  },
-];
 
 type BoolType = {
   name: string;
@@ -111,24 +32,35 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [valueHair, setValueHair] = useState("");
   const [valueSkin, setValueSkin] = useState("");
   const [valueEyes, setValueEyes] = useState("");
-  const [hair, setHair] = useState<HairDocument[]>();
+  //const [hair, setHair] = useState<HairDocument[]>();
+  const [hairList, setHairList] = useState<HairDocument[]>();
+  const [eyesList, setEyesList] = useState<HairDocument[]>();
 
+  console.log(hairList);
+  console.log(valueHair);
   useEffect(() => {
     const getResult = () => {
-      const getHair = hair ? hair.filter((h) => h.name == valueHair) : null;
-      const getSkin = skin.filter((h) => h.name == valueSkin);
-      const getEyes = eyes.filter((h) => h.name == valueEyes);
+      const getHair = hairList
+        ? hairList.filter((h) => h.name == valueHair)
+        : null;
+      //const getSkin = skin.filter((h) => h.name == valueSkin);
+      const getEyes = eyesList
+        ? eyesList.filter((h) => h.name == valueEyes)
+        : null;
 
       if (
         getHair &&
         getHair.length > 0 &&
-        getSkin.length > 0 &&
-        getEyes.length > 0
+        getEyes &&
+        getEyes.length > 0 /* && */
+        //getSkin.length > 0 &&
+        //getEyes.length > 0
       ) {
         const mergeLists = [
           ...getHair[0].seasons,
-          ...getSkin[0].seasons,
+
           ...getEyes[0].seasons,
+          //...getSkin[0].seasons,
         ];
         let list: Type[] = [];
         mergeLists.forEach((item) => {
@@ -155,15 +87,6 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
     getResult();
   }, [valueHair, valueSkin, valueEyes]);
 
-  useEffect(() => {
-    const getResult = async () => {
-      const response = await fetch("/api/open/hair");
-      let result = await response.json();
-      setHair(result.data);
-    };
-    getResult();
-  }, [opened]);
-
   const getTypes = (list: ListType[]) => {
     let types: string[] = [];
     if (list) {
@@ -182,7 +105,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
     return types;
   };
 
-  const hairTypes = hair ? getTypes(hair) : getTypes([]);
+  const hairTypes = hairList ? getTypes(hairList) : getTypes([]);
 
   return (
     <>
@@ -195,147 +118,16 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
         opened={opened}
         onClose={() => setOpened(false)}
       >
-        <Radio.Group
-          value={valueHair}
-          onChange={setValueHair}
-          styles={{ root: { display: "flex", flexDirection: "column" } }}
-          label={
-            <Flex
-              gap={20}
-              mb={30}
-              align="center"
-              sx={(theme) => ({
-                width: "100%",
-                [theme.fn.smallerThan("md")]: {
-                  flexDirection: "column",
-                  gap: 10,
-                  alignItems: "flex-start",
-                },
-                [theme.fn.smallerThan("xs")]: {
-                  gap: 10,
-                  alignItems: "center",
-                },
-              })}
-            >
-              <Title
-                sx={(theme) => ({
-                  [theme.fn.smallerThan("sm")]: { fontSize: 26 },
-                })}
-              >
-                Vilken hårfärg har du?
-              </Title>
-
-              <Text> Viktig att du väljer din naturliga hårfärg</Text>
-            </Flex>
-          }
-        >
-          {hairTypes.map((type) => {
-            return (
-              <>
-                <Flex
-                  gap={20}
-                  p={20}
-                  ml={40}
-                  direction={"column"}
-                  sx={(theme) => ({
-                    border: "1px solid lightGray",
-                    borderRadius: "20px",
-                    [theme.fn.smallerThan("xs")]: {
-                      marginLeft: 0,
-                      alignItems: "center",
-                    },
-                  })}
-                >
-                  <Title order={5}>{type}</Title>
-                  <Flex
-                    gap={20}
-                    sx={(theme) => ({
-                      flexWrap: "wrap",
-                      [theme.fn.smallerThan("xs")]: {
-                        alignItems: "center",
-                        justifyContent: "center",
-                      },
-                    })}
-                  >
-                    {hair
-                      ? hair.map((h, i) => {
-                          if (h.type == type) {
-                            return (
-                              <Flex
-                                key={i}
-                                sx={(theme) => ({
-                                  [theme.fn.smallerThan("xs")]: {
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                  },
-                                })}
-                              >
-                                <Radio
-                                  value={h._id.toString()}
-                                  styles={{
-                                    radio: {
-                                      opacity: 0,
-                                      width: 0,
-                                      height: 0,
-                                    },
-                                    label: {
-                                      paddingLeft: "unset",
-                                      padding: 10,
-                                      borderRadius: "50%",
-                                      border:
-                                        valueHair == h._id.toString()
-                                          ? "1px solid gray"
-                                          : "1px solid white",
-                                    },
-                                  }}
-                                  label={
-                                    <Image
-                                      alt={h.name}
-                                      width={60}
-                                      height={60}
-                                      src={"/quiz/hair/" + h.image}
-                                      fit="fill"
-                                      radius={50}
-                                      sx={{
-                                        cursor: "pointer",
-                                        borderRadius: "50%",
-                                        objectFit: "fill",
-                                      }}
-                                    />
-                                  }
-                                />
-                              </Flex>
-                            );
-                          }
-                        })
-                      : null}
-                  </Flex>
-                </Flex>
-              </>
-            );
-          })}
-        </Radio.Group>
-        <Flex
-          mt={30}
-          justify={"flex-end"}
-          sx={(theme) => ({
-            width: "100%",
-            [theme.fn.smallerThan("xs")]: {
-              justifyContent: "center",
-            },
-          })}
-        >
-          <Button
-            disabled={valueHair ? false : true}
-            sx={(theme) => ({
-              [theme.fn.smallerThan("xs")]: {
-                width: "100%",
-              },
-            })}
-          >
-            Gå vidare
-          </Button>
-        </Flex>
+        <HairColorSection
+          valueHair={valueHair}
+          setValueHair={setValueHair}
+          setHairList={setHairList}
+        />
+        <EyeColorSection
+          valueEyes={valueEyes}
+          setValueEyes={setValueEyes}
+          setEyesList={setEyesList}
+        />
       </Modal>
     </>
   );
