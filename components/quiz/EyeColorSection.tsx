@@ -1,29 +1,20 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import {
-  Button,
-  Radio,
-  Flex,
-  Title,
-  Image,
-  Text,
-  Skeleton,
-} from "@mantine/core";
+import { Radio, Flex, Title, Image } from "@mantine/core";
 import { HairDocument } from "../../models/Hair";
 
 type Props = {
   setValueEyes: Dispatch<SetStateAction<string>>;
   valueEyes: string;
   setEyesList: Dispatch<SetStateAction<HairDocument[] | undefined>>;
-  setOpen: Dispatch<SetStateAction<number>>;
 };
 
-type BoolType = {
+export type BoolType = {
   name: string;
   bool: boolean;
   description: string;
 };
 
-type ListType = {
+export type ListType = {
   name: string;
   type: string;
   image: string;
@@ -34,10 +25,11 @@ const EyeColorSection: FC<Props> = ({
   setValueEyes,
   valueEyes,
   setEyesList,
-  setOpen,
 }) => {
+  // State
   const [eyeColors, setEyeColors] = useState<HairDocument[]>();
-  const [loading, setLoading] = useState(false);
+
+  // Fetches list of eye colors fom DB
   useEffect(() => {
     const getResult = async () => {
       const response = await fetch("/api/open/eyes");
@@ -48,6 +40,7 @@ const EyeColorSection: FC<Props> = ({
     getResult();
   }, [valueEyes]);
 
+  // Sets all types in a separate list
   const getTypes = (list: ListType[]) => {
     let types: string[] = [];
     if (list) {

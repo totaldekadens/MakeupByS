@@ -23,6 +23,7 @@ import { useHover, useLocalStorage } from "@mantine/hooks";
 import { LineItem } from "./cart/AddToCartIcon";
 import { FC, useContext, useEffect, useState } from "react";
 import { openedCartContext } from "./context/OpenCartProvider";
+import Quiz from "./quiz/Quiz";
 
 const MobileBurgerMenu: FC = () => {
   const [opened, setOpened] = useState(false);
@@ -34,7 +35,7 @@ const MobileBurgerMenu: FC = () => {
     defaultValue: [],
   });
   const [quantity, setQuantity] = useState<number>();
-
+  const [openedQuiz, setOpenedQuiz] = useState(false);
   useEffect(() => {
     const updateQuantity = () => {
       if (cartItems.length > 0) {
@@ -167,20 +168,21 @@ const MobileBurgerMenu: FC = () => {
           {/* quiz */}
           <Flex>
             <Box sx={{ paddingTop: 25 }}>
-              <Box sx={{ alignContent: "center" }}>
-                <Link href="/Quiz">
-                  <IconBrandAppleArcade size={36} color="white" />
-                  <Title
-                    sx={{
-                      display: "flex",
-                      justifyContent: "center",
-                      color: "white",
-                      fontSize: "12px",
-                    }}
-                  >
-                    Quiz
-                  </Title>
-                </Link>
+              <Box
+                onClick={() => setOpenedQuiz(true)}
+                sx={{ alignContent: "center", cursor: "pointer" }}
+              >
+                <IconBrandAppleArcade size={36} color="white" />
+                <Title
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    color: "white",
+                    fontSize: "12px",
+                  }}
+                >
+                  Quiz
+                </Title>
               </Box>
             </Box>
           </Flex>
@@ -401,6 +403,7 @@ const MobileBurgerMenu: FC = () => {
           </Flex>
         </Box>
       </Drawer>
+      <Quiz opened={openedQuiz} setOpened={setOpenedQuiz} />
     </>
   );
 };

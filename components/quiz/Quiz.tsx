@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Box, Button, Flex, Modal, ScrollArea } from "@mantine/core";
+import { Button, Flex, Modal, ScrollArea, Title } from "@mantine/core";
 import { HairDocument } from "../../models/Hair";
 import HairColorSection from "./HairColorSection";
 import EyeColorSection from "./EyeColorSection";
@@ -7,8 +7,6 @@ import SkinColorSection from "./SkinColorSection";
 import { SkinDocument } from "../../models/Skin";
 import { EyeDocument } from "../../models/Eyes";
 import useWindowSize from "../../utils/useWindowSize";
-import { useScrollIntoView } from "@mantine/hooks";
-import { IconChevronsDownLeft } from "@tabler/icons";
 
 type Props = {
   opened: boolean;
@@ -36,6 +34,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   // Sets height, minus known pixels in relation the container needs to be adjusted to
   const setHeight = size.height - 300;
 
+  // Sets the result of the quiz. First index in the list is the winner!
   useEffect(() => {
     const getResult = () => {
       if (hairList && skinList && eyesList) {
@@ -70,6 +69,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
           });
           list.sort((a, b) => (a.qty < b.qty ? 1 : -1));
           console.log(list);
+          console.log(list[0]);
         }
       }
     };
@@ -101,7 +101,6 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
               valueHair={valueHair}
               setValueHair={setValueHair}
               setHairList={setHairList}
-              setOpen={setOpenNext}
             />
           ) : null}
 
@@ -110,7 +109,6 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
               valueEyes={valueEyes}
               setValueEyes={setValueEyes}
               setEyesList={setEyesList}
-              setOpen={setOpenNext}
             />
           ) : null}
           {openNext == 2 ? (
@@ -118,8 +116,12 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
               valueSkin={valueSkin}
               setValueSkin={setValueSkin}
               setSkinList={setSkinList}
-              setOpen={setOpenNext}
             />
+          ) : null}
+          {openNext == 3 ? (
+            <Flex>
+              <Title>Här kommer ett resultat så småningom :) </Title>
+            </Flex>
           ) : null}
         </ScrollArea>
         <Flex

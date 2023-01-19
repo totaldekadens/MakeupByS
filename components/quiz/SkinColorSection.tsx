@@ -1,35 +1,23 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Button, Radio, Flex, Title, Image, Text } from "@mantine/core";
+import { Radio, Flex, Title, Image, Text } from "@mantine/core";
 import { SkinDocument } from "../../models/Skin";
+import { ListType } from "./EyeColorSection";
 
 type Props = {
   setValueSkin: Dispatch<SetStateAction<string>>;
   valueSkin: string;
   setSkinList: Dispatch<SetStateAction<SkinDocument[] | undefined>>;
-  setOpen: Dispatch<SetStateAction<number>>;
-};
-
-type BoolType = {
-  name: string;
-  bool: boolean;
-  description: string;
-};
-
-type ListType = {
-  name: string;
-  type: string;
-  image: string;
-  seasons: BoolType[];
 };
 
 const SkinColorSection: FC<Props> = ({
   valueSkin,
   setValueSkin,
   setSkinList,
-  setOpen,
 }) => {
+  // State
   const [skin, setSkin] = useState<SkinDocument[]>();
 
+  // Fetches list of skin colors fom DB
   useEffect(() => {
     const getResult = async () => {
       const response = await fetch("/api/open/skin");
@@ -40,6 +28,7 @@ const SkinColorSection: FC<Props> = ({
     getResult();
   }, [valueSkin]);
 
+  // Sets all types in a separate list
   const getTypes = (list: ListType[]) => {
     let types: string[] = [];
     if (list) {
