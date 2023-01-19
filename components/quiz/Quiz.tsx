@@ -1,5 +1,14 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Modal, Button, Group, Radio, Flex, Title, Image } from "@mantine/core";
+import {
+  Modal,
+  Button,
+  Group,
+  Radio,
+  Flex,
+  Title,
+  Image,
+  Text,
+} from "@mantine/core";
 import { ListItem } from "@mantine/core/lib/List/ListItem/ListItem";
 import { HairDocument } from "../../models/Hair";
 
@@ -7,53 +16,6 @@ type Props = {
   opened: boolean;
   setOpened: Dispatch<SetStateAction<boolean>>;
 };
-
-/* const hair: ListType[] = [
-  {
-    name: "blond",
-    type: "Ash",
-    image: "/quiz/hair/B1.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
-      { name: "Vinter", bool: false, description: "" },
-    ],
-  },
-  {
-    name: "light brown",
-    type: "Ash",
-    image: "/quiz/hair/B3.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
-      { name: "Vinter", bool: false, description: "" },
-    ],
-  },
-  {
-    name: "brown",
-    type: "Golden",
-    image: "/quiz/hair/G2.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
-      { name: "Vinter", bool: false, description: "" },
-    ],
-  },
-  {
-    name: "black",
-    type: "Dark",
-    image: "/quiz/hair/B9.png",
-    seasons: [
-      { name: "Vår", bool: true, description: "" },
-      { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
-      { name: "Vinter", bool: false, description: "" },
-    ],
-  },
-]; */
 
 const eyes: ListType[] = [
   {
@@ -150,8 +112,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [valueSkin, setValueSkin] = useState("");
   const [valueEyes, setValueEyes] = useState("");
   const [hair, setHair] = useState<HairDocument[]>();
-  //console.log(valueHair);
-  //console.log(hair);
+
   useEffect(() => {
     const getResult = () => {
       const getHair = hair ? hair.filter((h) => h.name == valueHair) : null;
@@ -223,11 +184,12 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
 
   const hairTypes = hair ? getTypes(hair) : getTypes([]);
 
-  const eyeTypes = getTypes(eyes);
-  const skinTypes = getTypes(skin);
   return (
     <>
       <Modal
+        styles={{
+          body: { paddingLeft: 20, paddingRight: 20, paddingBottom: 20 },
+        }}
         size={"90%"}
         centered
         opened={opened}
@@ -236,19 +198,78 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
         <Radio.Group
           value={valueHair}
           onChange={setValueHair}
-          label="Vad har du för hårfärg?"
+          styles={{ root: { display: "flex", flexDirection: "column" } }}
+          label={
+            <Flex
+              gap={20}
+              mb={30}
+              align="center"
+              sx={(theme) => ({
+                width: "100%",
+                [theme.fn.smallerThan("md")]: {
+                  flexDirection: "column",
+                  gap: 10,
+                  alignItems: "flex-start",
+                },
+                [theme.fn.smallerThan("xs")]: {
+                  gap: 10,
+                  alignItems: "center",
+                },
+              })}
+            >
+              <Title
+                sx={(theme) => ({
+                  [theme.fn.smallerThan("sm")]: { fontSize: 26 },
+                })}
+              >
+                Vilken hårfärg har du?
+              </Title>
+
+              <Text> Viktig att du väljer din naturliga hårfärg</Text>
+            </Flex>
+          }
         >
           {hairTypes.map((type) => {
             return (
               <>
-                <Flex gap={20} p={20} direction={"column"}>
+                <Flex
+                  gap={20}
+                  p={20}
+                  ml={40}
+                  direction={"column"}
+                  sx={(theme) => ({
+                    border: "1px solid lightGray",
+                    borderRadius: "20px",
+                    [theme.fn.smallerThan("xs")]: {
+                      marginLeft: 0,
+                      alignItems: "center",
+                    },
+                  })}
+                >
                   <Title order={5}>{type}</Title>
-                  <Flex gap={20}>
+                  <Flex
+                    gap={20}
+                    sx={(theme) => ({
+                      flexWrap: "wrap",
+                      [theme.fn.smallerThan("xs")]: {
+                        alignItems: "center",
+                        justifyContent: "center",
+                      },
+                    })}
+                  >
                     {hair
                       ? hair.map((h, i) => {
                           if (h.type == type) {
                             return (
-                              <Flex key={i}>
+                              <Flex
+                                key={i}
+                                sx={(theme) => ({
+                                  [theme.fn.smallerThan("xs")]: {
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                  },
+                                })}
+                              >
                                 <Radio
                                   value={h._id.toString()}
                                   styles={{
@@ -294,24 +315,27 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             );
           })}
         </Radio.Group>
-        <Radio.Group
-          value={valueEyes}
-          onChange={setValueEyes}
-          label="Vad har du för ögonfärg?"
-        >
-          {eyes.map((e, i) => {
-            return <Radio key={i} value={e.name} label={e.name} />;
+        <Flex
+          mt={30}
+          justify={"flex-end"}
+          sx={(theme) => ({
+            width: "100%",
+            [theme.fn.smallerThan("xs")]: {
+              justifyContent: "center",
+            },
           })}
-        </Radio.Group>
-        <Radio.Group
-          value={valueSkin}
-          onChange={setValueSkin}
-          label="Vad har du för hudton?"
         >
-          {skin.map((h, i) => {
-            return <Radio key={i} value={h.name} label={h.name} />;
-          })}
-        </Radio.Group>
+          <Button
+            disabled={valueHair ? false : true}
+            sx={(theme) => ({
+              [theme.fn.smallerThan("xs")]: {
+                width: "100%",
+              },
+            })}
+          >
+            Gå vidare
+          </Button>
+        </Flex>
       </Modal>
     </>
   );
