@@ -29,6 +29,8 @@ import Color from "../models/Color";
 import Season from "../models/Season";
 
 import CarouselProduct from "../components/product/CarouselProduct";
+import Quiz from "../components/quiz/Quiz";
+import { useState } from "react";
 
 type Props = {
   product: PopulatedProduct;
@@ -36,7 +38,7 @@ type Props = {
 };
 
 const Home: NextPage<Props> = ({ product, products }) => {
-
+  const [opened, setOpened] = useState(false);
   let size = useWindowSize();
 
   return (
@@ -223,6 +225,7 @@ const Home: NextPage<Props> = ({ product, products }) => {
 
           <Flex sx={{ alignItems: "flex-end" }}>
             <Button
+              onClick={() => setOpened(true)}
               sx={(theme) => ({
                 height: 100,
                 width: 40,
@@ -307,6 +310,7 @@ const Home: NextPage<Props> = ({ product, products }) => {
             </Flex>
           </main>
           <Cart />
+          <Quiz opened={opened} setOpened={setOpened} />
         </>
       </AppShell>
     </>

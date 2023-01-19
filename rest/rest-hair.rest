@@ -1,0 +1,33 @@
+GET http://localhost:3000/api/open/hair
+
+###
+
+GET http://localhost:3000/api/open/hair/ogonskuggor
+
+###
+
+POST  http://localhost:3000/api/admin/hair
+Content-Type: application/json
+
+{
+"title": "test", 
+"description": "Beskrivning av kategorin läppstift"
+}
+
+###
+
+PUT  http://localhost:3000/api/admin/hair/test
+Content-Type: application/json
+
+{
+"_id": "63ad57d9057fe5baafc5336e",
+ "title": "tjena", 
+ "description": "Beskrivning av kategorin Ögonskuggor"
+}
+
+###
+
+DELETE  http://localhost:3000/api/admin/hair/test
+Content-Type: application/json
+
+

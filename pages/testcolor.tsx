@@ -1,9 +1,10 @@
 import Head from "next/head";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { AppShell } from "@mantine/core";
+import { AppShell, Button, Group } from "@mantine/core";
 import { useState } from "react";
 import MarginTopContainer from "../components/layout/MarginTopContainer";
+import Quiz from "../components/quiz/Quiz";
 
 export default function Colors() {
   let list: Color[] = [
@@ -947,6 +948,8 @@ export default function Colors() {
     setfilteredListBySeason(filteredListBySeason);
   };
 
+  const [opened, setOpened] = useState(false);
+
   return (
     <>
       <Head>
@@ -956,6 +959,9 @@ export default function Colors() {
       <AppShell fixed={false} header={<Header />} footer={<Footer />}>
         <main style={{ marginTop: 60, minHeight: "100vh" }}>
           <MarginTopContainer>
+            <Group position="center">
+              <Button onClick={() => setOpened(true)}>Open Modal</Button>
+            </Group>
             <h1>Färger</h1>
             <div>
               {seasons.map((season, index) => {
@@ -1013,6 +1019,7 @@ export default function Colors() {
             </div>
           </MarginTopContainer>
         </main>
+        <Quiz opened={opened} setOpened={setOpened} />
       </AppShell>
     </>
   );
