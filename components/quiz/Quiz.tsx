@@ -1,13 +1,14 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { Modal, Button, Group, Radio, Flex, Title, Image } from "@mantine/core";
 import { ListItem } from "@mantine/core/lib/List/ListItem/ListItem";
+import { HairDocument } from "../../models/Hair";
 
 type Props = {
   opened: boolean;
   setOpened: Dispatch<SetStateAction<boolean>>;
 };
 
-const hair: ListType[] = [
+/* const hair: ListType[] = [
   {
     name: "blond",
     type: "Ash",
@@ -52,7 +53,7 @@ const hair: ListType[] = [
       { name: "Vinter", bool: false, description: "" },
     ],
   },
-];
+]; */
 
 const eyes: ListType[] = [
   {
@@ -73,7 +74,6 @@ const eyes: ListType[] = [
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
-      { name: "Höst", bool: true, description: "" },
       { name: "Vinter", bool: false, description: "" },
     ],
   },
@@ -149,14 +149,21 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [valueHair, setValueHair] = useState("");
   const [valueSkin, setValueSkin] = useState("");
   const [valueEyes, setValueEyes] = useState("");
-
+  const [hair, setHair] = useState<HairDocument[]>();
+  //console.log(valueHair);
+  //console.log(hair);
   useEffect(() => {
     const getResult = () => {
-      const getHair = hair.filter((h) => h.name == valueHair);
+      const getHair = hair ? hair.filter((h) => h.name == valueHair) : null;
       const getSkin = skin.filter((h) => h.name == valueSkin);
       const getEyes = eyes.filter((h) => h.name == valueEyes);
 
-      if (getHair.length > 0 && getSkin.length > 0 && getEyes.length > 0) {
+      if (
+        getHair &&
+        getHair.length > 0 &&
+        getSkin.length > 0 &&
+        getEyes.length > 0
+      ) {
         const mergeLists = [
           ...getHair[0].seasons,
           ...getSkin[0].seasons,
@@ -187,6 +194,15 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
     getResult();
   }, [valueHair, valueSkin, valueEyes]);
 
+  useEffect(() => {
+    const getResult = async () => {
+      const response = await fetch("/api/open/hair");
+      let result = await response.json();
+      setHair(result.data);
+    };
+    getResult();
+  }, [opened]);
+
   const getTypes = (list: ListType[]) => {
     let types: string[] = [];
     if (list) {
@@ -204,7 +220,9 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
     }
     return types;
   };
-  const hairTypes = getTypes(hair);
+
+  const hairTypes = hair ? getTypes(hair) : getTypes([]);
+
   const eyeTypes = getTypes(eyes);
   const skinTypes = getTypes(skin);
   return (
@@ -226,48 +244,50 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
                 <Flex gap={20} p={20} direction={"column"}>
                   <Title order={5}>{type}</Title>
                   <Flex gap={20}>
-                    {hair.map((h, i) => {
-                      if (h.type == type) {
-                        return (
-                          <Flex key={i}>
-                            <Radio
-                              value={h.name}
-                              styles={{
-                                radio: {
-                                  opacity: 0,
-                                  width: 0,
-                                  height: 0,
-                                },
-                                label: {
-                                  paddingLeft: "unset",
-                                  padding: 10,
-                                  borderRadius: "50%",
-                                  border:
-                                    valueHair == h.name
-                                      ? "1px solid gray"
-                                      : "1px solid white",
-                                },
-                              }}
-                              label={
-                                <Image
-                                  alt={h.name}
-                                  width={60}
-                                  height={60}
-                                  src={h.image}
-                                  fit="fill"
-                                  radius={50}
-                                  sx={{
-                                    cursor: "pointer",
-                                    borderRadius: "50%",
-                                    objectFit: "fill",
+                    {hair
+                      ? hair.map((h, i) => {
+                          if (h.type == type) {
+                            return (
+                              <Flex key={i}>
+                                <Radio
+                                  value={h._id.toString()}
+                                  styles={{
+                                    radio: {
+                                      opacity: 0,
+                                      width: 0,
+                                      height: 0,
+                                    },
+                                    label: {
+                                      paddingLeft: "unset",
+                                      padding: 10,
+                                      borderRadius: "50%",
+                                      border:
+                                        valueHair == h._id.toString()
+                                          ? "1px solid gray"
+                                          : "1px solid white",
+                                    },
                                   }}
+                                  label={
+                                    <Image
+                                      alt={h.name}
+                                      width={60}
+                                      height={60}
+                                      src={"/quiz/hair/" + h.image}
+                                      fit="fill"
+                                      radius={50}
+                                      sx={{
+                                        cursor: "pointer",
+                                        borderRadius: "50%",
+                                        objectFit: "fill",
+                                      }}
+                                    />
+                                  }
                                 />
-                              }
-                            />
-                          </Flex>
-                        );
-                      }
-                    })}
+                              </Flex>
+                            );
+                          }
+                        })
+                      : null}
                   </Flex>
                 </Flex>
               </>
