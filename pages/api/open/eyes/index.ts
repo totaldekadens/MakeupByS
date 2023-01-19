@@ -1,5 +1,5 @@
 import dbConnect from "../../../../utils/dbConnect";
-import Hair from "../../../../models/Hair";
+import Eye from "../../../../models/Eyes";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(
@@ -13,8 +13,8 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const hairs = await Hair.find({});
-        res.status(200).json({ success: true, data: hairs });
+        const eyes = await Eye.find({});
+        res.status(200).json({ success: true, data: eyes });
       } catch (error) {
         res.status(400).json({ success: false, data: error });
       }

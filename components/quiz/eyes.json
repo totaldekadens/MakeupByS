@@ -1,0 +1,527 @@
+[
+  {
+    "name": "Blue Icy",
+    "type": "Blå/Grå",
+    "image": "B1.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": false,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": true,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": false,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Blue Bright",
+    "type": "Blå/Grå",
+    "image": "B2.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": false,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": false,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Blue",
+    "type": "Blå/Grå",
+    "image": "B3.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": true,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": true,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": false,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Slate",
+    "type": "Blå/Grå",
+    "image": "B4.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": true,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": true,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": true,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": false,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Gray",
+    "type": "Blå/Grå",
+    "image": "B5.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": false,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": false,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Green",
+    "type": "Grön/Hazel",
+    "image": "G1.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": true,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": true,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": false,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Green Dark",
+    "type": "Grön/Hazel",
+    "image": "G2.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": true,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": true,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": false,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Blue/Green",
+    "type": "Grön/Hazel",
+    "image": "G3.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": true,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": true,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": false,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Hazel Icy",
+    "type": "Grön/Hazel",
+    "image": "G4.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": false,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": true,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": false,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Hazel Dark",
+    "type": "Grön/Hazel",
+    "image": "G5.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": false,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": true,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Brown Light",
+    "type": "Brun",
+    "image": "D1.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": true,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": true,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": false,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Brown",
+    "type": "Brun",
+    "image": "D2.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": false,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": false,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Brown Rich",
+    "type": "Brun",
+    "image": "D3.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": false,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": true,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Brown Dark",
+    "type": "Brun",
+    "image": "D4.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": true,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": true,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  },
+  {
+    "name": "Brown Black",
+    "type": "Brun",
+    "image": "D5.png",
+    "seasons": [
+      {
+        "name": "Vår",
+        "bool": false,
+        "description": "Våren har varma undertoner med ljusare hår och ögon. De kan fortfarande ha mörka drag (hud, hår eller ögon), men har inte lika mycket kontrast som tex vintersäsongen.",
+        "best": "Dova varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Sommar",
+        "bool": false,
+        "description": "De som tillhör sommarsäsongen har oftast svala undertoner, men har ljusare hår- och ögonfärger. Även om de har en viss kontrast mellan deras hudton och deras hår/ögon är den mycket mer måttlig än vintersäsongen.",
+        "best": "Kalla mjuka färger",
+        "worst": "Varma färger"
+      },
+      {
+        "name": "Höst",
+        "bool": false,
+        "description": "Höstsäsongen har hår- och hudfärger med en djupare färgning och varma, gyllene undertoner. Dina ögon kan vara mörka, men går åt det gröna, bruna eller hasselbruna hållet.",
+        "best": "Varma färger och grönt",
+        "worst": "Kalla färger"
+      },
+      {
+        "name": "Vinter",
+        "bool": true,
+        "description": "De som tillhör vintersäsongen har svala undertoner och livfulla ögon. De har oftast hög kontrast mellan hud, ögon och hår. ",
+        "best": "Kalla färger och ju mer kontrast de har, desto klarare färger kan de bära",
+        "worst": "Varma färger"
+      }
+    ]
+  }
+]
