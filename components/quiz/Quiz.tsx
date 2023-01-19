@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Modal, Button, Group, Radio, Flex, Title } from "@mantine/core";
+import { Modal, Button, Group, Radio, Flex, Title, Image } from "@mantine/core";
 import { ListItem } from "@mantine/core/lib/List/ListItem/ListItem";
 
 type Props = {
@@ -11,6 +11,7 @@ const hair: ListType[] = [
   {
     name: "blond",
     type: "Ash",
+    image: "/quiz/hair/B1.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -21,6 +22,7 @@ const hair: ListType[] = [
   {
     name: "light brown",
     type: "Ash",
+    image: "/quiz/hair/B3.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -31,6 +33,7 @@ const hair: ListType[] = [
   {
     name: "brown",
     type: "Golden",
+    image: "/quiz/hair/G2.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -41,6 +44,7 @@ const hair: ListType[] = [
   {
     name: "black",
     type: "Dark",
+    image: "/quiz/hair/B9.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -54,6 +58,7 @@ const eyes: ListType[] = [
   {
     name: "blue",
     type: "blue",
+    image: "/quiz/hair/B1.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -64,6 +69,7 @@ const eyes: ListType[] = [
   {
     name: "brown",
     type: "dark",
+    image: "/quiz/hair/B1.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -74,6 +80,7 @@ const eyes: ListType[] = [
   {
     name: "green",
     type: "green",
+    image: "/quiz/hair/B1.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -87,6 +94,7 @@ const skin: ListType[] = [
   {
     name: "pale",
     type: "rosy",
+    image: "/quiz/hair/B1.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -97,6 +105,7 @@ const skin: ListType[] = [
   {
     name: "dark",
     type: "dark",
+    image: "/quiz/hair/B1.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -107,6 +116,7 @@ const skin: ListType[] = [
   {
     name: "olive",
     type: "olive",
+    image: "/quiz/hair/B1.png",
     seasons: [
       { name: "Vår", bool: true, description: "" },
       { name: "Sommar", bool: false, description: "" },
@@ -131,6 +141,7 @@ type Type = {
 type ListType = {
   name: string;
   type: string;
+  image: string;
   seasons: BoolType[];
 };
 
@@ -212,12 +223,53 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
           {hairTypes.map((type) => {
             return (
               <>
-                <Title order={5}>{type}</Title>
-                {hair.map((h, i) => {
-                  if (h.type == type) {
-                    return <Radio key={i} value={h.name} label={h.name} />;
-                  }
-                })}
+                <Flex gap={20} p={20} direction={"column"}>
+                  <Title order={5}>{type}</Title>
+                  <Flex gap={20}>
+                    {hair.map((h, i) => {
+                      if (h.type == type) {
+                        return (
+                          <Flex key={i}>
+                            <Radio
+                              value={h.name}
+                              styles={{
+                                radio: {
+                                  opacity: 0,
+                                  width: 0,
+                                  height: 0,
+                                },
+                                label: {
+                                  paddingLeft: "unset",
+                                  padding: 10,
+                                  borderRadius: "50%",
+                                  border:
+                                    valueHair == h.name
+                                      ? "1px solid gray"
+                                      : "1px solid white",
+                                },
+                              }}
+                              label={
+                                <Image
+                                  alt={h.name}
+                                  width={60}
+                                  height={60}
+                                  src={h.image}
+                                  fit="fill"
+                                  radius={50}
+                                  sx={{
+                                    cursor: "pointer",
+                                    borderRadius: "50%",
+                                    objectFit: "fill",
+                                  }}
+                                />
+                              }
+                            />
+                          </Flex>
+                        );
+                      }
+                    })}
+                  </Flex>
+                </Flex>
               </>
             );
           })}
