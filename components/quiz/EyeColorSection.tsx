@@ -1,11 +1,20 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Button, Radio, Flex, Title, Image, Text } from "@mantine/core";
+import {
+  Button,
+  Radio,
+  Flex,
+  Title,
+  Image,
+  Text,
+  Skeleton,
+} from "@mantine/core";
 import { HairDocument } from "../../models/Hair";
 
 type Props = {
   setValueEyes: Dispatch<SetStateAction<string>>;
   valueEyes: string;
   setEyesList: Dispatch<SetStateAction<HairDocument[] | undefined>>;
+  setOpen: Dispatch<SetStateAction<number>>;
 };
 
 type BoolType = {
@@ -25,9 +34,10 @@ const EyeColorSection: FC<Props> = ({
   setValueEyes,
   valueEyes,
   setEyesList,
+  setOpen,
 }) => {
   const [eyeColors, setEyeColors] = useState<HairDocument[]>();
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const getResult = async () => {
       const response = await fetch("/api/open/eyes");
@@ -59,43 +69,42 @@ const EyeColorSection: FC<Props> = ({
   const EyeColorTypes = eyeColors ? getTypes(eyeColors) : getTypes([]);
 
   return (
-    <>
+    <Flex direction={"column"} sx={{ minHeight: "80vh" }}>
+      <Flex
+        gap={20}
+        mb={30}
+        align="center"
+        sx={(theme) => ({
+          width: "100%",
+          [theme.fn.smallerThan("md")]: {
+            flexDirection: "column",
+            gap: 10,
+            alignItems: "flex-start",
+          },
+          [theme.fn.smallerThan("xs")]: {
+            gap: 10,
+            alignItems: "center",
+          },
+        })}
+      >
+        <Title
+          sx={(theme) => ({
+            [theme.fn.smallerThan("sm")]: { fontSize: 26 },
+          })}
+        >
+          Vilken ögonfärg har du?
+        </Title>
+      </Flex>
       <Radio.Group
         value={valueEyes}
         onChange={setValueEyes}
         styles={{ root: { display: "flex", flexDirection: "column" } }}
-        label={
-          <Flex
-            gap={20}
-            mb={30}
-            align="center"
-            sx={(theme) => ({
-              width: "100%",
-              [theme.fn.smallerThan("md")]: {
-                flexDirection: "column",
-                gap: 10,
-                alignItems: "flex-start",
-              },
-              [theme.fn.smallerThan("xs")]: {
-                gap: 10,
-                alignItems: "center",
-              },
-            })}
-          >
-            <Title
-              sx={(theme) => ({
-                [theme.fn.smallerThan("sm")]: { fontSize: 26 },
-              })}
-            >
-              Vilken ögonfärg har du?
-            </Title>
-          </Flex>
-        }
       >
-        {EyeColorTypes.map((type) => {
+        {EyeColorTypes.map((type, i) => {
           return (
             <>
               <Flex
+                key={i}
                 gap={20}
                 p={20}
                 ml={40}
@@ -178,28 +187,7 @@ const EyeColorSection: FC<Props> = ({
           );
         })}
       </Radio.Group>
-      <Flex
-        mt={30}
-        justify={"flex-end"}
-        sx={(theme) => ({
-          width: "100%",
-          [theme.fn.smallerThan("xs")]: {
-            justifyContent: "center",
-          },
-        })}
-      >
-        <Button
-          disabled={valueEyes ? false : true}
-          sx={(theme) => ({
-            [theme.fn.smallerThan("xs")]: {
-              width: "100%",
-            },
-          })}
-        >
-          Gå vidare
-        </Button>
-      </Flex>
-    </>
+    </Flex>
   );
 };
 

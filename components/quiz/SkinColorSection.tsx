@@ -1,11 +1,11 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import { Button, Radio, Flex, Title, Image, Text } from "@mantine/core";
-import { HairDocument } from "../../models/Hair";
+import { SkinDocument } from "../../models/Skin";
 
 type Props = {
-  setValueHair: Dispatch<SetStateAction<string>>;
-  valueHair: string;
-  setHairList: Dispatch<SetStateAction<HairDocument[] | undefined>>;
+  setValueSkin: Dispatch<SetStateAction<string>>;
+  valueSkin: string;
+  setSkinList: Dispatch<SetStateAction<SkinDocument[] | undefined>>;
   setOpen: Dispatch<SetStateAction<number>>;
 };
 
@@ -22,23 +22,23 @@ type ListType = {
   seasons: BoolType[];
 };
 
-const HairColorSection: FC<Props> = ({
-  valueHair,
-  setValueHair,
-  setHairList,
+const SkinColorSection: FC<Props> = ({
+  valueSkin,
+  setValueSkin,
+  setSkinList,
   setOpen,
 }) => {
-  const [hair, setHair] = useState<HairDocument[]>();
+  const [skin, setSkin] = useState<SkinDocument[]>();
 
   useEffect(() => {
     const getResult = async () => {
-      const response = await fetch("/api/open/hair");
+      const response = await fetch("/api/open/skin");
       let result = await response.json();
-      setHair(result.data);
-      setHairList(result.data);
+      setSkin(result.data);
+      setSkinList(result.data);
     };
     getResult();
-  }, [valueHair]);
+  }, [valueSkin]);
 
   const getTypes = (list: ListType[]) => {
     let types: string[] = [];
@@ -58,10 +58,10 @@ const HairColorSection: FC<Props> = ({
     return types;
   };
 
-  const hairTypes = hair ? getTypes(hair) : getTypes([]);
+  const skinTypes = skin ? getTypes(skin) : getTypes([]);
 
   return (
-    <Flex px={20} direction={"column"} sx={{ minHeight: "80vh" }}>
+    <Flex direction={"column"} sx={{ minHeight: "80vh" }}>
       <Flex
         gap={20}
         mb={30}
@@ -84,17 +84,15 @@ const HairColorSection: FC<Props> = ({
             [theme.fn.smallerThan("sm")]: { fontSize: 26 },
           })}
         >
-          Vilken hårfärg har du?
+          Vilken hudton har du?
         </Title>
-
-        <Text> Viktig att du väljer din naturliga hårfärg</Text>
       </Flex>
       <Radio.Group
-        value={valueHair}
-        onChange={setValueHair}
+        value={valueSkin}
+        onChange={setValueSkin}
         styles={{ root: { display: "flex", flexDirection: "column" } }}
       >
-        {hairTypes.map((type, i) => {
+        {skinTypes.map((type, i) => {
           return (
             <>
               <Flex
@@ -123,8 +121,8 @@ const HairColorSection: FC<Props> = ({
                     },
                   })}
                 >
-                  {hair
-                    ? hair.map((h, i) => {
+                  {skin
+                    ? skin.map((h, i) => {
                         if (h.type == type) {
                           return (
                             <Flex
@@ -149,7 +147,7 @@ const HairColorSection: FC<Props> = ({
                                     padding: 10,
                                     borderRadius: "50%",
                                     border:
-                                      valueHair == h._id.toString()
+                                      valueSkin == h._id.toString()
                                         ? "1px solid gray"
                                         : "1px solid white",
                                   },
@@ -159,7 +157,7 @@ const HairColorSection: FC<Props> = ({
                                     alt={h.name}
                                     width={60}
                                     height={60}
-                                    src={"/quiz/hair/" + h.image}
+                                    src={"/quiz/skin/" + h.image}
                                     fit="fill"
                                     radius={50}
                                     sx={{
@@ -185,4 +183,4 @@ const HairColorSection: FC<Props> = ({
   );
 };
 
-export default HairColorSection;
+export default SkinColorSection;
