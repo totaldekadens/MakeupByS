@@ -1,3 +1,4 @@
+import { SelectItemProps } from "@mantine/core";
 import { Schema, Types } from "mongoose";
 import { LineItem } from "../components/cart/AddToCartIcon";
 import { ChosenOption } from "../components/checkout/Courrier";
@@ -91,3 +92,45 @@ export type PopulatedMainProduct = {
   discount?: number;
   _id: Types.ObjectId;
 };
+
+export interface ItemProps extends SelectItemProps {
+  mainProduct: {
+    description1: string;
+    partNo: string;
+    ingredients: string;
+    brand: string;
+    price: {
+      $numberDecimal: Schema.Types.Decimal128;
+    };
+    category: CategoryDocument;
+    description2?: string;
+    weight?: number;
+    discount?: number;
+    _id: Types.ObjectId;
+  };
+  title: string;
+  partNo: string;
+  slug: string;
+  images: string[];
+  colors: [
+    {
+      hexcolor: string;
+      colorTag: Types.ObjectId;
+      seasons: [
+        {
+          title: string;
+          description: string;
+          slug: string;
+          _id?: Types.ObjectId;
+        }
+      ];
+      _id?: Types.ObjectId;
+    }
+  ];
+  createdDate?: string | undefined;
+  lastUpdated?: string | undefined;
+  availableQty: number;
+  reservedQty?: number | undefined;
+  discount?: number | undefined;
+  _id: Types.ObjectId;
+}

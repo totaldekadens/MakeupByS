@@ -2,6 +2,17 @@ GET http://localhost:3000/api/open/subproduct
 
 ###
 
+
+POST http://localhost:3000/api/open/subproduct/search
+Content-Type: application/json
+
+{
+    "value": "make up"
+}
+
+###
+
+
 GET http://localhost:3000/api/open/subproduct/mykonos
 
 
