@@ -46,6 +46,10 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   // Sets the result of the quiz. First index in the list is the winner!
   useEffect(() => {
     const getResult = () => {
+      if (openNext == 2) {
+        setResult(undefined);
+      }
+
       if (hairList && skinList && eyesList) {
         const getHair = hairList.filter((h) => h._id.toString() == valueHair);
         const getSkin = skinList.filter((h) => h._id.toString() == valueSkin);
@@ -98,6 +102,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
       setValueEyes("");
       setValueHair("");
       setValueSkin("");
+      setResult(undefined);
     }
   }, [opened]);
 
