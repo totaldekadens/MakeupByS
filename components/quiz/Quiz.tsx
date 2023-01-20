@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Button, Flex, Modal, ScrollArea, Title, Text } from "@mantine/core";
+import { Button, Flex, Modal, Text } from "@mantine/core";
 import { HairDocument } from "../../models/Hair";
 import HairColorSection from "./HairColorSection";
 import EyeColorSection from "./EyeColorSection";
@@ -30,8 +30,6 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [eyesList, setEyesList] = useState<EyeDocument[]>();
   const [skinList, setSkinList] = useState<SkinDocument[]>();
   const [openNext, setOpenNext] = useState<number>(0);
-  const [supplementQ, setSupplementQ] = useState<number>(0);
-
   const [result, setResult] = useState<{
     item: string;
     qty: number;
@@ -96,6 +94,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
     return () => clearTimeout(timer);
   }, [result]);
 
+  // Resets values when you leave the modal
   useEffect(() => {
     if (!opened) {
       setOpenNext(0);

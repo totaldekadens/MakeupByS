@@ -1,4 +1,4 @@
-import { Flex, Title, Text, Button, Spoiler } from "@mantine/core";
+import { Flex, Title, Text, Button } from "@mantine/core";
 import Link from "next/link";
 import { Dispatch, FC, SetStateAction } from "react";
 import useSlugify from "../../utils/useSlugify";
