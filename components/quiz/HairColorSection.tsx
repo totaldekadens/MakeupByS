@@ -96,96 +96,94 @@ const HairColorSection: FC<Props> = ({
       >
         {hairTypes.map((type, i) => {
           return (
-            <>
+            <Flex
+              key={i}
+              gap={20}
+              p={20}
+              ml={40}
+              direction={"column"}
+              sx={(theme) => ({
+                border: "1px solid lightGray",
+                borderRadius: "20px",
+                [theme.fn.smallerThan("sm")]: {
+                  marginLeft: 0,
+                  gap: 5,
+                },
+                [theme.fn.smallerThan("xs")]: {
+                  alignItems: "center",
+                  paddingLeft: 5,
+                  paddingRight: 5,
+                },
+              })}
+            >
+              <Title order={5}>{type}</Title>
               <Flex
-                key={i}
                 gap={20}
-                p={20}
-                ml={40}
-                direction={"column"}
                 sx={(theme) => ({
-                  border: "1px solid lightGray",
-                  borderRadius: "20px",
+                  flexWrap: "wrap",
                   [theme.fn.smallerThan("sm")]: {
-                    marginLeft: 0,
-                    gap: 5,
+                    gap: 10,
                   },
                   [theme.fn.smallerThan("xs")]: {
                     alignItems: "center",
-                    paddingLeft: 5,
-                    paddingRight: 5,
+                    justifyContent: "center",
                   },
                 })}
               >
-                <Title order={5}>{type}</Title>
-                <Flex
-                  gap={20}
-                  sx={(theme) => ({
-                    flexWrap: "wrap",
-                    [theme.fn.smallerThan("sm")]: {
-                      gap: 10,
-                    },
-                    [theme.fn.smallerThan("xs")]: {
-                      alignItems: "center",
-                      justifyContent: "center",
-                    },
-                  })}
-                >
-                  {hair
-                    ? hair.map((h, i) => {
-                        if (h.type == type) {
-                          return (
-                            <Flex
-                              key={i}
-                              sx={(theme) => ({
-                                [theme.fn.smallerThan("xs")]: {
-                                  alignItems: "center",
-                                  justifyContent: "center",
+                {hair
+                  ? hair.map((h, i) => {
+                      if (h.type == type) {
+                        return (
+                          <Flex
+                            key={i}
+                            sx={(theme) => ({
+                              [theme.fn.smallerThan("xs")]: {
+                                alignItems: "center",
+                                justifyContent: "center",
+                              },
+                            })}
+                          >
+                            <Radio
+                              value={h._id.toString()}
+                              styles={{
+                                radio: {
+                                  opacity: 0,
+                                  width: 0,
+                                  height: 0,
                                 },
-                              })}
-                            >
-                              <Radio
-                                value={h._id.toString()}
-                                styles={{
-                                  radio: {
-                                    opacity: 0,
-                                    width: 0,
-                                    height: 0,
-                                  },
-                                  label: {
-                                    paddingLeft: "unset",
-                                    padding: 10,
+                                label: {
+                                  paddingLeft: "unset",
+                                  padding: 10,
+                                  borderRadius: "50%",
+                                  border:
+                                    valueHair == h._id.toString()
+                                      ? "1px solid gray"
+                                      : "1px solid white",
+                                },
+                              }}
+                              label={
+                                <Image
+                                  alt={h.name}
+                                  width={60}
+                                  height={60}
+                                  src={"/quiz/hair/" + h.image}
+                                  fit="fill"
+                                  radius={50}
+                                  sx={{
+                                    cursor: "pointer",
                                     borderRadius: "50%",
-                                    border:
-                                      valueHair == h._id.toString()
-                                        ? "1px solid gray"
-                                        : "1px solid white",
-                                  },
-                                }}
-                                label={
-                                  <Image
-                                    alt={h.name}
-                                    width={60}
-                                    height={60}
-                                    src={"/quiz/hair/" + h.image}
-                                    fit="fill"
-                                    radius={50}
-                                    sx={{
-                                      cursor: "pointer",
-                                      borderRadius: "50%",
-                                      objectFit: "fill",
-                                    }}
-                                  />
-                                }
-                              />
-                            </Flex>
-                          );
-                        }
-                      })
-                    : null}
-                </Flex>
+                                    objectFit: "fill",
+                                  }}
+                                />
+                              }
+                            />
+                          </Flex>
+                        );
+                      }
+                    })
+                  : null}
               </Flex>
-            </>
+            </Flex>
           );
         })}
       </Radio.Group>

@@ -30,6 +30,8 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [eyesList, setEyesList] = useState<EyeDocument[]>();
   const [skinList, setSkinList] = useState<SkinDocument[]>();
   const [openNext, setOpenNext] = useState<number>(0);
+  const [supplementQ, setSupplementQ] = useState<number>(0);
+
   const [result, setResult] = useState<{
     item: string;
     qty: number;
@@ -74,7 +76,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             }
           });
           list.sort((a, b) => (a.qty < b.qty ? 1 : -1));
-
+          console.log(list);
           setResult(list[0]);
         }
       }
@@ -90,6 +92,15 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
     }, 8000);
     return () => clearTimeout(timer);
   }, [result]);
+
+  useEffect(() => {
+    if (!opened) {
+      setOpenNext(0);
+      setValueEyes("");
+      setValueHair("");
+      setValueSkin("");
+    }
+  }, [opened]);
 
   return (
     <>
@@ -216,6 +227,10 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             </Button>
           )}
         </Flex>
+        <Text size={"xs"} color={"dimmed"}>
+          Källa:
+          https://gabriellearruda.com/seasonal-color-analysis-what-season-are-you/
+        </Text>
       </Modal>
     </>
   );
