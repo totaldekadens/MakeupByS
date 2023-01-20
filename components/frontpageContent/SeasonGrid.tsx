@@ -1,4 +1,4 @@
-import { Grid, Image, MediaQuery, Title } from "@mantine/core";
+import { Grid, Image, Title } from "@mantine/core";
 import Link from "next/link";
 
 export const SeasonGrid = () => {

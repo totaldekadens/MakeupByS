@@ -2,6 +2,7 @@ import {
   Title,
   Header as MantineHeader,
   Flex,
+  MediaQuery,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -12,14 +13,14 @@ import MobileBurgerMenu from "./MobileBurgerMenu";
 import ButtonSeasonFrontPage from "./ButtonSeasonFrontPage";
 import SearchMobileFrontPage from "./SearchMobileFrontpage";
 import { hideContext } from "./context/HideProvider";
-import { useCallback, useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 const FrontPageHeader = () => {
   const session = useSession();
   const { hide, setHide } = useContext(hideContext);
-
   return (
     <>
+    
       <MantineHeader
         fixed={true}
         height={170}
@@ -39,6 +40,7 @@ const FrontPageHeader = () => {
           }
         })}
       >
+        
         <Flex
           className="navbarcontainer"
           direction={"column"}
