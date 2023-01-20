@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Button, Flex, Modal, ScrollArea, Title } from "@mantine/core";
+import { Button, Flex, Modal, ScrollArea, Title, Text } from "@mantine/core";
 import { HairDocument } from "../../models/Hair";
 import HairColorSection from "./HairColorSection";
 import EyeColorSection from "./EyeColorSection";
@@ -8,6 +8,8 @@ import { SkinDocument } from "../../models/Skin";
 import { EyeDocument } from "../../models/Eyes";
 import useWindowSize from "../../utils/useWindowSize";
 import { useWindowScroll } from "@mantine/hooks";
+import Result from "./Result";
+import { Circles } from "react-loader-spinner";
 
 type Props = {
   opened: boolean;
@@ -28,6 +30,13 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [eyesList, setEyesList] = useState<EyeDocument[]>();
   const [skinList, setSkinList] = useState<SkinDocument[]>();
   const [openNext, setOpenNext] = useState<number>(0);
+  const [result, setResult] = useState<{
+    item: string;
+    qty: number;
+    description: string;
+  }>();
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [scroll, scrollTo] = useWindowScroll();
   // Gets current window height and window width
   let size = useWindowSize();
@@ -67,11 +76,20 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
           list.sort((a, b) => (a.qty < b.qty ? 1 : -1));
           console.log(list);
           console.log(list[0]);
+          setResult(list[0]);
         }
       }
     };
     getResult();
   }, [valueHair, valueSkin, valueEyes]);
+
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, [result]);
 
   return (
     <>
@@ -115,10 +133,31 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             setSkinList={setSkinList}
           />
         ) : null}
-        {openNext == 3 ? (
-          <Flex>
-            <Title>Här kommer ett resultat så småningom :) </Title>
-          </Flex>
+        {openNext == 3 && result ? (
+          <>
+            {loading ? (
+              <Flex
+                sx={{ width: "100%", minHeight: "60vh" }}
+                direction="column"
+                justify="center"
+                align={"center"}
+                gap="md"
+              >
+                <Circles
+                  height="80"
+                  width="80"
+                  color="#CC9887"
+                  ariaLabel="circles-loading"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                  visible={true}
+                />
+                <Text>Kalkylerar...</Text>
+              </Flex>
+            ) : (
+              <Result item={result.item} description={result.description} />
+            )}
+          </>
         ) : null}
 
         <Flex
