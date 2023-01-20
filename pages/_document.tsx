@@ -31,6 +31,8 @@ export default class _Document extends Document {
     return (
       <Html style={{ scrollBehavior: "smooth" }}>
         <Head>
+          <link rel="icon" href="/favicon.png" />
+          <meta property="og:image" content="/logo.png" />
           <meta name="theme-color" content="#E5B4AD"></meta>
           <link rel="preconnect" href="https://fonts.googleapis.com"></link>
           <link

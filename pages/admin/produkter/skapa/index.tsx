@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { IconChevronDown } from "@tabler/icons";
 import { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
 import Options from "../../../../components/admin/Options";
@@ -41,110 +42,116 @@ const CreateProduct: NextPage<Props> = ({ mainProducts, categories }) => {
     { label: "Skapa produkt", value: "/admin/produkter/skapa" },
   ];
   return (
-    <AppShell fixed={false} header={<HeaderCheckout />}>
-      <Flex direction={"column"} align="center">
-        <WrapContainer>
-          <Options />
+    <>
+      <Head>
+        <title>Skapa produkt - MakeUpByS</title>
+        <meta property="og:title" content={`Skapa produkt - MakeUpByS`} />
+      </Head>
+      <AppShell fixed={false} header={<HeaderCheckout />}>
+        <Flex direction={"column"} align="center">
+          <WrapContainer>
+            <Options />
 
-          <Flex
-            direction={"column"}
-            mt={40}
-            mb={40}
-            justify={"center"}
-            align="center"
-            sx={{ width: "100%" }}
-          >
             <Flex
-              justify="flex-end"
+              direction={"column"}
+              mt={40}
+              mb={40}
+              justify={"center"}
+              align="center"
+              sx={{ width: "100%" }}
+            >
+              <Flex
+                justify="flex-end"
+                sx={(theme) => ({
+                  width: "640px",
+                  [theme.fn.smallerThan("sm")]: {
+                    width: "100%",
+                  },
+                })}
+              >
+                <Flex gap={5} mt={20}>
+                  <Menu
+                    styles={(theme) => ({
+                      dropdown: { width: 300 },
+                      item: {
+                        width: 180,
+                        height: 50,
+                        "&:hover": { backgroundColor: theme.colors.brand[1] },
+                      },
+                    })}
+                    shadow="md"
+                    opened={opened}
+                    onChange={setOpened}
+                  >
+                    <Menu.Target>
+                      <Flex align={"center"} sx={{ cursor: "pointer" }}>
+                        <Text>{currentPage}</Text>
+                        <IconChevronDown style={{ marginLeft: 13 }} size={14} />
+                      </Flex>
+                    </Menu.Target>
+                    <Menu.Dropdown w={200}>
+                      {list.map((button, index) => {
+                        return (
+                          <Menu.Item key={index} color="brand.7">
+                            <Link key={index} href={button.value}>
+                              {button.label}
+                            </Link>
+                          </Menu.Item>
+                        );
+                      })}
+                    </Menu.Dropdown>
+                  </Menu>
+                </Flex>
+              </Flex>
+            </Flex>
+            <Flex
+              direction={"column"}
+              p={30}
               sx={(theme) => ({
-                width: "640px",
+                border: `1px solid ${theme.colors.gray[3]}`,
+                borderRadius: "10px",
+                width: "680px",
+
                 [theme.fn.smallerThan("sm")]: {
+                  padding: 10,
                   width: "100%",
                 },
               })}
             >
-              <Flex gap={5} mt={20}>
-                <Menu
-                  styles={(theme) => ({
-                    dropdown: { width: 300 },
-                    item: {
-                      width: 180,
-                      height: 50,
-                      "&:hover": { backgroundColor: theme.colors.brand[1] },
-                    },
-                  })}
-                  shadow="md"
-                  opened={opened}
-                  onChange={setOpened}
-                >
-                  <Menu.Target>
-                    <Flex align={"center"} sx={{ cursor: "pointer" }}>
-                      <Text>{currentPage}</Text>
-                      <IconChevronDown style={{ marginLeft: 13 }} size={14} />
-                    </Flex>
-                  </Menu.Target>
-                  <Menu.Dropdown w={200}>
-                    {list.map((button, index) => {
-                      return (
-                        <Menu.Item key={index} color="brand.7">
-                          <Link key={index} href={button.value}>
-                            {button.label}
-                          </Link>
-                        </Menu.Item>
-                      );
-                    })}
-                  </Menu.Dropdown>
-                </Menu>
-              </Flex>
+              <Accordion
+                styles={{
+                  item: { borderBottom: "unset" },
+                }}
+                defaultValue="customization"
+              >
+                <Accordion.Item value="sub">
+                  <Accordion.Control>
+                    <Title order={4}>Skapa subartikel</Title>
+                  </Accordion.Control>
+                  <Accordion.Panel>
+                    <CreateSubProductForm
+                      setIsCreated={setisCreated}
+                      mainProducts={mainProducts}
+                    />
+                  </Accordion.Panel>
+                </Accordion.Item>
+                <Accordion.Item value="main">
+                  <Accordion.Control>
+                    <Title order={4}>Skapa huvudartikel</Title>
+                  </Accordion.Control>
+                  <Accordion.Panel>
+                    <CreateMainProductForm
+                      setIsCreated={setisCreated}
+                      categories={categories}
+                    />
+                  </Accordion.Panel>
+                </Accordion.Item>
+              </Accordion>
             </Flex>
-          </Flex>
-          <Flex
-            direction={"column"}
-            p={30}
-            sx={(theme) => ({
-              border: `1px solid ${theme.colors.gray[3]}`,
-              borderRadius: "10px",
-              width: "680px",
-
-              [theme.fn.smallerThan("sm")]: {
-                padding: 10,
-                width: "100%",
-              },
-            })}
-          >
-            <Accordion
-              styles={{
-                item: { borderBottom: "unset" },
-              }}
-              defaultValue="customization"
-            >
-              <Accordion.Item value="sub">
-                <Accordion.Control>
-                  <Title order={4}>Skapa subartikel</Title>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <CreateSubProductForm
-                    setIsCreated={setisCreated}
-                    mainProducts={mainProducts}
-                  />
-                </Accordion.Panel>
-              </Accordion.Item>
-              <Accordion.Item value="main">
-                <Accordion.Control>
-                  <Title order={4}>Skapa huvudartikel</Title>
-                </Accordion.Control>
-                <Accordion.Panel>
-                  <CreateMainProductForm
-                    setIsCreated={setisCreated}
-                    categories={categories}
-                  />
-                </Accordion.Panel>
-              </Accordion.Item>
-            </Accordion>
-          </Flex>
-        </WrapContainer>
-      </Flex>
-    </AppShell>
+          </WrapContainer>
+        </Flex>
+      </AppShell>
+    </>
   );
 };
 

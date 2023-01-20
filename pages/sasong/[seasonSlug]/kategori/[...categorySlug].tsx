@@ -8,6 +8,7 @@ import {
   Breadcrumbs,
 } from "@mantine/core";
 import { NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import BreadCrumb from "../../../../components/BreadCrumb";
@@ -73,62 +74,72 @@ const CategoryPage: NextPage = (props) => {
   }
 
   return (
-    <AppShell
-      fixed={false}
-      header={<Header />}
-      footer={<Footer />}
-      styles={(theme) => ({
-        main: {
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        },
-      })}
-    >
-      <MarginTopContainer>
-        {!season || !category ? null : (
-          <Flex sx={{ width: "100%" }}>
-            <Breadcrumbs>
-              <BreadCrumb href={"/"} title={"Hem"} />
-              <BreadCrumb
-                href={`/sasong/${season?.slug}`}
-                title={season?.title}
-              />
-              {categorySlug ? (
+    <>
+      <Head>
+        <title>{category?.title + " - MakeUpByS"}</title>
+        <meta property="og:title" content={`${category?.title} - MakeUpByS`} />
+      </Head>
+      <AppShell
+        fixed={false}
+        header={<Header />}
+        footer={<Footer />}
+        styles={(theme) => ({
+          main: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          },
+        })}
+      >
+        <MarginTopContainer>
+          {!season || !category ? null : (
+            <Flex sx={{ width: "100%" }}>
+              <Breadcrumbs>
+                <BreadCrumb href={"/"} title={"Hem"} />
                 <BreadCrumb
-                  href={`/sasong/${season?.slug}/kategori/${categorySlug[0]}`}
-                  title={category?.title}
+                  href={`/sasong/${season?.slug}`}
+                  title={season?.title}
                 />
-              ) : null}
-            </Breadcrumbs>
-          </Flex>
-        )}
-        <WrapContainer>
-          {!products ? null : (
-            <>
-              <Flex direction={"column"} align="center" sx={{ width: "100%" }}>
-                <Title order={1}>{category?.title}</Title>
-                <Text color="dimmed">{category?.description}</Text>
-              </Flex>
-              {products ? (
-                <Flex mt="xl" wrap="wrap" justify={"center"}>
-                  <Grid justify={"center"}>
-                    {products?.map((product, index) => {
-                      return (
-                        <Grid.Col key={index} md={4} sm={5} xs={6}>
-                          <ProductCard product={product} />
-                        </Grid.Col>
-                      );
-                    })}
-                  </Grid>
-                </Flex>
-              ) : null}
-            </>
+                {categorySlug ? (
+                  <BreadCrumb
+                    href={`/sasong/${season?.slug}/kategori/${categorySlug[0]}`}
+                    title={category?.title}
+                  />
+                ) : null}
+              </Breadcrumbs>
+            </Flex>
           )}
-        </WrapContainer>
-      </MarginTopContainer>
-      <Cart />
-    </AppShell>
+          <WrapContainer>
+            {!products ? null : (
+              <>
+                <Flex
+                  direction={"column"}
+                  align="center"
+                  sx={{ width: "100%" }}
+                >
+                  <Title order={1}>{category?.title}</Title>
+                  <Text color="dimmed">{category?.description}</Text>
+                </Flex>
+                {products ? (
+                  <Flex mt="xl" wrap="wrap" justify={"center"}>
+                    <Grid justify={"center"}>
+                      {products?.map((product, index) => {
+                        return (
+                          <Grid.Col key={index} md={4} sm={5} xs={6}>
+                            <ProductCard product={product} />
+                          </Grid.Col>
+                        );
+                      })}
+                    </Grid>
+                  </Flex>
+                ) : null}
+              </>
+            )}
+          </WrapContainer>
+        </MarginTopContainer>
+        <Cart />
+      </AppShell>
+    </>
   );
 };
 

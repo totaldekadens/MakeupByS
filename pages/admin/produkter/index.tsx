@@ -25,6 +25,7 @@ import Season from "../../../models/Season";
 import OverviewProduct from "../../../components/admin/product/OverviewProduct";
 import { IconChevronDown } from "@tabler/icons";
 import Link from "next/link";
+import Head from "next/head";
 
 type Props = {
   products: PopulatedProduct[];
@@ -80,6 +81,10 @@ const ProductHandler: NextPage<Props> = ({ products }) => {
   ));
   return (
     <>
+      <Head>
+        <title>Överblick produkter - MakeUpByS</title>
+        <meta property="og:title" content={`Överblick produkter - MakeUpByS`} />
+      </Head>
       <AppShell fixed={false} header={<HeaderCheckout />}>
         <Flex direction={"column"} align="center" style={{ marginTop: 60 }}>
           <Options />
