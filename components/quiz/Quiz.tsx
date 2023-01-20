@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Button, Flex, Modal, ScrollArea, Title } from "@mantine/core";
+import { Button, Flex, Modal, Text } from "@mantine/core";
 import { HairDocument } from "../../models/Hair";
 import HairColorSection from "./HairColorSection";
 import EyeColorSection from "./EyeColorSection";
@@ -8,6 +8,8 @@ import { SkinDocument } from "../../models/Skin";
 import { EyeDocument } from "../../models/Eyes";
 import useWindowSize from "../../utils/useWindowSize";
 import { useWindowScroll } from "@mantine/hooks";
+import Result from "./Result";
+import { Circles } from "react-loader-spinner";
 
 type Props = {
   opened: boolean;
@@ -28,6 +30,13 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [eyesList, setEyesList] = useState<EyeDocument[]>();
   const [skinList, setSkinList] = useState<SkinDocument[]>();
   const [openNext, setOpenNext] = useState<number>(0);
+  const [result, setResult] = useState<{
+    item: string;
+    qty: number;
+    description: string;
+  }>();
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [scroll, scrollTo] = useWindowScroll();
   // Gets current window height and window width
   let size = useWindowSize();
@@ -35,6 +44,10 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   // Sets the result of the quiz. First index in the list is the winner!
   useEffect(() => {
     const getResult = () => {
+      if (openNext == 2) {
+        setResult(undefined);
+      }
+
       if (hairList && skinList && eyesList) {
         const getHair = hairList.filter((h) => h._id.toString() == valueHair);
         const getSkin = skinList.filter((h) => h._id.toString() == valueSkin);
@@ -65,20 +78,41 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             }
           });
           list.sort((a, b) => (a.qty < b.qty ? 1 : -1));
-          console.log(list);
-          console.log(list[0]);
+          setResult(list[0]);
         }
       }
     };
     getResult();
   }, [valueHair, valueSkin, valueEyes]);
 
+  // Starts a spinner before the user gets the result
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 8000);
+    return () => clearTimeout(timer);
+  }, [result]);
+
+  // Resets values when you leave the modal
+  useEffect(() => {
+    if (!opened) {
+      setOpenNext(0);
+      setValueEyes("");
+      setValueHair("");
+      setValueSkin("");
+      setResult(undefined);
+    }
+  }, [opened]);
+
   return (
     <>
       <Modal
         styles={(theme) => ({
+          modal: { maxWidth: 1200 },
           body: {
             minHeight: "70vh",
+
             paddingLeft: 20,
             paddingRight: 20,
             paddingBottom: 20,
@@ -115,10 +149,33 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             setSkinList={setSkinList}
           />
         ) : null}
-        {openNext == 3 ? (
-          <Flex>
-            <Title>Här kommer ett resultat så småningom :) </Title>
-          </Flex>
+        {openNext == 3 && result ? (
+          <>
+            {loading ? (
+              <Flex
+                sx={{ width: "100%", minHeight: "60vh" }}
+                direction="column"
+                justify="center"
+                align={"center"}
+                gap="md"
+              >
+                <Circles
+                  height="80"
+                  width="80"
+                  color="#CC9887"
+                  ariaLabel="circles-loading"
+                  visible={true}
+                />
+                <Text>Kalkylerar...</Text>
+              </Flex>
+            ) : (
+              <Result
+                item={result.item}
+                description={result.description}
+                setOpened={setOpened}
+              />
+            )}
+          </>
         ) : null}
 
         <Flex
@@ -173,6 +230,10 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             </Button>
           )}
         </Flex>
+        <Text mt={10} size={"xs"} color={"dimmed"}>
+          Källa:
+          https://gabriellearruda.com/seasonal-color-analysis-what-season-are-you/
+        </Text>
       </Modal>
     </>
   );

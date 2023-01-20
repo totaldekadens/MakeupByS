@@ -1,4 +1,4 @@
-GET http://localhost:3000/api/season
+GET http://localhost:3000/api/open/season
 
 ###
 

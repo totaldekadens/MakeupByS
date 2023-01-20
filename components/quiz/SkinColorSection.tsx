@@ -96,88 +96,86 @@ const SkinColorSection: FC<Props> = ({
       >
         {skinTypes.map((type, i) => {
           return (
-            <>
+            <Flex
+              key={i}
+              gap={20}
+              p={20}
+              ml={40}
+              direction={"column"}
+              sx={(theme) => ({
+                border: "1px solid lightGray",
+                borderRadius: "20px",
+                [theme.fn.smallerThan("xs")]: {
+                  marginLeft: 0,
+                  alignItems: "center",
+                },
+              })}
+            >
+              <Title order={5}>{type}</Title>
               <Flex
-                key={i}
                 gap={20}
-                p={20}
-                ml={40}
-                direction={"column"}
                 sx={(theme) => ({
-                  border: "1px solid lightGray",
-                  borderRadius: "20px",
+                  flexWrap: "wrap",
                   [theme.fn.smallerThan("xs")]: {
-                    marginLeft: 0,
                     alignItems: "center",
+                    justifyContent: "center",
                   },
                 })}
               >
-                <Title order={5}>{type}</Title>
-                <Flex
-                  gap={20}
-                  sx={(theme) => ({
-                    flexWrap: "wrap",
-                    [theme.fn.smallerThan("xs")]: {
-                      alignItems: "center",
-                      justifyContent: "center",
-                    },
-                  })}
-                >
-                  {skin
-                    ? skin.map((h, i) => {
-                        if (h.type == type) {
-                          return (
-                            <Flex
-                              key={i}
-                              sx={(theme) => ({
-                                [theme.fn.smallerThan("xs")]: {
-                                  alignItems: "center",
-                                  justifyContent: "center",
+                {skin
+                  ? skin.map((h, i) => {
+                      if (h.type == type) {
+                        return (
+                          <Flex
+                            key={i}
+                            sx={(theme) => ({
+                              [theme.fn.smallerThan("xs")]: {
+                                alignItems: "center",
+                                justifyContent: "center",
+                              },
+                            })}
+                          >
+                            <Radio
+                              value={h._id.toString()}
+                              styles={{
+                                radio: {
+                                  opacity: 0,
+                                  width: 0,
+                                  height: 0,
                                 },
-                              })}
-                            >
-                              <Radio
-                                value={h._id.toString()}
-                                styles={{
-                                  radio: {
-                                    opacity: 0,
-                                    width: 0,
-                                    height: 0,
-                                  },
-                                  label: {
-                                    paddingLeft: "unset",
-                                    padding: 10,
+                                label: {
+                                  paddingLeft: "unset",
+                                  padding: 10,
+                                  borderRadius: "50%",
+                                  border:
+                                    valueSkin == h._id.toString()
+                                      ? "1px solid gray"
+                                      : "1px solid white",
+                                },
+                              }}
+                              label={
+                                <Image
+                                  alt={h.name}
+                                  width={60}
+                                  height={60}
+                                  src={"/quiz/skin/" + h.image}
+                                  fit="fill"
+                                  radius={50}
+                                  sx={{
+                                    cursor: "pointer",
                                     borderRadius: "50%",
-                                    border:
-                                      valueSkin == h._id.toString()
-                                        ? "1px solid gray"
-                                        : "1px solid white",
-                                  },
-                                }}
-                                label={
-                                  <Image
-                                    alt={h.name}
-                                    width={60}
-                                    height={60}
-                                    src={"/quiz/skin/" + h.image}
-                                    fit="fill"
-                                    radius={50}
-                                    sx={{
-                                      cursor: "pointer",
-                                      borderRadius: "50%",
-                                      objectFit: "fill",
-                                    }}
-                                  />
-                                }
-                              />
-                            </Flex>
-                          );
-                        }
-                      })
-                    : null}
-                </Flex>
+                                    objectFit: "fill",
+                                  }}
+                                />
+                              }
+                            />
+                          </Flex>
+                        );
+                      }
+                    })
+                  : null}
               </Flex>
-            </>
+            </Flex>
           );
         })}
       </Radio.Group>
