@@ -14,11 +14,10 @@ import { PopulatedProduct } from "../../../utils/types";
 import { Carousel } from "@mantine/carousel";
 import Section from "../Section";
 import EditMainProductForm from "./EditMainProductForm";
-import { CategoryDocument } from "../../../models/Category";
 import EditSubProductForm from "./EditSubProductForm";
-import useDeleteProduct from "../../../utils/useDeleteProduct";
 import { ResponseModalType } from "../SelectStatus";
 import ResponseModal from "../../layout/ResponseModal";
+import ConfirmDelete from "../../layout/ConfirmDelete";
 
 type Props = {
   product: PopulatedProduct;
@@ -36,6 +35,7 @@ const ProductModal: FC<Props> = ({
   const [editMainProduct, setEditMainProduct] = useState<boolean>(false);
   const [editSubProduct, setEditSubProduct] = useState<boolean>(false);
   const [openedResponse, setOpenedResponse] = useState(false);
+  const [openedConfirm, setOpenedConfirm] = useState(false);
   const [response, setResponse] = useState<ResponseModalType>({
     title: "",
     reason: "info",
@@ -176,13 +176,7 @@ const ProductModal: FC<Props> = ({
                       style={{ cursor: "pointer" }}
                       size={24}
                       onClick={() => {
-                        useDeleteProduct(product._id, setIsUpdated);
-                        const object: ResponseModalType = {
-                          title: "Produkt borttagen!",
-                          reason: "success",
-                        };
-                        setResponse(object);
-                        setOpenedResponse(true);
+                        setOpenedConfirm(true);
                       }}
                     />
                   </Flex>
@@ -344,6 +338,13 @@ const ProductModal: FC<Props> = ({
         info={response}
         setOpened={setOpenedResponse}
         opened={openedResponse}
+      />
+      <ConfirmDelete
+        product={product}
+        setOpened={setOpenedConfirm}
+        opened={openedConfirm}
+        setIsUpdated={setIsUpdated}
+        setOpenedProductModal={setOpened}
       />
     </>
   );
