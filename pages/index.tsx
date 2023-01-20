@@ -12,10 +12,10 @@ import {
   Space,
   Button,
   Box,
+  Grid,
 } from "@mantine/core";
 import Cart from "../components/cart/Cart";
 import { IconCheck } from "@tabler/icons";
-import SeasonGrid from "../components/frontpageContent/SeasonGrid";
 import { PopulatedColor, PopulatedProduct } from "../utils/types";
 import { GetStaticProps, NextPage } from "next";
 import useWindowSize from "../utils/useWindowSize";
@@ -24,20 +24,21 @@ import SubProduct from "../models/SubProduct";
 import MainProduct from "../models/MainProduct";
 import Category from "../models/Category";
 import Color from "../models/Color";
-import Season from "../models/Season";
+import Season, { SeasonDocument } from "../models/Season";
 import CarouselProduct from "../components/product/CarouselProduct";
 import Quiz from "../components/quiz/Quiz";
 import { useState } from "react";
+import Link from "next/link";
 
 type Props = {
   product: PopulatedProduct;
   products: PopulatedProduct[];
+  seasons: SeasonDocument[];
 };
 
-const Home: NextPage<Props> = ({ product, products }) => {
+const Home: NextPage<Props> = ({ product, products, seasons,  }) => {
   const [opened, setOpened] = useState(false);
   let size = useWindowSize();
-
   return (
     <>
       <Head>
@@ -74,7 +75,6 @@ const Home: NextPage<Props> = ({ product, products }) => {
         src="/uploads/hero.jpg"
       >
         <Flex
-          className="asdasdaaa"
           direction={"column"}
           align={"center"}
           sx={(theme) => ({
@@ -254,7 +254,40 @@ const Home: NextPage<Props> = ({ product, products }) => {
             >
               By Season
             </Text>
-            <SeasonGrid />
+            
+            <Grid justify={"center"} gutter={6} gutterXs={"xl"}>
+            {seasons ? (
+              seasons.map((seasons, index) => {
+                return (
+                  <Grid.Col styles={{ borderRadius: "5px" }} span={8} md={3} sm={3} xs={3}>
+                    <Link key={index} href={`/sasong/${seasons.slug}`}>
+                      <Image
+                        alt={seasons.image}
+                        src={`/uploads/${seasons.image}`}
+                        sx={{
+                          img: {
+                            borderRadius: "10px",
+                          },
+                        }}
+                      />
+                      <Title
+                        sx={{
+                          textAlign: "center",
+                          color: "#1D464E",
+                          fontSize: 15,
+                          paddingTop: "10px",
+                          paddingBottom: "20px",
+                        }}
+                      >
+                        {seasons.title}
+                      </Title>
+                    </Link>
+                  </Grid.Col>
+                );
+              })
+              ): null}
+              </Grid>
+
 
             <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
               <Text
@@ -353,6 +386,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
     });
 
+    const seasons = await Season.find({})
+    
+
   // Todo if time: #67 Find a better way. Should be able to filter the query above.
   //Check aggregation and virtuals with match
   let list: any[] = [];
@@ -370,6 +406,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       product: JSON.parse(JSON.stringify(product)),
       products: JSON.parse(JSON.stringify(list)),
+      seasons: JSON.parse(JSON.stringify(seasons))
     },
   };
 };
