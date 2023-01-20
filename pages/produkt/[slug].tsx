@@ -119,8 +119,8 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
   return (
     <>
       <Head>
-        <title>{product.title + " - MakeUpByS"}</title>
-        <meta property="og:title" content={`${product.title} - MakeUpByS`} />
+        <title>{product?.title + " - MakeUpByS"}</title>
+        <meta property="og:title" content={`${product?.title} - MakeUpByS`} />
       </Head>
       <AppShell
         fixed={false}
