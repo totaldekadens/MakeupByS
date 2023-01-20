@@ -1,8 +1,9 @@
 import { Card, Title, Image, Text, Box } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import Link from "next/link";
-import {FC} from "react";
+import { FC } from "react";
 import { PopulatedProduct } from "../../utils/types";
+import useWindowSize from "../../utils/useWindowSize";
 import AddToCartIcon from "../cart/AddToCartIcon";
 
 type Props = {
@@ -12,6 +13,7 @@ type Props = {
 const ProductCard: FC<Props> = ({ product }) => {
   const path = `/uploads/${product.images[0]}`;
   const { hovered, ref } = useHover();
+  const size = useWindowSize();
   const price = Number(product.mainProduct.price.$numberDecimal);
   return (
     <Card
@@ -38,10 +40,13 @@ const ProductCard: FC<Props> = ({ product }) => {
               left: 0,
               borderRadius: "50%",
               backgroundColor: hovered ? theme.colors.brand[2] : "white",
+              [theme.fn.smallerThan("xs")]: {
+                backgroundColor: "white",
+              },
             })}
           >
             <AddToCartIcon
-              color={hovered ? "white" : "black"}
+              color={size.width > 576 ? (hovered ? "white" : "black") : "black"}
               product={product}
             />
           </Box>
