@@ -56,7 +56,7 @@ const SeasonPage: NextPage<Props> = ({ products, season }) => {
   return (
     <>
       <Head>
-        <title>{season.title} - MakeUpByS</title>
+        <title>{season.title + " - MakeUpByS"}</title>
         <meta property="og:title" content={`${season.title} - MakeUpByS`} />
       </Head>
       <AppShell

@@ -76,7 +76,7 @@ const CategoryPage: NextPage = (props) => {
   return (
     <>
       <Head>
-        <title>{category?.title} - MakeUpByS</title>
+        <title>{category?.title + " - MakeUpByS"}</title>
         <meta property="og:title" content={`${category?.title} - MakeUpByS`} />
       </Head>
       <AppShell
