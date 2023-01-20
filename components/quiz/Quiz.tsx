@@ -74,8 +74,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             }
           });
           list.sort((a, b) => (a.qty < b.qty ? 1 : -1));
-          console.log(list);
-          console.log(list[0]);
+
           setResult(list[0]);
         }
       }
@@ -83,6 +82,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
     getResult();
   }, [valueHair, valueSkin, valueEyes]);
 
+  // Starts a spinner before the user gets the result
   useEffect(() => {
     setLoading(true);
     const timer = setTimeout(() => {
@@ -95,8 +95,10 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
     <>
       <Modal
         styles={(theme) => ({
+          modal: { maxWidth: 1200 },
           body: {
             minHeight: "70vh",
+
             paddingLeft: 20,
             paddingRight: 20,
             paddingBottom: 20,
@@ -148,14 +150,16 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
                   width="80"
                   color="#CC9887"
                   ariaLabel="circles-loading"
-                  wrapperStyle={{}}
-                  wrapperClass=""
                   visible={true}
                 />
                 <Text>Kalkylerar...</Text>
               </Flex>
             ) : (
-              <Result item={result.item} description={result.description} />
+              <Result
+                item={result.item}
+                description={result.description}
+                setOpened={setOpened}
+              />
             )}
           </>
         ) : null}

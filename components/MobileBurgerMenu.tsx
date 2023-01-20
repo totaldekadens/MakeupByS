@@ -169,7 +169,10 @@ const MobileBurgerMenu: FC = () => {
           <Flex>
             <Box sx={{ paddingTop: 25 }}>
               <Box
-                onClick={() => setOpenedQuiz(true)}
+                onClick={() => {
+                  setOpenedQuiz(true);
+                  setOpened(false);
+                }}
                 sx={{ alignContent: "center", cursor: "pointer" }}
               >
                 <IconBrandAppleArcade size={36} color="white" />
