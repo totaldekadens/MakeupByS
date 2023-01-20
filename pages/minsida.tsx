@@ -11,6 +11,7 @@ import useFetchHelper from "../utils/useFetchHelper";
 import ErrorPage from "./_error";
 import MarginTopContainer from "../components/layout/MarginTopContainer";
 import { PopulatedOrder } from "../utils/types";
+import Head from "next/head";
 
 const MyPage: NextPage = () => {
   const { data: session } = useSession();
@@ -37,6 +38,11 @@ const MyPage: NextPage = () => {
   }
   return (
     <>
+      <Head>
+        <title>Min sida - MakeUpByS</title>
+        <meta property="og:title" content="Min sida - MakeUpByS" />
+        <meta property="og:url" content="https://makeupbys.se/minsida" />
+      </Head>
       <AppShell
         fixed={false}
         header={<Header />}

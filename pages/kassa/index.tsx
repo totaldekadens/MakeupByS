@@ -9,6 +9,7 @@ import { useContext, useEffect, useRef } from "react";
 import { checkoutContext } from "../../components/context/checkoutProvider";
 import Courrier from "../../components/checkout/Courrier";
 import TotalSum from "../../components/checkout/TotalSum";
+import Head from "next/head";
 
 const Kassa: NextPage = () => {
   // Context
@@ -41,57 +42,63 @@ const Kassa: NextPage = () => {
   }, [cartItems]);
 
   return (
-    <AppShell
-      fixed={false}
-      header={<HeaderCheckout />}
-      styles={{
-        main: {
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        },
-      }}
-    >
-      <Flex
-        style={{
-          width: "100%",
-          marginTop: 60,
-          minHeight: "100vh",
-          maxWidth: "1320px",
-          flexDirection: "column",
-          alignItems: "center",
+    <>
+      <Head>
+        <title>Kassa - MakeUpByS</title>
+        <meta property="og:title" content={`Kassa - MakeUpByS`} />
+      </Head>
+      <AppShell
+        fixed={false}
+        header={<HeaderCheckout />}
+        styles={{
+          main: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          },
         }}
       >
-        <Title order={1}>KASSA</Title>
-        {totalSum && totalSum > 0 ? (
-          <>
-            <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />
-            <DeliveryInformation />
-            {checkout.address.invoice || checkout.address.delivery ? (
-              checkout.address.invoice || checkout.address.delivery ? (
-                checkout.address.invoice.city ||
-                checkout.address.delivery.city ? (
-                  <>
-                    <Courrier />
-                    <TotalSum />
-                  </>
+        <Flex
+          style={{
+            width: "100%",
+            marginTop: 60,
+            minHeight: "100vh",
+            maxWidth: "1320px",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Title order={1}>KASSA</Title>
+          {totalSum && totalSum > 0 ? (
+            <>
+              <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />
+              <DeliveryInformation />
+              {checkout.address.invoice || checkout.address.delivery ? (
+                checkout.address.invoice || checkout.address.delivery ? (
+                  checkout.address.invoice.city ||
+                  checkout.address.delivery.city ? (
+                    <>
+                      <Courrier />
+                      <TotalSum />
+                    </>
+                  ) : null
                 ) : null
-              ) : null
-            ) : null}
-          </>
-        ) : (
-          <>
-            <Title mt={20} order={3}>
-              Din varukorg är tom.
-            </Title>
-            <Text mt={10} align="center" color={"dimmed"}>
-              Gå tillbaka och lägg produkter i varukorgen för att slutföra ditt
-              köp
-            </Text>
-          </>
-        )}
-      </Flex>
-    </AppShell>
+              ) : null}
+            </>
+          ) : (
+            <>
+              <Title mt={20} order={3}>
+                Din varukorg är tom.
+              </Title>
+              <Text mt={10} align="center" color={"dimmed"}>
+                Gå tillbaka och lägg produkter i varukorgen för att slutföra
+                ditt köp
+              </Text>
+            </>
+          )}
+        </Flex>
+      </AppShell>
+    </>
   );
 };
 

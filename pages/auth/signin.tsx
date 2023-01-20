@@ -9,6 +9,7 @@ import {
 } from "@mantine/core";
 import { NextPage } from "next";
 import { useSession } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import SignInForm from "../../components/auth/SignInForm";
@@ -40,6 +41,10 @@ const SignIn: NextPage = () => {
 
   return (
     <>
+      <Head>
+        <title>Logga in - MakeUpByS</title>
+        <meta property="og:title" content={`Logga in - MakeUpByS`} />
+      </Head>
       <AppShell
         padding={0}
         fixed={false}

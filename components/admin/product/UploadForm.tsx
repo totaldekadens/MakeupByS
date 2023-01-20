@@ -54,7 +54,7 @@ const UploadForm: FC<Props> = ({ setImageList, value, setValue }) => {
         {createObjectURL.map((img, index) => {
           return (
             <Flex w={180} key={index}>
-              <Image src={img} />
+              <Image alt={img} src={img} />
             </Flex>
           );
         })}

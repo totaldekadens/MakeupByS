@@ -19,6 +19,7 @@ import { Checkout } from "../components/context/checkoutProvider";
 import HeaderSuccess from "../components/layout/HeaderSuccess";
 import ContainerWithBorder from "../components/layout/ContainerWithBorder";
 import { OrderDocument } from "../models/Order";
+import Head from "next/head";
 
 const SuccessPage: NextPage = (props) => {
   // Local storage
@@ -126,271 +127,291 @@ const SuccessPage: NextPage = (props) => {
   }, [checkoutLocal]);
 
   return (
-    <AppShell fixed={false} header={<HeaderSuccess />}>
-      <Flex
-        align="center"
-        direction="column"
-        style={{ marginTop: 60, width: "100%" }}
-      >
-        {orderConfirmation ? (
-          <>
-            <Title order={1}>Orderbekräftelse</Title>
-            <ContainerWithBorder>
-              <Flex gap={10} mb={10} direction="column">
-                <Text size={"sm"} align="end" color={"dimmed"}>
-                  {orderConfirmation.registerDate}
-                </Text>
-                <Flex gap={10} align="center" justify={"space-between"}>
-                  <Title order={3}>
-                    {`Order:  ${orderConfirmation.orderNo}`}
-                  </Title>
-                </Flex>
+    <>
+      <Head>
+        <title>Orderbekräftelse - MakeUpByS</title>
+        <meta property="og:title" content="Orderbekräftelse - MakeUpByS" />
+      </Head>
+      <AppShell fixed={false} header={<HeaderSuccess />}>
+        <Flex
+          align="center"
+          direction="column"
+          style={{ marginTop: 60, width: "100%" }}
+        >
+          {orderConfirmation ? (
+            <>
+              <Title order={1}>Orderbekräftelse</Title>
+              <ContainerWithBorder>
+                <Flex gap={10} mb={10} direction="column">
+                  <Text size={"sm"} align="end" color={"dimmed"}>
+                    {orderConfirmation.registerDate}
+                  </Text>
+                  <Flex gap={10} align="center" justify={"space-between"}>
+                    <Title order={3}>
+                      {`Order:  ${orderConfirmation.orderNo}`}
+                    </Title>
+                  </Flex>
 
-                {orderConfirmation.deliveryAddress ? (
-                  <>
-                    <Flex
-                      gap={20}
-                      justify={"space-between"}
-                      sx={(theme) => ({
-                        [theme.fn.smallerThan("xs")]: {
-                          gap: 0,
-                          flexDirection: "column",
-                        },
-                      })}
-                    >
-                      <Box mb={20}>
-                        <Title order={5}>Beställare: </Title>
-                        <Flex direction={"column"}>
-                          <Flex direction="column">
-                            <Text size={"sm"}>{orderConfirmation.email}</Text>
-                            <Text size={"sm"}>
-                              {orderConfirmation.invoiceAddress.line1},
-                            </Text>
-                            <Text size={"sm"}>
-                              {orderConfirmation.invoiceAddress?.line2
-                                ? orderConfirmation.invoiceAddress?.line2 + ","
-                                : null}
-                            </Text>
-
-                            <Flex gap={7}>
-                              <Text size={"sm"}>
-                                {orderConfirmation.invoiceAddress?.postal_code}
-                              </Text>
-                              <Text size={"sm"}>
-                                {orderConfirmation.invoiceAddress?.city}
-                              </Text>
-                            </Flex>
-                          </Flex>
-                          <Flex
-                            gap={3}
-                            sx={(theme) => ({
-                              [theme.fn.smallerThan("xs")]: {
-                                flexDirection: "column",
-                              },
-                            })}
-                          ></Flex>
-                        </Flex>
-                      </Box>
-                      <Box>
-                        <Title order={5}>Levereras till: </Title>
-                        <Flex direction={"column"}>
-                          <Text size={"sm"}>{orderConfirmation.name}</Text>
-                          <Flex direction="column">
-                            <Text size={"sm"}>
-                              {orderConfirmation.deliveryAddress?.line1},
-                            </Text>
-                            <Text size={"sm"}>
-                              {orderConfirmation.deliveryAddress?.line2
-                                ? orderConfirmation.deliveryAddress?.line2 + ","
-                                : null}
-                            </Text>
-
-                            <Flex gap={7}>
-                              <Text size={"sm"}>
-                                {orderConfirmation.deliveryAddress?.postal_code}
-                              </Text>
-                              <Text size={"sm"}>
-                                {orderConfirmation.deliveryAddress?.city},
-                              </Text>
-                            </Flex>
-                          </Flex>
-                          <Flex
-                            gap={3}
-                            sx={(theme) => ({
-                              [theme.fn.smallerThan("xs")]: {
-                                flexDirection: "column",
-                              },
-                            })}
-                          >
-                            <Text size={"sm"}>{orderConfirmation.phone}</Text>
-                          </Flex>
-                        </Flex>
-                      </Box>
-                    </Flex>
-                  </>
-                ) : (
-                  <Box mb={20}>
-                    <Title order={5}>Levereras till: </Title>
-                    <Flex direction={"column"}>
-                      <Text size={"sm"}>{orderConfirmation.name}</Text>
+                  {orderConfirmation.deliveryAddress ? (
+                    <>
                       <Flex
-                        gap={3}
+                        gap={20}
+                        justify={"space-between"}
                         sx={(theme) => ({
                           [theme.fn.smallerThan("xs")]: {
+                            gap: 0,
                             flexDirection: "column",
                           },
                         })}
                       >
-                        <Text size={"sm"}>
-                          {orderConfirmation.invoiceAddress?.line1},
-                        </Text>
-                        <Text size={"sm"}>
-                          {orderConfirmation.invoiceAddress?.line2
-                            ? orderConfirmation.invoiceAddress?.line2 + ","
-                            : null}
-                        </Text>
+                        <Box mb={20}>
+                          <Title order={5}>Beställare: </Title>
+                          <Flex direction={"column"}>
+                            <Flex direction="column">
+                              <Text size={"sm"}>{orderConfirmation.email}</Text>
+                              <Text size={"sm"}>
+                                {orderConfirmation.invoiceAddress.line1},
+                              </Text>
+                              <Text size={"sm"}>
+                                {orderConfirmation.invoiceAddress?.line2
+                                  ? orderConfirmation.invoiceAddress?.line2 +
+                                    ","
+                                  : null}
+                              </Text>
 
-                        <Flex gap={7}>
-                          <Text size={"sm"}>
-                            {orderConfirmation.invoiceAddress?.postal_code}
-                          </Text>
-                          <Text size={"sm"}>
-                            {orderConfirmation.invoiceAddress?.city},
-                          </Text>
-                        </Flex>
-                      </Flex>
-                      <Flex
-                        gap={3}
-                        sx={(theme) => ({
-                          [theme.fn.smallerThan("xs")]: {
-                            flexDirection: "column",
-                          },
-                        })}
-                      >
-                        <Text size={"sm"}>{orderConfirmation.email}, </Text>
-                        <Text size={"sm"}>{orderConfirmation.phone}</Text>
-                      </Flex>
-                    </Flex>
-                  </Box>
-                )}
-                <Title order={5}>Fraktsätt</Title>
-                <Flex
-                  justify={"space-between"}
-                  sx={{
-                    width: "100%",
-                  }}
-                >
-                  <Flex>
-                    <Flex direction={"column"} w={230}>
-                      <Flex gap={10}>
-                        <Text size={"sm"}>
-                          {orderConfirmation.courrier.info.description}
-                        </Text>
-                        <HoverCard width={280} shadow="md">
-                          <HoverCard.Target>
-                            <Box>
-                              <IconInfoCircle size={20} />
-                            </Box>
-                          </HoverCard.Target>
-                          <HoverCard.Dropdown>
-                            <Text size="sm">
-                              {orderConfirmation.courrier.info.description2}
-                            </Text>
-                          </HoverCard.Dropdown>
-                        </HoverCard>
-                      </Flex>
-                      <Flex align={"center"}>
-                        <Text size={"sm"} color={"dimmed"}>
-                          {orderConfirmation.courrier.info.cost} KR
-                        </Text>
+                              <Flex gap={7}>
+                                <Text size={"sm"}>
+                                  {
+                                    orderConfirmation.invoiceAddress
+                                      ?.postal_code
+                                  }
+                                </Text>
+                                <Text size={"sm"}>
+                                  {orderConfirmation.invoiceAddress?.city}
+                                </Text>
+                              </Flex>
+                            </Flex>
+                            <Flex
+                              gap={3}
+                              sx={(theme) => ({
+                                [theme.fn.smallerThan("xs")]: {
+                                  flexDirection: "column",
+                                },
+                              })}
+                            ></Flex>
+                          </Flex>
+                        </Box>
+                        <Box>
+                          <Title order={5}>Levereras till: </Title>
+                          <Flex direction={"column"}>
+                            <Text size={"sm"}>{orderConfirmation.name}</Text>
+                            <Flex direction="column">
+                              <Text size={"sm"}>
+                                {orderConfirmation.deliveryAddress?.line1},
+                              </Text>
+                              <Text size={"sm"}>
+                                {orderConfirmation.deliveryAddress?.line2
+                                  ? orderConfirmation.deliveryAddress?.line2 +
+                                    ","
+                                  : null}
+                              </Text>
 
-                        <MediaQuery
-                          largerThan={"xs"}
-                          styles={{ display: "none" }}
+                              <Flex gap={7}>
+                                <Text size={"sm"}>
+                                  {
+                                    orderConfirmation.deliveryAddress
+                                      ?.postal_code
+                                  }
+                                </Text>
+                                <Text size={"sm"}>
+                                  {orderConfirmation.deliveryAddress?.city},
+                                </Text>
+                              </Flex>
+                            </Flex>
+                            <Flex
+                              gap={3}
+                              sx={(theme) => ({
+                                [theme.fn.smallerThan("xs")]: {
+                                  flexDirection: "column",
+                                },
+                              })}
+                            >
+                              <Text size={"sm"}>{orderConfirmation.phone}</Text>
+                            </Flex>
+                          </Flex>
+                        </Box>
+                      </Flex>
+                    </>
+                  ) : (
+                    <Box mb={20}>
+                      <Title order={5}>Levereras till: </Title>
+                      <Flex direction={"column"}>
+                        <Text size={"sm"}>{orderConfirmation.name}</Text>
+                        <Flex
+                          gap={3}
+                          sx={(theme) => ({
+                            [theme.fn.smallerThan("xs")]: {
+                              flexDirection: "column",
+                            },
+                          })}
                         >
-                          <Flex align={"center"} ml={12}>
-                            <IconPoint size={15} fill="black" />
-                            <Text color={"dimmed"} size={"sm"} ml={12}>
-                              {
-                                orderConfirmation.courrier.info.deliveryTime
-                                  .from
-                              }{" "}
-                              -{" "}
-                              {orderConfirmation.courrier.info.deliveryTime.to}{" "}
-                              dagar
+                          <Text size={"sm"}>
+                            {orderConfirmation.invoiceAddress?.line1},
+                          </Text>
+                          <Text size={"sm"}>
+                            {orderConfirmation.invoiceAddress?.line2
+                              ? orderConfirmation.invoiceAddress?.line2 + ","
+                              : null}
+                          </Text>
+
+                          <Flex gap={7}>
+                            <Text size={"sm"}>
+                              {orderConfirmation.invoiceAddress?.postal_code}
+                            </Text>
+                            <Text size={"sm"}>
+                              {orderConfirmation.invoiceAddress?.city},
                             </Text>
                           </Flex>
-                        </MediaQuery>
+                        </Flex>
+                        <Flex
+                          gap={3}
+                          sx={(theme) => ({
+                            [theme.fn.smallerThan("xs")]: {
+                              flexDirection: "column",
+                            },
+                          })}
+                        >
+                          <Text size={"sm"}>{orderConfirmation.email}, </Text>
+                          <Text size={"sm"}>{orderConfirmation.phone}</Text>
+                        </Flex>
+                      </Flex>
+                    </Box>
+                  )}
+                  <Title order={5}>Fraktsätt</Title>
+                  <Flex
+                    justify={"space-between"}
+                    sx={{
+                      width: "100%",
+                    }}
+                  >
+                    <Flex>
+                      <Flex direction={"column"} w={230}>
+                        <Flex gap={10}>
+                          <Text size={"sm"}>
+                            {orderConfirmation.courrier.info.description}
+                          </Text>
+                          <HoverCard width={280} shadow="md">
+                            <HoverCard.Target>
+                              <Box>
+                                <IconInfoCircle size={20} />
+                              </Box>
+                            </HoverCard.Target>
+                            <HoverCard.Dropdown>
+                              <Text size="sm">
+                                {orderConfirmation.courrier.info.description2}
+                              </Text>
+                            </HoverCard.Dropdown>
+                          </HoverCard>
+                        </Flex>
+                        <Flex align={"center"}>
+                          <Text size={"sm"} color={"dimmed"}>
+                            {orderConfirmation.courrier.info.cost} KR
+                          </Text>
+
+                          <MediaQuery
+                            largerThan={"xs"}
+                            styles={{ display: "none" }}
+                          >
+                            <Flex align={"center"} ml={12}>
+                              <IconPoint size={15} fill="black" />
+                              <Text color={"dimmed"} size={"sm"} ml={12}>
+                                {
+                                  orderConfirmation.courrier.info.deliveryTime
+                                    .from
+                                }{" "}
+                                -{" "}
+                                {
+                                  orderConfirmation.courrier.info.deliveryTime
+                                    .to
+                                }{" "}
+                                dagar
+                              </Text>
+                            </Flex>
+                          </MediaQuery>
+                        </Flex>
+                      </Flex>
+                    </Flex>
+                    <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+                      <Flex>
+                        <Text size={"sm"} color={"dimmed"}>
+                          {orderConfirmation.courrier.info.deliveryTime.from} -{" "}
+                          {orderConfirmation.courrier.info.deliveryTime.to}{" "}
+                          dagar
+                        </Text>
+                      </Flex>
+                    </MediaQuery>
+                  </Flex>
+
+                  <Title order={5}>Produkter</Title>
+                  <Flex direction={"column"}>
+                    <Table>
+                      <thead>
+                        <tr>
+                          <th>Produkt</th>
+                          <th>Antal</th>
+                        </tr>
+                      </thead>
+                      <tbody>{rows}</tbody>
+                    </Table>
+
+                    <Flex
+                      mt={10}
+                      justify={"flex-end"}
+                      sx={{ width: "100%" }}
+                    ></Flex>
+                    <Flex mt={20} justify={"flex-end"} sx={{ width: "100%" }}>
+                      <Text size={"sm"} color="dimmed">
+                        Moms
+                      </Text>
+                      <Flex justify={"flex-end"} w={70} ml={47}>
+                        <Text size={"sm"}>
+                          {totalSum
+                            ? totalSum * 0.25 + " KR"
+                            : "Något gick fel"}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                    <Flex mt={10} justify={"flex-end"} sx={{ width: "100%" }}>
+                      <Text size={"sm"} color="dimmed">
+                        Frakt
+                      </Text>
+                      <Flex justify={"flex-end"} w={70} ml={47}>
+                        <Text size={"sm"}>
+                          {orderConfirmation.courrier.info.cost + " KR"}
+                        </Text>
+                      </Flex>
+                    </Flex>
+                    <Flex mt={10} justify={"flex-end"} sx={{ width: "100%" }}>
+                      <Text size={"sm"} color="dimmed">
+                        Totalt inkl. moms och frakt
+                      </Text>
+                      <Flex justify={"flex-end"} w={70} ml={47}>
+                        <Text weight={"bold"}>
+                          {totalSum
+                            ? totalSum + orderConfirmation.courrier.info.cost
+                            : "Något gick fel"}{" "}
+                          KR
+                        </Text>
                       </Flex>
                     </Flex>
                   </Flex>
-                  <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
-                    <Flex>
-                      <Text size={"sm"} color={"dimmed"}>
-                        {orderConfirmation.courrier.info.deliveryTime.from} -{" "}
-                        {orderConfirmation.courrier.info.deliveryTime.to} dagar
-                      </Text>
-                    </Flex>
-                  </MediaQuery>
                 </Flex>
-
-                <Title order={5}>Produkter</Title>
-                <Flex direction={"column"}>
-                  <Table>
-                    <thead>
-                      <tr>
-                        <th>Produkt</th>
-                        <th>Antal</th>
-                      </tr>
-                    </thead>
-                    <tbody>{rows}</tbody>
-                  </Table>
-
-                  <Flex
-                    mt={10}
-                    justify={"flex-end"}
-                    sx={{ width: "100%" }}
-                  ></Flex>
-                  <Flex mt={20} justify={"flex-end"} sx={{ width: "100%" }}>
-                    <Text size={"sm"} color="dimmed">
-                      Moms
-                    </Text>
-                    <Flex justify={"flex-end"} w={70} ml={47}>
-                      <Text size={"sm"}>
-                        {totalSum ? totalSum * 0.25 + " KR" : "Något gick fel"}
-                      </Text>
-                    </Flex>
-                  </Flex>
-                  <Flex mt={10} justify={"flex-end"} sx={{ width: "100%" }}>
-                    <Text size={"sm"} color="dimmed">
-                      Frakt
-                    </Text>
-                    <Flex justify={"flex-end"} w={70} ml={47}>
-                      <Text size={"sm"}>
-                        {orderConfirmation.courrier.info.cost + " KR"}
-                      </Text>
-                    </Flex>
-                  </Flex>
-                  <Flex mt={10} justify={"flex-end"} sx={{ width: "100%" }}>
-                    <Text size={"sm"} color="dimmed">
-                      Totalt inkl. moms och frakt
-                    </Text>
-                    <Flex justify={"flex-end"} w={70} ml={47}>
-                      <Text weight={"bold"}>
-                        {totalSum
-                          ? totalSum + orderConfirmation.courrier.info.cost
-                          : "Något gick fel"}{" "}
-                        KR
-                      </Text>
-                    </Flex>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </ContainerWithBorder>
-          </>
-        ) : null}
-      </Flex>
-    </AppShell>
+              </ContainerWithBorder>
+            </>
+          ) : null}
+        </Flex>
+      </AppShell>
+    </>
   );
 };
 

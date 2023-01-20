@@ -1,34 +1,12 @@
-import {
-  AppShell,
-  Title,
-  Flex,
-  Accordion,
-  Text,
-  Select,
-  Pagination,
-  MediaQuery,
-  Button,
-  Menu,
-} from "@mantine/core";
-import { GetServerSideProps, GetStaticProps, NextPage } from "next";
+import { AppShell, Title, Flex, Button } from "@mantine/core";
+import { NextPage } from "next";
 import HeaderCheckout from "../../components/layout/HeaderCheckout";
-import { useEffect, useRef, useState } from "react";
-import dbConnect from "../../utils/dbConnect";
-import Options from "../../components/admin/Options";
-import OrderSummary from "../../components/OrderSummary";
-import Order from "../../models/Order";
-import OrderStatus, { OrderStatusDocument } from "../../models/OrderStatus";
-import User from "../../models/User";
-import { PopulatedOrder } from "../../utils/types";
-import { SelectType } from "../../components/admin/SelectStatus";
 import Link from "next/link";
-import { IconChevronDown } from "@tabler/icons";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const Admin: NextPage = ({}) => {
   const router = useRouter();
-  const [opened, setOpened] = useState(false);
-  const [currentPage, setCurrentPage] = useState<string>("Beställningar");
   const list = [
     {
       name: "Beställningar",
@@ -54,10 +32,13 @@ const Admin: NextPage = ({}) => {
 
   return (
     <>
+      <Head>
+        <title>Admin - MakeUpByS</title>
+        <meta property="og:title" content={`Admin - MakeUpByS`} />
+      </Head>
       <AppShell fixed={false} header={<HeaderCheckout />}>
         <Flex direction={"column"} align="center" style={{ marginTop: 60 }}>
           <Title order={1}>ADMIN</Title>
-          {/*  <MediaQuery smallerThan="sm" styles={{ display: "none" }}> */}
           <Flex
             gap={10}
             mt={20}

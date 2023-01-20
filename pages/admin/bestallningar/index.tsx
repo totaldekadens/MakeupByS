@@ -18,6 +18,7 @@ import OrderStatus, { OrderStatusDocument } from "../../../models/OrderStatus";
 import User from "../../../models/User";
 import { PopulatedOrder } from "../../../utils/types";
 import { SelectType } from "../../../components/admin/SelectStatus";
+import Head from "next/head";
 
 type Props = {
   orders: PopulatedOrder[];
@@ -93,6 +94,10 @@ const Admin: NextPage<Props> = ({ orders }) => {
 
   return (
     <>
+      <Head>
+        <title>Beställningar - MakeUpByS</title>
+        <meta property="og:title" content={`Beställningar - MakeUpByS`} />
+      </Head>
       <AppShell fixed={false} header={<HeaderCheckout />}>
         <Flex direction={"column"} align="center" style={{ marginTop: 60 }}>
           <Options />

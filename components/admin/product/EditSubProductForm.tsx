@@ -249,7 +249,7 @@ const EditSubProductForm: FC<Props> = ({
                       w={100}
                       h={100}
                     >
-                      <Image src={`/uploads/${image}`} />
+                      <Image alt={image} src={`/uploads/${image}`} />
                       <Text size={"xs"}>{image}</Text>
                     </Flex>
                   );
