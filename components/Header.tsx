@@ -82,7 +82,7 @@ const Header = () => {
                     },
                   })}
                 >
-                  fri frakt från sverige
+                  fri frakt inom sverige
                 </Text>
               </Flex>
 

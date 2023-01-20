@@ -11,7 +11,6 @@ import {
   BackgroundImage,
   Space,
   Button,
-  createStyles,
   Box,
 } from "@mantine/core";
 import Cart from "../components/cart/Cart";
@@ -19,7 +18,6 @@ import { IconCheck } from "@tabler/icons";
 import SeasonGrid from "../components/frontpageContent/SeasonGrid";
 import { PopulatedColor, PopulatedProduct } from "../utils/types";
 import { GetStaticProps, NextPage } from "next";
-import { useRouter } from "next/router";
 import useWindowSize from "../utils/useWindowSize";
 import dbConnect from "../utils/dbConnect";
 import SubProduct from "../models/SubProduct";
@@ -27,7 +25,6 @@ import MainProduct from "../models/MainProduct";
 import Category from "../models/Category";
 import Color from "../models/Color";
 import Season from "../models/Season";
-
 import CarouselProduct from "../components/product/CarouselProduct";
 import Quiz from "../components/quiz/Quiz";
 import { useState } from "react";
@@ -109,7 +106,7 @@ const Home: NextPage<Props> = ({ product, products }) => {
               })}
             >
               <Title fw={"400"} mr={30} tt={"uppercase"} c={"white"} fz={"md"}>
-                <IconCheck size={18} /> fri frakt från sverige
+                <IconCheck size={18} /> fri frakt inom sverige
               </Title>
 
               <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>

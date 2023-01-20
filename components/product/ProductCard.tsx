@@ -1,10 +1,9 @@
-import { Card, Flex, Title, Image, Text, Box } from "@mantine/core";
+import { Card, Title, Image, Text, Box } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 import Link from "next/link";
-import { Dispatch, FC, SetStateAction, useContext } from "react";
+import {FC} from "react";
 import { PopulatedProduct } from "../../utils/types";
 import AddToCartIcon from "../cart/AddToCartIcon";
-import { openedCartContext } from "../context/OpenCartProvider";
 
 type Props = {
   product: PopulatedProduct;

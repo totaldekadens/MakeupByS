@@ -25,17 +25,16 @@ const HideProvider: FC<PropsWithChildren<Props>> = (props) => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   });
-
   const handleScroll = () => {
     setScrollY(window.scrollY);
     let previousScrollY = valueRef.current;
-
+    
     let scrollHeight = window.innerHeight + window.scrollY;
     // Px from bottom
     let result = document.body.offsetHeight - scrollHeight;
-
+    
     if (window.scrollY > 60) {
-      if (result < 100) {
+      if (result > 100) {
         setHide(true);
         return;
       }
@@ -48,7 +47,8 @@ const HideProvider: FC<PropsWithChildren<Props>> = (props) => {
       setHide(false);
     }
   };
-
+  
+  
   return (
     <hideContext.Provider value={{ hide, setHide }}>
       {props.children}
