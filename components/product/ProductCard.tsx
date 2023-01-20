@@ -57,9 +57,11 @@ const ProductCard: FC<Props> = ({ product }) => {
           Tillfälligt slut
         </Text>
       ) : null}
-      <Title align="center" color={"dimmed"} order={4}>
-        {product.title}
-      </Title>
+      <Link href={`/produkt/${product.slug}`}>
+        <Title align="center" color={"dimmed"} order={4}>
+          {product.title}
+        </Title>
+      </Link>
       <Title align="center" order={4}>
         {price} KR
       </Title>
