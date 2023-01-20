@@ -1,12 +1,8 @@
-import { Flex, Image, Title, Text, Group, MediaQuery } from "@mantine/core";
-import { IconEdit, IconTrash } from "@tabler/icons";
-import { Types } from "mongoose";
+import { Flex, Image, Text, MediaQuery } from "@mantine/core";
+import { IconTrash } from "@tabler/icons";
 import { Dispatch, FC, SetStateAction, useState } from "react";
-import { CategoryDocument } from "../../../models/Category";
 import { PopulatedProduct } from "../../../utils/types";
-import useDeleteProduct from "../../../utils/useDeleteProduct";
-import ResponseModal from "../../layout/ResponseModal";
-import { ResponseModalType } from "../SelectStatus";
+import ConfirmDelete from "../../layout/ConfirmDelete";
 import ProductModal from "./ProductModal";
 type Props = {
   product: PopulatedProduct;
@@ -15,11 +11,7 @@ type Props = {
 
 const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
   const [opened, setOpened] = useState(false);
-  const [openedResponse, setOpenedResponse] = useState(false);
-  const [response, setResponse] = useState<ResponseModalType>({
-    title: "",
-    reason: "info",
-  });
+  const [openedConfirm, setOpenedConfirm] = useState(false);
 
   return (
     <>
@@ -80,13 +72,7 @@ const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
             style={{ cursor: "pointer" }}
             size={14}
             onClick={() => {
-              useDeleteProduct(product._id, setIsUpdated);
-              const object: ResponseModalType = {
-                title: "Produkt borttagen!",
-                reason: "success",
-              };
-              setResponse(object);
-              setOpenedResponse(true);
+              setOpenedConfirm(true);
             }}
           />
         </td>
@@ -97,10 +83,11 @@ const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
           setIsUpdated={setIsUpdated}
         />
       </tr>
-      <ResponseModal
-        info={response}
-        setOpened={setOpenedResponse}
-        opened={openedResponse}
+      <ConfirmDelete
+        product={product}
+        setOpened={setOpenedConfirm}
+        opened={openedConfirm}
+        setIsUpdated={setIsUpdated}
       />
     </>
   );
