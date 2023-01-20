@@ -1,4 +1,4 @@
-import { Flex, Title, Text, Button } from "@mantine/core";
+import { Flex, Title, Text, Button, Spoiler } from "@mantine/core";
 import Link from "next/link";
 import { Dispatch, FC, SetStateAction } from "react";
 import { HairDocument } from "../../models/Hair";
@@ -76,6 +76,21 @@ const Result: FC<Props> = ({ item, description, setOpened }) => {
           Gå till dina produkter
         </Button>
       </Link>
+      <Text
+        size={"xs"}
+        align="center"
+        mt={10}
+        color="dimmed"
+        sx={(theme) => ({
+          width: "70%",
+          [theme.fn.smallerThan("xs")]: {
+            width: "90%",
+          },
+        })}
+      >
+        Tycker du resultatet inte stämmer? Det har du säkert rätt i! Quizet är
+        under pågående utveckling.
+      </Text>
     </Flex>
   );
 };

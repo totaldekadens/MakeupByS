@@ -76,7 +76,6 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             }
           });
           list.sort((a, b) => (a.qty < b.qty ? 1 : -1));
-          console.log(list);
           setResult(list[0]);
         }
       }
@@ -227,7 +226,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             </Button>
           )}
         </Flex>
-        <Text size={"xs"} color={"dimmed"}>
+        <Text mt={10} size={"xs"} color={"dimmed"}>
           Källa:
           https://gabriellearruda.com/seasonal-color-analysis-what-season-are-you/
         </Text>
