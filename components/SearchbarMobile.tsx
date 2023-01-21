@@ -3,7 +3,8 @@ import { IconSearch, IconX } from "@tabler/icons";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { forwardRef, useEffect, useState } from "react";
-import { ItemProps, PopulatedProduct } from "../utils/types";
+import { PopulatedProduct } from "../utils/types";
+import { ItemProps } from "./Searchbar";
 
 const SearchbarMobile = () => {
   const [value, setValue] = useState("");
@@ -30,26 +31,42 @@ const SearchbarMobile = () => {
   }, [value]);
 
   // Adjusts it to autocomplete
-  const newData = data.map((item) => ({ ...item, value: item.slug }));
 
+  const newData = data.map((item) => ({
+    title: item.title,
+    price: Number(item.mainProduct.price.$numberDecimal),
+    images: item.images,
+    value: item.slug,
+    category: item.mainProduct.category.title,
+    brand: item.mainProduct.brand,
+    color: item.colors[0].colorTag?.color,
+  }));
+  console.log(newData);
   const AutoCompleteItem = forwardRef<HTMLDivElement, ItemProps>(
     (
-      { mainProduct, slug, value, title, images, ...others }: ItemProps,
+      {
+        price,
+        category,
+        brand,
+        color,
+        value,
+        title,
+        images,
+        ...others
+      }: ItemProps,
       ref
     ) => (
-      <Link href={`/produkt/${slug}`}>
-        <div ref={ref} {...others}>
-          <Group noWrap>
-            <Avatar src={`/uploads/${images[0]}`} />
-            <div>
-              <Text>{title}</Text>
-              <Text size="xs" color="dimmed">
-                {mainProduct.price.$numberDecimal.toString() + " KR"}
-              </Text>
-            </div>
-          </Group>
-        </div>
-      </Link>
+      <div ref={ref} {...others}>
+        <Group noWrap>
+          <Avatar src={`/uploads/${images[0]}`} />
+          <div>
+            <Text>{title}</Text>
+            <Text size="xs" color="dimmed">
+              {price + " KR"}
+            </Text>
+          </div>
+        </Group>
+      </div>
     )
   );
   return (
@@ -57,6 +74,7 @@ const SearchbarMobile = () => {
       <Autocomplete
         onItemSubmit={(item) => {
           router.push(`/produkt/${item.value}`);
+          setValue("");
         }}
         itemComponent={AutoCompleteItem}
         icon={<IconSearch color="white" size={15} stroke={3} />}
@@ -64,6 +82,12 @@ const SearchbarMobile = () => {
         id="searchbar"
         placeholder="Sök..."
         variant="unstyled"
+        filter={(value, item) =>
+          item.value.toLowerCase().includes(value.toLowerCase().trim()) ||
+          item.category.toLowerCase().includes(value.toLowerCase().trim()) ||
+          item.brand.toLowerCase().includes(value.toLowerCase().trim()) ||
+          item.color.toLowerCase().includes(value.toLowerCase().trim())
+        }
         value={value}
         onChange={setValue}
         data={newData}
