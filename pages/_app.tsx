@@ -7,27 +7,36 @@ import { getTheme } from "../styles/theme";
 import CheckOutProvider from "../components/context/checkoutProvider";
 import OpenedCartProvider from "../components/context/OpenCartProvider";
 import HideProvider from "../components/context/HideProvider";
+import Head from "next/head";
 
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppProps) {
   return (
-    <SessionProvider session={session}>
-      <MantineProvider
-        emotionCache={emotionCache}
-        withGlobalStyles
-        withNormalizeCSS
-        theme={getTheme("light")}
-      >
-        <CheckOutProvider>
-          <OpenedCartProvider>
-            <HideProvider>
-              <Component {...pageProps} />
-            </HideProvider>
-          </OpenedCartProvider>
-        </CheckOutProvider>
-      </MantineProvider>
-    </SessionProvider>
+    <>
+      <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1"
+        ></meta>
+      </Head>
+      <SessionProvider session={session}>
+        <MantineProvider
+          emotionCache={emotionCache}
+          withGlobalStyles
+          withNormalizeCSS
+          theme={getTheme("light")}
+        >
+          <CheckOutProvider>
+            <OpenedCartProvider>
+              <HideProvider>
+                <Component {...pageProps} />
+              </HideProvider>
+            </OpenedCartProvider>
+          </CheckOutProvider>
+        </MantineProvider>
+      </SessionProvider>
+    </>
   );
 }
