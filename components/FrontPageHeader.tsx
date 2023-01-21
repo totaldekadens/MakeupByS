@@ -1,8 +1,4 @@
-import {
-  Title,
-  Header as MantineHeader,
-  Flex,
-} from "@mantine/core";
+import { Title, Header as MantineHeader, Flex } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import LoginButton from "./LoginButton";
@@ -12,8 +8,7 @@ import MobileBurgerMenu from "./MobileBurgerMenu";
 import ButtonSeasonFrontPage from "./ButtonSeasonFrontPage";
 import SearchMobileFrontPage from "./SearchMobileFrontpage";
 import { hideContext } from "./context/HideProvider";
-import React, { useContext, useEffect, useRef, useState } from "react";
-
+import React, { useContext, useEffect, useState } from "react";
 
 
 const FrontPageHeader = () => {
@@ -21,27 +16,22 @@ const FrontPageHeader = () => {
   const { hide, setHide } = useContext(hideContext);
 
   const [scrollY, setScrollY] = useState<number>(0);
-  const  [ bg, setBg ] = useState<boolean>(false);
+  const [bg, setBg] = useState<boolean>(false);
 
-    // Refs
-    const valueRef = useRef<any | null>();
-    valueRef.current = scrollY;
-  
-    useEffect(() => {
-      window.addEventListener("scroll", handleScroll);
-      return () => window.removeEventListener("scroll", handleScroll);
-    });
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
+  const handleScroll = () => {
+    setScrollY(window.scrollY);
 
-      if (window.scrollY == 0) {
-           setBg(true);
-          return;
-      } else {
-        setBg(false);
-      }
-    };
-console.log(bg)
+    if (window.scrollY > 1) {
+      setBg(true);
+      return;
+    } else {
+      setBg(false);
+    }
+  };
 
   return (
     <>
@@ -50,21 +40,20 @@ console.log(bg)
         height={170}
         sx={(theme) => ({
           display: "flex",
-          backgroundColor: bg ? "transparent" : "#090909bd",
+          backgroundColor: bg ? "#090909bd" : "transparent",
           justifyContent: "space-between",
           borderBottom: "none",
           alignItems: "center",
-          paddingTop: bg ? 60 : 0,
-          [theme.fn.smallerThan("sm")] : {
+          paddingTop: bg ? 0 : 60,
+          [theme.fn.smallerThan("sm")]: {
             height: 150,
           },
-          [theme.fn.smallerThan("xs")] : {
-            paddingTop: bg ? 60 : 0,
-            height: bg ? 0 : 80,
-          }
+          [theme.fn.smallerThan("xs")]: {
+            paddingTop: bg ? 0 : 60,
+            height: bg ? 80 : 0,
+          },
         })}
       >
-        
         <Flex
           className="navbarcontainer"
           direction={"column"}
@@ -75,7 +64,7 @@ console.log(bg)
               paddingTop: hide ? 0 : 40,
             },
             [theme.fn.smallerThan("xs")]: {
-              paddingTop: hide ? 0 : 10,
+              paddingTop: hide ? 0 : 15,
             },
           })}
         >
@@ -90,7 +79,6 @@ console.log(bg)
               },
             })}
           >
-
             <Searchbar />
             <MobileBurgerMenu />
 
@@ -101,8 +89,7 @@ console.log(bg)
                   size="xxx-large"
                   color="white"
                   sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {
-                    },
+                    [theme.fn.smallerThan("lg")]: {},
                     [theme.fn.smallerThan("md")]: {
                       paddingRight: "10px",
                     },
@@ -122,10 +109,8 @@ console.log(bg)
                   fw={500}
                   color="white"
                   sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {
-                    },
-                    [theme.fn.smallerThan("md")]: {
-                    },
+                    [theme.fn.smallerThan("lg")]: {},
+                    [theme.fn.smallerThan("md")]: {},
                     [theme.fn.smallerThan("sm")]: {
                       fontSize: "xx-large",
                     },
