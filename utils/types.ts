@@ -3,6 +3,7 @@ import { Schema, Types } from "mongoose";
 import { LineItem } from "../components/cart/AddToCartIcon";
 import { ChosenOption } from "../components/checkout/Courrier";
 import { CategoryDocument } from "../models/Category";
+import { ColorTagDocument } from "../models/ColorTag";
 import { OrderStatusDocument } from "../models/OrderStatus";
 import { Address, UserDocument } from "../models/User";
 
@@ -60,7 +61,7 @@ export type PopulatedProduct = {
   colors: [
     {
       hexcolor: string;
-      colorTag: Types.ObjectId;
+      colorTag?: ColorTagDocument;
       seasons: [
         {
           title: string;
@@ -72,8 +73,8 @@ export type PopulatedProduct = {
       _id?: Types.ObjectId;
     }
   ];
-  createdDate?: string;
-  lastUpdated?: string;
+  createdDate: string;
+  lastUpdated: string;
   availableQty: number;
   reservedQty?: number;
   discount?: number;
