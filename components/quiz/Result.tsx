@@ -22,7 +22,7 @@ const Result: FC<Props> = ({ item, description, setOpened }) => {
         size={70}
         sx={(theme) => ({
           [theme.fn.smallerThan("xs")]: {
-            fontSize: 60,
+            fontSize: 55,
           },
         })}
       >
@@ -34,7 +34,7 @@ const Result: FC<Props> = ({ item, description, setOpened }) => {
         size={45}
         sx={(theme) => ({
           [theme.fn.smallerThan("xs")]: {
-            fontSize: 35,
+            fontSize: 32,
           },
         })}
       >
@@ -68,6 +68,7 @@ const Result: FC<Props> = ({ item, description, setOpened }) => {
           mt={40}
           sx={(theme) => ({
             [theme.fn.smallerThan("xs")]: {
+              height: 60,
               width: "100%",
             },
           })}

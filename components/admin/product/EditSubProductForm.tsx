@@ -168,7 +168,7 @@ const EditSubProductForm: FC<Props> = ({
         title: "Produkten är uppdaterad!",
         reason: "success",
       };
-      console.log("jag kommer hit");
+
       setIsUpdated(true);
       setEditSubProduct(false);
       return;

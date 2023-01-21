@@ -190,7 +190,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
             },
           })}
         >
-          {openNext == 0 ? null : (
+          {openNext == 0 || openNext == 3 ? null : (
             <Button
               variant="outline"
               onClick={() => {
