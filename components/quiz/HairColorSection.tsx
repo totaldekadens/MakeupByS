@@ -55,6 +55,7 @@ const HairColorSection: FC<Props> = ({
       direction={"column"}
       sx={(theme) => ({
         minHeight: "60vh",
+        height: "100%",
         [theme.fn.smallerThan("xs")]: {
           paddingRight: 10,
           paddingLeft: 10,
@@ -98,7 +99,7 @@ const HairColorSection: FC<Props> = ({
           return (
             <Flex
               key={i}
-              gap={20}
+              //gap={20}
               p={20}
               ml={40}
               direction={"column"}
@@ -118,7 +119,7 @@ const HairColorSection: FC<Props> = ({
             >
               <Title order={5}>{type}</Title>
               <Flex
-                gap={20}
+                gap={10}
                 sx={(theme) => ({
                   flexWrap: "wrap",
                   [theme.fn.smallerThan("sm")]: {

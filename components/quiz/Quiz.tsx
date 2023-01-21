@@ -1,5 +1,5 @@
 import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
-import { Button, Flex, Modal, Text } from "@mantine/core";
+import { Box, Button, Flex, Modal, Text } from "@mantine/core";
 import { HairDocument } from "../../models/Hair";
 import HairColorSection from "./HairColorSection";
 import EyeColorSection from "./EyeColorSection";
@@ -7,7 +7,7 @@ import SkinColorSection from "./SkinColorSection";
 import { SkinDocument } from "../../models/Skin";
 import { EyeDocument } from "../../models/Eyes";
 import useWindowSize from "../../utils/useWindowSize";
-import { useWindowScroll } from "@mantine/hooks";
+import { useScrollIntoView, useWindowScroll } from "@mantine/hooks";
 import Result from "./Result";
 import { Circles } from "react-loader-spinner";
 
@@ -108,11 +108,10 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   return (
     <>
       <Modal
+        lockScroll={false}
         styles={(theme) => ({
           modal: { maxWidth: 1200 },
           body: {
-            minHeight: "70vh",
-
             paddingLeft: 20,
             paddingRight: 20,
             paddingBottom: 20,

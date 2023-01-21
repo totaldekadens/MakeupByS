@@ -17,10 +17,7 @@ const SkinColorSection: FC<Props> = ({
 }) => {
   // State
   const [skin, setSkin] = useState<SkinDocument[]>();
-  const [scroll, scrollTo] = useWindowScroll();
-  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
-    offset: 0,
-  });
+
   // Fetches list of skin colors fom DB
   useEffect(() => {
     const getResult = async () => {
@@ -29,7 +26,6 @@ const SkinColorSection: FC<Props> = ({
 
       setSkin(result.data);
       setSkinList(result.data);
-      scrollIntoView({ alignment: "start" });
     };
     getResult();
   }, [valueSkin]);
@@ -57,7 +53,6 @@ const SkinColorSection: FC<Props> = ({
 
   return (
     <Flex
-      ref={targetRef}
       direction={"column"}
       sx={{
         minHeight: "60vh",
@@ -98,7 +93,6 @@ const SkinColorSection: FC<Props> = ({
           return (
             <Flex
               key={i}
-              gap={20}
               p={20}
               ml={40}
               direction={"column"}
@@ -113,7 +107,7 @@ const SkinColorSection: FC<Props> = ({
             >
               <Title order={5}>{type}</Title>
               <Flex
-                gap={20}
+                gap={10}
                 sx={(theme) => ({
                   flexWrap: "wrap",
                   [theme.fn.smallerThan("xs")]: {
