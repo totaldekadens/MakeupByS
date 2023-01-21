@@ -2,7 +2,6 @@ import {
   Title,
   Header as MantineHeader,
   Flex,
-  MediaQuery,
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -13,30 +12,55 @@ import MobileBurgerMenu from "./MobileBurgerMenu";
 import ButtonSeasonFrontPage from "./ButtonSeasonFrontPage";
 import SearchMobileFrontPage from "./SearchMobileFrontpage";
 import { hideContext } from "./context/HideProvider";
-import { useContext } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
+
+
 
 const FrontPageHeader = () => {
   const session = useSession();
   const { hide, setHide } = useContext(hideContext);
+
+  const [scrollY, setScrollY] = useState<number>(0);
+  const  [ bg, setBg ] = useState<boolean>(false);
+
+    // Refs
+    const valueRef = useRef<any | null>();
+    valueRef.current = scrollY;
+  
+    useEffect(() => {
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    });
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+
+      if (window.scrollY == 0) {
+           setBg(true);
+          return;
+      } else {
+        setBg(false);
+      }
+    };
+console.log(bg)
+
   return (
     <>
-    
       <MantineHeader
         fixed={true}
         height={170}
         sx={(theme) => ({
           display: "flex",
-          backgroundColor: hide ? "#090909bd" : "transparent",
+          backgroundColor: bg ? "transparent" : "#090909bd",
           justifyContent: "space-between",
           borderBottom: "none",
           alignItems: "center",
-          paddingTop: hide ? 0 : 60,
+          paddingTop: bg ? 60 : 0,
           [theme.fn.smallerThan("sm")] : {
             height: 150,
           },
           [theme.fn.smallerThan("xs")] : {
-            height: 85,
-            paddingTop: hide ? 0 : 60,
+            paddingTop: bg ? 60 : 0,
+            height: bg ? 0 : 80,
           }
         })}
       >
@@ -48,10 +72,10 @@ const FrontPageHeader = () => {
           sx={(theme) => ({
             width: "100%",
             [theme.fn.smallerThan("sm")]: {
-              paddingTop: hide ? 20 : 40,
+              paddingTop: hide ? 0 : 40,
             },
             [theme.fn.smallerThan("xs")]: {
-              paddingTop: hide ? 10 : 0,
+              paddingTop: hide ? 0 : 10,
             },
           })}
         >

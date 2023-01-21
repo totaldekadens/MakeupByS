@@ -7,6 +7,8 @@ import {
   Text,
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons";
+import { hideContext } from "./context/HideProvider";
+import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { forwardRef, useEffect, useState } from "react";
@@ -17,6 +19,7 @@ const SearchMobileFrontPage = () => {
   const [value, setValue] = useState("");
   const [data, setData] = useState<PopulatedProduct[]>([]);
   const router = useRouter();
+  const { hide, setHide } = useContext(hideContext);
 
   // Gets search result onchange
   useEffect(() => {
@@ -75,13 +78,12 @@ const SearchMobileFrontPage = () => {
       </div>
     )
   );
-
   return (
     <MediaQuery largerThan="xs" styles={{ display: "none" }}>
       <Flex
         align="flex-end"
         direction="row"
-        sx={{ width: "100%", paddingRight: "10px", paddingLeft: "10px" }}
+        sx={{ display: hide ? "none" : "flex" , width: "100%", paddingRight: "10px", paddingLeft: "10px" }}
       >
         <Autocomplete
           value={value}
