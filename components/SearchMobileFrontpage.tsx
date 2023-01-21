@@ -8,10 +8,9 @@ import {
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons";
 import { hideContext } from "./context/HideProvider";
-import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useContext, useEffect, useState } from "react";
 import { PopulatedProduct } from "../utils/types";
 import { ItemProps } from "./Searchbar";
 
