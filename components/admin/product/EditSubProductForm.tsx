@@ -168,12 +168,12 @@ const EditSubProductForm: FC<Props> = ({
         title: "Produkten är uppdaterad!",
         reason: "success",
       };
-      setResponse(object);
-      setOpened(true);
+      console.log("jag kommer hit");
       setIsUpdated(true);
       setEditSubProduct(false);
       return;
     }
+
     const object: ResponseModalType = {
       title: "Något gick fel!",
       reason: "error",
