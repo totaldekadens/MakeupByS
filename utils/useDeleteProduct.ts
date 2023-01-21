@@ -9,7 +9,7 @@ const useDeleteProduct = async (
     method: "DELETE",
   });
   let result = await response.json();
-  console.log(result);
+
   if (result.success) {
     setIsUpdated(true);
     return true;

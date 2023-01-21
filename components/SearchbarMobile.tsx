@@ -41,7 +41,7 @@ const SearchbarMobile = () => {
     brand: item.mainProduct.brand,
     color: item.colors[0].colorTag?.color,
   }));
-  console.log(newData);
+
   const AutoCompleteItem = forwardRef<HTMLDivElement, ItemProps>(
     (
       {
