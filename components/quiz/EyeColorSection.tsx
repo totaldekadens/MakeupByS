@@ -62,20 +62,24 @@ const EyeColorSection: FC<Props> = ({
   const EyeColorTypes = eyeColors ? getTypes(eyeColors) : getTypes([]);
 
   return (
-    <Flex direction={"column"} sx={{ minHeight: "60vh" }}>
+    <Flex
+      direction={"column"}
+      sx={{
+        minHeight: "60vh",
+      }}
+    >
       <Flex
-        gap={20}
+        gap={10}
         mb={30}
         align="center"
         sx={(theme) => ({
           width: "100%",
           [theme.fn.smallerThan("md")]: {
             flexDirection: "column",
-            gap: 10,
+
             alignItems: "flex-start",
           },
           [theme.fn.smallerThan("xs")]: {
-            gap: 10,
             alignItems: "center",
           },
         })}
@@ -98,7 +102,6 @@ const EyeColorSection: FC<Props> = ({
           return (
             <Flex
               key={i}
-              gap={20}
               p={20}
               ml={40}
               direction={"column"}
@@ -113,7 +116,7 @@ const EyeColorSection: FC<Props> = ({
             >
               <Title order={5}>{type}</Title>
               <Flex
-                gap={20}
+                gap={10}
                 sx={(theme) => ({
                   flexWrap: "wrap",
                   [theme.fn.smallerThan("xs")]: {

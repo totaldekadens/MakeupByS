@@ -21,7 +21,6 @@ export default async function handler(
   switch (method) {
     case "POST":
       try {
-        console.log(req.body);
         // Check i Main product exists
         const mainProduct: MainProductDocument | null =
           await MainProduct.findOne({
@@ -34,12 +33,12 @@ export default async function handler(
             data: "Main product could not be found",
           });
         }
-        console.log(mainProduct);
+
         // Check if new part number is unique
         const subProductExist = await SubProduct.findOne({
           partNo: mainProduct?.partNo + "-" + req.body.title,
         });
-        console.log("Här också?");
+
         if (subProductExist) {
           return res.status(403).send({
             success: false,
@@ -52,7 +51,7 @@ export default async function handler(
           .toISOString()
           .slice(0, 16)
           .replace("T", " ");
-        console.log("Här också???");
+
         const newSubProduct: SubProductDocument = new SubProduct();
         newSubProduct.title = req.body.title;
         newSubProduct.mainProduct = req.body.mainProduct;
@@ -64,9 +63,8 @@ export default async function handler(
         newSubProduct.createdDate = todayDate;
         newSubProduct.lastUpdated = todayDate;
 
-        console.log(newSubProduct);
         const subProduct = await SubProduct.create(newSubProduct);
-        console.log(subProduct);
+
         res.status(201).json({ success: true, data: subProduct });
       } catch (error) {
         res.status(400).json({ success: false, message: error });
