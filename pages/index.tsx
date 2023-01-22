@@ -22,13 +22,14 @@ import useWindowSize from "../utils/useWindowSize";
 import dbConnect from "../utils/dbConnect";
 import SubProduct from "../models/SubProduct";
 import MainProduct from "../models/MainProduct";
-import Category from "../models/Category";
+import Category, { CategoryDocument } from "../models/Category";
 import Color from "../models/Color";
 import Season, { SeasonDocument } from "../models/Season";
 import CarouselProduct from "../components/product/CarouselProduct";
 import Quiz from "../components/quiz/Quiz";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 type Props = {
   product: PopulatedProduct;
@@ -36,9 +37,40 @@ type Props = {
   seasons: SeasonDocument[];
 };
 
+type ProductsBySeason = {
+  season: string;
+  products: PopulatedProduct[] | [];
+}
+
+
 const Home: NextPage<Props> = ({ product, products, seasons }) => {
+  const router = useRouter();
+  const { seasonSlug } = router.query;
   const [opened, setOpened] = useState(false);
   let size = useWindowSize();
+
+
+  const seasonTitles: ProductsBySeason[] | any = seasons.map((season) => [
+    {
+      seasons: season.title,
+      products: []
+    },
+  ]);
+
+  products.forEach((product) => {
+    product.colors.forEach((color) => {
+      color.seasons.forEach((season) => {
+        seasonTitles.forEach((seasonTitle: any) => {
+          seasonTitle.forEach((title: any) => {
+            if (title.season == season.title) {
+              title.products.push(product);
+            }
+          })
+        })
+      })
+    })
+  })
+
 
   return (
     <>
@@ -87,6 +119,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
           direction={"column"}
           align={"center"}
           sx={(theme) => ({
+            transition: "height 1s",
             width: "100%",
           })}
           >
@@ -96,12 +129,10 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
             justify={"center"}
             align={"center"}
             sx={(theme) => ({
+              transition: "height 1s",
               zIndex: 2,
               height: "40px",
               width: "100%",
-
-              [theme.fn.smallerThan("sm")]: {},
-              [theme.fn.smallerThan("xs")]: {},
             })}
           >
             <Flex
@@ -268,10 +299,9 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
             {seasons ? (
               seasons.map((seasons, index) => {
                 return (
-                  <Grid.Col styles={{ borderRadius: "5px" }} span={8} md={3} sm={3} xs={3}>
+                  <Grid.Col key={index} styles={{ borderRadius: "5px" }} span={8} md={3} sm={3} xs={3}>
                     <Link key={index} href={`/sasong/${seasons.slug}`}>
                       <Image
-                        key={index}
                         alt={seasons.image}
                         src={`/uploads/${seasons.image}`}
                         sx={{
@@ -299,7 +329,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
               </Grid>
 
 
-            <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
+            {/* <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
               <Text
                 align="center"
                 fw={800}
@@ -312,6 +342,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
               >
                 vårens nyheter
               </Text>
+              
               <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
                 <Box>
                   <CarouselProduct
@@ -347,7 +378,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
                   />
                 </Box>
               </MediaQuery>
-            </Flex>
+            </Flex> */}
           </main>
           <Cart />
           <Quiz opened={opened} setOpened={setOpened} />
@@ -398,21 +429,21 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     const seasons = await Season.find({})
     
-
-  // Todo if time: #67 Find a better way. Should be able to filter the query above.
-  //Check aggregation and virtuals with match
-  let list: any[] = [];
-  subProducts.forEach((product) => {
-    product.colors.forEach((color: PopulatedColor) => {
-      color.seasons.forEach((season) => {
-        if (season.slug == product.colors[0].seasons[0].slug) {
-          list.push(product);
-        }
+    
+    // Todo if time: #67 Find a better way. Should be able to filter the query above.
+    //Check aggregation and virtuals with match
+    let list: any[] = [];
+    subProducts.forEach((product) => {
+      product.colors.forEach((color: PopulatedColor) => {
+        color.seasons.forEach((season) => {
+          if (season.slug == product.colors[0].seasons[0].slug) {
+            list.push(product);
+          }
+        });
       });
     });
-  });
 
-  return {
+    return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
       products: JSON.parse(JSON.stringify(list)),

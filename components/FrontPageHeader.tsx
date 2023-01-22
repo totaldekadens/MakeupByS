@@ -45,12 +45,15 @@ const FrontPageHeader = () => {
           borderBottom: "none",
           alignItems: "center",
           paddingTop: bg ? 0 : 60,
+          transition: "padding 0.6s",
           [theme.fn.smallerThan("sm")]: {
             height: 150,
+            transition: "height 1s",
           },
           [theme.fn.smallerThan("xs")]: {
             paddingTop: bg ? 0 : 60,
             height: bg ? 80 : 0,
+            transition: "height 0.6s, padding 0.6",
           },
         })}
       >
@@ -60,6 +63,7 @@ const FrontPageHeader = () => {
           align={"center"}
           sx={(theme) => ({
             width: "100%",
+            transition: "padding 1s",
             [theme.fn.smallerThan("sm")]: {
               paddingTop: hide ? 0 : 40,
             },
@@ -72,6 +76,7 @@ const FrontPageHeader = () => {
             justify={"space-between"}
             px={15}
             sx={(theme) => ({
+              transition: "height 1s",
               zIndex: 2,
               width: "100%",
               [theme.fn.smallerThan("xs")]: {
