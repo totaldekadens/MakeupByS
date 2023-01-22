@@ -35,31 +35,23 @@ const SearchbarMobile = () => {
   }, [value]);
 
   // Adjusts it to autocomplete
-
   const newData = data.map((item) => ({
     title: item.title,
     price: Number(item.mainProduct.price.$numberDecimal),
     images: item.images,
-    value: item.slug,
-    category: item.mainProduct.category.title,
-    brand: item.mainProduct.brand,
-    color: item.colors[0].colorTag?.color,
+    slug: item.slug,
+    value:
+      item.slug +
+      " " +
+      item.mainProduct.category.title.toLowerCase() +
+      " " +
+      item.mainProduct.brand.toLowerCase() +
+      " " +
+      item.colors[0].colorTag?.color.toLowerCase(),
   }));
 
   const AutoCompleteItem = forwardRef<HTMLDivElement, ItemProps>(
-    (
-      {
-        price,
-        category,
-        brand,
-        color,
-        value,
-        title,
-        images,
-        ...others
-      }: ItemProps,
-      ref
-    ) => (
+    ({ price, slug, value, title, images, ...others }: ItemProps, ref) => (
       <div ref={ref} {...others}>
         <Group noWrap>
           <Avatar src={`/uploads/${images[0]}`} />
@@ -77,7 +69,7 @@ const SearchbarMobile = () => {
     <Flex align="flex-end" direction="row" sx={{ width: "100%" }}>
       <Autocomplete
         onItemSubmit={(item) => {
-          router.push(`/produkt/${item.value}`);
+          router.push(`/produkt/${item.slug}`);
           setValue("");
         }}
         itemComponent={AutoCompleteItem}
@@ -90,13 +82,7 @@ const SearchbarMobile = () => {
         id="searchbar"
         placeholder="Sök..."
         variant="unstyled"
-        filter={(value, item) =>
-          item.value.toLowerCase().includes(value.toLowerCase().trim()) ||
-          item.category.toLowerCase().includes(value.toLowerCase().trim()) ||
-          item.brand.toLowerCase().includes(value.toLowerCase().trim()) ||
-          item.color.toLowerCase().includes(value.toLowerCase().trim())
-        }
-        value={value}
+        value={value.toLowerCase()}
         onChange={setValue}
         data={newData}
         styles={{

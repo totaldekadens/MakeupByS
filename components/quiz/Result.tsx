@@ -13,7 +13,7 @@ const Result: FC<Props> = ({ item, description, setOpened }) => {
   const slugifiedSeason = useSlugify(item);
   return (
     <Flex
-      sx={{ width: "100%" /* , minHeight: "60vh"  */ }}
+      sx={{ width: "100%", minHeight: "70vh", }}
       direction="column"
       align={"center"}
     >

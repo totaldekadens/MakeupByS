@@ -7,7 +7,7 @@ import SkinColorSection from "./SkinColorSection";
 import { SkinDocument } from "../../models/Skin";
 import { EyeDocument } from "../../models/Eyes";
 import useWindowSize from "../../utils/useWindowSize";
-import { useScrollIntoView, useWindowScroll } from "@mantine/hooks";
+import { useWindowScroll } from "@mantine/hooks";
 import Result from "./Result";
 import { Circles } from "react-loader-spinner";
 
@@ -38,6 +38,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [scroll, scrollTo] = useWindowScroll();
+  
   // Gets current window height and window width
   let size = useWindowSize();
 

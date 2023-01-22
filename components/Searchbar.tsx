@@ -9,9 +9,7 @@ export type ItemProps = {
   price: number;
   images: string[];
   value: string;
-  category: string;
-  brand: string;
-  color: string;
+  slug: string;
 };
 
 const Searchbar = () => {
@@ -48,26 +46,19 @@ const Searchbar = () => {
     title: item.title,
     price: Number(item.mainProduct.price.$numberDecimal),
     images: item.images,
-    value: item.slug,
-    category: item.mainProduct.category.title,
-    brand: item.mainProduct.brand,
-    color: item.colors[0].colorTag?.color,
+    value:
+      item.slug +
+      " " +
+      item.mainProduct.category.title.toLowerCase() +
+      " " +
+      item.mainProduct.brand.toLowerCase() +
+      " " +
+      item.colors[0].colorTag?.color.toLowerCase(),
+    slug: item.slug,
   }));
 
   const AutoCompleteItem = forwardRef<HTMLDivElement, ItemProps>(
-    (
-      {
-        price,
-        category,
-        brand,
-        color,
-        value,
-        title,
-        images,
-        ...others
-      }: ItemProps,
-      ref
-    ) => (
+    ({ price, value, title, images, ...others }: ItemProps, ref) => (
       <div ref={ref} {...others}>
         <Group noWrap>
           <Avatar src={`/uploads/${images[0]}`} />
@@ -119,15 +110,9 @@ const Searchbar = () => {
         }
         miw={250}
         id="searchbar"
-        filter={(value, item) =>
-          item.value.toLowerCase().includes(value.toLowerCase().trim()) ||
-          item.category.toLowerCase().includes(value.toLowerCase().trim()) ||
-          item.brand.toLowerCase().includes(value.toLowerCase().trim()) ||
-          item.color.toLowerCase().includes(value.toLowerCase().trim())
-        }
         placeholder="Sök..."
         variant="unstyled"
-        value={value}
+        value={value.toLowerCase()}
         onChange={setValue}
         data={newData}
         sx={(theme) => ({
