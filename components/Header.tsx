@@ -33,6 +33,7 @@ const Header = () => {
           display: "flex",
           justifyContent: "space-between",
           borderBottom: "none",
+          transition: "height 1.3s",
           height: hide ? 150 : 200,
           paddingTop: 10,
           [theme.fn.smallerThan("md")]: {
@@ -44,6 +45,7 @@ const Header = () => {
             paddingTop: hide ? 25 : 10,
           },
           [theme.fn.smallerThan("xs")]: {
+            transition: "height 0.6s",
             height: hide ? "75px" : "85px",
             alignItems: hide ? "center" : "flex-start",
             paddingTop: hide ? 0 : 10,
@@ -55,9 +57,12 @@ const Header = () => {
             justify={"space-around"}
             align={"center"}
             sx={(theme) => ({
-              display: hide ? "none" : "flex",
+              transition: "height 1.3s",
+              height: hide ? 0 : 24.8,
+              opacity: hide ? 0 : 1,
               width: "100%",
-              [theme.fn.smallerThan("xs")]: {},
+              [theme.fn.smallerThan("sm")]: { height: hide ? 0 : 21.7 },
+              [theme.fn.smallerThan("xs")]: { transition: "height 0.6s" },
             })}
           >
             <Flex
@@ -117,6 +122,7 @@ const Header = () => {
             align="flex-end"
             sx={(theme) => ({
               width: "100%",
+              transition: "padding 0.3s",
               paddingTop: hide ? 0 : 22,
               [theme.fn.smallerThan("md")]: {
                 paddingTop: hide ? 0 : 10,
@@ -145,7 +151,7 @@ const Header = () => {
                     fontSize: 35,
                   },
                   [theme.fn.smallerThan("xs")]: {
-                    fontSize: "x-large",
+                    fontSize: 24,
                   },
                 })}
               >
@@ -170,7 +176,9 @@ const Header = () => {
           sx={(theme) => ({
             zIndex: 100,
             backgroundColor: theme.colors.brand[2],
-            display: hide ? "none" : "flex",
+            transition: "height 0.6s",
+            height: hide ? 0 : 36,
+            opacity: hide ? 0 : 1,
           })}
         >
           <SearchbarMobile />
