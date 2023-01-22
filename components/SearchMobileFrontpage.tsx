@@ -5,11 +5,12 @@ import {
   Group,
   Avatar,
   Text,
+  Box,
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons";
-import Link from "next/link";
+import { hideContext } from "./context/HideProvider";
 import { useRouter } from "next/router";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef, useContext, useEffect, useState } from "react";
 import { PopulatedProduct } from "../utils/types";
 import { ItemProps } from "./Searchbar";
 
@@ -17,6 +18,12 @@ const SearchMobileFrontPage = () => {
   const [value, setValue] = useState("");
   const [data, setData] = useState<PopulatedProduct[]>([]);
   const router = useRouter();
+  const { hide, setHide } = useContext(hideContext);
+
+  // onclick x clear inputvalue searchfield
+  const handleClick = () => {
+    setValue("");
+  };
 
   // Gets search result onchange
   useEffect(() => {
@@ -68,13 +75,17 @@ const SearchMobileFrontPage = () => {
       </div>
     )
   );
-
   return (
     <MediaQuery largerThan="xs" styles={{ display: "none" }}>
       <Flex
         align="flex-end"
         direction="row"
-        sx={{ width: "100%", paddingRight: "10px", paddingLeft: "10px" }}
+        sx={{
+          display: hide ? "none" : "flex",
+          width: "100%",
+          paddingRight: "10px",
+          paddingLeft: "10px",
+        }}
       >
         <Autocomplete
           value={value.toLowerCase()}
@@ -86,7 +97,11 @@ const SearchMobileFrontPage = () => {
           }}
           itemComponent={AutoCompleteItem}
           icon={<IconSearch color="white" size={15} stroke={3} />}
-          rightSection={<IconX id="iconX" color="white" size={20} stroke={2} />}
+          rightSection={
+            <Box sx={{ cursor: "pointer" }} onClick={handleClick}>
+              <IconX id="iconX" color="white" size={20} stroke={2} />
+            </Box>
+          }
           id="searchbar"
           color="white"
           placeholder="Sök..."

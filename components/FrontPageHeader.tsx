@@ -1,9 +1,4 @@
-import {
-  Title,
-  Header as MantineHeader,
-  Flex,
-  MediaQuery,
-} from "@mantine/core";
+import { Title, Header as MantineHeader, Flex } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import LoginButton from "./LoginButton";
@@ -13,34 +8,52 @@ import MobileBurgerMenu from "./MobileBurgerMenu";
 import ButtonSeasonFrontPage from "./ButtonSeasonFrontPage";
 import SearchMobileFrontPage from "./SearchMobileFrontpage";
 import { hideContext } from "./context/HideProvider";
-import { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
+
 
 const FrontPageHeader = () => {
   const session = useSession();
   const { hide, setHide } = useContext(hideContext);
+
+  const [scrollY, setScrollY] = useState<number>(0);
+  const [bg, setBg] = useState<boolean>(false);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  });
+  const handleScroll = () => {
+    setScrollY(window.scrollY);
+
+    if (window.scrollY > 1) {
+      setBg(true);
+      return;
+    } else {
+      setBg(false);
+    }
+  };
+
   return (
     <>
-    
       <MantineHeader
         fixed={true}
         height={170}
         sx={(theme) => ({
           display: "flex",
-          backgroundColor: hide ? "#090909bd" : "transparent",
+          backgroundColor: bg ? "#090909bd" : "transparent",
           justifyContent: "space-between",
           borderBottom: "none",
           alignItems: "center",
-          paddingTop: hide ? 0 : 60,
-          [theme.fn.smallerThan("sm")] : {
+          paddingTop: bg ? 0 : 60,
+          [theme.fn.smallerThan("sm")]: {
             height: 150,
           },
-          [theme.fn.smallerThan("xs")] : {
-            height: 85,
-            paddingTop: hide ? 0 : 60,
-          }
+          [theme.fn.smallerThan("xs")]: {
+            paddingTop: bg ? 0 : 60,
+            height: bg ? 80 : 0,
+          },
         })}
       >
-        
         <Flex
           className="navbarcontainer"
           direction={"column"}
@@ -48,10 +61,10 @@ const FrontPageHeader = () => {
           sx={(theme) => ({
             width: "100%",
             [theme.fn.smallerThan("sm")]: {
-              paddingTop: hide ? 20 : 40,
+              paddingTop: hide ? 0 : 40,
             },
             [theme.fn.smallerThan("xs")]: {
-              paddingTop: hide ? 10 : 0,
+              paddingTop: hide ? 0 : 15,
             },
           })}
         >
@@ -66,7 +79,6 @@ const FrontPageHeader = () => {
               },
             })}
           >
-
             <Searchbar />
             <MobileBurgerMenu />
 
@@ -77,8 +89,7 @@ const FrontPageHeader = () => {
                   size="xxx-large"
                   color="white"
                   sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {
-                    },
+                    [theme.fn.smallerThan("lg")]: {},
                     [theme.fn.smallerThan("md")]: {
                       paddingRight: "10px",
                     },
@@ -98,10 +109,8 @@ const FrontPageHeader = () => {
                   fw={500}
                   color="white"
                   sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {
-                    },
-                    [theme.fn.smallerThan("md")]: {
-                    },
+                    [theme.fn.smallerThan("lg")]: {},
+                    [theme.fn.smallerThan("md")]: {},
                     [theme.fn.smallerThan("sm")]: {
                       fontSize: "xx-large",
                     },

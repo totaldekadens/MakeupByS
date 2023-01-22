@@ -1,11 +1,4 @@
-import {
-  Flex,
-  Autocomplete,
-  Group,
-  Avatar,
-  Text,
-  TimelineItem,
-} from "@mantine/core";
+import { Flex, Autocomplete, Group, Avatar, Text, Box } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { forwardRef, useEffect, useState } from "react";
@@ -23,6 +16,11 @@ const Searchbar = () => {
   const [value, setValue] = useState("");
   const [data, setData] = useState<PopulatedProduct[]>([]);
   const router = useRouter();
+
+  // onclick x clear inputvalue searchfield
+  const handleClick = () => {
+    setValue("");
+  };
 
   // Gets search result onchange
   useEffect(() => {
@@ -105,7 +103,11 @@ const Searchbar = () => {
           setValue("");
         }}
         itemComponent={AutoCompleteItem}
-        rightSection={<IconX id="iconX" color="white" size={20} stroke={2} />}
+        rightSection={
+          <Box sx={{ cursor: "pointer" }} onClick={handleClick}>
+            <IconX id="iconX" color="white" size={20} stroke={2} />
+          </Box>
+        }
         miw={250}
         id="searchbar"
         placeholder="Sök..."

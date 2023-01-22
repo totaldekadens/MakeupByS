@@ -36,9 +36,10 @@ type Props = {
   seasons: SeasonDocument[];
 };
 
-const Home: NextPage<Props> = ({ product, products, seasons,  }) => {
+const Home: NextPage<Props> = ({ product, products, seasons }) => {
   const [opened, setOpened] = useState(false);
   let size = useWindowSize();
+
   return (
     <>
       <Head>
@@ -55,7 +56,7 @@ const Home: NextPage<Props> = ({ product, products, seasons,  }) => {
         />
         <meta property="og:url" content="https://makeupbys.se/" />
       </Head>
-
+      
       <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
         <Image src="/uploads/fadetoblackbig.svg" pos={"absolute"} top={0} />
       </MediaQuery>
@@ -88,7 +89,7 @@ const Home: NextPage<Props> = ({ product, products, seasons,  }) => {
           sx={(theme) => ({
             width: "100%",
           })}
-        >
+          >
           <Flex
             className="top"
             display={"flex"}
@@ -270,6 +271,7 @@ const Home: NextPage<Props> = ({ product, products, seasons,  }) => {
                   <Grid.Col styles={{ borderRadius: "5px" }} span={8} md={3} sm={3} xs={3}>
                     <Link key={index} href={`/sasong/${seasons.slug}`}>
                       <Image
+                        key={index}
                         alt={seasons.image}
                         src={`/uploads/${seasons.image}`}
                         sx={{
