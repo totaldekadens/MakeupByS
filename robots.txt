@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin*
+Disallow: /minsida
+Disallow: /auth*
+Disallow: /testcolor
+Disallow: /kassa
