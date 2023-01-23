@@ -11,7 +11,6 @@ import {
   BackgroundImage,
   Space,
   Button,
-  Box,
   Grid,
 } from "@mantine/core";
 import Cart from "../components/cart/Cart";
@@ -116,10 +115,10 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
         src="/uploads/hero.jpg"
       >
         <Flex
+        className="asdasdasd"
           direction={"column"}
           align={"center"}
           sx={(theme) => ({
-            transition: "height 1s",
             width: "100%",
           })}
           >
@@ -129,13 +128,14 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
             justify={"center"}
             align={"center"}
             sx={(theme) => ({
-              transition: "height 1s",
               zIndex: 2,
               height: "40px",
+              transition: "height 1s",
               width: "100%",
             })}
           >
             <Flex
+            
               sx={(theme) => ({
                 alignItems: "center",
                 justifyContent: "center",
