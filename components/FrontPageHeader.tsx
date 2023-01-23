@@ -48,12 +48,12 @@ const FrontPageHeader = () => {
           transition: "padding 0.6s",
           [theme.fn.smallerThan("sm")]: {
             height: 150,
-            transition: "height 1s",
+            transition: "padding 0.6s",
           },
           [theme.fn.smallerThan("xs")]: {
             paddingTop: bg ? 0 : 60,
             height: bg ? 80 : 0,
-            transition: "height 0.6s, padding 0.6",
+            transition: "padding 0.6",
           },
         })}
       >
@@ -64,11 +64,9 @@ const FrontPageHeader = () => {
           sx={(theme) => ({
             width: "100%",
             transition: "padding 1s",
-            [theme.fn.smallerThan("sm")]: {
-              paddingTop: hide ? 0 : 40,
-            },
             [theme.fn.smallerThan("xs")]: {
               paddingTop: hide ? 0 : 15,
+              transition: "padding 0.6s",
             },
           })}
         >
@@ -76,7 +74,6 @@ const FrontPageHeader = () => {
             justify={"space-between"}
             px={15}
             sx={(theme) => ({
-              transition: "height 1s",
               zIndex: 2,
               width: "100%",
               [theme.fn.smallerThan("xs")]: {
@@ -94,7 +91,6 @@ const FrontPageHeader = () => {
                   size="xxx-large"
                   color="white"
                   sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {},
                     [theme.fn.smallerThan("md")]: {
                       paddingRight: "10px",
                     },
@@ -114,8 +110,6 @@ const FrontPageHeader = () => {
                   fw={500}
                   color="white"
                   sx={(theme) => ({
-                    [theme.fn.smallerThan("lg")]: {},
-                    [theme.fn.smallerThan("md")]: {},
                     [theme.fn.smallerThan("sm")]: {
                       fontSize: "xx-large",
                     },
@@ -137,8 +131,6 @@ const FrontPageHeader = () => {
           <Flex>
             <ButtonSeasonFrontPage />
           </Flex>
-
-          {/* navv */}
         </Flex>
       </MantineHeader>
     </>
