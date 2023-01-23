@@ -92,7 +92,9 @@ const SeasonPage: NextPage<Props> = ({ products, season }) => {
                   sx={{ width: "100%" }}
                 >
                   <Title order={1}>{season?.title}</Title>
-                  <Text color="dimmed">{season?.description}</Text>
+                  <Text align="center" mt={10} color="dimmed">
+                    {season?.description}
+                  </Text>
                 </Flex>
                 {products[0] ? (
                   <Flex justify={"center"} mt="sm" gap="lg" wrap={"wrap"}>

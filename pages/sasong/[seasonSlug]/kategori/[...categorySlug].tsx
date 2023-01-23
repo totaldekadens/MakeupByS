@@ -118,7 +118,9 @@ const CategoryPage: NextPage = (props) => {
                   sx={{ width: "100%" }}
                 >
                   <Title order={1}>{category?.title}</Title>
-                  <Text color="dimmed">{category?.description}</Text>
+                  <Text align="center" mt={10} color="dimmed">
+                    {category?.description}
+                  </Text>
                 </Flex>
                 {products ? (
                   <Flex mt="xl" wrap="wrap" justify={"center"}>
