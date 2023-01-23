@@ -27,7 +27,7 @@ import Color from "../models/Color";
 import Season, { SeasonDocument } from "../models/Season";
 import CarouselProduct from "../components/product/CarouselProduct";
 import Quiz from "../components/quiz/Quiz";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -40,20 +40,27 @@ type Props = {
 type ProductsBySeason = {
   season: string;
   products: PopulatedProduct[] | [];
-}
-
+};
 
 const Home: NextPage<Props> = ({ product, products, seasons }) => {
   const router = useRouter();
   const { seasonSlug } = router.query;
   const [opened, setOpened] = useState(false);
+  const [change, setChange] = useState(true);
   let size = useWindowSize();
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setChange(!change);
+    }, 8000);
+
+    return () => clearInterval(intervalId);
+  }, [change]);
 
   const seasonTitles: ProductsBySeason[] | any = seasons.map((season) => [
     {
       seasons: season.title,
-      products: []
+      products: [],
     },
   ]);
 
@@ -65,12 +72,11 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
             if (title.season == season.title) {
               title.products.push(product);
             }
-          })
-        })
-      })
-    })
-  })
-
+          });
+        });
+      });
+    });
+  });
 
   return (
     <>
@@ -88,17 +94,17 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
         />
         <meta property="og:url" content="https://makeupbys.se/" />
       </Head>
-      
-      <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
+
+      <MediaQuery smallerThan={"sm"} styles={{ display: "none", zIndex: 900 }}>
         <Image src="/uploads/fadetoblackbig.svg" pos={"absolute"} top={0} />
       </MediaQuery>
 
-      <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
+      <MediaQuery largerThan={"sm"} styles={{ display: "none", zIndex: 900 }}>
         <Image src="/uploads/fadeblackmobilesvg.svg" pos={"absolute"} top={0} />
       </MediaQuery>
       <BackgroundImage
         sx={(theme) => ({
-          height: "80vh",
+          height: "90vh",
           width: "100%",
           [theme.fn.smallerThan("lg")]: {
             height: "80vh",
@@ -110,19 +116,19 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
             height: "70vh",
           },
           [theme.fn.smallerThan("xs")]: {
-            height: "90vh",
+            height: "100vh",
           },
         })}
         src="/uploads/hero.jpg"
       >
         <Flex
-        className="asdasdasd"
+          className="asdasdasd"
           direction={"column"}
           align={"center"}
           sx={(theme) => ({
             width: "100%",
           })}
-          >
+        >
           <Flex
             className="top"
             display={"flex"}
@@ -136,7 +142,6 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
             })}
           >
             <Flex
-            
               sx={(theme) => ({
                 alignItems: "center",
                 justifyContent: "center",
@@ -192,98 +197,206 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
         <Flex
           className="quizbox"
           sx={(theme) => ({
-            marginTop: 230,
+            marginTop: 270,
             gap: 100,
-            width: "80%",
-            justifyContent: "left",
+            width: "100%",
+
+            justifyContent: "center",
             alignItems: "left",
+            [theme.fn.smallerThan("xl")]: {
+              marginTop: 230,
+            },
             [theme.fn.smallerThan("lg")]: {
               marginTop: 220,
-              width: "82%",
             },
-            [theme.fn.smallerThan("md")]: {
-              width: "90%",
-            },
+            [theme.fn.smallerThan("md")]: {},
             [theme.fn.smallerThan("sm")]: {
-              width: "95%",
-              marginTop: 300,
+              marginTop: 170,
               gap: 30,
             },
             [theme.fn.smallerThan("xs")]: {
+              marginTop: 0,
+              height: "80vh",
               gap: 20,
               width: "100%",
-              marginTop: 220,
-              justifyContent: "flex-end",
+              justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
             },
           })}
         >
-          <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
-            <Title
-              styles={{ width: "100%", paddingTop: "150px" }}
-              color={"white"}
-            >
-              Make Up By Season
-            </Title>
-          </MediaQuery>
           <Flex
+            justify={"space-between"}
             sx={(theme) => ({
-              width: "70%",
-              justifyContent: "flex-end",
-              alignItems: "flex-end",
+              width: "80%",
+              maxWidth: 1320,
+              [theme.fn.smallerThan("lg")]: {
+                width: "90%",
+                maxWidth: 1320,
+              },
               [theme.fn.smallerThan("xs")]: {
-                width: "60%",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
               },
             })}
           >
-            <Text
-              lineClamp={6}
-              w={400}
-              align="center"
-              color={"white"}
-              fz={"40px"}
-              fw={"bold"}
-              sx={(theme) => ({
-                [theme.fn.smallerThan("lg")]: {
-                  fontSize: "40px",
-                },
-                [theme.fn.smallerThan("sm")]: {
-                  fontSize: "25px",
-                },
-                [theme.fn.smallerThan("xs")]: {
-                  fontSize: "20px",
-                },
-              })}
-            >
-              Ta reda på vilken säsong du tillhör och få skräddarsydda produkter
-              som passar just dig
-            </Text>
-          </Flex>
+            <Flex direction={"column"}>
+              <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
+                <Title
+                  mb={20}
+                  size={70}
+                  styles={{
+                    width: "100%",
+                    paddingTop: "150px",
+                  }}
+                  sx={(theme) => ({
+                    zIndex: 4000,
+                    textShadow: "0px 1px 30px black",
+                    [theme.fn.smallerThan("lg")]: {
+                      fontSize: 65,
+                    },
+                    [theme.fn.smallerThan("md")]: {
+                      fontSize: 55,
+                    },
 
-          <Flex sx={{ alignItems: "flex-end" }}>
-            <Button
-              onClick={() => setOpened(true)}
-              sx={(theme) => ({
-                height: 100,
-                width: 40,
-                backgroundColor: "transparent",
-                border: "1px solid white",
-                [theme.fn.smallerThan("xs")]: {
-                  height: 70,
-                  width: 20,
-                },
-              })}
-            >
-              GÅ TILL QUIZ
-            </Button>
+                    [theme.fn.smallerThan("sm")]: {
+                      fontSize: 46,
+                    },
+                  })}
+                  color={"white"}
+                >
+                  Make Up By Season
+                </Title>
+              </MediaQuery>
+              <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
+                <Title
+                  size={38}
+                  mb={10}
+                  sx={(theme) => ({
+                    textShadow: "0px 1px 30px black",
+                    zIndex: 400,
+                    textAlign: "center",
+                    [theme.fn.smallerThan(420)]: {
+                      fontSize: 34,
+                    },
+                    [theme.fn.smallerThan(380)]: {
+                      fontSize: 30,
+                    },
+                  })}
+                  color={"white"}
+                >
+                  Make Up By Season
+                </Title>
+              </MediaQuery>
+              <Flex
+                sx={(theme) => ({
+                  width: "100%",
+
+                  justifyContent: "flex-start",
+                  alignItems: "flex-end",
+                  [theme.fn.smallerThan("xs")]: {
+                    justifyContent: "center",
+                  },
+                })}
+              >
+                <Text
+                  lineClamp={6}
+                  w={500}
+                  color={"whiteSmoke"}
+                  fz={"35px"}
+                  fw={"bold"}
+                  sx={(theme) => ({
+                    zIndex: 400,
+                    textShadow: "0px 1px 10px black",
+                    [theme.fn.smallerThan("lg")]: {
+                      fontSize: "30px",
+                    },
+                    [theme.fn.smallerThan("md")]: {
+                      width: 420,
+                      fontSize: 28,
+                    },
+                    [theme.fn.smallerThan("sm")]: {
+                      width: 370,
+                      fontSize: "22px",
+                    },
+                    [theme.fn.smallerThan("xs")]: {
+                      textAlign: "center",
+                      fontSize: "20px",
+                      width: "80%",
+                      marginBottom: 40,
+                    },
+                    [theme.fn.smallerThan(420)]: {
+                      width: "80%",
+                    },
+                    [theme.fn.smallerThan(380)]: {
+                      width: "90%",
+                    },
+                  })}
+                >
+                  Ta reda på vilken säsong du tillhör och få skräddarsydda
+                  produkter som passar just dig
+                </Text>
+              </Flex>
+            </Flex>
+
+            <Flex sx={{ alignItems: "flex-end" }}>
+              <Button
+                onClick={() => setOpened(true)}
+                sx={(theme) => ({
+                  height: 100,
+                  minWidth: 170,
+                  backgroundColor: "transparent",
+                  border: "1px solid white",
+                  fontSize: 25,
+                  [theme.fn.smallerThan("md")]: {
+                    height: 70,
+                    fontSize: 22,
+                    minWidth: 140,
+                  },
+                  [theme.fn.smallerThan("sm")]: {
+                    fontSize: 20,
+                    minWidth: 120,
+                  },
+                  [theme.fn.smallerThan("xs")]: {
+                    fontSize: 21,
+                    minWidth: 10,
+                  },
+                })}
+              >
+                GÅ TILL QUIZ
+              </Button>
+            </Flex>
           </Flex>
         </Flex>
         {/*  */}
       </BackgroundImage>
-      <AppShell fixed={false} header={<FrontPageHeader />} footer={<Footer />}>
+      <AppShell
+        styles={(theme) => ({
+          main: {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            width: "100%",
+          },
+        })}
+        fixed={false}
+        header={<FrontPageHeader />}
+        footer={<Footer />}
+      >
         <>
-          <main style={{ marginTop: 60, minHeight: "100vh" }}>
+          <main
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              marginTop: 60,
+              minHeight: "100vh",
+              width: "100%",
+              maxWidth: 1320,
+              justifyContent: "center",
+            }}
+          >
             <Text
               align="center"
               fw={800}
@@ -295,40 +408,107 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
             >
               By Season
             </Text>
-            
-            <Grid justify={"center"} gutter={6} gutterXs={"xl"}>
-            {seasons ? (
-              seasons.map((seasons, index) => {
-                return (
-                  <Grid.Col key={index} styles={{ borderRadius: "5px" }} span={8} md={3} sm={3} xs={3}>
-                    <Link key={index} href={`/sasong/${seasons.slug}`}>
-                      <Image
-                        alt={seasons.image}
-                        src={`/uploads/${seasons.image}`}
-                        sx={{
-                          img: {
-                            borderRadius: "10px",
-                          },
-                        }}
-                      />
-                      <Title
-                        sx={{
-                          textAlign: "center",
-                          color: "#1D464E",
-                          fontSize: 15,
-                          paddingTop: "10px",
-                          paddingBottom: "20px",
-                        }}
-                      >
-                        {seasons.title}
-                      </Title>
-                    </Link>
-                  </Grid.Col>
-                );
-              })
-              ): null}
-              </Grid>
 
+            <Grid justify={"center"} gutter={6} gutterXs={"xl"}>
+              {seasons
+                ? seasons.map((seasons, index) => {
+                    return (
+                      <Grid.Col
+                        key={index}
+                        styles={{
+                          borderRadius: "5px",
+                          display: "flex",
+                        }}
+                        sx={(theme) => ({
+                          display: "flex",
+                          [theme.fn.smallerThan("md")]: {
+                            width: 160,
+                          },
+                          [theme.fn.smallerThan("sm")]: {
+                            width: 90,
+                            justifyContent: "center",
+                          },
+                        })}
+                        md={3}
+                        sm={6}
+                        xs={12}
+                      >
+                        <Link
+                          style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                          key={index}
+                          href={`/sasong/${seasons.slug}`}
+                        >
+                          <Box
+                            pos={"relative"}
+                            sx={(theme) => ({
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              [theme.fn.smallerThan("xl")]: {
+                                width: 270,
+                              },
+                              [theme.fn.smallerThan("lg")]: {
+                                width: 220,
+                              },
+                              [theme.fn.smallerThan("md")]: {
+                                width: 300,
+                              },
+
+                              [theme.fn.smallerThan("sm")]: {
+                                width: 380,
+                              },
+                              [theme.fn.smallerThan("xs")]: {
+                                width: "85%",
+                              },
+                            })}
+                          >
+                            <Image
+                              alt={seasons.images[0]}
+                              src={`/uploads/${seasons.images[0]}`}
+                              sx={{
+                                transition: "opacity 2s",
+                                opacity: change ? 1 : 0,
+                                img: {
+                                  borderRadius: "10px",
+                                },
+                              }}
+                            />
+                            <Image
+                              pos={"absolute"}
+                              top={0}
+                              alt={seasons.images[1]}
+                              src={`/uploads/${seasons.images[1]}`}
+                              sx={{
+                                transition: "opacity 2s",
+                                opacity: !change ? 1 : 0,
+                                img: {
+                                  borderRadius: "10px",
+                                },
+                              }}
+                            />
+                          </Box>
+                          <Title
+                            sx={{
+                              textAlign: "center",
+                              color: "#1D464E",
+                              fontSize: 15,
+                              paddingTop: "10px",
+                              paddingBottom: "20px",
+                            }}
+                          >
+                            {seasons.title}
+                          </Title>
+                        </Link>
+                      </Grid.Col>
+                    );
+                  })
+                : null}
+            </Grid>
 
             <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
               <Text
@@ -343,7 +523,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
               >
                 vårens nyheter
               </Text>
-              
+
               <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
                 <Box>
                   <CarouselProduct
@@ -428,27 +608,26 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       },
     });
 
-    const seasons = await Season.find({})
-    
-    
-    // Todo if time: #67 Find a better way. Should be able to filter the query above.
-    //Check aggregation and virtuals with match
-    let list: any[] = [];
-    subProducts.forEach((product) => {
-      product.colors.forEach((color: PopulatedColor) => {
-        color.seasons.forEach((season) => {
-          if (season.slug == product.colors[0].seasons[0].slug) {
-            list.push(product);
-          }
-        });
+  const seasons = await Season.find({});
+
+  // Todo if time: #67 Find a better way. Should be able to filter the query above.
+  //Check aggregation and virtuals with match
+  let list: any[] = [];
+  subProducts.forEach((product) => {
+    product.colors.forEach((color: PopulatedColor) => {
+      color.seasons.forEach((season) => {
+        if (season.slug == product.colors[0].seasons[0].slug) {
+          list.push(product);
+        }
       });
     });
+  });
 
-    return {
+  return {
     props: {
       product: JSON.parse(JSON.stringify(product)),
       products: JSON.parse(JSON.stringify(list)),
-      seasons: JSON.parse(JSON.stringify(seasons))
+      seasons: JSON.parse(JSON.stringify(seasons)),
     },
   };
 };

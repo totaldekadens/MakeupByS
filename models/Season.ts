@@ -18,9 +18,11 @@ const SeasonSchema = new mongoose.Schema<SeasonDocument>({
     required: true,
     unique: true,
   },
-  image: {
-    type: String,
-  },
+  images: [
+    {
+      type: String,
+    },
+  ],
 });
 
 SeasonSchema.methods.setSlug = function (title: string) {
@@ -34,7 +36,7 @@ export type SeasonDocument = {
   description: string;
   slug: string;
   setSlug: (title: String) => void;
-  image?: string;
+  images: string[];
   _id?: Types.ObjectId;
 };
 
