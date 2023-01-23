@@ -95,16 +95,16 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
         <meta property="og:url" content="https://makeupbys.se/" />
       </Head>
 
-      <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
+      <MediaQuery smallerThan={"sm"} styles={{ display: "none", zIndex: 900 }}>
         <Image src="/uploads/fadetoblackbig.svg" pos={"absolute"} top={0} />
       </MediaQuery>
 
-      <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
+      <MediaQuery largerThan={"sm"} styles={{ display: "none", zIndex: 900 }}>
         <Image src="/uploads/fadeblackmobilesvg.svg" pos={"absolute"} top={0} />
       </MediaQuery>
       <BackgroundImage
         sx={(theme) => ({
-          height: "80vh",
+          height: "90vh",
           width: "100%",
           [theme.fn.smallerThan("lg")]: {
             height: "80vh",
@@ -116,7 +116,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
             height: "70vh",
           },
           [theme.fn.smallerThan("xs")]: {
-            height: "90vh",
+            height: "100vh",
           },
         })}
         src="/uploads/hero.jpg"
@@ -197,50 +197,73 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
         <Flex
           className="quizbox"
           sx={(theme) => ({
-            marginTop: 230,
-
+            marginTop: 270,
             gap: 100,
             width: "100%",
+
             justifyContent: "center",
             alignItems: "left",
+            [theme.fn.smallerThan("xl")]: {
+              marginTop: 230,
+            },
             [theme.fn.smallerThan("lg")]: {
               marginTop: 220,
-              width: "82%",
             },
-            [theme.fn.smallerThan("md")]: {
-              width: "90%",
-            },
+            [theme.fn.smallerThan("md")]: {},
             [theme.fn.smallerThan("sm")]: {
-              width: "95%",
-              marginTop: 300,
+              marginTop: 170,
               gap: 30,
             },
             [theme.fn.smallerThan("xs")]: {
+              marginTop: 0,
+              height: "80vh",
               gap: 20,
               width: "100%",
-              marginTop: 220,
-              justifyContent: "flex-end",
+              justifyContent: "center",
               alignItems: "center",
               flexDirection: "column",
             },
           })}
         >
           <Flex
-            //justify={"center"}
-            sx={{
+            justify={"space-between"}
+            sx={(theme) => ({
               width: "80%",
               maxWidth: 1320,
-            }}
+              [theme.fn.smallerThan("lg")]: {
+                width: "90%",
+                maxWidth: 1320,
+              },
+              [theme.fn.smallerThan("xs")]: {
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+              },
+            })}
           >
             <Flex direction={"column"}>
               <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
                 <Title
-                  size={75}
+                  mb={20}
+                  size={70}
                   styles={{
                     width: "100%",
                     paddingTop: "150px",
                   }}
-                  sx={{ textShadow: "0px 1px 30px black" }}
+                  sx={(theme) => ({
+                    zIndex: 4000,
+                    textShadow: "0px 1px 30px black",
+                    [theme.fn.smallerThan("lg")]: {
+                      fontSize: 65,
+                    },
+                    [theme.fn.smallerThan("md")]: {
+                      fontSize: 55,
+                    },
+
+                    [theme.fn.smallerThan("sm")]: {
+                      fontSize: 46,
+                    },
+                  })}
                   color={"white"}
                 >
                   Make Up By Season
@@ -248,8 +271,19 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
               </MediaQuery>
               <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
                 <Title
-                  sx={{ textShadow: "0px 1px 30px black" }}
-                  styles={{ width: "100%", paddingTop: "150px" }}
+                  size={38}
+                  mb={10}
+                  sx={(theme) => ({
+                    textShadow: "0px 1px 30px black",
+                    zIndex: 400,
+                    textAlign: "center",
+                    [theme.fn.smallerThan(420)]: {
+                      fontSize: 34,
+                    },
+                    [theme.fn.smallerThan(380)]: {
+                      fontSize: 30,
+                    },
+                  })}
                   color={"white"}
                 >
                   Make Up By Season
@@ -262,28 +296,41 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
                   justifyContent: "flex-start",
                   alignItems: "flex-end",
                   [theme.fn.smallerThan("xs")]: {
-                    width: "60%",
+                    justifyContent: "center",
                   },
                 })}
               >
                 <Text
                   lineClamp={6}
-                  w={550}
-                  //align="center"
-                  color={"white"}
-                  fz={"40px"}
+                  w={500}
+                  color={"whiteSmoke"}
+                  fz={"35px"}
                   fw={"bold"}
                   sx={(theme) => ({
-                    textShadow: "0px 1px 30px black",
+                    zIndex: 400,
+                    textShadow: "0px 1px 10px black",
                     [theme.fn.smallerThan("lg")]: {
-                      fontSize: "40px",
+                      fontSize: "30px",
+                    },
+                    [theme.fn.smallerThan("md")]: {
+                      width: 420,
+                      fontSize: 28,
                     },
                     [theme.fn.smallerThan("sm")]: {
-                      fontSize: "25px",
+                      width: 370,
+                      fontSize: "22px",
                     },
                     [theme.fn.smallerThan("xs")]: {
                       textAlign: "center",
                       fontSize: "20px",
+                      width: "80%",
+                      marginBottom: 40,
+                    },
+                    [theme.fn.smallerThan(420)]: {
+                      width: "80%",
+                    },
+                    [theme.fn.smallerThan(380)]: {
+                      width: "90%",
                     },
                   })}
                 >
@@ -298,12 +345,22 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
                 onClick={() => setOpened(true)}
                 sx={(theme) => ({
                   height: 100,
-                  width: 40,
+                  minWidth: 170,
                   backgroundColor: "transparent",
                   border: "1px solid white",
-                  [theme.fn.smallerThan("xs")]: {
+                  fontSize: 25,
+                  [theme.fn.smallerThan("md")]: {
                     height: 70,
-                    width: 20,
+                    fontSize: 22,
+                    minWidth: 140,
+                  },
+                  [theme.fn.smallerThan("sm")]: {
+                    fontSize: 20,
+                    minWidth: 120,
+                  },
+                  [theme.fn.smallerThan("xs")]: {
+                    fontSize: 21,
+                    minWidth: 10,
                   },
                 })}
               >

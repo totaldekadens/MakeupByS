@@ -10,7 +10,6 @@ import SearchMobileFrontPage from "./SearchMobileFrontpage";
 import { hideContext } from "./context/HideProvider";
 import React, { useContext, useEffect, useState } from "react";
 
-
 const FrontPageHeader = () => {
   const session = useSession();
   const { hide, setHide } = useContext(hideContext);
@@ -46,6 +45,7 @@ const FrontPageHeader = () => {
           alignItems: "center",
           paddingTop: bg ? 0 : 60,
           transition: "padding 0.6s",
+          zIndex: 10000,
           [theme.fn.smallerThan("sm")]: {
             height: 150,
             transition: "padding 0.6s",
