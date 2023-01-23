@@ -38,7 +38,7 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [scroll, scrollTo] = useWindowScroll();
-  
+
   // Gets current window height and window width
   let size = useWindowSize();
 
@@ -109,8 +109,8 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   return (
     <>
       <Modal
-        lockScroll={false}
         styles={(theme) => ({
+          root: { zIndex: 200000 },
           modal: { maxWidth: 1200 },
           body: {
             paddingLeft: 20,
