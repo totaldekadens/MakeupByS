@@ -109,7 +109,6 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
   return (
     <>
       <Modal
-        lockScroll={false}
         styles={(theme) => ({
           root: { zIndex: 200000 },
           modal: { maxWidth: 1200 },
