@@ -133,9 +133,8 @@ const Header = () => {
               },
             })}
           >
+            
             <Searchbar />
-
-            {/* burger componenet här */}
             <MobileBurgerMenu />
 
             <Link href="/">

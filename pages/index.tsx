@@ -11,8 +11,8 @@ import {
   BackgroundImage,
   Space,
   Button,
-  Box,
   Grid,
+  Box,
 } from "@mantine/core";
 import Cart from "../components/cart/Cart";
 import { IconCheck } from "@tabler/icons";
@@ -116,10 +116,10 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
         src="/uploads/hero.jpg"
       >
         <Flex
+        className="asdasdasd"
           direction={"column"}
           align={"center"}
           sx={(theme) => ({
-            transition: "height 1s",
             width: "100%",
           })}
           >
@@ -129,13 +129,14 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
             justify={"center"}
             align={"center"}
             sx={(theme) => ({
-              transition: "height 1s",
               zIndex: 2,
               height: "40px",
+              transition: "height 1s",
               width: "100%",
             })}
           >
             <Flex
+            
               sx={(theme) => ({
                 alignItems: "center",
                 justifyContent: "center",
@@ -329,7 +330,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
               </Grid>
 
 
-            {/* <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
+            <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
               <Text
                 align="center"
                 fw={800}
@@ -378,7 +379,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
                   />
                 </Box>
               </MediaQuery>
-            </Flex> */}
+            </Flex>
           </main>
           <Cart />
           <Quiz opened={opened} setOpened={setOpened} />
