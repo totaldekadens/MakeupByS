@@ -12,6 +12,7 @@ import {
   Space,
   Button,
   Grid,
+  Box,
 } from "@mantine/core";
 import Cart from "../components/cart/Cart";
 import { IconCheck } from "@tabler/icons";
@@ -329,7 +330,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
               </Grid>
 
 
-            {/* <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
+            <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
               <Text
                 align="center"
                 fw={800}
@@ -378,7 +379,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
                   />
                 </Box>
               </MediaQuery>
-            </Flex> */}
+            </Flex>
           </main>
           <Cart />
           <Quiz opened={opened} setOpened={setOpened} />
