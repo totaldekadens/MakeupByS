@@ -75,6 +75,7 @@ const SearchbarMobile = () => {
         itemComponent={AutoCompleteItem}
         icon={<IconSearch color="white" size={15} stroke={3} />}
         rightSection={
+          value &&
           <Box sx={{ cursor: "pointer" }} onClick={handleClick}>
             <IconX id="iconX" color="white" size={20} stroke={2} />
           </Box>
@@ -94,6 +95,8 @@ const SearchbarMobile = () => {
         sx={(theme) => ({
           width: "100%",
           height: 40,
+          paddingRight: "12px",
+          paddingLeft: "12px",
           backgroundColor: theme.colors.brand[2],
         })}
       ></Autocomplete>

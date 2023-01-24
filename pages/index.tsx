@@ -79,6 +79,8 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
     });
   });
 
+  console.log(products)
+
   return (
     <>
       <Head>
@@ -511,7 +513,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
                 : null}
             </Grid>
 
-            {/* <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
+            <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
               <Text
                 align="center"
                 fw={800}
@@ -560,7 +562,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
                   />
                 </Box>
               </MediaQuery>
-            </Flex> */}
+            </Flex>
           </main>
           <Cart />
           <Quiz opened={opened} setOpened={setOpened} />

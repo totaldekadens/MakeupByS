@@ -1,4 +1,4 @@
-import { Flex, Autocomplete, Group, Avatar, Text, Box } from "@mantine/core";
+import { Flex, Autocomplete, Group, Avatar, Text, Box, createStyles } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons";
 import { useRouter } from "next/router";
 import { forwardRef, useEffect, useState } from "react";
@@ -17,6 +17,7 @@ const Searchbar = () => {
   const [data, setData] = useState<PopulatedProduct[]>([]);
   const router = useRouter();
 
+  const { classes } = useStyles();
   // onclick x clear inputvalue searchfield
   const handleClick = () => {
     setValue("");
@@ -98,13 +99,15 @@ const Searchbar = () => {
       </Flex>
 
       <Autocomplete
+        classNames={{rightSection: classes.rightSection}}
         onItemSubmit={(item) => {
           router.push(`/produkt/${item.slug}`);
           setValue("");
         }}
         itemComponent={AutoCompleteItem}
         rightSection={
-          <Box sx={{ cursor: "pointer" }} onClick={handleClick}>
+          value &&
+          <Box className="aaaada" sx={{ cursor: "pointer", bottom: 0}} onClick={handleClick}>
             <IconX id="iconX" color="white" size={20} stroke={2} />
           </Box>
         }
@@ -140,5 +143,12 @@ const Searchbar = () => {
     </Flex>
   );
 };
+
+const useStyles = createStyles((theme) => ({
+  rightSection: {
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+  }
+}))
 
 export default Searchbar;
