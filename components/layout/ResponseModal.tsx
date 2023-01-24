@@ -25,6 +25,7 @@ const ResponseModal: FC<Props> = ({ info, setOpened, opened }) => {
   return (
     <>
       <Modal
+        zIndex={1000000}
         opened={opened}
         onClose={() => setOpened(false)}
         title={

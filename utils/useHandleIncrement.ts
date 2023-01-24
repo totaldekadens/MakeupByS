@@ -27,13 +27,13 @@ const UseHandleIncrement = async (
 
         if (foundIndex >= 0) {
           if (cartCopy[foundIndex].quantity >= result.data.availableQty) {
-            return alert("Finns tyvärr inga fler produkter"); // Fixa modal till denna sen
+            return false;
           }
           cartCopy[foundIndex].quantity++;
         }
         setCartItems(cartCopy);
 
-        return;
+        return true;
       }
     }
   } catch (err) {
