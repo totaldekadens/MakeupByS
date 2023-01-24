@@ -98,6 +98,7 @@ const SearchMobileFrontPage = () => {
           itemComponent={AutoCompleteItem}
           icon={<IconSearch color="white" size={15} stroke={3} />}
           rightSection={
+            value &&
             <Box sx={{ cursor: "pointer" }} onClick={handleClick}>
               <IconX id="iconX" color="white" size={20} stroke={2} />
             </Box>
