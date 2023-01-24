@@ -49,6 +49,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
   const [change, setChange] = useState(true);
   let size = useWindowSize();
 
+  // Sets an interval of 8 seconds before the image changes.
   useEffect(() => {
     const intervalId = setInterval(() => {
       setChange(!change);
