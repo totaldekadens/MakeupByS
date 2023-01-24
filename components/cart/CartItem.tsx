@@ -1,11 +1,12 @@
 import { Flex, Group, Image, Title, Text } from "@mantine/core";
 import { IconCircleMinus, IconCirclePlus, IconTrash } from "@tabler/icons";
-import { FC } from "react";
+import { FC, useState } from "react";
 import useHandleDecrement from "../../utils/useHandleDecrement";
 import UseHandleIncrement from "../../utils/useHandleIncrement";
 import useHandleRemoveCartItem from "../../utils/useHandleRemoveCartItem";
 import { LineItem } from "./AddToCartIcon";
-
+import ResponseModal from "../layout/ResponseModal";
+import { ResponseModalType } from "../admin/SelectStatus";
 type Props = {
   product: LineItem;
   cartItems: LineItem[];
@@ -16,6 +17,11 @@ type Props = {
 
 // Displays cart item in cart
 const CartItem: FC<Props> = ({ product, cartItems, setCartItems }) => {
+  const [opened, setOpened] = useState(false);
+  const [response, setResponse] = useState<ResponseModalType>({
+    title: "",
+    reason: "info",
+  });
   return (
     <Flex
       h={100}
@@ -59,7 +65,21 @@ const CartItem: FC<Props> = ({ product, cartItems, setCartItems }) => {
           <IconCirclePlus
             style={{ cursor: "pointer" }}
             strokeWidth={1.2}
-            onClick={() => UseHandleIncrement(product, cartItems, setCartItems)}
+            onClick={async () => {
+              const result = await UseHandleIncrement(
+                product,
+                cartItems,
+                setCartItems
+              );
+              if (!result) {
+                const object: ResponseModalType = {
+                  title: "Finns tyvärr inte fler av denna produkt!",
+                  reason: "error",
+                };
+                setResponse(object);
+                setOpened(true);
+              }
+            }}
           />
         </Group>
       </Flex>
@@ -92,6 +112,7 @@ const CartItem: FC<Props> = ({ product, cartItems, setCartItems }) => {
           }
         />
       </Flex>
+      <ResponseModal info={response} setOpened={setOpened} opened={opened} />
     </Flex>
   );
 };

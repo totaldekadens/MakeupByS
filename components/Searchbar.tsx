@@ -99,7 +99,7 @@ const Searchbar = () => {
 
       <Autocomplete
         onItemSubmit={(item) => {
-          router.push(`/produkt/${item.value}`);
+          router.push(`/produkt/${item.slug}`);
           setValue("");
         }}
         itemComponent={AutoCompleteItem}
