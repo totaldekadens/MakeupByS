@@ -16,6 +16,7 @@ const InfoDrawer: FC = () => {
   }, []);
   return (
     <Drawer
+      trapFocus={false}
       withCloseButton={false}
       opened={opened}
       onClose={() => setOpened(false)}
