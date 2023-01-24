@@ -41,7 +41,7 @@ const Footer = () => {
                 justifyContent: "flex-start",
                 paddingBottom: 10,
                 paddingRight: 35,
-                [theme.fn.smallerThan(448)]: {
+                [theme.fn.smallerThan(473)]: {
                   paddingRight: 25,
                 }
               })}
@@ -49,20 +49,26 @@ const Footer = () => {
               <Title sx={{ color: "white", paddingBottom: 5 }} order={4}>
                 MakeUpByS
               </Title>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 About MakeUpByS
               </Text>
+                </Link>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Arbeta hos oss
               </Text>
+                </Link>
               <Link href={"/integritet"}>
                 <Text fz="sm" color={"white"} py={2}>
                   Integritetspolicy
                 </Text>
               </Link>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Hållbarhet
               </Text>
+                </Link>
             </Box>
 
 
@@ -72,7 +78,7 @@ const Footer = () => {
                 flexDirection: "column",
                 alignItems: "flex-start",
                 paddingRight: 30,
-                [theme.fn.smallerThan(448)]: {
+                [theme.fn.smallerThan(473)]: {
                   paddingLeft: 47,
                   paddingRight: 0,
                 }
@@ -81,17 +87,21 @@ const Footer = () => {
               <Title sx={{ color: "white", paddingBottom: 5 }} order={4}>
                 Kundservice
               </Title>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Kundservice
               </Text>
+                </Link>
               <Link href={"/kopvillkor"} style={{cursor: "pointer"}}>
               <Text fz="sm" color={"white"} py={2}>
                 Köpvillkor
               </Text>
               </Link>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Om cookies
               </Text>
+                </Link>
             </Box>
 
 
@@ -112,9 +122,11 @@ const Footer = () => {
                 Bli medlem
               </Text>
               </Link>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Medlemsvillkor
               </Text>
+                </Link>
             </Box>
 
             <Box
@@ -130,15 +142,21 @@ const Footer = () => {
                 Följ Oss
               </Title>
               <Flex>
+                <a href={"/"}>
                 <Flex sx={{ width: 25, height: 25, cursor: "pointer" }}>
                   <Image src={"/uploads/instagram.svg"} />
                 </Flex>
+                </a>
+                <a href={"/"}>
                 <Flex sx={{ width: 25, height: 25, cursor: "pointer" }}>
                   <Image src={"/uploads/facebook.svg"} />
                 </Flex>
+                </a>
+                <a href={"/"}>
                 <Flex sx={{ width: 25, height: 25, cursor: "pointer" }}>
                   <Image src={"/uploads/youtube.svg"} />
                 </Flex>
+                </a>
               </Flex>
             </Box>
             </Flex>
