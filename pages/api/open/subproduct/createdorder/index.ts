@@ -30,7 +30,7 @@ export default async function handler(
         });
 
         if (subProduct) {
-          if (subProduct.availableQty > req.body.cartItem.quantity) {
+          if (subProduct.availableQty >= req.body.cartItem.quantity) {
             const newAvailableQuantity =
               subProduct.availableQty - req.body.cartItem.quantity;
 
