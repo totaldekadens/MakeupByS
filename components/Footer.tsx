@@ -8,6 +8,7 @@ import {
   Image,
   Center,
   Box,
+  MediaQuery,
 } from "@mantine/core";
 import Link from "next/link";
 
@@ -34,13 +35,16 @@ const Footer = () => {
             }
             })}>    
             <Box
-              sx={{
+              sx={(theme) => ({
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
                 paddingBottom: 10,
-                paddingRight: 30,
-              }}
+                paddingRight: 35,
+                [theme.fn.smallerThan(448)]: {
+                  paddingRight: 25,
+                }
+              })}
             >
               <Title sx={{ color: "white", paddingBottom: 5 }} order={4}>
                 MakeUpByS
@@ -63,15 +67,19 @@ const Footer = () => {
 
 
             <Box
-              sx={{
+              sx={(theme) => ({
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
                 paddingRight: 30,
-              }}
+                [theme.fn.smallerThan(448)]: {
+                  paddingLeft: 47,
+                  paddingRight: 0,
+                }
+              })}
             >
               <Title sx={{ color: "white", paddingBottom: 5 }} order={4}>
-                Kund service
+                Kundservice
               </Title>
               <Text fz="sm" color={"white"} py={2}>
                 Kundservice
@@ -93,7 +101,7 @@ const Footer = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                paddingRight: 28,
+                paddingRight: 35,
               }}
             >
               <Title sx={{ color: "white", paddingBottom: 5 }} order={4}>
@@ -144,9 +152,11 @@ const Footer = () => {
         })}
       >
         <Divider color={"white"} />
-        <Text color={"dimmed"}>
-          Copyright &copy; {new Date().getFullYear()} Angelica Moberg Skoglund
+        <MediaQuery smallerThan="xs" styles={{ fontSize: "10px" }}>
+        <Text color={"dimmed"} >
+          Copyright &copy; {new Date().getFullYear()} Angelica M.S, Jacob Hoggen
         </Text>
+        </MediaQuery>
       </Flex>
     </>
   );
