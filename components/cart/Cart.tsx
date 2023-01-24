@@ -40,6 +40,8 @@ const Cart: FC = () => {
 
   return (
     <Drawer
+      zIndex={120000}
+      trapFocus={false}
       overlayOpacity={0.3}
       withCloseButton={false}
       opened={openedCart}
@@ -73,7 +75,7 @@ const Cart: FC = () => {
     >
       <Box pos={"absolute"} top={10} right={10}>
         <IconX
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", zIndex: 400000 }}
           onClick={() => setOpenedCart(false)}
         />
       </Box>
