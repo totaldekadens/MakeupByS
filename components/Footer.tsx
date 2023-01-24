@@ -8,6 +8,7 @@ import {
   Image,
   Center,
   Box,
+  MediaQuery,
 } from "@mantine/core";
 import Link from "next/link";
 
@@ -34,56 +35,73 @@ const Footer = () => {
             }
             })}>    
             <Box
-              sx={{
+              sx={(theme) => ({
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "flex-start",
                 paddingBottom: 10,
-                paddingRight: 30,
-              }}
+                paddingRight: 35,
+                [theme.fn.smallerThan(473)]: {
+                  paddingRight: 25,
+                }
+              })}
             >
               <Title sx={{ color: "white", paddingBottom: 5 }} order={4}>
                 MakeUpByS
               </Title>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 About MakeUpByS
               </Text>
+                </Link>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Arbeta hos oss
               </Text>
+                </Link>
               <Link href={"/integritet"}>
                 <Text fz="sm" color={"white"} py={2}>
                   Integritetspolicy
                 </Text>
               </Link>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Hållbarhet
               </Text>
+                </Link>
             </Box>
 
 
             <Box
-              sx={{
+              sx={(theme) => ({
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
                 paddingRight: 30,
-              }}
+                [theme.fn.smallerThan(473)]: {
+                  paddingLeft: 47,
+                  paddingRight: 0,
+                }
+              })}
             >
               <Title sx={{ color: "white", paddingBottom: 5 }} order={4}>
-                Kund service
+                Kundservice
               </Title>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Kundservice
               </Text>
+                </Link>
               <Link href={"/kopvillkor"} style={{cursor: "pointer"}}>
               <Text fz="sm" color={"white"} py={2}>
                 Köpvillkor
               </Text>
               </Link>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Om cookies
               </Text>
+                </Link>
             </Box>
 
 
@@ -93,7 +111,7 @@ const Footer = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "flex-start",
-                paddingRight: 28,
+                paddingRight: 35,
               }}
             >
               <Title sx={{ color: "white", paddingBottom: 5 }} order={4}>
@@ -104,9 +122,11 @@ const Footer = () => {
                 Bli medlem
               </Text>
               </Link>
+              <Link href={"/"}>
               <Text fz="sm" color={"white"} py={2}>
                 Medlemsvillkor
               </Text>
+                </Link>
             </Box>
 
             <Box
@@ -122,15 +142,21 @@ const Footer = () => {
                 Följ Oss
               </Title>
               <Flex>
+                <a href={"/"}>
                 <Flex sx={{ width: 25, height: 25, cursor: "pointer" }}>
                   <Image src={"/uploads/instagram.svg"} />
                 </Flex>
+                </a>
+                <a href={"/"}>
                 <Flex sx={{ width: 25, height: 25, cursor: "pointer" }}>
                   <Image src={"/uploads/facebook.svg"} />
                 </Flex>
+                </a>
+                <a href={"/"}>
                 <Flex sx={{ width: 25, height: 25, cursor: "pointer" }}>
                   <Image src={"/uploads/youtube.svg"} />
                 </Flex>
+                </a>
               </Flex>
             </Box>
             </Flex>
@@ -144,9 +170,11 @@ const Footer = () => {
         })}
       >
         <Divider color={"white"} />
-        <Text color={"dimmed"}>
-          Copyright &copy; {new Date().getFullYear()} Angelica Moberg Skoglund
+        <MediaQuery smallerThan="xs" styles={{ fontSize: "10px" }}>
+        <Text color={"dimmed"} >
+          Copyright &copy; {new Date().getFullYear()} Angelica M.S, Jacob Hoggen
         </Text>
+        </MediaQuery>
       </Flex>
     </>
   );
