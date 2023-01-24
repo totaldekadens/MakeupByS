@@ -72,6 +72,7 @@ const MobileBurgerMenu: FC = () => {
       </MediaQuery>
 
       <Drawer
+        zIndex={120000}
         opened={opened}
         onClose={() => setOpened(false)}
         size="md"
