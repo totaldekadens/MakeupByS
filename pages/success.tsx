@@ -91,6 +91,20 @@ const SuccessPage: NextPage = (props) => {
 
       if (result) {
         setOrderConfirmation(result.data);
+
+        // Sending info to mail order confirmation
+        const body = JSON.stringify({
+          mail: result.data.email,
+          name: result.data.name.replace(/ .*/, ""),
+          orderNo: result.data.orderNo,
+          courrier: result.data.courrier,
+          lineItems: result.data.lineItems,
+        });
+        await fetch("/api/nodemailer", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+        });
       }
       return result;
     }
