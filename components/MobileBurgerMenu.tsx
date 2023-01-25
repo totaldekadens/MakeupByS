@@ -9,7 +9,7 @@ import {
   MediaQuery,
   Space,
   ThemeIcon,
-  Title,
+  Text,
 } from "@mantine/core";
 import {
   IconUser,
@@ -89,7 +89,7 @@ const MobileBurgerMenu: FC = () => {
       >
         <Flex
           sx={(theme) => ({
-            height: "120px",
+            height: "110px",
             backgroundColor: theme.colors.brand[1],
             width: "100%",
             justifyContent: "space-evenly",
@@ -97,71 +97,129 @@ const MobileBurgerMenu: FC = () => {
             marginBottom: "20px",
           })}
         >
-          <Flex styles={{ height: "70px" }}>
+          <Flex
+            align={"center"}
+            sx={{
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             {session.data?.user ? (
-              <Link href="/minsida">
-                <Box sx={{ height: 70 }}>
-                  <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
-                    <IconCheck size={8} />
-                  </ThemeIcon>
-                  <Box ref={ref}>
-                    <IconUser color={hovered ? "#CC9887" : "white"} size={36} />
-                    <Title
-                      sx={{
-                        color: "white",
-                        fontSize: "12px",
-                      }}
+              <Link
+                href="/minsida"
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Box
+                  sx={{
+                    //height: 70,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Box
+                    ref={ref}
+                    sx={{
+                      position: "relative",
+                      display: "flex",
+                    }}
+                  >
+                    <ThemeIcon
+                      pos={"absolute"}
+                      top={-8}
+                      left={-2}
+                      color="teal"
+                      variant="light"
+                      radius="xl"
+                      size={14}
                     >
-                      {session.data?.user.name.replace(/ .*/, "")}
-                    </Title>
+                      <IconCheck size={8} />
+                    </ThemeIcon>
+                    <IconUser color={hovered ? "#CC9887" : "white"} size={36} />
                   </Box>
-                </Box>
-              </Link>
-            ) : (
-              <Flex>
-                <Box sx={{ paddingTop: 25 }}>
-                  <Box sx={{ alignContent: "center" }}>
-                    <Link href="/">
-                      <IconUser
-                        size={36}
-                        color="white"
-                        onClick={() => signIn()}
-                      />
-                      <Title
-                        sx={{
-                          display: "flex",
-                          justifyContent: "center",
-                          color: "white",
-                          fontSize: "12px",
-                        }}
-                      >
-                        Log In
-                      </Title>
-                    </Link>
-                  </Box>
-                </Box>
-              </Flex>
-            )}
-          </Flex>
-          {session.data?.user.admin ? (
-            <Link href="/admin">
-              <Box sx={{ height: 70 }}>
-                <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
-                  <IconCheck size={8} />
-                </ThemeIcon>
-                <Box ref={ref}>
-                  <IconHomeCog
-                    color={hovered ? "#CC9887" : "white"}
-                    size={36}
-                  />
-                  <Title
+                  <Text
+                    mt={5}
+                    weight={"bold"}
                     sx={{
                       color: "white",
                       fontSize: "12px",
                     }}
                   >
                     {session.data?.user.name.replace(/ .*/, "")}
-                  </Title>
+                  </Text>
+                </Box>
+              </Link>
+            ) : (
+              <Flex
+                h={120}
+                pb={5}
+                sx={{
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Box>
+                  <Flex
+                    direction={"column"}
+                    align="center"
+                    sx={{ alignContent: "center" }}
+                  >
+                    <IconUser
+                      size={36}
+                      color="white"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => signIn()}
+                    />
+                    <Text
+                      mt={5}
+                      weight="bold"
+                      sx={{
+                        display: "flex",
+                        justifyContent: "center",
+                        color: "white",
+                        fontSize: "12px",
+                      }}
+                    >
+                      Logga In
+                    </Text>
+                  </Flex>
+                </Box>
+              </Flex>
+            )}
+          </Flex>
+          {session.data?.user.admin ? (
+            <Link href="/admin">
+              <Box
+                sx={{
+                  height: 110,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Box ref={ref}>
+                  <IconHomeCog
+                    color={hovered ? "#CC9887" : "white"}
+                    size={36}
+                  />
+                  <Text
+                    weight={"bold"}
+                    sx={{
+                      color: "white",
+                      fontSize: "12px",
+                    }}
+                  >
+                    Admin
+                  </Text>
                 </Box>
               </Box>
             </Link>
@@ -177,7 +235,8 @@ const MobileBurgerMenu: FC = () => {
                 sx={{ alignContent: "center", cursor: "pointer" }}
               >
                 <IconBrandAppleArcade size={36} color="white" />
-                <Title
+                <Text
+                  weight={"bold"}
                   sx={{
                     display: "flex",
                     justifyContent: "center",
@@ -186,7 +245,7 @@ const MobileBurgerMenu: FC = () => {
                   }}
                 >
                   Quiz
-                </Title>
+                </Text>
               </Box>
             </Box>
           </Flex>
@@ -194,11 +253,18 @@ const MobileBurgerMenu: FC = () => {
 
           {/* cart */}
           <Flex sx={[{ paddingTop: 27, justifyContent: "flex-end" }]}>
-            <Box sx={{ position: "relative" }}>
+            <Box
+              sx={{
+                position: "relative",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
               {quantity && quantity > 0 ? (
                 <Box
-                  top={-11}
-                  left={-9}
+                  top={-6}
+                  left={2}
                   pos={"absolute"}
                   w={16}
                   h={16}
@@ -210,9 +276,9 @@ const MobileBurgerMenu: FC = () => {
                     alignItems: "center",
                   }}
                 >
-                  <Title weight={"bold"} color={"brand.3"} size={9}>
+                  <Text weight={"bold"} color={"brand.3"} size={9}>
                     {quantity}
-                  </Title>
+                  </Text>
                 </Box>
               ) : null}
               <IconShoppingBag
@@ -221,7 +287,9 @@ const MobileBurgerMenu: FC = () => {
                 size={36}
                 color="white"
               />
-              <Title
+              <Text
+                mt={5}
+                weight={"bold"}
                 sx={{
                   display: "flex",
                   justifyContent: "center",
@@ -229,36 +297,41 @@ const MobileBurgerMenu: FC = () => {
                   fontSize: "12px",
                 }}
               >
-                Cart
-              </Title>
+                Varukorg
+              </Text>
             </Box>
           </Flex>
           {/* cart */}
         </Flex>
-        <Link href={"/minsida"}>
-          <Box>
-            <Flex
-              onClick={() => setOpened(false)}
-              sx={{
-                paddingLeft: "26px",
-                marginBottom: "20px",
-                alignItems: "center",
-                width: "295px",
-              }}
-            >
-              <Box sx={{ width: "100%" }}>
-                <Title h={"30px"} color={"white"} size={"lg"}>
-                  Mina sidor
-                </Title>
-              </Box>
-              <Box>
-                <IconSquareRoundedArrowRight color="white" />
-              </Box>
-            </Flex>
-          </Box>
-        </Link>
+        {/*  {session.data?.user ? (
+          <Link href={"/minsida"}>
+            <Box>
+              <Flex
+                onClick={() => setOpened(false)}
+                sx={{
+                  paddingLeft: "26px",
+                  marginBottom: "20px",
+                  alignItems: "center",
+                  width: "295px",
+                }}
+              >
+                <Box sx={{ width: "100%" }}>
+                  <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
+                    Mina sidor
+                  </Text>
+                </Box>
+                <Flex align={"center"}>
+                  <IconSquareRoundedArrowRight color="white" />
+                </Flex>
+              </Flex>
+            </Box>
+          </Link>
+        ) : null} */}
         {/* knappar season */}
+
         <Flex
+          mb={30}
+          mt={30}
           sx={(theme) => ({
             width: "100%",
             height: "100px",
@@ -266,7 +339,6 @@ const MobileBurgerMenu: FC = () => {
             justifyContent: "center",
             alignItems: "center",
             gap: "10px",
-            marginBottom: "40px",
           })}
         >
           <Link
@@ -349,63 +421,103 @@ const MobileBurgerMenu: FC = () => {
             </Button>
           </Link>
         </Flex>
-        <Box sx={{ paddingLeft: "26px" }}>
-          <Flex
-            sx={{ width: "270px", alignItems: "center", cursor: "pointer" }}
-          >
-            <Box sx={{ width: "100%" }}>
-              <Title color={"white"} size={"lg"}>
-                Kategorier
-              </Title>
-            </Box>
+        {session.data?.user ? (
+          <Link href={"/minsida"}>
             <Box>
-              <IconSquareRoundedArrowRight color="white" />
+              <Flex
+                onClick={() => setOpened(false)}
+                sx={{
+                  paddingLeft: "26px",
+                  marginBottom: "20px",
+                  alignItems: "center",
+                  width: "295px",
+                }}
+              >
+                <Box sx={{ width: "100%" }}>
+                  <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
+                    Mina sidor
+                  </Text>
+                </Box>
+                <Flex align={"center"}>
+                  <IconSquareRoundedArrowRight color="white" />
+                </Flex>
+              </Flex>
             </Box>
-          </Flex>
-
-          <Space h="lg"></Space>
-          <Flex
-            sx={{ width: "270px", alignItems: "center", cursor: "pointer" }}
-          >
-            <Box sx={{ width: "100%" }}>
-              <Title color={"white"} size={"lg"}>
-                Kategorier
-              </Title>
-            </Box>
+          </Link>
+        ) : null}
+        {session.data?.user.admin ? (
+          <Link href={"/admin"}>
             <Box>
-              <IconSquareRoundedArrowRight color="white" />
+              <Flex
+                onClick={() => setOpened(false)}
+                sx={{
+                  paddingLeft: "26px",
+                  marginBottom: "20px",
+                  alignItems: "center",
+                  width: "295px",
+                }}
+              >
+                <Box sx={{ width: "100%" }}>
+                  <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
+                    Admin
+                  </Text>
+                </Box>
+                <Flex align={"center"}>
+                  <IconSquareRoundedArrowRight color="white" />
+                </Flex>
+              </Flex>
             </Box>
-          </Flex>
-
-          <Space h="lg"></Space>
-          <Flex
-            sx={{ width: "270px", alignItems: "center", cursor: "pointer" }}
-          >
-            <Box sx={{ width: "100%" }}>
-              <Title color={"white"} size={"lg"}>
-                Kategorier
-              </Title>
-            </Box>
-            <Box>
-              <IconSquareRoundedArrowRight color="white" />
-            </Box>
-          </Flex>
-
-          <Space h="lg"></Space>
-
-          <Flex
-            sx={{ width: "270px", alignItems: "center", cursor: "pointer" }}
-          >
-            <Box sx={{ width: "100%" }}>
-              <Title color={"white"} size={"lg"}>
-                Kategorier
-              </Title>
-            </Box>
-            <Box>
-              <IconSquareRoundedArrowRight color="white" />
-            </Box>
-          </Flex>
-        </Box>
+          </Link>
+        ) : null}
+        <Link href={"#"}>
+          {/* Lägg in internlänk till nyheterna på startsidan */}
+          <Box>
+            <Flex
+              sx={{
+                paddingLeft: "26px",
+                marginBottom: "20px",
+                alignItems: "center",
+                width: "295px",
+              }}
+            >
+              <Box sx={{ width: "100%" }}>
+                <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
+                  Nyheter
+                </Text>
+              </Box>
+              <Flex align={"center"}>
+                <IconSquareRoundedArrowRight color="white" />
+              </Flex>
+            </Flex>
+          </Box>
+        </Link>
+        <Flex
+          pos={"fixed"}
+          bottom={20}
+          left={20}
+          gap={5}
+          direction={"column"}
+          justify="flex-end"
+          h={100}
+        >
+          {session.data?.user ? null : (
+            <Link href={"/minsida"}>
+              <Text weight={"bold"} color="white">
+                Logga in
+              </Text>
+            </Link>
+          )}
+          <Link href={"/kopvillkor"}>
+            <Text weight={"bold"} color="white">
+              Köpvillkor
+            </Text>
+          </Link>
+          <Link href={"/integritet"}>
+            <Text weight={"bold"} color="white">
+              Integritetspolicy
+            </Text>
+          </Link>
+        </Flex>
       </Drawer>
       <Quiz opened={openedQuiz} setOpened={setOpenedQuiz} />
     </>

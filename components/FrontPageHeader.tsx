@@ -52,7 +52,7 @@ const FrontPageHeader = () => {
           },
           [theme.fn.smallerThan("xs")]: {
             paddingTop: bg ? 0 : 60,
-            height: bg ? 80 : 0,
+            height: bg && !hide ? 94 : 80,
             transition: "padding 0.6",
           },
         })}
