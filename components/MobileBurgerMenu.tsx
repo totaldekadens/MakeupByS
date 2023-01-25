@@ -89,7 +89,7 @@ const MobileBurgerMenu: FC = () => {
       >
         <Flex
           sx={(theme) => ({
-            height: "120px",
+            height: "110px",
             backgroundColor: theme.colors.brand[1],
             width: "100%",
             justifyContent: "space-evenly",
@@ -117,46 +117,43 @@ const MobileBurgerMenu: FC = () => {
               >
                 <Box
                   sx={{
-                    height: 70,
-                    position: "relative",
+                    //height: 70,
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  {/*  <ThemeIcon
-                    pos={"absolute"}
-                    top={-8}
-                    left={5}
-                    color="teal"
-                    variant="light"
-                    radius="xl"
-                    size={14}
-                  >
-                    <IconCheck size={8} />
-                  </ThemeIcon> */}
                   <Box
                     ref={ref}
-                    h={70}
                     sx={{
+                      position: "relative",
                       display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
                     }}
                   >
-                    <IconUser color={hovered ? "#CC9887" : "white"} size={36} />
-                    <Text
-                      mt={5}
-                      weight={"bold"}
-                      sx={{
-                        color: "white",
-                        fontSize: "12px",
-                      }}
+                    <ThemeIcon
+                      pos={"absolute"}
+                      top={-8}
+                      left={-2}
+                      color="teal"
+                      variant="light"
+                      radius="xl"
+                      size={14}
                     >
-                      {session.data?.user.name.replace(/ .*/, "")}
-                    </Text>
+                      <IconCheck size={8} />
+                    </ThemeIcon>
+                    <IconUser color={hovered ? "#CC9887" : "white"} size={36} />
                   </Box>
+                  <Text
+                    mt={5}
+                    weight={"bold"}
+                    sx={{
+                      color: "white",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {session.data?.user.name.replace(/ .*/, "")}
+                  </Text>
                 </Box>
               </Link>
             ) : (
@@ -209,9 +206,6 @@ const MobileBurgerMenu: FC = () => {
                   justifyContent: "center",
                 }}
               >
-                {/* <ThemeIcon color="teal" variant="light" radius="xl" size={14}>
-                  <IconCheck size={8} />
-                </ThemeIcon> */}
                 <Box ref={ref}>
                   <IconHomeCog
                     color={hovered ? "#CC9887" : "white"}
@@ -309,7 +303,7 @@ const MobileBurgerMenu: FC = () => {
           </Flex>
           {/* cart */}
         </Flex>
-        {session.data?.user ? (
+        {/*  {session.data?.user ? (
           <Link href={"/minsida"}>
             <Box>
               <Flex
@@ -332,10 +326,12 @@ const MobileBurgerMenu: FC = () => {
               </Flex>
             </Box>
           </Link>
-        ) : null}
+        ) : null} */}
         {/* knappar season */}
 
         <Flex
+          mb={30}
+          mt={30}
           sx={(theme) => ({
             width: "100%",
             height: "100px",
@@ -343,7 +339,6 @@ const MobileBurgerMenu: FC = () => {
             justifyContent: "center",
             alignItems: "center",
             gap: "10px",
-            marginBottom: "40px",
           })}
         >
           <Link
@@ -426,6 +421,76 @@ const MobileBurgerMenu: FC = () => {
             </Button>
           </Link>
         </Flex>
+        {session.data?.user ? (
+          <Link href={"/minsida"}>
+            <Box>
+              <Flex
+                onClick={() => setOpened(false)}
+                sx={{
+                  paddingLeft: "26px",
+                  marginBottom: "20px",
+                  alignItems: "center",
+                  width: "295px",
+                }}
+              >
+                <Box sx={{ width: "100%" }}>
+                  <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
+                    Mina sidor
+                  </Text>
+                </Box>
+                <Flex align={"center"}>
+                  <IconSquareRoundedArrowRight color="white" />
+                </Flex>
+              </Flex>
+            </Box>
+          </Link>
+        ) : null}
+        {session.data?.user.admin ? (
+          <Link href={"/admin"}>
+            <Box>
+              <Flex
+                onClick={() => setOpened(false)}
+                sx={{
+                  paddingLeft: "26px",
+                  marginBottom: "20px",
+                  alignItems: "center",
+                  width: "295px",
+                }}
+              >
+                <Box sx={{ width: "100%" }}>
+                  <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
+                    Admin
+                  </Text>
+                </Box>
+                <Flex align={"center"}>
+                  <IconSquareRoundedArrowRight color="white" />
+                </Flex>
+              </Flex>
+            </Box>
+          </Link>
+        ) : null}
+        <Link href={"#"}>
+          {/* Lägg in internlänk till nyheterna på startsidan */}
+          <Box>
+            <Flex
+              sx={{
+                paddingLeft: "26px",
+                marginBottom: "20px",
+                alignItems: "center",
+                width: "295px",
+              }}
+            >
+              <Box sx={{ width: "100%" }}>
+                <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
+                  Nyheter
+                </Text>
+              </Box>
+              <Flex align={"center"}>
+                <IconSquareRoundedArrowRight color="white" />
+              </Flex>
+            </Flex>
+          </Box>
+        </Link>
         <Flex
           pos={"fixed"}
           bottom={20}
@@ -435,6 +500,13 @@ const MobileBurgerMenu: FC = () => {
           justify="flex-end"
           h={100}
         >
+          {session.data?.user ? null : (
+            <Link href={"/minsida"}>
+              <Text weight={"bold"} color="white">
+                Logga in
+              </Text>
+            </Link>
+          )}
           <Link href={"/kopvillkor"}>
             <Text weight={"bold"} color="white">
               Köpvillkor
