@@ -79,7 +79,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
     });
   });
 
-  console.log(products)
+  //console.log(products)
 
   return (
     <>
