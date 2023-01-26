@@ -24,6 +24,7 @@ import { LineItem } from "./cart/AddToCartIcon";
 import { FC, useContext, useEffect, useState } from "react";
 import { openedCartContext } from "./context/OpenCartProvider";
 import Quiz from "./quiz/Quiz";
+import { useRouter } from "next/router";
 
 const MobileBurgerMenu: FC = () => {
   const [opened, setOpened] = useState(false);
@@ -34,6 +35,7 @@ const MobileBurgerMenu: FC = () => {
     key: "cart",
     defaultValue: [],
   });
+  const router = useRouter();
   const [quantity, setQuantity] = useState<number>();
   const [openedQuiz, setOpenedQuiz] = useState(false);
   useEffect(() => {
@@ -301,32 +303,7 @@ const MobileBurgerMenu: FC = () => {
               </Text>
             </Box>
           </Flex>
-          {/* cart */}
         </Flex>
-        {/*  {session.data?.user ? (
-          <Link href={"/minsida"}>
-            <Box>
-              <Flex
-                onClick={() => setOpened(false)}
-                sx={{
-                  paddingLeft: "26px",
-                  marginBottom: "20px",
-                  alignItems: "center",
-                  width: "295px",
-                }}
-              >
-                <Box sx={{ width: "100%" }}>
-                  <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
-                    Mina sidor
-                  </Text>
-                </Box>
-                <Flex align={"center"}>
-                  <IconSquareRoundedArrowRight color="white" />
-                </Flex>
-              </Flex>
-            </Box>
-          </Link>
-        ) : null} */}
         {/* knappar season */}
 
         <Flex
@@ -472,23 +449,26 @@ const MobileBurgerMenu: FC = () => {
         <Link href={"#"}>
           {/* Lägg in internlänk till nyheterna på startsidan */}
           <Box>
-            <Flex
-              sx={{
-                paddingLeft: "26px",
-                marginBottom: "20px",
-                alignItems: "center",
-                width: "295px",
-              }}
-            >
-              <Box sx={{ width: "100%" }}>
-                <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
-                  Nyheter
-                </Text>
-              </Box>
-              <Flex align={"center"}>
-                <IconSquareRoundedArrowRight color="white" />
+            <Link href={"/#nyheter"}>
+              <Flex
+                sx={{
+                  paddingLeft: "26px",
+                  marginBottom: "20px",
+                  alignItems: "center",
+                  width: "295px",
+                }}
+                onClick={() => setOpened(false)}
+              >
+                <Box sx={{ width: "100%" }}>
+                  <Text weight={"bold"} h={"33px"} color={"white"} size={"lg"}>
+                    Nyheter
+                  </Text>
+                </Box>
+                <Flex align={"center"}>
+                  <IconSquareRoundedArrowRight color="white" />
+                </Flex>
               </Flex>
-            </Flex>
+            </Link>
           </Box>
         </Link>
         <Flex
