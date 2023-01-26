@@ -27,9 +27,10 @@ import Color from "../models/Color";
 import Season, { SeasonDocument } from "../models/Season";
 import CarouselProduct from "../components/product/CarouselProduct";
 import Quiz from "../components/quiz/Quiz";
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { sortAndDeduplicateDiagnostics } from "typescript";
 
 type Props = {
   product: PopulatedProduct;
@@ -42,21 +43,20 @@ type ProductsBySeason = {
   products: PopulatedProduct[] | [];
 };
 
-const Home: NextPage<Props> = ({ product, products, seasons }) => {
+const Home: NextPage<Props> = ({ products, seasons }) => {
   const router = useRouter();
-  const { seasonSlug } = router.query;
   const [opened, setOpened] = useState(false);
   const [change, setChange] = useState(true);
   let size = useWindowSize();
 
   // Sets an interval of 8 seconds before the image changes.
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setChange(!change);
-    }, 8000);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     setChange(!change);
+  //   }, 8000);
 
-    return () => clearInterval(intervalId);
-  }, [change]);
+  //   return () => clearInterval(intervalId);
+  // }, [change]);
 
   const seasonTitles: ProductsBySeason[] | any = seasons.map((season) => [
     {
@@ -70,7 +70,7 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
       color.seasons.forEach((season) => {
         seasonTitles.forEach((seasonTitle: any) => {
           seasonTitle.forEach((title: any) => {
-            if (title.season == season.title) {
+            if (title.seasons == season.title) {
               title.products.push(product);
             }
           });
@@ -79,7 +79,13 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
     });
   });
 
-  //console.log(products)
+  seasonTitles.forEach((season: any) => {
+    season[0].products.sort((a: any, b: any) =>
+      a.createdDate < b.createdDate ? 1 : -1
+    );
+    const slicedList = season[0].products.slice(0, 10);
+    season[0].products = slicedList;
+  });
 
   return (
     <>
@@ -513,56 +519,69 @@ const Home: NextPage<Props> = ({ product, products, seasons }) => {
                 : null}
             </Grid>
 
-            <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
-              <Text
-                align="center"
-                fw={800}
-                color={"#1D464E"}
-                tt={"uppercase"}
-                fz={35}
-                ff={"mada"}
-                mb={30}
-                mt={100}
-              >
-                vårens nyheter
-              </Text>
-
-              <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
-                <Box>
-                  <CarouselProduct
-                    products={products}
-                    slideGap="md"
-                    slideSize="30.3333%"
-                    slidesToScroll={undefined}
-                  />
-                </Box>
-              </MediaQuery>
-
-              <Box
-                sx={{
-                  display:
-                    size.width < 767 || size.width > 1200 ? "none" : "block",
-                }}
-              >
-                <CarouselProduct
-                  products={products}
-                  slideGap="md"
-                  slideSize="50%"
-                  slidesToScroll={2}
-                />
-              </Box>
-
-              <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
-                <Box>
-                  <CarouselProduct
-                    products={products}
-                    slideGap="xs"
-                    slideSize="100%"
-                    slidesToScroll={undefined}
-                  />
-                </Box>
-              </MediaQuery>
-            </Flex>
+              {seasonTitles.map((season: any, index: Key) => {
+                return (
+                  <>
+            <Flex direction={"column"} mt={20} 
+                  sx={(theme) => ({ 
+                    width: "100%",
+                  })}
+                  >
+                    <Title
+                      align="center"
+                      fw={800}
+                      color={"#1D464E"}
+                      tt={"uppercase"}
+                      fz={35}
+                      ff={"mada"}
+                      mb={30}
+                      mt={100}
+                    >
+                      {season[0].seasons}
+                    </Title>
+                    {season[0].products ? (
+                      <>
+                    <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
+                    <Box>
+                      <CarouselProduct
+                        products={season[0].products}
+                        slideGap="md"
+                        slideSize="30.3333%"
+                        slidesToScroll={undefined}
+                      />
+                    </Box>
+                  </MediaQuery>
+                  <Box
+                    sx={{
+                      display:
+                        size.width < 767 || size.width > 1200
+                          ? "none"
+                          : "block",
+                    }}
+                  >
+                    <CarouselProduct
+                      products={season[0].products}
+                      slideGap="md"
+                      slideSize="50%"
+                      slidesToScroll={2}
+                    />
+                  </Box>
+                  <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
+                    <Box>
+                      <CarouselProduct
+                        products={season[0].products}
+                        slideGap="xs"
+                        slideSize="100%"
+                        slidesToScroll={undefined}
+                      />
+                    </Box>
+                  </MediaQuery>
+                      </>
+                      ) : null }
+                </Flex>
+                  </>
+                )
+              })}
           </main>
           <Cart />
           <Quiz opened={opened} setOpened={setOpened} />
@@ -636,3 +655,5 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 };
 
 export default Home;
+
+
