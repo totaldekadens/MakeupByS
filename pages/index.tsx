@@ -33,7 +33,6 @@ import { useRouter } from "next/router";
 import { sortAndDeduplicateDiagnostics } from "typescript";
 
 type Props = {
-  product: PopulatedProduct;
   products: PopulatedProduct[];
   seasons: SeasonDocument[];
 };
@@ -50,13 +49,13 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
   let size = useWindowSize();
 
   // Sets an interval of 8 seconds before the image changes.
-  // useEffect(() => {
-  //   const intervalId = setInterval(() => {
-  //     setChange(!change);
-  //   }, 8000);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setChange(!change);
+    }, 8000);
 
-  //   return () => clearInterval(intervalId);
-  // }, [change]);
+    return () => clearInterval(intervalId);
+  }, [change]);
 
   const seasonTitles: ProductsBySeason[] | any = seasons.map((season) => [
     {
@@ -355,8 +354,13 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                 sx={(theme) => ({
                   height: 100,
                   minWidth: 170,
-                  backgroundColor: "transparent",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
                   border: "1px solid white",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.7)",
+                    color: "white",
+                    borderColor: "white",
+                  },
                   fontSize: 25,
                   [theme.fn.smallerThan("md")]: {
                     height: 70,
@@ -519,13 +523,16 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                 : null}
             </Grid>
 
-              {seasonTitles.map((season: any, index: Key) => {
-                return (
-                  <>
-            <Flex direction={"column"} mt={20} 
-                  sx={(theme) => ({ 
-                    width: "100%",
-                  })}
+            {seasonTitles.map((season: any, index: Key) => {
+              return (
+                <>
+                  <Flex
+                    id="nyheter"
+                    direction={"column"}
+                    mt={20}
+                    sx={(theme) => ({
+                      width: "100%",
+                    })}
                   >
                     <Title
                       align="center"
@@ -539,49 +546,56 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                     >
                       {season[0].seasons}
                     </Title>
+
                     {season[0].products ? (
                       <>
-                    <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
-                    <Box>
-                      <CarouselProduct
-                        products={season[0].products}
-                        slideGap="md"
-                        slideSize="30.3333%"
-                        slidesToScroll={undefined}
-                      />
-                    </Box>
-                  </MediaQuery>
-                  <Box
-                    sx={{
-                      display:
-                        size.width < 767 || size.width > 1200
-                          ? "none"
-                          : "block",
-                    }}
-                  >
-                    <CarouselProduct
-                      products={season[0].products}
-                      slideGap="md"
-                      slideSize="50%"
-                      slidesToScroll={2}
-                    />
-                  </Box>
-                  <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
-                    <Box>
-                      <CarouselProduct
-                        products={season[0].products}
-                        slideGap="xs"
-                        slideSize="100%"
-                        slidesToScroll={undefined}
-                      />
-                    </Box>
-                  </MediaQuery>
+                        <MediaQuery
+                          smallerThan={"lg"}
+                          styles={{ display: "none" }}
+                        >
+                          <Box>
+                            <CarouselProduct
+                              products={season[0].products}
+                              slideGap="md"
+                              slideSize="30.3333%"
+                              slidesToScroll={undefined}
+                            />
+                          </Box>
+                        </MediaQuery>
+                        <Box
+                          sx={{
+                            display:
+                              size.width < 767 || size.width > 1200
+                                ? "none"
+                                : "block",
+                          }}
+                        >
+                          <CarouselProduct
+                            products={season[0].products}
+                            slideGap="md"
+                            slideSize="50%"
+                            slidesToScroll={2}
+                          />
+                        </Box>
+                        <MediaQuery
+                          largerThan={"sm"}
+                          styles={{ display: "none" }}
+                        >
+                          <Box>
+                            <CarouselProduct
+                              products={season[0].products}
+                              slideGap="xs"
+                              slideSize="100%"
+                              slidesToScroll={undefined}
+                            />
+                          </Box>
+                        </MediaQuery>
                       </>
-                      ) : null }
-                </Flex>
-                  </>
-                )
-              })}
+                    ) : null}
+                  </Flex>
+                </>
+              );
+            })}
           </main>
           <Cart />
           <Quiz opened={opened} setOpened={setOpened} />
@@ -593,24 +607,6 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   await dbConnect();
-
-  const product = await SubProduct.findOne({ slug: params?.slug })
-    .populate({
-      path: "mainProduct",
-      model: MainProduct,
-      populate: {
-        path: "category",
-        model: Category,
-      },
-    })
-    .populate({
-      path: "colors",
-      model: Color,
-      populate: {
-        path: "seasons",
-        model: Season,
-      },
-    });
 
   const subProducts = await SubProduct.find({})
     .populate({
@@ -632,28 +628,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const seasons = await Season.find({});
 
-  // Todo if time: #67 Find a better way. Should be able to filter the query above.
-  //Check aggregation and virtuals with match
-  let list: any[] = [];
-  subProducts.forEach((product) => {
-    product.colors.forEach((color: PopulatedColor) => {
-      color.seasons.forEach((season) => {
-        if (season.slug == product.colors[0].seasons[0].slug) {
-          list.push(product);
-        }
-      });
-    });
-  });
-
   return {
     props: {
-      product: JSON.parse(JSON.stringify(product)),
-      products: JSON.parse(JSON.stringify(list)),
+      products: JSON.parse(JSON.stringify(subProducts)),
       seasons: JSON.parse(JSON.stringify(seasons)),
     },
   };
 };
 
 export default Home;
-
-
