@@ -354,8 +354,13 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                 sx={(theme) => ({
                   height: 100,
                   minWidth: 170,
-                  backgroundColor: "transparent",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
                   border: "1px solid white",
+                  "&:hover": {
+                    backgroundColor: "rgba(0, 0, 0, 0.7)",
+                    color: "white",
+                    borderColor: "white",
+                  },
                   fontSize: 25,
                   [theme.fn.smallerThan("md")]: {
                     height: 70,
