@@ -92,13 +92,13 @@ const FrontPageHeader = () => {
                   color="white"
                   sx={(theme) => ({
                     [theme.fn.smallerThan("md")]: {
-                      paddingRight: "10px",
+                      fontSize: 43,
                     },
                     [theme.fn.smallerThan("sm")]: {
-                      fontSize: "xx-large",
+                      fontSize: 35,
                     },
                     [theme.fn.smallerThan("xs")]: {
-                      fontSize: "x-large",
+                      fontSize: 24,
                     },
                   })}
                 >
