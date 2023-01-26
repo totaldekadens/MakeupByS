@@ -20,7 +20,7 @@ const Footer = () => {
         height={270}
         sx={(theme) => ({
           paddingTop: 50,
-          backgroundColor: theme.colors.brand[2],
+          backgroundColor: theme.colors.brand[3],
           [theme.fn.smallerThan("xs")]: {
            paddingTop: 30,
           }
@@ -164,7 +164,7 @@ const Footer = () => {
       </MantineFooter>
       <Flex
         sx={(theme) => ({
-          backgroundColor: theme.colors.brand[2],
+          backgroundColor: theme.colors.brand[3],
           alignContent: "center",
           justifyContent: "center",
         })}
