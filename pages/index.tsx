@@ -87,7 +87,6 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
     season[0].products = slicedList;
   });
 
-  console.log(seasonTitles[0][0].seasons);
   return (
     <>
       <Head>
