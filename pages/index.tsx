@@ -353,10 +353,10 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
               <Button
                 onClick={() => setOpened(true)}
                 sx={(theme) => ({
-                  height: 100,
-                  color: "black",
+                  height: 120,
+                  color: "white",
                   minWidth: 170,
-                  backgroundColor: "#E6FCF5",
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
                   border: "1px solid white",
                   fontSize: 25,
                   [theme.fn.smallerThan("md")]: {
