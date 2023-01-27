@@ -62,8 +62,15 @@ const TotalSum: FC = () => {
       <Button
         onClick={() => handleClick()}
         disabled={checkout.courrier ? false : true}
-        sx={{ width: "100%" }}
         mt={10}
+        sx={(theme) => ({
+          width: "100%",
+          "&:hover": {
+            backgroundColor: theme.colors.brand[8],
+            color: theme.colors.brand[0],
+            borderColor: theme.colors.brand[0],
+        },
+        })}
       >
         Gå till betalning
       </Button>

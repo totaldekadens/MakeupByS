@@ -190,7 +190,18 @@ const DeliveryInformation: FC = () => {
                 type="email"
                 {...form.getInputProps("email")}
               />
-              <Button type="submit">Fortsätt</Button>
+              <Button
+                type="submit"
+                sx={(theme) => ({
+                  "&:hover": {
+                    backgroundColor: theme.colors.brand[8],
+                    color: theme.colors.brand[0],
+                    borderColor: theme.colors.brand[0],
+                  },
+                })}
+              >
+                Fortsätt
+              </Button>
             </form>
           </Flex>
         </>

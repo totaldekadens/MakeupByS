@@ -1,7 +1,6 @@
 import {
   Title,
   Footer as MantineFooter,
-  SimpleGrid,
   Divider,
   Text,
   Flex,
@@ -142,21 +141,21 @@ const Footer = () => {
                 Följ Oss
               </Title>
               <Flex>
-                <a href={"/"}>
+                <Link href={"/"}>
                 <Flex sx={{ width: 25, height: 25, cursor: "pointer" }}>
                   <Image src={"/uploads/instagram.svg"} />
                 </Flex>
-                </a>
-                <a href={"/"}>
+                </Link>
+                <Link href={"/"}>
                 <Flex sx={{ width: 25, height: 25, cursor: "pointer" }}>
                   <Image src={"/uploads/facebook.svg"} />
                 </Flex>
-                </a>
-                <a href={"/"}>
+                </Link>
+                <Link href={"/"}>
                 <Flex sx={{ width: 25, height: 25, cursor: "pointer" }}>
                   <Image src={"/uploads/youtube.svg"} />
                 </Flex>
-                </a>
+                </Link>
               </Flex>
             </Box>
             </Flex>

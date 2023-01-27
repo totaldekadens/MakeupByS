@@ -2,7 +2,7 @@ import { AppShell, Flex, Title, Text } from "@mantine/core";
 import { NextPage } from "next";
 import Head from "next/head";
 import { FC, PropsWithChildren } from "react";
-import Header from "../components/Header";
+import Header from "../components/layout/Header";
 import ContainerWithBorder from "../components/layout/ContainerWithBorder";
 import MarginTopContainer from "../components/layout/MarginTopContainer";
 

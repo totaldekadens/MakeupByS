@@ -197,6 +197,11 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
                 setOpenNext(openNext - 1);
               }}
               sx={(theme) => ({
+                "&:hover": {
+                  backgroundColor: theme.colors.brand[8],
+                  color: theme.colors.brand[0],
+                  borderColor: theme.colors.brand[0],
+                },
                 [theme.fn.smallerThan("xs")]: {
                   width: "100%",
                 },
@@ -221,6 +226,11 @@ const Quiz: FC<Props> = ({ opened, setOpened }) => {
                   : true
               }
               sx={(theme) => ({
+                "&:hover": {
+                  backgroundColor: theme.colors.brand[8],
+                  color: theme.colors.brand[0],
+                  borderColor: theme.colors.brand[0],
+                },
                 [theme.fn.smallerThan("xs")]: {
                   width: "100%",
                 },

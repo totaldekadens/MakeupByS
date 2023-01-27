@@ -1,6 +1,6 @@
 import Head from "next/head";
-import FrontPageHeader from "../components/FrontPageHeader";
-import Footer from "../components/Footer";
+import FrontPageHeader from "../components/layout/FrontPageHeader";
+import Footer from "../components/layout/Footer";
 import {
   AppShell,
   MediaQuery,
@@ -104,11 +104,11 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
       </Head>
 
       <MediaQuery smallerThan={"sm"} styles={{ display: "none", zIndex: 900 }}>
-        <Image src="/uploads/fadetoblackbig.svg" pos={"absolute"} top={0} />
+        <Image alt="bakgrundskugga" src="/uploads/fadetoblackbig.svg" pos={"absolute"} top={0} />
       </MediaQuery>
 
       <MediaQuery largerThan={"sm"} styles={{ display: "none", zIndex: 900 }}>
-        <Image src="/uploads/fadeblackmobilesvg.svg" pos={"absolute"} top={0} />
+        <Image alt="bakgrundskugga" src="/uploads/fadeblackmobilesvg.svg" pos={"absolute"} top={0} />
       </MediaQuery>
       <BackgroundImage
         sx={(theme) => ({
@@ -159,17 +159,17 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                 },
               })}
             >
-              <Title fw={"400"} mr={30} tt={"uppercase"} c={"white"} fz={"md"}>
+              <Text fw={"400"} mr={30} tt={"uppercase"} c={"white"} fz={"md"}>
                 <IconCheck size={18} /> fri frakt inom sverige
-              </Title>
+              </Text>
 
               <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
                 <Space w={"lg"} />
               </MediaQuery>
 
-              <Title fw={"400"} ml={10} tt={"uppercase"} c={"white"} fz={"md"}>
+              <Text fw={"400"} ml={10} tt={"uppercase"} c={"white"} fz={"md"}>
                 <IconCheck size={18} /> 100% vegan
-              </Title>
+              </Text>
             </Flex>
 
             <Flex
@@ -179,7 +179,7 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                 },
               })}
             >
-              <Title
+              <Text
                 fw={"400"}
                 tt={"uppercase"}
                 c={"white"}
@@ -191,13 +191,13 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                 })}
               >
                 <IconCheck size={12} /> fri frakt från sverige
-              </Title>
+              </Text>
 
               <Space w={"lg"} />
 
-              <Title fw={"400"} tt={"uppercase"} c={"white"} fz={"12px"}>
+              <Text fw={"400"} tt={"uppercase"} c={"white"} fz={"12px"}>
                 <IconCheck size={12} /> 100% vegan
-              </Title>
+              </Text>
             </Flex>
           </Flex>
         </Flex>
@@ -252,6 +252,7 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
             <Flex direction={"column"}>
               <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
                 <Title
+                  order={1}
                   mb={20}
                   size={70}
                   styles={{
@@ -505,8 +506,9 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                               }}
                             />
                           </Box>
-                          <Title
+                          <Text
                             sx={{
+                              fontWeight: "bold",
                               textAlign: "center",
                               color: "#1D464E",
                               fontSize: 15,
@@ -515,7 +517,7 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                             }}
                           >
                             {seasons.title}
-                          </Title>
+                          </Text>
                         </Link>
                       </Grid.Col>
                     );
@@ -525,7 +527,7 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
 
             <Title
                       id="nyheter"
-                      order={4}
+                      order={2}
                       fz={35}
                       align="center"
                       fw={800}
@@ -538,10 +540,10 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                       Nyheter
                     </Title>
 
-            {seasonTitles.map((season: any) => {
+            {seasonTitles.map((season: any, index: number) => {
               return (
-                <>
                   <Flex
+                    key={index}
                     direction={"column"}
                     mt={20}
                     mb={80}
@@ -550,7 +552,7 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                     })}
                   >
                    <Title
-                      order={4}
+                      order={2}
                       fz={25}
                       text-align="flex-start"
                       pl={35}
@@ -608,7 +610,6 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                       </>
                     ) : null}
                   </Flex>
-                </>
               );
             })}
           </main>

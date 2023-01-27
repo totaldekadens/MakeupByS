@@ -8,10 +8,10 @@ import {
   Box,
 } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons";
-import { hideContext } from "./context/HideProvider";
+import { hideContext } from "../context/HideProvider";
 import { useRouter } from "next/router";
 import { forwardRef, useContext, useEffect, useState } from "react";
-import { PopulatedProduct } from "../utils/types";
+import { PopulatedProduct } from "../../utils/types";
 import { ItemProps } from "./Searchbar";
 
 const SearchMobileFrontPage = () => {

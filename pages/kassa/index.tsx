@@ -68,7 +68,7 @@ const Kassa: NextPage = () => {
             alignItems: "center",
           }}
         >
-          <Title order={1}>KASSA</Title>
+          <Title color={"brand.8"} order={1}>KASSA</Title>
           {totalSum && totalSum > 0 ? (
             <>
               <CartCheckout cartItems={cartItems} setCartItems={setCartItems} />

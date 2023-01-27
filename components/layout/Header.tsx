@@ -1,5 +1,4 @@
 import {
-  Title,
   Header as MantineHeader,
   Flex,
   Space,
@@ -8,15 +7,15 @@ import {
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import LoginButton from "./LoginButton";
-import Searchbar from "./Searchbar";
-import ButtonSeason from "./ButtonSeason";
+import LoginButton from "../buttons/LoginButton";
+import Searchbar from "../search/Searchbar";
+import ButtonSeason from "../buttons/ButtonSeason";
 import { IconCheck } from "@tabler/icons";
-import SearchbarMobile from "./SearchbarMobile";
-import MobileLoginButton from "./MobileLoginButtons";
-import MobileBurgerMenu from "./MobileBurgerMenu";
+import SearchbarMobile from "../search/SearchbarMobile";
+import MobileLoginButton from "../buttons/MobileLoginButtons";
+import MobileBurgerMenu from "../buttons/MobileBurgerMenu";
 import { useContext } from "react";
-import { hideContext } from "./context/HideProvider";
+import { hideContext } from "../context/HideProvider";
 
 const Header = () => {
   const session = useSession();
@@ -138,7 +137,7 @@ const Header = () => {
             <MobileBurgerMenu />
 
             <Link href="/">
-              <Title
+              <Text
                 fw={500}
                 size={48}
                 color="white"
@@ -155,7 +154,7 @@ const Header = () => {
                 })}
               >
                 MakeUpByS
-              </Title>
+              </Text>
             </Link>
             <LoginButton />
             <MobileLoginButton />
