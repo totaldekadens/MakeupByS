@@ -132,7 +132,6 @@ const Header = () => {
               },
             })}
           >
-            
             <Searchbar />
             <MobileBurgerMenu />
 
@@ -142,6 +141,7 @@ const Header = () => {
                 size={48}
                 color="white"
                 sx={(theme) => ({
+                  lineHeight: 1.3,
                   [theme.fn.smallerThan("md")]: {
                     fontSize: 43,
                   },
