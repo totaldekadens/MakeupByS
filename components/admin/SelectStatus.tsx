@@ -195,7 +195,18 @@ const SelectStatus: FC<Props> = ({ order }) => {
               onChange={setStatus}
               data={statusList}
             />
-            <Button onClick={() => handleClick()}>Ändra status</Button>
+            <Button
+              sx={(theme) => ({
+                "&:hover": {
+                  backgroundColor: theme.colors.brand[8],
+                  color: theme.colors.brand[0],
+                  borderColor: theme.colors.brand[0],
+                },
+              })}
+              onClick={() => handleClick()}
+            >
+              Ändra status
+            </Button>
           </>
         </Flex>
       )}

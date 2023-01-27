@@ -13,11 +13,12 @@ const Result: FC<Props> = ({ item, description, setOpened }) => {
   const slugifiedSeason = useSlugify(item);
   return (
     <Flex
-      sx={{ width: "100%", minHeight: "70vh", }}
+      sx={{ width: "100%", minHeight: "70vh" }}
       direction="column"
       align={"center"}
     >
       <Title
+        color={"brand.8"}
         order={1}
         size={70}
         sx={(theme) => ({
@@ -67,6 +68,11 @@ const Result: FC<Props> = ({ item, description, setOpened }) => {
           w={300}
           mt={40}
           sx={(theme) => ({
+            "&:hover": {
+              backgroundColor: theme.colors.brand[8],
+              color: theme.colors.brand[0],
+              borderColor: theme.colors.brand[0],
+            },
             [theme.fn.smallerThan("xs")]: {
               height: 60,
               width: "100%",

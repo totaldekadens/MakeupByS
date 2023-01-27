@@ -8,9 +8,9 @@ import {
   IconCheck,
 } from "@tabler/icons";
 import { useHover, useLocalStorage } from "@mantine/hooks";
-import { LineItem } from "./cart/AddToCartIcon";
+import { LineItem } from "../cart/AddToCartIcon";
 import { FC, useContext, useEffect, useState } from "react";
-import { openedCartContext } from "./context/OpenCartProvider";
+import { openedCartContext } from "../context/OpenCartProvider";
 
 const MobileLoginButton: FC = () => {
   const session = useSession();

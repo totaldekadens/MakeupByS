@@ -14,8 +14,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import BreadCrumb from "../../../components/BreadCrumb";
 import Cart from "../../../components/cart/Cart";
-import Footer from "../../../components/Footer";
-import Header from "../../../components/Header";
+import Footer from "../../../components/layout/Footer";
+import Header from "../../../components/layout/Header";
 import MarginTopContainer from "../../../components/layout/MarginTopContainer";
 import WrapContainer from "../../../components/layout/WrapContainer";
 import ProductCard from "../../../components/product/ProductCard";
@@ -91,7 +91,7 @@ const SeasonPage: NextPage<Props> = ({ products, season }) => {
                   align="center"
                   sx={{ width: "100%" }}
                 >
-                  <Title order={1}>{season?.title}</Title>
+                  <Title color={"brand.8"} order={1}>{season?.title}</Title>
                   <Text align="center" mt={10} color="dimmed">
                     {season?.description}
                   </Text>

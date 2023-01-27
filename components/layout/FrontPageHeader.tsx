@@ -1,13 +1,13 @@
-import { Title, Header as MantineHeader, Flex } from "@mantine/core";
+import { Title, Header as MantineHeader, Flex, Text } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import LoginButton from "./LoginButton";
-import Searchbar from "./Searchbar";
-import MobileLoginButton from "./MobileLoginButtons";
-import MobileBurgerMenu from "./MobileBurgerMenu";
-import ButtonSeasonFrontPage from "./ButtonSeasonFrontPage";
-import SearchMobileFrontPage from "./SearchMobileFrontpage";
-import { hideContext } from "./context/HideProvider";
+import LoginButton from "../buttons/LoginButton";
+import Searchbar from "../search/Searchbar";
+import MobileLoginButton from "../buttons/MobileLoginButtons";
+import MobileBurgerMenu from "../buttons/MobileBurgerMenu";
+import ButtonSeasonFrontPage from "../buttons/ButtonSeasonFrontPage";
+import SearchMobileFrontPage from "../search/SearchMobileFrontpage";
+import { hideContext } from "../context/HideProvider";
 import React, { useContext, useEffect, useState } from "react";
 
 const FrontPageHeader = () => {
@@ -94,7 +94,7 @@ const FrontPageHeader = () => {
 
             <Link href="/">
               {session.data?.user.admin ? (
-                <Title
+                <Text
                   fw={500}
                   size={48}
                   color="white"
@@ -111,9 +111,9 @@ const FrontPageHeader = () => {
                   })}
                 >
                   MakeUpByS
-                </Title>
+                </Text>
               ) : (
-                <Title
+                <Text
                   size={48}
                   fw={500}
                   color="white"
@@ -127,7 +127,7 @@ const FrontPageHeader = () => {
                   })}
                 >
                   MakeUpByS
-                </Title>
+                </Text>
               )}
             </Link>
             <LoginButton />

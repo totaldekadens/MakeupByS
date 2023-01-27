@@ -62,6 +62,7 @@ const Cart: FC = () => {
           marginBottom: "40px",
           fontSize: "24px",
           justifyContent: "center",
+          color: theme.colors.brand[8],
         },
         drawer: {
           [theme.fn.smallerThan("sm")]: {
@@ -128,6 +129,13 @@ const Cart: FC = () => {
               disabled={totalSum == 0 ? true : false}
               onClick={() => setOpenedCart(false)}
               h={50}
+              sx={(theme) => ({
+                "&:hover": {
+                  backgroundColor: theme.colors.brand[8],
+                  color: theme.colors.brand[0],
+                  borderColor: theme.colors.brand[0],
+              },
+              })}
             >
               Till kassan
             </Button>

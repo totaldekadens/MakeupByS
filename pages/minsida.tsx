@@ -1,7 +1,7 @@
 import { AppShell, Title, Button, Text, Accordion, Flex } from "@mantine/core";
 import { NextPage } from "next";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
+import Footer from "../components/layout/Footer";
+import Header from "../components/layout/Header";
 import { useSession, signIn, signOut } from "next-auth/react";
 import Cart from "../components/cart/Cart";
 import { useEffect, useState } from "react";
@@ -159,7 +159,18 @@ const MyPage: NextPage = () => {
                 <Text>Du har ännu inte lagt en order</Text>
               )}
             </Flex>
-            <Button mx={10} color="white" onClick={() => signOut()}>
+            <Button
+              sx={(theme) => ({
+                "&:hover": {
+                  backgroundColor: theme.colors.brand[8],
+                  color: theme.colors.brand[0],
+                  borderColor: theme.colors.brand[0],
+                },
+              })}
+              mx={10}
+              color="white"
+              onClick={() => signOut()}
+            >
               Logga ut
             </Button>
           </WrapContainer>

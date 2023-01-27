@@ -1,6 +1,6 @@
 import Head from "next/head";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Header from "../components/layout/Header";
+import Footer from "../components/layout/Footer";
 import { AppShell, Button, Group } from "@mantine/core";
 import { useState } from "react";
 import MarginTopContainer from "../components/layout/MarginTopContainer";

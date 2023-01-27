@@ -18,8 +18,8 @@ import { useContext, useState } from "react";
 import { LineItem } from "../../components/cart/AddToCartIcon";
 import Cart from "../../components/cart/Cart";
 import { openedCartContext } from "../../components/context/OpenCartProvider";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import Footer from "../../components/layout/Footer";
+import Header from "../../components/layout/Header";
 import MarginTopContainer from "../../components/layout/MarginTopContainer";
 import CarouselProduct from "../../components/product/CarouselProduct";
 import Details from "../../components/product/Details";
@@ -261,7 +261,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                       <Title color="dimmed" order={5}>
                         {product.mainProduct.brand}
                       </Title>
-                      <Title order={1}>{product.title}</Title>
+                      <Title color={"brand.8"} order={1}>{product.title}</Title>
                     </Flex>
                     <Flex justify={"space-between"}>
                       <Flex>
@@ -341,6 +341,13 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                         disabled={product.availableQty < 1 ? true : false}
                         mt={20}
                         onClick={() => handleClick()}
+                        sx={(theme) => ({
+                          "&:hover": {
+                            backgroundColor: theme.colors.brand[8],
+                            color: theme.colors.brand[0],
+                            borderColor: theme.colors.brand[0],
+                        },
+                        })}
                       >
                         KÖP NU
                       </Button>
@@ -359,7 +366,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                   </Box>
                 </MediaQuery>
                 <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
-                  <Title order={3}>Andra har också köpt</Title>
+                  <Title color={"brand.8"} order={3}>Andra har också köpt</Title>
                   <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
                     <Box>
                       <CarouselProduct

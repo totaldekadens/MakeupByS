@@ -15,8 +15,8 @@ import { useEffect, useState } from "react";
 import SignInForm from "../../components/auth/SignInForm";
 import SignUpForm from "../../components/auth/SignUpForm";
 import Cart from "../../components/cart/Cart";
-import Footer from "../../components/Footer";
-import Header from "../../components/Header";
+import Footer from "../../components/layout/Footer";
+import Header from "../../components/layout/Header";
 import MarginTopContainer from "../../components/layout/MarginTopContainer";
 
 const SignIn: NextPage = () => {
