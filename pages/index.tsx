@@ -524,6 +524,7 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
             </Grid>
 
             <Title
+                      id="nyheter"
                       order={4}
                       fz={35}
                       align="center"
@@ -537,17 +538,30 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                       Nyheter
                     </Title>
 
-            {seasonTitles.map((season: any, index: Key) => {
+            {seasonTitles.map((season: any) => {
               return (
                 <>
                   <Flex
-                    id="nyheter"
                     direction={"column"}
                     mt={20}
+                    mb={80}
                     sx={(theme) => ({
                       width: "100%",
                     })}
                   >
+                   <Title
+                      order={4}
+                      fz={25}
+                      text-align="flex-start"
+                      pl={35}
+                      fw={800}
+                      color={"#1D464E"}
+                      tt={"uppercase"}
+                      ff={"mada"}
+                      mb={30}
+                    >
+                      {season[0].seasons}
+                    </Title>
                     {season[0].products ? (
                       <>
                         <MediaQuery
@@ -593,17 +607,6 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                         </MediaQuery>
                       </>
                     ) : null}
-                    <Title
-                      order={4}
-                      align="center"
-                      fw={800}
-                      color={"#1D464E"}
-                      tt={"uppercase"}
-                      ff={"mada"}
-                      mb={60}
-                    >
-                      {season[0].seasons}
-                    </Title>
                   </Flex>
                 </>
               );
