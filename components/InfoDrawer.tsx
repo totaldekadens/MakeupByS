@@ -8,7 +8,6 @@ const InfoDrawer: FC = () => {
     const getCookies = () => {
       const getInfo = getCookie("infoConfirmed");
       if (!getInfo) {
-        setCookie("infoConfirmed", false, { maxAge: 60 * 60 * 24 * 7 });
         setOpened(true);
       }
     };
@@ -58,7 +57,7 @@ const InfoDrawer: FC = () => {
           <Button
             mt={10}
             onClick={() => {
-              setCookie("infoConfirmed", true);
+              setCookie("infoConfirmed", true, { maxAge: 60 * 60 * 24 * 7 });
               setOpened(false);
             }}
           >
