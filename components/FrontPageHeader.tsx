@@ -36,20 +36,24 @@ const FrontPageHeader = () => {
     <>
       <MantineHeader
         fixed={true}
-        height={170}
+        height={150}
         sx={(theme) => ({
           display: "flex",
           backgroundColor: bg ? "#090909bd" : "transparent",
           justifyContent: "space-between",
           borderBottom: "none",
           alignItems: "center",
-          paddingTop: bg ? 0 : 60,
+          paddingTop: bg ? 20 : 90,
           transition: "padding 0.6s",
           zIndex: 10000,
           [theme.fn.smallerThan("sm")]: {
             height: 150,
             transition: "padding 0.6s",
           },
+          [theme.fn.smallerThan("sm")]: {
+            paddingTop: bg ? 35 : 80,
+            transition: "padding 0.6s",
+            },
           [theme.fn.smallerThan("xs")]: {
             paddingTop: bg ? 0 : 60,
             height: bg && !hide ? 94 : 80,
@@ -68,6 +72,10 @@ const FrontPageHeader = () => {
               paddingTop: hide ? 0 : 15,
               transition: "padding 0.6s",
             },
+            [theme.fn.smallerThan("md")]: {
+              paddingTop: bg ? 5 : 15,
+              transition: "padding 0.6s",
+              },
           })}
         >
           <Flex
@@ -88,7 +96,7 @@ const FrontPageHeader = () => {
               {session.data?.user.admin ? (
                 <Title
                   fw={500}
-                  size="xxx-large"
+                  size={48}
                   color="white"
                   sx={(theme) => ({
                     [theme.fn.smallerThan("md")]: {
@@ -106,15 +114,15 @@ const FrontPageHeader = () => {
                 </Title>
               ) : (
                 <Title
-                  size="xxx-large"
+                  size={48}
                   fw={500}
                   color="white"
                   sx={(theme) => ({
                     [theme.fn.smallerThan("sm")]: {
-                      fontSize: "xx-large",
+                      fontSize: 35,
                     },
                     [theme.fn.smallerThan("xs")]: {
-                      fontSize: "x-large",
+                      fontSize: 24,
                     },
                   })}
                 >

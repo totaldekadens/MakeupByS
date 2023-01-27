@@ -19,7 +19,6 @@ const CarouselProduct: FC<Props> = ({
 }) => {
   return (
     <Carousel
-      withIndicators
       slideSize={slideSize}
       slideGap={slideGap}
       loop
