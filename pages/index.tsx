@@ -127,7 +127,7 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
             height: "100vh",
           },
         })}
-        src="/uploads/hero.jpg"
+        src="/uploads/hero.webp"
       >
         <Flex
           className="asdasdasd"
