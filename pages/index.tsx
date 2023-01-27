@@ -523,6 +523,20 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                 : null}
             </Grid>
 
+            <Title
+                      order={4}
+                      fz={35}
+                      align="center"
+                      fw={800}
+                      color={"#1D464E"}
+                      tt={"uppercase"}
+                      ff={"mada"}
+                      mb={30}
+                      mt={100}
+                    >
+                      Nyheter
+                    </Title>
+
             {seasonTitles.map((season: any, index: Key) => {
               return (
                 <>
@@ -534,19 +548,6 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                       width: "100%",
                     })}
                   >
-                    <Title
-                      align="center"
-                      fw={800}
-                      color={"#1D464E"}
-                      tt={"uppercase"}
-                      fz={35}
-                      ff={"mada"}
-                      mb={30}
-                      mt={100}
-                    >
-                      {season[0].seasons}
-                    </Title>
-
                     {season[0].products ? (
                       <>
                         <MediaQuery
@@ -592,6 +593,17 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
                         </MediaQuery>
                       </>
                     ) : null}
+                    <Title
+                      order={4}
+                      align="center"
+                      fw={800}
+                      color={"#1D464E"}
+                      tt={"uppercase"}
+                      ff={"mada"}
+                      mb={60}
+                    >
+                      {season[0].seasons}
+                    </Title>
                   </Flex>
                 </>
               );
