@@ -53,9 +53,9 @@ const FrontPageHeader = () => {
           [theme.fn.smallerThan("sm")]: {
             paddingTop: bg ? 35 : 80,
             transition: "padding 0.6s",
-            },
+          },
           [theme.fn.smallerThan("xs")]: {
-            paddingTop: bg ? 0 : 60,
+            paddingTop: bg && !hide ? 10 : bg && hide ? 0 : 60,
             height: bg && !hide ? 94 : 80,
             transition: "padding 0.6",
           },
@@ -75,7 +75,7 @@ const FrontPageHeader = () => {
             [theme.fn.smallerThan("md")]: {
               paddingTop: bg ? 5 : 15,
               transition: "padding 0.6s",
-              },
+            },
           })}
         >
           <Flex

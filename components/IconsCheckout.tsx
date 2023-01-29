@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Flex, Box, ThemeIcon, Text } from "@mantine/core";
 import { IconUser, IconHomeCog, IconCheck } from "@tabler/icons";
@@ -93,12 +93,14 @@ const IconsCheckout: FC = () => {
             </Box>
           </Link>
         ) : (
-          <Link
-            href="/minsida"
-            style={{ display: "flex", alignItems: "center" }}
-          >
-            <IconUser size={36} color="white" className={classes.icons} />
-          </Link>
+          <Flex align={"center"} sx={{ cursor: "pointer" }} /* h={42.8} */>
+            <IconUser
+              onClick={() => signIn()}
+              size={36}
+              color="white"
+              className={classes.icons}
+            />
+          </Flex>
         )}
 
         {session.data?.user.admin ? (
