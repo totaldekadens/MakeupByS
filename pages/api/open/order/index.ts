@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import Order, { OrderDocument } from "../../../../models/Order";
 import OrderStatus from "../../../../models/OrderStatus";
-import SubProduct from "../../../../models/SubProduct";
 import User from "../../../../models/User";
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2022-11-15",

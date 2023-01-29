@@ -74,9 +74,9 @@ const LoginButton: FC = () => {
             </Box>
           </Link>
         ) : (
-          <Link href="/">
+          <Flex sx={{ cursor: "pointer" }} h={42.8}>
             <IconUser size={36} color="white" onClick={() => signIn()} />
-          </Link>
+          </Flex>
         )}
 
         {session.data?.user.admin ? (

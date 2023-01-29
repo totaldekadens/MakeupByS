@@ -108,7 +108,6 @@ const SignUpForm = () => {
 
     const response = await fetch("/api/open/users", request);
     let result = await response.json();
-
     if (response.status == 403) {
       form.setFieldError("email", "Emailadressen används redan");
       return;

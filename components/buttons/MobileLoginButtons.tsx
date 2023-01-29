@@ -42,7 +42,7 @@ const MobileLoginButton: FC = () => {
       <Flex
         gap={"xs"}
         justify="flex-end"
-        align="flex-end"
+        align="flex-start"
         sx={(theme) => ({
           [theme.fn.largerThan("xs")]: {
             display: "none",
@@ -63,9 +63,9 @@ const MobileLoginButton: FC = () => {
             </Box>
           </Link>
         ) : (
-          <Link href="/">
+          <Flex sx={{ cursor: "pointer" }}>
             <IconUser size={26} color="white" onClick={() => signIn()} />
-          </Link>
+          </Flex>
         )}
 
         <Box pos={"relative"}>
@@ -92,7 +92,7 @@ const MobileLoginButton: FC = () => {
           <IconShoppingBag
             style={{ cursor: "pointer" }}
             onClick={() => setOpenedCart(true)}
-            size={24}
+            size={26}
             color="white"
           />
         </Box>
