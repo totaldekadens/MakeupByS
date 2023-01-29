@@ -73,7 +73,7 @@ const HeaderCheckout = () => {
         </Flex>
         <Link href="/">
           <Title
-            size="xxx-large"
+            size={48}
             color="white"
             sx={(theme) => ({
               [theme.fn.smallerThan("sm")]: {
