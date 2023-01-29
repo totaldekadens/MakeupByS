@@ -88,7 +88,6 @@ const SuccessPage: NextPage = (props) => {
         body,
       });
       let result = await response.json();
-
       if (result) {
         setOrderConfirmation(result.data);
 
@@ -110,6 +109,7 @@ const SuccessPage: NextPage = (props) => {
     }
   };
 
+  // Verifies payment and do actions depending on result
   useEffect(() => {
     async function verifyPayment() {
       // Gets session_id from URL-param

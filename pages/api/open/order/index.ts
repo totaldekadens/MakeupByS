@@ -72,7 +72,9 @@ export default async function handler(
         ? user.phone
         : req.body.checkout.phone;
       newOrder.email = req.body.checkout.email;
-      newOrder.invoiceAddress = user ? user.address : req.body.checkout.invoice;
+      newOrder.invoiceAddress = user
+        ? user.address
+        : req.body.checkout.address.invoice;
       newOrder.deliveryAddress = req.body.checkout.address.delivery;
       newOrder.courrier = req.body.checkout.courrier;
       newOrder.existingCustomer = user ? user._id : null;
@@ -90,5 +92,3 @@ export default async function handler(
     res.status(405).end("Method Not Allowed");
   }
 }
-
-export const tjo = async (req: NextApiRequest, res: NextApiResponse) => {};
