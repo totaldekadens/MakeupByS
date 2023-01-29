@@ -481,11 +481,15 @@ const MobileBurgerMenu: FC = () => {
           h={100}
         >
           {session.data?.user ? null : (
-            <Link href={"/minsida"}>
-              <Text weight={"bold"} color="white">
+            <Box
+              onClick={() => {
+                signIn();
+              }}
+            >
+              <Text sx={{ cursor: "pointer" }} weight={"bold"} color="white">
                 Logga in
               </Text>
-            </Link>
+            </Box>
           )}
           <Link href={"/kopvillkor"}>
             <Text weight={"bold"} color="white">
