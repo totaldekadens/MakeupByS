@@ -2,7 +2,7 @@ import { AppShell, Title, Button, Text, Accordion, Flex } from "@mantine/core";
 import { NextPage } from "next";
 import Footer from "../components/layout/Footer";
 import Header from "../components/layout/Header";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Cart from "../components/cart/Cart";
 import { useEffect, useState } from "react";
 import OrderSummary from "../components/OrderSummary";
@@ -58,6 +58,7 @@ const MyPage: NextPage = () => {
         <MarginTopContainer>
           <WrapContainer>
             <Title
+              color = "brand.8"
               sx={(theme) => ({
                 [theme.fn.smallerThan("xs")]: {
                   fontSize: 30,
