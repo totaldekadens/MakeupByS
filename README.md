@@ -1,13 +1,17 @@
 
-## MakeUpByS - Master Thesis 
+# MakeUpByS - Master Thesis 
+
+## Introduction
+
+MakeUpByS is a new and innovative e-commerce platform that offers makeup products categorized by seasons. The unique selling point of this website is the quiz that helps customers determine which season they match the best with, and then suggests makeup products that will suit their specific features.
+
+Link to demo store: 
+https://makeupbys.se/
 
 ### Collaborators: 
 * Angelica Moberg Skoglund
 * Jacob Hoggen
 
-Link to demo store: 
-
-https://makeupbys.se/
 
 ## What you don't see at the website
 
@@ -101,6 +105,9 @@ MyPack Home with normal configuaration:
  * Able to see an overview of all categories. (right now, you need to go inside a season to see categories)
  * Able to save your cart
  * Get the website responsive with rotated mobile devices
+ * Nodemailer
+    - Order confirmation shall be developed and not ending up in trash
+    - "Order shipped" and "Order cancelled" shall be implemented
  
  ### Account
  * You will need to verify your emailaddress when you create an account
