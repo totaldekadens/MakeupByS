@@ -108,6 +108,7 @@ MyPack Home with normal configuaration:
  * Nodemailer
     - Order confirmation shall be developed and not ending up in trash
     - "Order shipped" and "Order cancelled" shall be implemented
+ * Filtering of colors and brands on season- and category page
  
  ### Account
  * You will need to verify your emailaddress when you create an account
