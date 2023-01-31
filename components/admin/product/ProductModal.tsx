@@ -18,6 +18,7 @@ import EditSubProductForm from "./EditSubProductForm";
 import { ResponseModalType } from "../SelectStatus";
 import ResponseModal from "../../layout/ResponseModal";
 import ConfirmDelete from "../../layout/ConfirmDelete";
+import useReloadImage from "../../../utils/useReloadImage";
 
 type Props = {
   product: PopulatedProduct;
@@ -40,11 +41,34 @@ const ProductModal: FC<Props> = ({
     title: "",
     reason: "info",
   });
+  const [src, setSrc] = useState<string[]>([]);
+
+  // Reloads added images after build
+  useEffect(() => {
+    const hej = async () => {
+      console.log("antal gånger lista blir tom");
+      let list: string[] = [];
+      for (let i = 0; i < product.images.length; i++) {
+        let image = product.images[i];
+        const checkImage = await useReloadImage(image);
+        if (checkImage) {
+          //let copy = [...src, checkImage];
+          list.push(checkImage);
+        }
+      }
+
+      setSrc(list);
+      //console.log(list);
+    };
+    hej();
+  }, [product]);
+
   const { classes } = useStyles();
   const handleClick = () => {
     setOpened(false);
   };
-
+  //console.log(product.images);
+  console.log(src);
   return (
     <>
       <Modal
@@ -293,7 +317,34 @@ const ProductModal: FC<Props> = ({
                       loop
                       slideSize={"101%"}
                     >
-                      {product.images ? (
+                      {src.length > 0 ? (
+                        src.map((image, index) => {
+                          return (
+                            <Carousel.Slide key={index}>
+                              <Image
+                                alt={image}
+                                fit="contain"
+                                styles={{
+                                  root: {
+                                    display: "flex",
+                                    align: "center",
+                                    justifyContent: "center",
+                                  },
+                                  imageWrapper: {
+                                    display: "flex",
+                                    align: "center",
+                                  },
+                                  figure: {
+                                    display: "flex",
+                                    align: "center",
+                                  },
+                                }}
+                                src={image}
+                              />
+                            </Carousel.Slide>
+                          );
+                        })
+                      ) : product.images ? (
                         product.images.map((image: string, index: number) => {
                           return (
                             <Carousel.Slide key={index}>
