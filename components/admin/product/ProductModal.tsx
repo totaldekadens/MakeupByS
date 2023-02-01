@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import {
   Modal,
   Text,
@@ -40,11 +40,11 @@ const ProductModal: FC<Props> = ({
     title: "",
     reason: "info",
   });
+
   const { classes } = useStyles();
   const handleClick = () => {
     setOpened(false);
   };
-
   return (
     <>
       <Modal
