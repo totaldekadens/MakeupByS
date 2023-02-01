@@ -70,7 +70,9 @@ const Searchbar = () => {
     ({ price, value, title, images, ...others }: ItemProps, ref) => (
       <div ref={ref} {...others}>
         <Group noWrap>
-          <Avatar src={`/uploads/${images[0]}`} />
+          <Avatar
+            src={`https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${images[0]}`}
+          />
           <div>
             <Text>{title}</Text>
             <Text size="xs" color="dimmed">

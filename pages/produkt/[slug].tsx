@@ -238,7 +238,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                                     align: "center",
                                   },
                                 }}
-                                src={`/uploads/${image}`}
+                                src={`https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${image}`}
                               />
                             </Carousel.Slide>
                           );
@@ -261,7 +261,9 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                       <Title color="dimmed" order={5}>
                         {product.mainProduct.brand}
                       </Title>
-                      <Title color={"brand.8"} order={1}>{product.title}</Title>
+                      <Title color={"brand.8"} order={1}>
+                        {product.title}
+                      </Title>
                     </Flex>
                     <Flex justify={"space-between"}>
                       <Flex>
@@ -346,7 +348,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                             backgroundColor: theme.colors.brand[8],
                             color: theme.colors.brand[0],
                             borderColor: theme.colors.brand[0],
-                        },
+                          },
                         })}
                       >
                         KÖP NU
@@ -366,7 +368,9 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                   </Box>
                 </MediaQuery>
                 <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
-                  <Title color={"brand.8"} order={3}>Andra har också köpt</Title>
+                  <Title color={"brand.8"} order={3}>
+                    Andra har också köpt
+                  </Title>
                   <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
                     <Box>
                       <CarouselProduct
