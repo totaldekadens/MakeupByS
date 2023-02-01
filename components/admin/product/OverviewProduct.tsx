@@ -18,16 +18,21 @@ const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
 
   // Reloads added images after build
   useEffect(() => {
-    const reloadImage = async () => {
-      const checkImage = await useReloadImage(product.images[0]);
-      if (checkImage) {
-        let copy = [...src, checkImage];
-        setSrc(copy);
+    const reloadImages = async () => {
+      let list: string[] = [];
+      for (let i = 0; i < product.images.length; i++) {
+        let image = product.images[i];
+        const checkImage = await useReloadImage(image);
+        if (checkImage) {
+          list.push(checkImage);
+        }
       }
+      setSrc(list);
+      product.images = src;
     };
-    reloadImage();
+    reloadImages();
   }, []);
-
+  console.log(src);
   return (
     <>
       <tr key={product.title}>
