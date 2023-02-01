@@ -7,7 +7,12 @@ import {
   Text,
   Breadcrumbs,
 } from "@mantine/core";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import {
+  GetServerSideProps,
+  GetStaticPaths,
+  GetStaticProps,
+  NextPage,
+} from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -144,7 +149,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   return { paths, fallback: true };
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   await dbConnect();
 
   const season = await Season.findOne({ slug: params?.seasonSlug });

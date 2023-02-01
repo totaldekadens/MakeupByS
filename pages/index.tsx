@@ -17,7 +17,7 @@ import {
 import Cart from "../components/cart/Cart";
 import { IconCheck } from "@tabler/icons";
 import { PopulatedColor, PopulatedProduct } from "../utils/types";
-import { GetStaticProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import useWindowSize from "../utils/useWindowSize";
 import dbConnect from "../utils/dbConnect";
 import SubProduct from "../models/SubProduct";
@@ -621,7 +621,7 @@ const Home: NextPage<Props> = ({ products, seasons }) => {
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   await dbConnect();
 
   const subProducts = await SubProduct.find({})
