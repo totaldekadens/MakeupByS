@@ -1,8 +1,7 @@
 import { Flex, Image, Text, MediaQuery } from "@mantine/core";
-import { IconChevronsDownLeft, IconTrash } from "@tabler/icons";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { IconTrash } from "@tabler/icons";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import { PopulatedProduct } from "../../../utils/types";
-//import { cloudinaryPath } from "../../../utils/useCloudPath";
 import ConfirmDelete from "../../layout/ConfirmDelete";
 import ProductModal from "./ProductModal";
 type Props = {
