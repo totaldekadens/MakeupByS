@@ -315,7 +315,7 @@ const ProductModal: FC<Props> = ({
                                     align: "center",
                                   },
                                 }}
-                                src={`/uploads/${image}`}
+                                src={`https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${image}`}
                               />
                             </Carousel.Slide>
                           );
