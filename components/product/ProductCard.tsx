@@ -11,7 +11,7 @@ type Props = {
 };
 
 const ProductCard: FC<Props> = ({ product }) => {
-  const path = `/uploads/${product.images[0]}`;
+  const path = `https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${product.images[0]}`;
   const { hovered, ref } = useHover();
   const size = useWindowSize();
   const price = Number(product.mainProduct.price.$numberDecimal);
