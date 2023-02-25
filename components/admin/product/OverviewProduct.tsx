@@ -1,8 +1,7 @@
 import { Flex, Image, Text, MediaQuery } from "@mantine/core";
-import { IconChevronsDownLeft, IconTrash } from "@tabler/icons";
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { IconTrash } from "@tabler/icons";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 import { PopulatedProduct } from "../../../utils/types";
-import useReloadImage from "../../../utils/useReloadImage";
 import ConfirmDelete from "../../layout/ConfirmDelete";
 import ProductModal from "./ProductModal";
 type Props = {
@@ -14,32 +13,13 @@ const OverviewProduct: FC<Props> = ({ product, setIsUpdated }) => {
   const [opened, setOpened] = useState(false);
   const [openedConfirm, setOpenedConfirm] = useState(false);
 
-  const [src, setSrc] = useState<string[]>([]);
-
-  // Reloads added images after build
-  useEffect(() => {
-    const reloadImages = async () => {
-      let list: string[] = [];
-      for (let i = 0; i < product.images.length; i++) {
-        let image = product.images[i];
-        const checkImage = await useReloadImage(image);
-        if (checkImage) {
-          list.push(checkImage);
-        }
-      }
-      setSrc(list);
-      product.images = src;
-    };
-    reloadImages();
-  }, []);
-  console.log(src);
   return (
     <>
       <tr key={product.title}>
         <td style={{ height: "50px" }}>
           <Flex gap={10} w={100}>
             <Image
-              src={src.length > 0 ? src[0] : `/uploads/${product.images[0]}`}
+              src={`https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${product.images[0]}`}
               width={30}
               alt={product.title}
               fit="contain"

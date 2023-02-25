@@ -11,7 +11,7 @@ import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BreadCrumb from "../../../components/BreadCrumb";
 import Cart from "../../../components/cart/Cart";
 import Footer from "../../../components/layout/Footer";
@@ -26,6 +26,7 @@ import Season, { SeasonDocument } from "../../../models/Season";
 import SubProduct from "../../../models/SubProduct";
 import dbConnect from "../../../utils/dbConnect";
 import { PopulatedProduct } from "../../../utils/types";
+import useFetchHelper from "../../../utils/useFetchHelper";
 
 type Props = {
   products: PopulatedProduct[];
@@ -33,8 +34,25 @@ type Props = {
 };
 
 const SeasonPage: NextPage<Props> = ({ products, season }) => {
+  const [currentProducts, setCurrentProducts] =
+    useState<PopulatedProduct[]>(products);
+  const [status, setStatus] = useState(200);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const router = useRouter();
+
   const { seasonSlug } = router.query;
+
+  useEffect(() => {
+    if (seasonSlug) {
+      console.log("kommer jag in?");
+      useFetchHelper(
+        setStatus,
+        setIsLoadingProducts,
+        setCurrentProducts,
+        `/api/open/subproduct/season/${seasonSlug}`
+      );
+    }
+  }, [products]);
 
   let categories: CategoryDocument[] = [];
   if (products) {
@@ -84,19 +102,21 @@ const SeasonPage: NextPage<Props> = ({ products, season }) => {
             </Flex>
           )}
           <WrapContainer>
-            {!products ? null : (
+            {!currentProducts ? null : (
               <>
                 <Flex
                   direction={"column"}
                   align="center"
                   sx={{ width: "100%" }}
                 >
-                  <Title color={"brand.8"} order={1}>{season?.title}</Title>
+                  <Title color={"brand.8"} order={1}>
+                    {season?.title}
+                  </Title>
                   <Text align="center" mt={10} color="dimmed">
                     {season?.description}
                   </Text>
                 </Flex>
-                {products[0] ? (
+                {currentProducts[0] ? (
                   <Flex justify={"center"} mt="sm" gap="lg" wrap={"wrap"}>
                     {categories.map((category, index) => {
                       return (
@@ -114,7 +134,7 @@ const SeasonPage: NextPage<Props> = ({ products, season }) => {
                 ) : null}
                 <Flex mt="xl" wrap="wrap" justify={"center"}>
                   <Grid justify={"center"}>
-                    {products?.map((product, index) => {
+                    {currentProducts?.map((product, index) => {
                       return (
                         <Grid.Col key={index} md={4} sm={5} xs={6}>
                           <ProductCard product={product} />

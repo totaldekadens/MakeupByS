@@ -64,7 +64,9 @@ const SearchMobileFrontPage = () => {
     ({ price, slug, value, title, images, ...others }: ItemProps, ref) => (
       <div ref={ref} {...others}>
         <Group noWrap>
-          <Avatar src={`/uploads/${images[0]}`} />
+          <Avatar
+            src={`https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${images[0]}`}
+          />
           <div>
             <Text>{title}</Text>
             <Text size="xs" color="dimmed">
@@ -98,10 +100,11 @@ const SearchMobileFrontPage = () => {
           itemComponent={AutoCompleteItem}
           icon={<IconSearch color="white" size={15} stroke={3} />}
           rightSection={
-            value &&
-            <Box sx={{ cursor: "pointer" }} onClick={handleClick}>
-              <IconX id="iconX" color="white" size={20} stroke={2} />
-            </Box>
+            value && (
+              <Box sx={{ cursor: "pointer" }} onClick={handleClick}>
+                <IconX id="iconX" color="white" size={20} stroke={2} />
+              </Box>
+            )
           }
           id="searchbar"
           color="white"

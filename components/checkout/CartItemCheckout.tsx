@@ -27,7 +27,7 @@ const CartItemCheckout: FC<Props> = ({ cartItem, cartItems, setCartItems }) => {
       <td style={{ height: "70px" }}>
         <Flex gap={10}>
           <Image
-            src={`/uploads/${cartItem.price_data.product_data.images[0]}`}
+            src={`https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${cartItem.price_data.product_data.images[0]}`}
             width={55}
             alt={cartItem.price_data.product_data.name}
             fit="contain"

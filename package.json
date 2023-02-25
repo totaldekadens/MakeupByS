@@ -22,6 +22,8 @@
     "@types/nodemailer": "^6.4.7",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
+    "cloudinary": "^1.33.0",
+    "cloudinary-react": "^1.8.1",
     "cookie-cutter": "^0.2.0",
     "cookies": "^0.8.0",
     "cookies-next": "^2.1.1",

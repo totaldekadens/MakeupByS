@@ -34,7 +34,7 @@ const CartItem: FC<Props> = ({ product, cartItems, setCartItems }) => {
       })}
     >
       <Image
-        src={`/uploads/${product.price_data.product_data.images[0]}`}
+        src={`https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${product.price_data.product_data.images[0]}`}
         width={55}
         alt={product.price_data.product_data.name}
         fit="contain"

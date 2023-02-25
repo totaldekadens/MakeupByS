@@ -14,7 +14,7 @@ import {
 import { useLocalStorage } from "@mantine/hooks";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { useRouter } from "next/router";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { LineItem } from "../../components/cart/AddToCartIcon";
 import Cart from "../../components/cart/Cart";
 import { openedCartContext } from "../../components/context/OpenCartProvider";
@@ -35,6 +35,7 @@ import { PopulatedColor, PopulatedProduct } from "../../utils/types";
 import { ResponseModalType } from "../../components/admin/SelectStatus";
 import ResponseModal from "../../components/layout/ResponseModal";
 import Head from "next/head";
+import useFetchHelper from "../../utils/useFetchHelper";
 
 type Props = {
   product: PopulatedProduct;
@@ -53,6 +54,23 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
 
   // Router
   const router = useRouter();
+  const [status, setStatus] = useState(200);
+  const [currentProduct, setCurrentProduct] =
+    useState<PopulatedProduct>(product);
+  const [isLoadingProducts, setIsLoadingProducts] = useState(true);
+
+  const { slug } = router.query;
+
+  useEffect(() => {
+    if (slug) {
+      useFetchHelper(
+        setStatus,
+        setIsLoadingProducts,
+        setCurrentProduct,
+        `/api/open/subproduct/${slug}`
+      );
+    }
+  }, [product]);
 
   // Local storage
   const [cartItems, setCartItems] = useLocalStorage<LineItem[]>({
@@ -67,8 +85,8 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
   const { classes } = useStyles();
 
   const handleClick = () => {
-    if (product && product.mainProduct) {
-      const price = Number(product.mainProduct.price.$numberDecimal);
+    if (currentProduct && currentProduct.mainProduct) {
+      const price = Number(currentProduct.mainProduct.price.$numberDecimal);
 
       const lineItem = {
         quantity: 1,
@@ -76,13 +94,13 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
           currency: "sek",
           unit_amount: price,
           product_data: {
-            name: product.title,
-            description: product.mainProduct.description1,
-            images: product.images,
+            name: currentProduct.title,
+            description: currentProduct.mainProduct.description1,
+            images: currentProduct.images,
             metadata: {
-              id: product._id,
-              weight: product.mainProduct.weight
-                ? product.mainProduct.weight
+              id: currentProduct._id,
+              weight: currentProduct.mainProduct.weight
+                ? currentProduct.mainProduct.weight
                 : 0,
             },
           },
@@ -93,11 +111,11 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
 
       let foundIndex = cartCopy.findIndex(
         (cartItem) =>
-          cartItem.price_data.product_data.metadata.id === product._id
+          cartItem.price_data.product_data.metadata.id === currentProduct._id
       );
 
       if (foundIndex >= 0) {
-        if (cartCopy[foundIndex].quantity >= product.availableQty) {
+        if (cartCopy[foundIndex].quantity >= currentProduct.availableQty) {
           const object: ResponseModalType = {
             title: "Finns tyvärr inga fler produkter",
             reason: "error",
@@ -119,8 +137,11 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
   return (
     <>
       <Head>
-        <title>{product?.title + " - MakeUpByS"}</title>
-        <meta property="og:title" content={`${product?.title} - MakeUpByS`} />
+        <title>{currentProduct?.title + " - MakeUpByS"}</title>
+        <meta
+          property="og:title"
+          content={`${currentProduct?.title} - MakeUpByS`}
+        />
       </Head>
       <AppShell
         fixed={false}
@@ -175,7 +196,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
               maxWidth: "1320px",
             }}
           >
-            {product && product.mainProduct && products ? (
+            {currentProduct && currentProduct.mainProduct && products ? (
               <Flex direction={"column"} sx={{ width: "100%" }}>
                 <Flex
                   sx={(theme) => ({
@@ -196,7 +217,9 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                     align="flex-start"
                   >
                     <Carousel
-                      withControls={product.images.length < 2 ? false : true}
+                      withControls={
+                        currentProduct.images.length < 2 ? false : true
+                      }
                       classNames={classes}
                       mx="auto"
                       align="center"
@@ -216,33 +239,35 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                       loop
                       slideSize={"101%"}
                     >
-                      {product.images ? (
-                        product.images.map((image: string, index: number) => {
-                          return (
-                            <Carousel.Slide key={index}>
-                              <Image
-                                alt={image}
-                                fit="contain"
-                                styles={{
-                                  root: {
-                                    display: "flex",
-                                    align: "center",
-                                    justifyContent: "center",
-                                  },
-                                  imageWrapper: {
-                                    display: "flex",
-                                    align: "center",
-                                  },
-                                  figure: {
-                                    display: "flex",
-                                    align: "center",
-                                  },
-                                }}
-                                src={`/uploads/${image}`}
-                              />
-                            </Carousel.Slide>
-                          );
-                        })
+                      {currentProduct.images ? (
+                        currentProduct.images.map(
+                          (image: string, index: number) => {
+                            return (
+                              <Carousel.Slide key={index}>
+                                <Image
+                                  alt={image}
+                                  fit="contain"
+                                  styles={{
+                                    root: {
+                                      display: "flex",
+                                      align: "center",
+                                      justifyContent: "center",
+                                    },
+                                    imageWrapper: {
+                                      display: "flex",
+                                      align: "center",
+                                    },
+                                    figure: {
+                                      display: "flex",
+                                      align: "center",
+                                    },
+                                  }}
+                                  src={`https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${image}`}
+                                />
+                              </Carousel.Slide>
+                            );
+                          }
+                        )
                       ) : (
                         <Carousel.Slide></Carousel.Slide>
                       )}
@@ -259,9 +284,11 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                   >
                     <Flex direction={"column"}>
                       <Title color="dimmed" order={5}>
-                        {product.mainProduct.brand}
+                        {currentProduct.mainProduct.brand}
                       </Title>
-                      <Title color={"brand.8"} order={1}>{product.title}</Title>
+                      <Title color={"brand.8"} order={1}>
+                        {currentProduct.title}
+                      </Title>
                     </Flex>
                     <Flex justify={"space-between"}>
                       <Flex>
@@ -270,13 +297,14 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                           styles={{ display: "none" }}
                         >
                           <Text>
-                            {product.mainProduct.price.$numberDecimal + " KR"}
+                            {currentProduct.mainProduct.price.$numberDecimal +
+                              " KR"}
                           </Text>
                         </MediaQuery>
                       </Flex>
                       <Flex>
-                        {product.colors
-                          ? product.colors.map((color) => {
+                        {currentProduct.colors
+                          ? currentProduct.colors.map((color) => {
                               return color.seasons.map((season, index) => {
                                 return (
                                   <Tooltip
@@ -324,21 +352,25 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                     </Flex>
 
                     <Flex mt={20} gap={10} direction={"column"}>
-                      <Text size={14}>{product.mainProduct.description1}</Text>
                       <Text size={14}>
-                        {product.mainProduct.description2
-                          ? product.mainProduct.description2
+                        {currentProduct.mainProduct.description1}
+                      </Text>
+                      <Text size={14}>
+                        {currentProduct.mainProduct.description2
+                          ? currentProduct.mainProduct.description2
                           : null}
                       </Text>
                     </Flex>
-                    {product.availableQty < 1 ? (
+                    {currentProduct.availableQty < 1 ? (
                       <Text mt={20} size={14} color="red">
                         Tillfällig slut
                       </Text>
                     ) : null}
                     <MediaQuery smallerThan={"xs"} styles={{ display: "none" }}>
                       <Button
-                        disabled={product.availableQty < 1 ? true : false}
+                        disabled={
+                          currentProduct.availableQty < 1 ? true : false
+                        }
                         mt={20}
                         onClick={() => handleClick()}
                         sx={(theme) => ({
@@ -346,7 +378,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                             backgroundColor: theme.colors.brand[8],
                             color: theme.colors.brand[0],
                             borderColor: theme.colors.brand[0],
-                        },
+                          },
                         })}
                       >
                         KÖP NU
@@ -354,7 +386,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                     </MediaQuery>
                     <MediaQuery smallerThan={"sm"} styles={{ display: "none" }}>
                       <Box>
-                        <Details product={product} />
+                        <Details product={currentProduct} />
                       </Box>
                     </MediaQuery>
                   </Flex>
@@ -362,11 +394,13 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
 
                 <MediaQuery largerThan={"sm"} styles={{ display: "none" }}>
                   <Box>
-                    <Details product={product} />
+                    <Details product={currentProduct} />
                   </Box>
                 </MediaQuery>
                 <Flex direction={"column"} mt={20} sx={{ width: "100%" }}>
-                  <Title color={"brand.8"} order={3}>Andra har också köpt</Title>
+                  <Title color={"brand.8"} order={3}>
+                    Andra har också köpt
+                  </Title>
                   <MediaQuery smallerThan={"lg"} styles={{ display: "none" }}>
                     <Box>
                       <CarouselProduct
@@ -406,7 +440,7 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                   </MediaQuery>
                 </Flex>
 
-                {product.availableQty < 1 ? null : (
+                {currentProduct.availableQty < 1 ? null : (
                   <MediaQuery largerThan={"xs"} styles={{ display: "none" }}>
                     <Flex
                       pos={"fixed"}
@@ -422,7 +456,8 @@ const ProductPage: NextPage<Props> = ({ product, products }) => {
                     >
                       <Text weight={"bold"}>
                         {" "}
-                        {product.mainProduct.price.$numberDecimal + " KR"}
+                        {currentProduct.mainProduct.price.$numberDecimal +
+                          " KR"}
                       </Text>
                       <Button onClick={() => handleClick()}>KÖP NU</Button>
                     </Flex>

@@ -29,7 +29,7 @@ export default async function handler(
         item.price_data.product_data.images.forEach(
           (image: string, index: number) => {
             newImageUrl.push(
-              `https://coral-app-4hlnm.ondigitalocean.app/uploads/${image}`
+              `https://res.cloudinary.com/dkzh2lxon/image/upload/v1675178603/makeupbys/${image}`
             );
             item.price_data.product_data.images = newImageUrl;
           }
