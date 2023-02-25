@@ -23,6 +23,9 @@ const InfoDrawer: FC = () => {
       size="xl"
       position="bottom"
       styles={{
+        root: {
+          zIndex: 1000000000000000,
+        },
         drawer: {
           height: "auto",
         },
